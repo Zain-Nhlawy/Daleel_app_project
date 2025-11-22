@@ -1,6 +1,6 @@
 import 'package:daleel_app_project/data/dummy_data.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
-import 'package:daleel_app_project/widget/apartment_widgets/nearby_apartments_widgets.dart';
+import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 import 'package:daleel_app_project/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -10,11 +10,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(),
+      drawer: const DrawerWidget(),
       appBar: AppBar(
-        actions: [
+        actions: const [
           IconButton(
-            onPressed: () {},
+            onPressed: null,
             icon: Icon(Icons.notifications, color: Colors.brown, size: 25),
           ),
         ],
@@ -81,6 +81,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+
             SizedBox(
               height: 215,
               child: ListView.builder(
@@ -102,12 +103,13 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
+
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: apartmentsList.length,
               itemBuilder: (context, index) =>
-                  NearbyApartmentsWidgets(apartment: apartmentsList[index]),
+                  NearpyApartmentsWidgets(apartment: apartmentsList[index]),
             ),
           ],
         ),
