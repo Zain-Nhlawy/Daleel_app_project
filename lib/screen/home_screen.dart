@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                           border: InputBorder.none,
                           hintText: 'Search Here...',
                           hintStyle: TextStyle(
-                            color: Colors.brown.withOpacity(0.4),
+                            color: Colors.brown.withAlpha((0.5 * 255).toInt()),
                             fontSize: 16,
                           ),
                         ),
