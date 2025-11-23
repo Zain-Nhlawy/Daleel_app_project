@@ -12,10 +12,10 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        actions: const [
+        actions: [
           IconButton(
-            onPressed: null,
-            icon: Icon(Icons.notifications, color: Colors.brown, size: 25),
+            onPressed: () {},
+            icon: Icon(Icons.notifications, color: Colors.brown, size: 28),
           ),
         ],
       ),

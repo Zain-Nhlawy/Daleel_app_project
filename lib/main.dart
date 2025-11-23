@@ -26,6 +26,12 @@ final theme = ThemeData(
       color: Color.fromARGB(255, 190, 125, 102),
     ),
   ),
+  highlightColor: Colors.transparent,
+  splashColor: Colors.transparent,
+  tabBarTheme: TabBarThemeData(
+    splashFactory: NoSplash.splashFactory,
+    overlayColor: WidgetStatePropertyAll(Colors.transparent),
+  ),
 );
 
 void main() {

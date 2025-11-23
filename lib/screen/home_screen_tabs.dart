@@ -21,12 +21,15 @@ class _MainScreenState extends State<HomeScreenTabs> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        
         type: BottomNavigationBarType.fixed,
         iconSize: 30,
         currentIndex: _currentIndex,
+        
         selectedItemColor: Colors.brown,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
