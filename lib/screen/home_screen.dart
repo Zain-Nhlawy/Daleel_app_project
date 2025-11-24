@@ -1,7 +1,7 @@
 import 'package:daleel_app_project/data/dummy_data.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
-import 'package:daleel_app_project/widget/drawer_widget.dart';
+
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -10,12 +10,26 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const DrawerWidget(),
       appBar: AppBar(
+        title: Row(
+          children: [
+            SizedBox(width: 8),
+            CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage('assets/images/profilePic.png'),
+            ),
+            SizedBox(width: 15),
+            Text('Username', style: Theme.of(context).textTheme.bodyLarge),
+          ],
+        ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.notifications, color: Colors.brown, size: 28),
+            icon: Icon(
+              Icons.notifications_outlined,
+              color: Colors.brown,
+              size: 32,
+            ),
           ),
         ],
       ),
