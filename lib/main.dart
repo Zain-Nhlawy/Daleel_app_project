@@ -1,36 +1,37 @@
-import 'package:daleel_app_project/screen/home_screen_tabs.dart';
+import 'package:daleel_app_project/screen/home_screen/home_screen_tabs.dart';
+import 'package:daleel_app_project/screen/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final theme = ThemeData(
-  appBarTheme: const AppBarTheme(
-    iconTheme: IconThemeData(color: Color.fromARGB(255, 189, 118, 92)),
-  ),
-  fontFamily: 'Roboto',
   useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: Color.fromARGB(255, 226, 222, 218),
-  ),
+  colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFE2DEDA)),
 
-  textTheme: GoogleFonts.robotoTextTheme(const TextTheme()).copyWith(
+  textTheme: GoogleFonts.robotoTextTheme().copyWith(
     bodyLarge: GoogleFonts.roboto(
-      fontSize: 22,
-      fontWeight: FontWeight.bold,
-      color: Color.fromARGB(255, 185, 119, 95),
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Color(0xFFB34A24),
     ),
     bodyMedium: GoogleFonts.roboto(fontSize: 16, color: Colors.brown),
-    titleLarge: GoogleFonts.roboto(
-      fontSize: 24,
-      fontWeight: FontWeight.w600,
-      color: Color.fromARGB(255, 190, 125, 102),
+    titleMedium: GoogleFonts.roboto(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Color(0xFFBE7D66),
+    ),
+
+    bodySmall: GoogleFonts.roboto(fontSize: 10, color: Colors.brown),
+    titleSmall: GoogleFonts.roboto(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Color(0xFFBE7D66),
     ),
   ),
+
+  appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: Color(0xFFBD765C))),
+
   highlightColor: Colors.transparent,
   splashColor: Colors.transparent,
-  tabBarTheme: TabBarThemeData(
-    splashFactory: NoSplash.splashFactory,
-    overlayColor: WidgetStatePropertyAll(Colors.transparent),
-  ),
 );
 
 void main() {

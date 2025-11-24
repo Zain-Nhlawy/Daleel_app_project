@@ -1,6 +1,6 @@
 import 'package:daleel_app_project/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:daleel_app_project/screen/home_screen.dart';
+import 'package:daleel_app_project/screen/home_screen/home_screen.dart';
 
 class HomeScreenTabs extends StatefulWidget {
   const HomeScreenTabs({super.key});
@@ -26,7 +26,7 @@ class _MainScreenState extends State<HomeScreenTabs> {
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        iconSize: 35,
+        iconSize: 30,
         currentIndex: _currentIndex,
 
         selectedItemColor: const Color.fromARGB(255, 83, 55, 45),

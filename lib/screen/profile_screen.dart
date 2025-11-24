@@ -1,3 +1,5 @@
+import 'package:daleel_app_project/testing.dart';
+import 'package:daleel_app_project/widget/profile_screen_widgets/profile_options.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -6,37 +8,64 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+      appBar: AppBar(
+        title: Text(
+          'My Profile',
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 20),
+        ),
+        centerTitle: true,
+      ),
+
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                SizedBox(height: 50),
-                CircleAvatar(
-                  radius: 80,
-                  backgroundImage: AssetImage('assets/images/profilePic.png'),
-                ),
-                SizedBox(height: 30),
-                Text('Username', style: Theme.of(context).textTheme.bodyLarge),
-                SizedBox(height: 30),
-                Card(
-                  
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      child: Icon(Icons.settings),
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 65,
+                      backgroundImage: AssetImage('assets/images/user.png'),
                     ),
-                    title: Text('Headline'),
-                    subtitle: Text('Supporting text'),
-                    trailing: Icon(Icons.arrow_forward),
-                    onTap: () {},
-                  ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.edit, color: Colors.brown, size: 28),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(width: 30),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Zain Nhlawy',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'zainzain@gmail.com',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
                 ),
               ],
             ),
-          ),
-        ],
+            SizedBox(height: 40),
+            ProfileOptions(),
+          ],
+        ),
       ),
     );
   }

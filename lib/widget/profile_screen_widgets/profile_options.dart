@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Testing extends StatelessWidget {
-  const Testing({super.key});
+class ProfileOptions extends StatelessWidget {
+  const ProfileOptions({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class Testing extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.person_outline, size: 25), // outlined
+                child: Icon(Icons.person_outline, size: 25),
               ),
               title: Text(
                 textAlign: TextAlign.justify,
@@ -24,7 +24,7 @@ class Testing extends StatelessWidget {
                   fontSize: 19,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_outlined), // outlined
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {},
             ),
           ),
@@ -35,7 +35,7 @@ class Testing extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.settings_outlined, size: 25), // outlined
+                child: Icon(Icons.settings_outlined, size: 25),
               ),
               title: Text(
                 'Settings',
@@ -44,7 +44,7 @@ class Testing extends StatelessWidget {
                   fontSize: 19,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_outlined),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {},
             ),
           ),
@@ -64,7 +64,7 @@ class Testing extends StatelessWidget {
                   fontSize: 19,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_outlined),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {},
             ),
           ),
@@ -88,7 +88,7 @@ class Testing extends StatelessWidget {
                   fontSize: 19,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_outlined),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {},
             ),
           ),
@@ -99,11 +99,7 @@ class Testing extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.logout_outlined,
-                  size: 25,
-                  color: Colors.red,
-                ), // outlined
+                child: Icon(Icons.logout_outlined, size: 25, color: Colors.red),
               ),
               title: Text(
                 textAlign: TextAlign.justify,
@@ -113,7 +109,7 @@ class Testing extends StatelessWidget {
                   fontSize: 19,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_outlined),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {},
             ),
           ),
