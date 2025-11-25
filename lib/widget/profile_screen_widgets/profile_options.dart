@@ -1,7 +1,14 @@
+import 'package:daleel_app_project/screen/favorite_apartments_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileOptions extends StatelessWidget {
   const ProfileOptions({super.key});
+
+  void _setScreen(context) {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (ctx) => FavoriteApartmentsScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +82,7 @@ class ProfileOptions extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.favorite_outline,
-                  size: 25,
-                  color: Colors.red,
-                ), // outlined
+                child: Icon(Icons.favorite_outline, size: 25), // outlined
               ),
               title: Text(
                 'Favorites',
@@ -89,7 +92,9 @@ class ProfileOptions extends StatelessWidget {
                 ),
               ),
               trailing: Icon(Icons.keyboard_arrow_right_outlined),
-              onTap: () {},
+              onTap: () {
+                _setScreen(context);
+              },
             ),
           ),
 
@@ -107,6 +112,7 @@ class ProfileOptions extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
+                  color: Colors.red,
                 ),
               ),
               trailing: Icon(Icons.keyboard_arrow_right_outlined),

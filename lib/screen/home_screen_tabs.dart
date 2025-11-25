@@ -12,30 +12,47 @@ class HomeScreenTabs extends StatefulWidget {
 class _MainScreenState extends State<HomeScreenTabs> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    const HomeScreen(),
-    const Center(child: Text('deals')),
-    const Center(child: Text('Add Apartment')),
-    const Center(child: Text('Chat')),
-    const Center(child: ProfileScreen()),
+  final PageController _pageController = PageController();
+
+  final List<Widget> _pages = const [
+    HomeScreen(),
+    Center(child: Text('deals')),
+    Center(child: Text('Add Apartment')),
+    Center(child: Text('Chat')),
+    ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        iconSize: 30,
-        currentIndex: _currentIndex,
-
-        selectedItemColor: const Color.fromARGB(255, 83, 55, 45),
-        unselectedItemColor: const Color.fromARGB(255, 136, 125, 125),
-        onTap: (index) {
+      body: PageView(
+        controller: _pageController,
+        children: _pages,
+        onPageChanged: (index) {
           setState(() {
             _currentIndex = index;
           });
         },
+      ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        iconSize: 30,
+        currentIndex: _currentIndex,
+        selectedItemColor: const Color.fromARGB(255, 83, 55, 45),
+        unselectedItemColor: const Color.fromARGB(255, 136, 125, 125),
+
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.easeInOut,
+            );
+          });
+        },
+
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.explore_outlined),
