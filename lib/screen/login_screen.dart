@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
+import 'signUp_screen.dart';
 import '../widget/custom_text_field.dart';
 
 
