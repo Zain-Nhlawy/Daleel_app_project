@@ -16,10 +16,10 @@ class HomeScreen extends StatelessWidget {
             SizedBox(width: 8),
             CircleAvatar(
               radius: 27,
-              backgroundImage: AssetImage('assets/images/profilePic.png'),
+              backgroundImage: AssetImage('assets/images/user.png'),
             ),
             SizedBox(width: 15),
-            Text('Username', style: Theme.of(context).textTheme.bodyLarge),
+            Text('Zain Nhalwy', style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
         actions: [
