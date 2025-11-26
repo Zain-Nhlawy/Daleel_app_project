@@ -1,7 +1,14 @@
+import 'package:daleel_app_project/screen/tabs_screen/favorite_apartments_screen.dart';
 import 'package:flutter/material.dart';
 
-class Testing extends StatelessWidget {
-  const Testing({super.key});
+class ProfileOptions extends StatelessWidget {
+  const ProfileOptions({super.key});
+
+  void _setScreen(context) {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (ctx) => FavoriteApartmentsScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +21,7 @@ class Testing extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.person_outline, size: 25), // outlined
+                child: Icon(Icons.person_outline, size: 25),
               ),
               title: Text(
                 textAlign: TextAlign.justify,
@@ -24,27 +31,7 @@ class Testing extends StatelessWidget {
                   fontSize: 19,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_outlined), // outlined
-              onTap: () {},
-            ),
-          ),
-
-          Card(
-            color: Colors.transparent,
-            elevation: 0,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Icon(Icons.settings_outlined, size: 25), // outlined
-              ),
-              title: Text(
-                'Settings',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 19,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_outlined),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {},
             ),
           ),
@@ -58,13 +45,32 @@ class Testing extends StatelessWidget {
                 child: Icon(Icons.home_outlined, size: 25), // outlined
               ),
               title: Text(
-                'Listed Houses for Rent',
+                'My Houses',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_outlined),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            color: Colors.transparent,
+            elevation: 0,
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: Icon(Icons.history_outlined, size: 25),
+              ),
+              title: Text(
+                'Contracts History',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 19,
+                ),
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {},
             ),
           ),
@@ -75,11 +81,7 @@ class Testing extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.favorite_outline,
-                  size: 25,
-                  color: Colors.red,
-                ), // outlined
+                child: Icon(Icons.favorite_outline, size: 25), // outlined
               ),
               title: Text(
                 'Favorites',
@@ -88,8 +90,10 @@ class Testing extends StatelessWidget {
                   fontSize: 19,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_outlined),
-              onTap: () {},
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
+              onTap: () {
+                _setScreen(context);
+              },
             ),
           ),
 
@@ -99,11 +103,26 @@ class Testing extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.logout_outlined,
-                  size: 25,
-                  color: Colors.red,
-                ), // outlined
+                child: Icon(Icons.settings_outlined, size: 25),
+              ),
+              title: Text(
+                'Settings',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 19,
+                ),
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
+              onTap: () {},
+            ),
+          ),
+          Card(
+            color: Colors.transparent,
+            elevation: 0,
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: Icon(Icons.logout_outlined, size: 25, color: Colors.red),
               ),
               title: Text(
                 textAlign: TextAlign.justify,
@@ -111,9 +130,10 @@ class Testing extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
+                  color: Colors.red,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_outlined),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {},
             ),
           ),

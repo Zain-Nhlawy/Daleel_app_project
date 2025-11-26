@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/apartments.dart';
 
 class MostPopularApartmentsWidget extends StatelessWidget {
-  const MostPopularApartmentsWidget({
-    super.key,
-    required this.apartment,
-
-  });
+  const MostPopularApartmentsWidget({super.key, required this.apartment});
   final Apartments apartment;
 
   @override
@@ -23,16 +19,21 @@ class MostPopularApartmentsWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
-                child: Image.asset(
-                  apartment.apartmentPicture,
-                  height: 120,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    height: 115,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Image.asset(
+                      apartment.apartmentPicture,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
               Padding(
@@ -46,8 +47,10 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
 
                     Text(
                       apartment.apartmentCountry,

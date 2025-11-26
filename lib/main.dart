@@ -1,35 +1,40 @@
-import 'package:daleel_app_project/screen/home_screen.dart';
-import 'package:daleel_app_project/screen/home_screen_tabs.dart';
-import 'package:daleel_app_project/screen/splash/splash_screen.dart'; 
-import 'package:daleel_app_project/screen/login_screen.dart'; 
+import 'package:daleel_app_project/screen/splash/splash_screen.dart';
+import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final theme = ThemeData(
-  appBarTheme: const AppBarTheme(
-    iconTheme: IconThemeData(color: Color.fromARGB(255, 189, 118, 92)),
-  ),
-  fontFamily: 'Roboto',
   useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: Color.fromARGB(255, 226, 222, 218),
+  colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFE2DEDA)),
+
+  textTheme: GoogleFonts.nunitoTextTheme().copyWith(
+    bodyLarge: GoogleFonts.nunito(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Color(0xFFB34A24),
+    ),
+    bodyMedium: GoogleFonts.nunito(fontSize: 16, color: Colors.brown),
+    titleMedium: GoogleFonts.nunito(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Color(0xFFBE7D66),
+    ),
+
+    bodySmall: GoogleFonts.nunito(fontSize: 10, color: Colors.brown),
+    titleSmall: GoogleFonts.nunito(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: Color(0xFFBE7D66),
+    ),
   ),
 
-  textTheme: GoogleFonts.robotoTextTheme(const TextTheme()).copyWith(
-    bodyLarge: GoogleFonts.roboto(
-      fontSize: 22,
-      fontWeight: FontWeight.bold,
-      color: Color.fromARGB(255, 185, 119, 95),
-    ),
-    bodyMedium: GoogleFonts.roboto(fontSize: 16, color: Colors.brown),
-    titleLarge: GoogleFonts.roboto(
-      fontSize: 24,
-      fontWeight: FontWeight.w600,
-      color: Color.fromARGB(255, 190, 125, 102),
-    ),
-  ),
+  appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: Color(0xFFBD765C))),
+
+  highlightColor: Colors.transparent,
+  splashColor: Colors.transparent,
 );
 
 void main() {
-  runApp(MaterialApp(theme: theme, home:SplashScreen()));
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MaterialApp(theme: theme, home: HomeScreenTabs()));
 }
