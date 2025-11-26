@@ -96,6 +96,7 @@ final List<Apartments> apartmentsList = [
 
 final List<Contracts> contractsData = [
   Contracts(
+    contractApartment: apartmentsList[0],
     startRent: DateTime(2025, 1, 5),
     endRent: DateTime(2025, 2, 5),
     rentFee: 350,
@@ -107,6 +108,7 @@ final List<Contracts> contractsData = [
     contractDescreption: "Monthly rental for a furnished studio apartment.",
   ),
   Contracts(
+    contractApartment: apartmentsList[1],
     startRent: DateTime(2025, 3, 1),
     endRent: DateTime(2025, 3, 30),
     rentFee: 420,
@@ -118,6 +120,7 @@ final List<Contracts> contractsData = [
     contractDescreption: "Short-term rent for a 1-bedroom apartment.",
   ),
   Contracts(
+    contractApartment: apartmentsList[2],
     startRent: DateTime(2025, 2, 10),
     endRent: DateTime(2025, 4, 10),
     rentFee: 800,
@@ -130,6 +133,7 @@ final List<Contracts> contractsData = [
         "Two-month contract for a family apartment — awaiting approval.",
   ),
   Contracts(
+    contractApartment: apartmentsList[0],
     startRent: DateTime(2025, 1, 20),
     endRent: DateTime(2025, 2, 20),
     rentFee: 300,
@@ -141,6 +145,7 @@ final List<Contracts> contractsData = [
     contractDescreption: "Contract was cancelled due to renter request.",
   ),
   Contracts(
+    contractApartment: apartmentsList[5],
     startRent: DateTime(2025, 4, 5),
     endRent: DateTime(2025, 5, 5),
     rentFee: 500,
@@ -152,6 +157,7 @@ final List<Contracts> contractsData = [
     contractDescreption: "One-month rent for a serviced apartment.",
   ),
   Contracts(
+    contractApartment: apartmentsList[5],
     startRent: DateTime(2025, 2, 1),
     endRent: DateTime(2025, 3, 1),
     rentFee: 370,
@@ -163,6 +169,7 @@ final List<Contracts> contractsData = [
     contractDescreption: "Completed rental period — no issues reported.",
   ),
   Contracts(
+    contractApartment: apartmentsList[3],
     startRent: DateTime(2025, 5, 10),
     endRent: DateTime(2025, 6, 10),
     rentFee: 450,
@@ -174,6 +181,7 @@ final List<Contracts> contractsData = [
     contractDescreption: "Awaiting payment confirmation from the renter.",
   ),
   Contracts(
+    contractApartment: apartmentsList[1],
     startRent: DateTime(2025, 1, 1),
     endRent: DateTime(2025, 12, 31),
     rentFee: 5000,
@@ -185,6 +193,7 @@ final List<Contracts> contractsData = [
     contractDescreption: "Full-year rent for a large family apartment.",
   ),
   Contracts(
+    contractApartment: apartmentsList[0],
     startRent: DateTime(2025, 3, 15),
     endRent: DateTime(2025, 4, 15),
     rentFee: 390,
@@ -196,6 +205,7 @@ final List<Contracts> contractsData = [
     contractDescreption: "Short stay for a business trip.",
   ),
   Contracts(
+    contractApartment: apartmentsList[4],
     startRent: DateTime(2025, 6, 1),
     endRent: DateTime(2025, 7, 1),
     rentFee: 480,

@@ -1,4 +1,4 @@
-import 'package:daleel_app_project/screen/favorite_apartments_screen.dart';
+import 'package:daleel_app_project/screen/tabs_screen/favorite_apartments_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileOptions extends StatelessWidget {
