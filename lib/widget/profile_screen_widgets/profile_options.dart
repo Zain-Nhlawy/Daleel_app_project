@@ -42,10 +42,10 @@ class ProfileOptions extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.settings_outlined, size: 25),
+                child: Icon(Icons.home_outlined, size: 25), // outlined
               ),
               title: Text(
-                'Settings',
+                'My Houses',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -55,17 +55,16 @@ class ProfileOptions extends StatelessWidget {
               onTap: () {},
             ),
           ),
-
           Card(
             color: Colors.transparent,
             elevation: 0,
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.home_outlined, size: 25), // outlined
+                child: Icon(Icons.history_outlined, size: 25),
               ),
               title: Text(
-                'Listed Houses for Rent',
+                'Contracts History',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -98,6 +97,25 @@ class ProfileOptions extends StatelessWidget {
             ),
           ),
 
+          Card(
+            color: Colors.transparent,
+            elevation: 0,
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: Icon(Icons.settings_outlined, size: 25),
+              ),
+              title: Text(
+                'Settings',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 19,
+                ),
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
+              onTap: () {},
+            ),
+          ),
           Card(
             color: Colors.transparent,
             elevation: 0,

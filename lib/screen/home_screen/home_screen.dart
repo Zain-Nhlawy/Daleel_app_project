@@ -1,11 +1,40 @@
+import 'dart:async';
+
 import 'package:daleel_app_project/data/dummy_data.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late PageController _pageController;
+  int initialPage = 10000;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _pageController = PageController(
+      initialPage: initialPage,
+      viewportFraction: 0.8,
+    );
+
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      if (_pageController.hasClients) {
+        _pageController.nextPage(
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,12 +127,15 @@ class HomeScreen extends StatelessWidget {
 
             SizedBox(
               height: 215,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: apartmentsList.length,
-                itemBuilder: (context, index) => MostPopularApartmentsWidget(
-                  apartment: apartmentsList[index],
-                ),
+              child: PageView.builder(
+                controller: _pageController,
+                itemBuilder: (context, index) {
+                  final realIndex = index % apartmentsList.length;
+
+                  return MostPopularApartmentsWidget(
+                    apartment: apartmentsList[realIndex],
+                  );
+                },
               ),
             ),
 
