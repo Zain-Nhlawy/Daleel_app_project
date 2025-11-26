@@ -31,5 +31,5 @@ final theme = ThemeData(
 );
 
 void main() {
-  runApp(MaterialApp(theme: theme, home: SplashScreen()));
+  runApp(MaterialApp(theme: theme, home:SplashScreen()));
 }

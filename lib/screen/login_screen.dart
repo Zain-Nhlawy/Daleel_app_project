@@ -13,16 +13,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   bool showCard = false;
 
   @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        showCard = true;
-      });
+      setState(() => showCard = true);
     });
   }
 
@@ -33,8 +30,22 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  void _showError(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(msg), backgroundColor: Colors.redAccent),
+    );
+  }
+
   void _login() {
-    print("Phone: ${_phoneController.text}, Password: ${_passwordController.text}");
+    final phone = _phoneController.text.trim();
+    final password = _passwordController.text;
+
+    if (phone.isEmpty || password.isEmpty) {
+      _showError("Please fill all fields.");
+      return;
+    }
+
+    print("Phone: $phone, Password: $password");
   }
 
   @override
@@ -42,130 +53,100 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Image.asset(
-              "assets/images/Background.jpg",
-              fit: BoxFit.cover,
-            ),
-          ),
-
-          const SafeArea(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Image(
-                  image: AssetImage("assets/images/logo.png"),
-                  width: 80,
-                  height: 80,
-                ),
-              ),
-            ),
-          ),
-
+          Positioned.fill(child: Image.asset("assets/images/Background.jpg", fit: BoxFit.cover)),
+          const _HeaderLogo(),
           AnimatedPositioned(
-            duration: const Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 400),
             curve: Curves.easeOut,
             bottom: showCard ? 0 : -500,
             left: 0,
             right: 0,
-            child: Container(
-              height: 550,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: Colors.brown.withOpacity(0.7),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                    offset: Offset(0, -4),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 16),
-
-                  const Text(
-                    "Welcome back!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 44,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  CustomTextField(
-                    controller: _phoneController,
-                    label: "Phone Number",
-                    icon: Icons.phone,
-                  ),
-
-
-                  CustomTextField(
-                  controller: _passwordController,
-                  label: "Password",
-                  icon: Icons.lock,
-                ),
-
-                  const SizedBox(height: 20),
-
-                  Center(
-                    child: SizedBox(
-                      width: 180,
-                      height: 55,
-                      child: OutlinedButton(
-                        onPressed: _login,
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.white),
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.transparent,
-                        ),
-                        child: const Text(
-                          "Login",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-
-                  Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          "Don't have an account?",
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignUpScreen()),
-                            );
-                          },
-                          child: const Text(
-                            "Sign Up",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            child: LoginCard(
+              phoneController: _phoneController,
+              passwordController: _passwordController,
+              onLogin: _login,
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HeaderLogo extends StatelessWidget {
+  const _HeaderLogo();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(top: 1, left: 20),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Image(
+            image: AssetImage("assets/images/daleelLogo.png"),
+            width: 130,
+            height: 130,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class LoginCard extends StatelessWidget {
+  final TextEditingController phoneController;
+  final TextEditingController passwordController;
+  final VoidCallback onLogin;
+
+  const LoginCard({
+    required this.phoneController,
+    required this.passwordController,
+    required this.onLogin,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 550,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.brown.withOpacity(0.7),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(40)),
+        boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, -4))],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 16),
+          const Text("Welcome back!", textAlign: TextAlign.center, style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold, color: Colors.white)),
+          const SizedBox(height: 20),
+          CustomTextField(controller: phoneController, label: "Phone Number", icon: Icons.phone, keyboardType: TextInputType.phone),
+          CustomTextField(controller: passwordController, label: "Password", icon: Icons.lock, keyboardType: TextInputType.text, obscure: true),
+          const SizedBox(height: 20),
+          Center(child: SizedBox(width: 180, height: 55, child: OutlinedButton(onPressed: onLogin, style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white), foregroundColor: Colors.white), child: const Text("Login", style: TextStyle(color: Colors.white, fontSize: 20))))),
+          const SizedBox(height: 30),
+          const _SignUpLink(),
+        ],
+      ),
+    );
+  }
+}
+
+class _SignUpLink extends StatelessWidget {
+  const _SignUpLink();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text("Don't have an account?", style: TextStyle(color: Colors.white70)),
+          TextButton(
+            onPressed: () => Navigator.push(context, PageRouteBuilder(pageBuilder: (context, anim1, anim2) => const SignUpScreen(), transitionDuration: const Duration(seconds: 1))),
+            child: const Text("Sign Up", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           ),
         ],
       ),

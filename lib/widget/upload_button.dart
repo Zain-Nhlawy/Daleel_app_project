@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class UploadButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final bool isUploaded;
 
   const UploadButton({
     super.key,
     required this.text,
     required this.onPressed,
+    required this.isUploaded,
   });
 
   @override
@@ -25,7 +27,31 @@ class UploadButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
-        child: Text(text),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              text,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                color: isUploaded ? Colors.lightGreen : Colors.transparent,
+                border: Border.all(color: Colors.brown),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Icon(
+                  isUploaded ? Icons.check : Icons.add,
+                  size: 20,
+                  color: isUploaded ? Colors.white : Colors.brown,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

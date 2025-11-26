@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final String? hint;
   final IconData? icon;
+  final TextInputType keyboardType;  
+  final bool obscure;   
+  final bool readOnly;
+  final VoidCallback? onTap;             
 
   const CustomTextField({
     super.key,
@@ -12,7 +16,18 @@ class CustomTextField extends StatelessWidget {
     required this.label,
     this.hint,
     this.icon,
+    this.keyboardType = TextInputType.text,
+    this.obscure = false,
+    this.readOnly = false,
+    this.onTap,
   });
+
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool _hide = true; 
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +35,7 @@ class CustomTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
+          widget.label,
           style: const TextStyle(
             color: Colors.white70,
             fontSize: 16,
@@ -28,21 +43,61 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
+
         TextField(
-          controller: controller,
+          controller: widget.controller,
+          keyboardType: widget.keyboardType,
+          obscureText: widget.obscure ? _hide : false,
+          readOnly: widget.readOnly,
+          onTap: widget.onTap,
           decoration: InputDecoration(
-            hintText: hint,
+            hintText: widget.hint,
+            hintStyle: TextStyle(
+              color: Colors.white.withOpacity(0.5),
+              fontSize: 14,
+            ),
             filled: true,
             fillColor: Colors.white.withOpacity(0.8),
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            prefixIcon: icon != null ? Icon(icon, color: Colors.brown) : null,
+            contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+
+            prefixIcon: widget.icon != null
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(width: 8), 
+                      Icon(widget.icon, color: Colors.brown),
+                      const SizedBox(width: 8), 
+                      Container(
+                        width: 1,
+                        height: 24,
+                        color: Colors.brown.withOpacity(0.5), 
+                      ),
+                      const SizedBox(width: 8), 
+                    ],
+                  )
+                : null,
+
+            suffixIcon: widget.obscure
+                ? IconButton(
+                    icon: Icon(
+                      _hide ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.brown,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _hide = !_hide;
+                      });
+                    },
+                  )
+                : null,
+
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide.none,
             ),
           ),
         ),
+
         const SizedBox(height: 16),
       ],
     );

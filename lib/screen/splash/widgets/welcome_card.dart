@@ -15,7 +15,7 @@ class WelcomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 400),
       curve: Curves.easeOut,
       bottom: showWelcomeCard ? 0 : -300,
       left: 0,
@@ -26,7 +26,7 @@ class WelcomeCard extends StatelessWidget {
           color: Colors.brown.withOpacity(0.7),
           borderRadius: BorderRadius.vertical(top: Radius.circular(80)),
         ),
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
