@@ -25,86 +25,101 @@ class ContractDataCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: InkWell(
+        borderRadius: BorderRadius.circular(16),
         onTap: () {},
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+        child: SizedBox(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 4,
-                  horizontal: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: _statusColor(contract.rentStatus).withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  _statusText(contract.rentStatus),
-                  style: TextStyle(
-                    color: _statusColor(contract.rentStatus),
-                    fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.all(4),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    height: 120,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Image.asset(
+                      contract.contractApartment.apartmentPicture,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Renter: ${contract.renterName}",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    "Tenant: ${contract.tenantName}",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Renter: ${contract.renterName}",
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          "Tenant: ${contract.tenantName}",
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
 
-              const SizedBox(height: 10),
+                    const SizedBox(height: 10),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Start: ${contract.startRent.toString().substring(0, 10)}",
-                    style: const TextStyle(color: Colors.black54),
-                  ),
-                  Text(
-                    "End: ${contract.endRent.toString().substring(0, 10)}",
-                    style: const TextStyle(color: Colors.black54),
-                  ),
-                ],
-              ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Start: ${contract.startRent.toString().substring(0, 10)}",
+                          style: Theme.of(context).textTheme.bodyMedium!
+                              .copyWith(fontSize: 15, color: Colors.black54),
+                        ),
+                        Text(
+                          "End: ${contract.endRent.toString().substring(0, 10)}",
+                          style: Theme.of(context).textTheme.bodyMedium!
+                              .copyWith(fontSize: 15, color: Colors.black54),
+                        ),
+                      ],
+                    ),
 
-              const SizedBox(height: 10),
-
-              Text(
-                "Fee: ${contract.rentFee} JD",
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown,
-                  fontSize: 16,
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _statusColor(
+                          contract.rentStatus,
+                        ).withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        _statusText(contract.rentStatus),
+                        style: TextStyle(
+                          color: _statusColor(contract.rentStatus),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-
-              const SizedBox(height: 10),
-
-              Text(
-                contract.contractApartment.apartmentCountry,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Colors.black87),
               ),
             ],
           ),

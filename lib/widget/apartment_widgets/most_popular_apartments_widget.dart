@@ -15,7 +15,6 @@ class MostPopularApartmentsWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         onTap: () {},
         child: SizedBox(
-          width: 260,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,28 +40,47 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      apartment.apartmentHeadDescripton,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          apartment.apartmentHeadDescripton,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          '30\$ / month',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: Colors.grey[600], fontSize: 13),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 2),
-
-                    Text(
-                      apartment.apartmentCountry,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
-                    ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
 
                     Row(
                       children: [
-                        Icon(Icons.star, color: Colors.orange, size: 18),
+                        Icon(
+                          Icons.location_on,
+                          size: 12,
+                          color: Colors.grey[600],
+                        ),
+                        Text(
+                          apartment.apartmentCountry,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(Icons.star, color: Colors.orange, size: 16),
                         const SizedBox(width: 4),
                         Text(
                           apartment.apartmentRate.toString(),

@@ -1,124 +1,96 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
-class Testing extends StatelessWidget {
-  const Testing({super.key});
+// class Testing extends StatelessWidget {
+//   const Testing({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Card(
-            color: Colors.transparent,
-            elevation: 0,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Icon(Icons.person_outline, size: 25), // outlined
-              ),
-              title: Text(
-                textAlign: TextAlign.justify,
-                'Profile Details',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 19,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_outlined), // outlined
-              onTap: () {},
-            ),
-          ),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       elevation: 3,
+//       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+//       child: InkWell(
+//         onTap: () {},
+//         child: Padding(
+//           padding: const EdgeInsets.all(16),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Container(
+//                 padding: const EdgeInsets.symmetric(
+//                   vertical: 4,
+//                   horizontal: 10,
+//                 ),
+//                 decoration: BoxDecoration(
+//                   color: _statusColor(contract.rentStatus).withOpacity(0.15),
+//                   borderRadius: BorderRadius.circular(8),
+//                 ),
+//                 child: Text(
+//                   _statusText(contract.rentStatus),
+//                   style: TextStyle(
+//                     color: _statusColor(contract.rentStatus),
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//               ),
+//               const SizedBox(height: 12),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Text(
+//                     "Renter: ${contract.renterName}",
+//                     style: Theme.of(context).textTheme.bodyMedium,
+//                     maxLines: 2,
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                   Text(
+//                     "Tenant: ${contract.tenantName}",
+//                     style: Theme.of(context).textTheme.bodyMedium,
+//                     maxLines: 2,
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                 ],
+//               ),
 
-          Card(
-            color: Colors.transparent,
-            elevation: 0,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Icon(Icons.settings_outlined, size: 25), // outlined
-              ),
-              title: Text(
-                'Settings',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 19,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_outlined),
-              onTap: () {},
-            ),
-          ),
+//               const SizedBox(height: 10),
 
-          Card(
-            color: Colors.transparent,
-            elevation: 0,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Icon(Icons.home_outlined, size: 25), // outlined
-              ),
-              title: Text(
-                'Listed Houses for Rent',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 19,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_outlined),
-              onTap: () {},
-            ),
-          ),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Text(
+//                     "Start: ${contract.startRent.toString().substring(0, 10)}",
+//                     style: const TextStyle(color: Colors.black54),
+//                   ),
+//                   Text(
+//                     "End: ${contract.endRent.toString().substring(0, 10)}",
+//                     style: const TextStyle(color: Colors.black54),
+//                   ),
+//                 ],
+//               ),
 
-          Card(
-            color: Colors.transparent,
-            elevation: 0,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.favorite_outline,
-                  size: 25,
-                  color: Colors.red,
-                ), // outlined
-              ),
-              title: Text(
-                'Favorites',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 19,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_outlined),
-              onTap: () {},
-            ),
-          ),
+//               const SizedBox(height: 10),
 
-          Card(
-            color: Colors.transparent,
-            elevation: 0,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.logout_outlined,
-                  size: 25,
-                  color: Colors.red,
-                ), // outlined
-              ),
-              title: Text(
-                textAlign: TextAlign.justify,
-                'Logout',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 19,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_outlined),
-              onTap: () {},
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//               Text(
+//                 "Fee: ${contract.rentFee} JD",
+//                 style: const TextStyle(
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.brown,
+//                   fontSize: 16,
+//                 ),
+//               ),
+
+//               const SizedBox(height: 10),
+
+//               Text(
+//                 contract.contractApartment.apartmentCountry,
+//                 maxLines: 2,
+//                 overflow: TextOverflow.ellipsis,
+//                 style: const TextStyle(color: Colors.black87),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

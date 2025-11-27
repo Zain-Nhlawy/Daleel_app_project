@@ -1,4 +1,3 @@
-import 'package:daleel_app_project/data/dummy_data.dart';
 import 'package:daleel_app_project/screen/profile_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/contract_screen.dart';
 import 'package:flutter/material.dart';

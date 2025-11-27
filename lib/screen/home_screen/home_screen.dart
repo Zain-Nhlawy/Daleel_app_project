@@ -101,12 +101,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Most popular',
+                    'Most Popular',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   TextButton(
@@ -142,20 +142,23 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 25),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                'Nearby your location',
+                'Close To You',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
 
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: apartmentsList.length,
-              itemBuilder: (context, index) =>
-                  NearpyApartmentsWidgets(apartment: apartmentsList[index]),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: apartmentsList.length,
+                itemBuilder: (context, index) =>
+                    NearpyApartmentsWidgets(apartment: apartmentsList[index]),
+              ),
             ),
           ],
         ),

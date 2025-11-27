@@ -11,7 +11,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {},

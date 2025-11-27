@@ -21,11 +21,14 @@ class ContractScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: contractsData.length,
-        itemBuilder: (context, index) {
-          return ContractDataCardWidget(contract: contractsData[index]);
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+          itemCount: contractsData.length,
+          itemBuilder: (context, index) {
+            return ContractDataCardWidget(contract: contractsData[index]);
+          },
+        ),
       ),
     );
   }
