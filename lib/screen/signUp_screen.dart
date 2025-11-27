@@ -13,7 +13,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
@@ -23,7 +22,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _idImagePath;
 
   bool showCard = false;
-
 
   @override
   void initState() {
@@ -43,10 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _showError(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg),
-        backgroundColor: Colors.redAccent,
-      ),
+      SnackBar(content: Text(msg), backgroundColor: Colors.redAccent),
     );
   }
 
@@ -131,7 +126,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-
 
   Widget _buildFormFields() {
     return Column(
@@ -218,9 +212,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder:
-                          (context, animation, secondaryAnimation) =>
-                              const LoginScreen(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const LoginScreen(),
                       transitionDuration: const Duration(seconds: 1),
                     ),
                   );
@@ -239,7 +232,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ],
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -276,8 +268,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: Colors.brown.withOpacity(0.7),
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(40)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(40),
+                ),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black26,
