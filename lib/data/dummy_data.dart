@@ -5,9 +5,9 @@ final List<Apartments> apartmentsList = [
   Apartments(
     apartmentCountry: "Jordan",
     apartmentPicture: "assets/images/pic1.png",
-<<<<<<< HEAD
+
     apartmentHeadDescripton: "Cozy apartment",
-=======
+
     apartmentPictures: [
       "assets/images/pic1_1.jpg",
       "assets/images/pic1_2.jpg",
@@ -16,47 +16,44 @@ final List<Apartments> apartmentsList = [
       "assets/images/pic1_5.jpg",
       "assets/images/pic1_6.jpg",
       "assets/images/pic1_7.jpg",
-
     ],
-    apartmentHeadDescripton: "Cozy apartment in Amman",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
     apartmentRate: 4.5,
     price: 1100,
     floor: 2,
     bedrooms: 2,
     bathrooms: 1,
     area: 85,
-    description: "A cozy apartment located in the heart of Amman, close to shops and public transport. Perfect for small families or couples.",
+    description:
+        "A cozy apartment located in the heart of Amman, close to shops and public transport. Perfect for small families or couples.",
     publisherName: "Omar Khaled",
     comments: [
       "Very comfortable and clean.",
       "Great location in the city.",
       "Host is very friendly.",
-      "Would visit again!"
+      "Would visit again!",
     ],
   ),
 
   Apartments(
     apartmentCountry: "UAE",
     apartmentPicture: "assets/images/pic2.png",
-<<<<<<< HEAD
+
     apartmentHeadDescripton: "Luxury villa",
-=======
+
     apartmentPictures: [
       "assets/images/pic2_1.jpg",
       "assets/images/pic2_2.jpg",
       "assets/images/pic2_3.jpg",
       "assets/images/pic2_4.jpg",
     ],
-    apartmentHeadDescripton: "Luxury villa in Dubai",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
     apartmentRate: 5.0,
     price: 800,
     floor: 1,
     bedrooms: 4,
     bathrooms: 3,
     area: 250,
-    description: "Luxury villa with private pool and garden, located in a prime area of Dubai. Perfect for a lavish vacation stay.",
+    description:
+        "Luxury villa with private pool and garden, located in a prime area of Dubai. Perfect for a lavish vacation stay.",
     publisherName: "Lina Saeed",
     comments: [
       "Amazing luxury feeling!",
@@ -68,39 +65,36 @@ final List<Apartments> apartmentsList = [
   Apartments(
     apartmentCountry: "Turkey",
     apartmentPicture: "assets/images/pic3.png",
-<<<<<<< HEAD
+
     apartmentHeadDescripton: "Sea view apartment",
-=======
+
     apartmentPictures: [
       "assets/images/pic3_1.jpg",
       "assets/images/pic3_2.jpg",
       "assets/images/pic3_3.jpg",
       "assets/images/pic3_4.jpg",
-
     ],
-    apartmentHeadDescripton: "Sea view apartment in Istanbul",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.7,
     price: 700,
     floor: 7,
     bedrooms: 3,
     bathrooms: 2,
     area: 140,
-    description: "Apartment with stunning sea views and modern interior. Near restaurants and local attractions.",
+    description:
+        "Apartment with stunning sea views and modern interior. Near restaurants and local attractions.",
     publisherName: "Yousef Karam",
     comments: [
       "The sea view is breathtaking!",
       "Perfect place for families.",
-      "Close to restaurants."
+      "Close to restaurants.",
     ],
   ),
 
   Apartments(
     apartmentCountry: "Spain",
     apartmentPicture: "assets/images/pic4.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Sunny flat",
-=======
+
     apartmentPictures: [
       "assets/images/pic4_1.jpg",
       "assets/images/pic4_2.jpg",
@@ -109,30 +103,25 @@ final List<Apartments> apartmentsList = [
       "assets/images/pic4_5.jpg",
       "assets/images/pic4_6.jpg",
       "assets/images/pic4_7.jpg",
-
     ],
     apartmentHeadDescripton: "Sunny flat in Barcelona",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.2,
     price: 1200,
     floor: 5,
     bedrooms: 2,
     bathrooms: 1,
     area: 90,
-    description: "A bright and sunny flat with balcony, located near the city center and cultural attractions.",
+    description:
+        "A bright and sunny flat with balcony, located near the city center and cultural attractions.",
     publisherName: "Maria Lopez",
-    comments: [
-      "Very sunny and warm.",
-      "Nice balcony view.",
-    ],
+    comments: ["Very sunny and warm.", "Nice balcony view."],
   ),
 
   Apartments(
     apartmentCountry: "France",
     apartmentPicture: "assets/images/pic5.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Charming studio",
-=======
+
     apartmentPictures: [
       "assets/images/pic5_1.jpg",
       "assets/images/pic5_2.jpg",
@@ -142,286 +131,221 @@ final List<Apartments> apartmentsList = [
       "assets/images/pic5_6.jpg",
     ],
     apartmentHeadDescripton: "Charming studio in Paris",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.8,
     price: 600,
     floor: 3,
     bedrooms: 1,
     bathrooms: 1,
     area: 55,
-    description: "A charming studio in Paris with elegant design, close to cafes and public transport.",
+    description:
+        "A charming studio in Paris with elegant design, close to cafes and public transport.",
     publisherName: "Jean Marc",
     comments: [
       "Perfect for couples.",
       "Amazing neighborhood.",
-      "Small but very cozy."
+      "Small but very cozy.",
     ],
   ),
 
   Apartments(
     apartmentCountry: "Italy",
     apartmentPicture: "assets/images/pic5.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Elegant apartment",
-=======
-    apartmentPictures: [
-      "assets/images/pic5.png",
-      "assets/images/pic3.png",
-    ],
+
+    apartmentPictures: ["assets/images/pic5.png", "assets/images/pic3.png"],
     apartmentHeadDescripton: "Elegant apartment in Rome",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.6,
     price: 300,
     floor: 4,
     bedrooms: 3,
     bathrooms: 2,
     area: 130,
-    description: "Elegant apartment with spacious rooms and classic design, located near Rome's main attractions.",
+    description:
+        "Elegant apartment with spacious rooms and classic design, located near Rome's main attractions.",
     publisherName: "Marco Rossi",
-    comments: [
-      "Feels like home!",
-      "Close to tourist attractions.",
-    ],
+    comments: ["Feels like home!", "Close to tourist attractions."],
   ),
 
   Apartments(
     apartmentCountry: "Germany",
     apartmentPicture: "assets/images/pic2.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Modern loft",
-=======
-    apartmentPictures: [
-      "assets/images/pic2.png",
-      "assets/images/pic4.png",
-    ],
+
+    apartmentPictures: ["assets/images/pic2.png", "assets/images/pic4.png"],
     apartmentHeadDescripton: "Modern loft in Berlin",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.4,
     price: 300,
     floor: 6,
     bedrooms: 2,
     bathrooms: 1,
     area: 100,
-    description: "Modern loft in the heart of Berlin, close to nightlife and shops. Minimalist and stylish design.",
+    description:
+        "Modern loft in the heart of Berlin, close to nightlife and shops. Minimalist and stylish design.",
     publisherName: "Leon Fritz",
-    comments: [
-      "Very modern and stylish.",
-      "Quiet neighborhood.",
-    ],
+    comments: ["Very modern and stylish.", "Quiet neighborhood."],
   ),
 
   Apartments(
     apartmentCountry: "UK",
     apartmentPicture: "assets/images/pic1.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Cozy studio",
-=======
-    apartmentPictures: [
-      "assets/images/pic1.png",
-      "assets/images/pic2.png",
-    ],
+
+    apartmentPictures: ["assets/images/pic1.png", "assets/images/pic2.png"],
     apartmentHeadDescripton: "Cozy studio in London",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.3,
     price: 300,
     floor: 2,
     bedrooms: 1,
     bathrooms: 1,
     area: 45,
-    description: "A small but cozy studio, perfect for solo travelers, near metro and shopping areas.",
+    description:
+        "A small but cozy studio, perfect for solo travelers, near metro and shopping areas.",
     publisherName: "Oliver Smith",
-    comments: [
-      "Great for solo travelers.",
-      "Close to metro station.",
-    ],
+    comments: ["Great for solo travelers.", "Close to metro station."],
   ),
 
   Apartments(
     apartmentCountry: "Netherlands",
     apartmentPicture: "assets/images/pic3.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Canal-side apartment",
-=======
-    apartmentPictures: [
-      "assets/images/pic3.png",
-      "assets/images/pic5.png",
-    ],
+
+    apartmentPictures: ["assets/images/pic3.png", "assets/images/pic5.png"],
     apartmentHeadDescripton: "Canal-side apartment in Amsterdam",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.9,
     price: 300,
     floor: 4,
     bedrooms: 2,
     bathrooms: 1,
     area: 85,
-    description: "Beautiful canal-side apartment with modern interiors. Walking distance to restaurants and shops.",
+    description:
+        "Beautiful canal-side apartment with modern interiors. Walking distance to restaurants and shops.",
     publisherName: "Van Dijk",
     comments: [
       "Amazing canal view!",
       "Loved the interior design.",
-      "Very clean and peaceful."
+      "Very clean and peaceful.",
     ],
   ),
 
   Apartments(
     apartmentCountry: "Switzerland",
     apartmentPicture: "assets/images/pic2.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Mountain view chalet",
-=======
-    apartmentPictures: [
-      "assets/images/pic2.png",
-      "assets/images/pic4.png",
-    ],
+
+    apartmentPictures: ["assets/images/pic2.png", "assets/images/pic4.png"],
     apartmentHeadDescripton: "Mountain view chalet in Zurich",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.8,
     price: 300,
     floor: 1,
     bedrooms: 3,
     bathrooms: 2,
     area: 160,
-    description: "Chalet with breathtaking mountain views, perfect for winter and summer holidays.",
+    description:
+        "Chalet with breathtaking mountain views, perfect for winter and summer holidays.",
     publisherName: "Müller Jonas",
-    comments: [
-      "Beautiful mountain scenery.",
-      "Close to hiking trails.",
-    ],
+    comments: ["Beautiful mountain scenery.", "Close to hiking trails."],
   ),
 
   Apartments(
     apartmentCountry: "Saudi Arabia",
     apartmentPicture: "assets/images/pic5.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Premium flat",
-=======
-    apartmentPictures: [
-      "assets/images/pic5.png",
-      "assets/images/pic1.png",
-    ],
+
+    apartmentPictures: ["assets/images/pic5.png", "assets/images/pic1.png"],
     apartmentHeadDescripton: "Premium flat in Riyadh",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.5,
     price: 300,
     floor: 8,
     bedrooms: 3,
     bathrooms: 2,
     area: 150,
-    description: "Premium flat with modern amenities and city view, ideal for business travelers.",
+    description:
+        "Premium flat with modern amenities and city view, ideal for business travelers.",
     publisherName: "Abdullah Fahad",
-    comments: [
-      "Spacious and clean.",
-      "Great city view.",
-    ],
+    comments: ["Spacious and clean.", "Great city view."],
   ),
 
   Apartments(
     apartmentCountry: "Qatar",
     apartmentPicture: "assets/images/pic1.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Luxury residence",
-=======
+
     apartmentPictures: [
       "assets/images/pic1.png",
       "assets/images/pic2.png",
       "assets/images/pic3.png",
     ],
     apartmentHeadDescripton: "Luxury residence in Doha",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 5.0,
     price: 1000,
     floor: 10,
     bedrooms: 4,
     bathrooms: 3,
     area: 220,
-    description: "Luxury residence in the heart of Doha with modern design and premium facilities.",
+    description:
+        "Luxury residence in the heart of Doha with modern design and premium facilities.",
     publisherName: "Hamad Jassim",
-    comments: [
-      "Top class luxury!",
-      "Amazing furnishing.",
-    ],
+    comments: ["Top class luxury!", "Amazing furnishing."],
   ),
 
   Apartments(
     apartmentCountry: "Egypt",
     apartmentPicture: "assets/images/pic4.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Nile view apartment",
-=======
-    apartmentPictures: [
-      "assets/images/pic4.png",
-      "assets/images/pic5.png",
-    ],
+
+    apartmentPictures: ["assets/images/pic4.png", "assets/images/pic5.png"],
     apartmentHeadDescripton: "Nile view apartment in Cairo",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.1,
     price: 300,
     floor: 9,
     bedrooms: 3,
     bathrooms: 2,
     area: 140,
-    description: "Apartment with stunning Nile views, modern interior and central location.",
+    description:
+        "Apartment with stunning Nile views, modern interior and central location.",
     publisherName: "Mostafa Adel",
-    comments: [
-      "Nile view is fantastic.",
-      "Great value for money.",
-    ],
+    comments: ["Nile view is fantastic.", "Great value for money."],
   ),
 
   Apartments(
     apartmentCountry: "USA",
     apartmentPicture: "assets/images/pic4.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Spacious condo",
-=======
-    apartmentPictures: [
-      "assets/images/pic4.png",
-      "assets/images/pic2.png",
-    ],
+
+    apartmentPictures: ["assets/images/pic4.png", "assets/images/pic2.png"],
     apartmentHeadDescripton: "Spacious condo in New York",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.7,
     price: 300,
     floor: 15,
     bedrooms: 2,
     bathrooms: 2,
     area: 120,
-    description: "Spacious condo in the heart of New York, close to metro and main attractions.",
+    description:
+        "Spacious condo in the heart of New York, close to metro and main attractions.",
     publisherName: "Jake Wilson",
-    comments: [
-      "Very modern.",
-      "Close to everything.",
-    ],
+    comments: ["Very modern.", "Close to everything."],
   ),
 
   Apartments(
     apartmentCountry: "Canada",
     apartmentPicture: "assets/images/pic2.png",
-<<<<<<< HEAD
-    apartmentHeadDescripton: "Modern apartment",
-=======
-    apartmentPictures: [
-      "assets/images/pic2.png",
-      "assets/images/pic3.png",
-    ],
+
+    apartmentPictures: ["assets/images/pic2.png", "assets/images/pic3.png"],
     apartmentHeadDescripton: "Modern apartment in Toronto",
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
+
     apartmentRate: 4.6,
     price: 300,
     floor: 11,
     bedrooms: 2,
     bathrooms: 2,
     area: 110,
-    description: "Modern apartment with minimalist design, near downtown and transportation.",
+    description:
+        "Modern apartment with minimalist design, near downtown and transportation.",
     publisherName: "Lucas Brown",
-    comments: [
-      "Quiet and clean.",
-    ],
+    comments: ["Quiet and clean."],
   ),
 ];
-
-
-
 
 final List<Contracts> contractsData = [
   Contracts(
@@ -460,7 +384,8 @@ final List<Contracts> contractsData = [
     renterNumber: "0791122334",
     tenantName: "Yousef Al-Din",
     tenantNumber: "0787788991",
-    contractDescreption: "Two-month contract for a family apartment — awaiting approval.",
+    contractDescreption:
+        "Two-month contract for a family apartment — awaiting approval.",
   ),
 
   Contracts(

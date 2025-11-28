@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-=======
-import 'package:daleel_app_project/screen/splash/splash_screen.dart';
-import 'package:daleel_app_project/screen/ApartmentDetails_screen.dart';
-import 'package:daleel_app_project/data/dummy_data.dart';
->>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
