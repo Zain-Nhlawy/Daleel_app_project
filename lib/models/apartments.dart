@@ -1,5 +1,23 @@
+// ignore_for_file: constant_identifier_names
+
+enum ApartmentCountry {
+  Damascus,
+  Aleppo,
+  Daraa,
+  Latakia,
+  Tartous,
+  Homs,
+  Hama,
+  AlSwuayda,
+  Quneitra,
+  Raqqa,
+  Hasakah,
+  Idlib,
+  RifDimashq,
+}
+
 class Apartments {
-  final String apartmentHeadDescripton; 
+  final String apartmentHeadDescripton;
   final String apartmentCountry;
   final double apartmentRate;
   final double price;
@@ -8,12 +26,10 @@ class Apartments {
   final int bathrooms;
   final int area;
   final String publisherName;
-
-  final String apartmentPicture; 
-  final List<String> apartmentPictures; 
-  final String description; 
-
-  final List<String> comments; 
+  final String apartmentPicture;
+  final List<String> apartmentPictures;
+  final String description;
+  final List<String> comments;
 
   Apartments({
     required this.apartmentHeadDescripton,

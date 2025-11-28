@@ -104,7 +104,7 @@ final List<Apartments> apartmentsList = [
       "assets/images/pic4_6.jpg",
       "assets/images/pic4_7.jpg",
     ],
-    apartmentHeadDescripton: "Sunny flat in Barcelona",
+    apartmentHeadDescripton: "Sunny flat ",
 
     apartmentRate: 4.2,
     price: 1200,
@@ -130,7 +130,7 @@ final List<Apartments> apartmentsList = [
       "assets/images/pic5_5.jpg",
       "assets/images/pic5_6.jpg",
     ],
-    apartmentHeadDescripton: "Charming studio in Paris",
+    apartmentHeadDescripton: "Charming studio",
 
     apartmentRate: 4.8,
     price: 600,
@@ -153,7 +153,7 @@ final List<Apartments> apartmentsList = [
     apartmentPicture: "assets/images/pic5.png",
 
     apartmentPictures: ["assets/images/pic5.png", "assets/images/pic3.png"],
-    apartmentHeadDescripton: "Elegant apartment in Rome",
+    apartmentHeadDescripton: "Elegant apartment",
 
     apartmentRate: 4.6,
     price: 300,
@@ -172,7 +172,7 @@ final List<Apartments> apartmentsList = [
     apartmentPicture: "assets/images/pic2.png",
 
     apartmentPictures: ["assets/images/pic2.png", "assets/images/pic4.png"],
-    apartmentHeadDescripton: "Modern loft in Berlin",
+    apartmentHeadDescripton: "Modern loft",
 
     apartmentRate: 4.4,
     price: 300,
@@ -191,7 +191,7 @@ final List<Apartments> apartmentsList = [
     apartmentPicture: "assets/images/pic1.png",
 
     apartmentPictures: ["assets/images/pic1.png", "assets/images/pic2.png"],
-    apartmentHeadDescripton: "Cozy studio in London",
+    apartmentHeadDescripton: "Cozy studio",
 
     apartmentRate: 4.3,
     price: 300,
@@ -210,7 +210,7 @@ final List<Apartments> apartmentsList = [
     apartmentPicture: "assets/images/pic3.png",
 
     apartmentPictures: ["assets/images/pic3.png", "assets/images/pic5.png"],
-    apartmentHeadDescripton: "Canal-side apartment in Amsterdam",
+    apartmentHeadDescripton: "Canal-side apartment",
 
     apartmentRate: 4.9,
     price: 300,
@@ -233,7 +233,7 @@ final List<Apartments> apartmentsList = [
     apartmentPicture: "assets/images/pic2.png",
 
     apartmentPictures: ["assets/images/pic2.png", "assets/images/pic4.png"],
-    apartmentHeadDescripton: "Mountain view chalet in Zurich",
+    apartmentHeadDescripton: "Mountain view chalet",
 
     apartmentRate: 4.8,
     price: 300,
@@ -252,7 +252,7 @@ final List<Apartments> apartmentsList = [
     apartmentPicture: "assets/images/pic5.png",
 
     apartmentPictures: ["assets/images/pic5.png", "assets/images/pic1.png"],
-    apartmentHeadDescripton: "Premium flat in Riyadh",
+    apartmentHeadDescripton: "Premium flat",
 
     apartmentRate: 4.5,
     price: 300,
@@ -275,7 +275,7 @@ final List<Apartments> apartmentsList = [
       "assets/images/pic2.png",
       "assets/images/pic3.png",
     ],
-    apartmentHeadDescripton: "Luxury residence in Doha",
+    apartmentHeadDescripton: "Luxury residence",
 
     apartmentRate: 5.0,
     price: 1000,
@@ -294,7 +294,7 @@ final List<Apartments> apartmentsList = [
     apartmentPicture: "assets/images/pic4.png",
 
     apartmentPictures: ["assets/images/pic4.png", "assets/images/pic5.png"],
-    apartmentHeadDescripton: "Nile view apartment in Cairo",
+    apartmentHeadDescripton: "Nile view apartment",
 
     apartmentRate: 4.1,
     price: 300,
@@ -313,7 +313,7 @@ final List<Apartments> apartmentsList = [
     apartmentPicture: "assets/images/pic4.png",
 
     apartmentPictures: ["assets/images/pic4.png", "assets/images/pic2.png"],
-    apartmentHeadDescripton: "Spacious condo in New York",
+    apartmentHeadDescripton: "Spacious condo",
 
     apartmentRate: 4.7,
     price: 300,
@@ -332,7 +332,7 @@ final List<Apartments> apartmentsList = [
     apartmentPicture: "assets/images/pic2.png",
 
     apartmentPictures: ["assets/images/pic2.png", "assets/images/pic3.png"],
-    apartmentHeadDescripton: "Modern apartment in Toronto",
+    apartmentHeadDescripton: "Modern apartment",
 
     apartmentRate: 4.6,
     price: 300,

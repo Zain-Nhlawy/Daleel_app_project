@@ -7,18 +7,17 @@ final theme = ThemeData(
   //colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFE2DEDA)),
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
-    primary: Color(0xFF8B5E3C),       
-    onPrimary: Colors.white,           
-    secondary: Color(0xFFBE7D66),     
-    onSecondary: Colors.white,        
-    background: Color(0xFFFDFCF9),    
-    onBackground: Color(0xFF4B2E2E),   
-    surface: Colors.white,             
-    onSurface: Color(0xFF4B2E2E),     
-    error: Colors.red,    
+    primary: Color(0xFF8B5E3C),
+    onPrimary: Colors.white,
+    secondary: Color(0xFFBE7D66),
+    onSecondary: Colors.white,
+    background: Color(0xFFFDFCF9),
+    onBackground: Color(0xFF4B2E2E),
+    surface: Colors.white,
+    onSurface: Color(0xFF4B2E2E),
+    error: Colors.red,
     onError: Colors.white,
   ),
-
 
   textTheme: GoogleFonts.nunitoTextTheme().copyWith(
     bodyLarge: GoogleFonts.nunito(
@@ -28,14 +27,15 @@ final theme = ThemeData(
     ),
     bodyMedium: GoogleFonts.nunito(fontSize: 16, color: Colors.brown),
     titleMedium: GoogleFonts.nunito(
-      fontSize: 20,
+      
+      fontSize: 16,
       fontWeight: FontWeight.normal,
       color: Color(0xFFBE7D66),
     ),
 
-    bodySmall: GoogleFonts.nunito(fontSize: 14, color: Colors.brown),
+    bodySmall: GoogleFonts.nunito(fontSize: 10, color: Colors.brown),
     titleSmall: GoogleFonts.nunito(
-      fontSize: 12,
+      fontSize: 10,
       fontWeight: FontWeight.normal,
       color: Color(0xFFBE7D66),
     ),
@@ -49,5 +49,5 @@ final theme = ThemeData(
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(theme: theme, home:HomeScreenTabs()));
+  runApp(MaterialApp(theme: theme, home: HomeScreenTabs()));
 }

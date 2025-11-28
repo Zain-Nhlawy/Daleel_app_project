@@ -21,7 +21,11 @@ class ProfileOptions extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.person_outline, size: 25),
+                child: Icon(
+                  Icons.person_outline,
+                  size: 25,
+                  color: Colors.brown,
+                ),
               ),
               title: Text(
                 textAlign: TextAlign.justify,
@@ -42,7 +46,11 @@ class ProfileOptions extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.home_outlined, size: 25), // outlined
+                child: Icon(
+                  Icons.home_outlined,
+                  size: 25,
+                  color: Colors.brown,
+                ), // outlined
               ),
               title: Text(
                 'My Houses',
@@ -61,7 +69,11 @@ class ProfileOptions extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.history_outlined, size: 25),
+                child: Icon(
+                  Icons.history_outlined,
+                  size: 25,
+                  color: Colors.brown,
+                ),
               ),
               title: Text(
                 'Contracts History',
@@ -70,7 +82,10 @@ class ProfileOptions extends StatelessWidget {
                   fontSize: 19,
                 ),
               ),
-              trailing: Icon(Icons.keyboard_arrow_right_outlined),
+              trailing: Icon(
+                Icons.keyboard_arrow_right_outlined,
+                color: Colors.black,
+              ),
               onTap: () {},
             ),
           ),
@@ -81,7 +96,11 @@ class ProfileOptions extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.favorite_outline, size: 25), // outlined
+                child: Icon(
+                  Icons.favorite_outline,
+                  size: 25,
+                  color: Colors.brown,
+                ),
               ),
               title: Text(
                 'Favorites',
@@ -103,7 +122,11 @@ class ProfileOptions extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.settings_outlined, size: 25),
+                child: Icon(
+                  Icons.settings_outlined,
+                  size: 25,
+                  color: Colors.brown,
+                ),
               ),
               title: Text(
                 'Settings',
