@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/screen/ApartmentDetails_screen.dart';
 import 'package:flutter/material.dart';
 import '../../models/apartments.dart';
 
@@ -13,7 +14,14 @@ class MostPopularApartmentsWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+          context,
+          MaterialPageRoute(
+        builder: (context) => ApartmentDetailsScreen(apartment: apartment),
+      ),
+    );
+        },
         child: SizedBox(
           width: 260,
           child: Column(
