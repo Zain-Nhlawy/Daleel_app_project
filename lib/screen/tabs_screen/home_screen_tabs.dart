@@ -1,4 +1,5 @@
 import 'package:daleel_app_project/screen/profile_screen.dart';
+import 'package:daleel_app_project/screen/tabs_screen/adding_apartment_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/contract_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:daleel_app_project/screen/home_screen/home_screen.dart';
@@ -18,7 +19,7 @@ class _MainScreenState extends State<HomeScreenTabs> {
   final List<Widget> _pages = const [
     HomeScreen(),
     ContractScreen(),
-    Center(child: Text('Add Apartment')),
+    Center(child: AddingApartmentScreen()),
     Center(child: Text('Chat')),
     ProfileScreen(),
   ];

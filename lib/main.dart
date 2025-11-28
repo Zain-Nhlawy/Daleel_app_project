@@ -1,10 +1,30 @@
+<<<<<<< HEAD
+=======
+import 'package:daleel_app_project/screen/splash/splash_screen.dart';
+import 'package:daleel_app_project/screen/ApartmentDetails_screen.dart';
+import 'package:daleel_app_project/data/dummy_data.dart';
+>>>>>>> 4f37aebbb4603af7784dba9c0773a7bcc1e3652e
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFE2DEDA)),
+  //colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFE2DEDA)),
+  colorScheme: const ColorScheme(
+    brightness: Brightness.light,
+    primary: Color(0xFF8B5E3C),       
+    onPrimary: Colors.white,           
+    secondary: Color(0xFFBE7D66),     
+    onSecondary: Colors.white,        
+    background: Color(0xFFFDFCF9),    
+    onBackground: Color(0xFF4B2E2E),   
+    surface: Colors.white,             
+    onSurface: Color(0xFF4B2E2E),     
+    error: Colors.red,    
+    onError: Colors.white,
+  ),
+
 
   textTheme: GoogleFonts.nunitoTextTheme().copyWith(
     bodyLarge: GoogleFonts.nunito(
@@ -19,7 +39,7 @@ final theme = ThemeData(
       color: Color(0xFFBE7D66),
     ),
 
-    bodySmall: GoogleFonts.nunito(fontSize: 10, color: Colors.brown),
+    bodySmall: GoogleFonts.nunito(fontSize: 14, color: Colors.brown),
     titleSmall: GoogleFonts.nunito(
       fontSize: 12,
       fontWeight: FontWeight.normal,
@@ -35,5 +55,5 @@ final theme = ThemeData(
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(theme: theme, home: HomeScreenTabs()));
+  runApp(MaterialApp(theme: theme, home:HomeScreenTabs()));
 }
