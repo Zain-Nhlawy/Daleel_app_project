@@ -1,4 +1,6 @@
+import 'package:daleel_app_project/screen/tabs_screen/adding_apartment_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
+import 'package:daleel_app_project/screen/booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -49,5 +51,5 @@ final theme = ThemeData(
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(theme: theme, home: HomeScreenTabs()));
+  runApp(MaterialApp(theme: theme, home: HomeScreenTabs()));//BookingCalendar
 }

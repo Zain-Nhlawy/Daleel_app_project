@@ -320,7 +320,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.bed, color: Colors.brown, size: 32),
+                      Icon(Icons.bed, color: Colors.blueGrey, size: 32),
                       const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,7 +365,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.shower, color: Colors.brown, size: 32),
+                      Icon(Icons.shower, color: Colors.blueGrey, size: 32),
                       const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -409,7 +409,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.apartment, color: Colors.brown, size: 32),
+                      Icon(Icons.apartment, color: Colors.blueGrey, size: 32),
                       const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -453,7 +453,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.square_foot, color: Colors.brown, size: 32),
+                      Icon(Icons.square_foot, color: Colors.blueGrey, size: 32),
                       const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

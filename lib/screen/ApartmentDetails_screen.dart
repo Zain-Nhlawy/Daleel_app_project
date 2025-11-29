@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/screen/booking_screen.dart';
 import 'package:daleel_app_project/widget/custom_text_field.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -127,8 +128,13 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: theme.colorScheme.primary,
                   ),
-                  onPressed: () {},
-                  child: Text(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BookingCalendar()),
+                    );
+                  },
+                    child: Text(
                     "Book Now",
                     style: theme.textTheme.bodyMedium
                         ?.copyWith(color: Colors.white, fontSize: 18),
