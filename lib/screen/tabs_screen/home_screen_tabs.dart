@@ -30,6 +30,11 @@ class _MainScreenState extends State<HomeScreenTabs> {
       body: PageView(
         controller: _pageController,
         children: _pages,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        }
       ),
 
       bottomNavigationBar: BottomNavigationBar(
