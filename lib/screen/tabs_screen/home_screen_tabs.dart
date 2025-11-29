@@ -16,12 +16,12 @@ class _MainScreenState extends State<HomeScreenTabs> {
 
   final PageController _pageController = PageController();
 
-  final List<Widget> _pages = const [
+  final List<Widget> _pages = [
     HomeScreen(),
-    ContractScreen(),
-    Center(child: AddingApartmentScreen()),
-    Center(child: Text('Chat')),
-    ProfileScreen(),
+    const ContractScreen(),
+    const Center(child: AddingApartmentScreen()),
+    const Center(child: Text('Chat')),
+    const ProfileScreen(),
   ];
 
   @override
@@ -30,11 +30,6 @@ class _MainScreenState extends State<HomeScreenTabs> {
       body: PageView(
         controller: _pageController,
         children: _pages,
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
       ),
 
       bottomNavigationBar: BottomNavigationBar(
