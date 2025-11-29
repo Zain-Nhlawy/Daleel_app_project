@@ -1,30 +1,21 @@
 import 'dart:async';
 
 import 'package:daleel_app_project/data/dummy_data.dart';
+import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
+  final PageController _pageController = PageController(
+    initialPage: 1,
+    viewportFraction: 0.8,
+  );
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  late PageController _pageController;
-  int initialPage = 10000;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _pageController = PageController(
-      initialPage: initialPage,
-      viewportFraction: 0.8,
-    );
+  Widget build(BuildContext context) {
 
     Timer.periodic(Duration(seconds: 5), (timer) {
       if (_pageController.hasClients) {
@@ -34,10 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
     });
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -45,10 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(width: 8),
             CircleAvatar(
               radius: 27,
-              backgroundImage: AssetImage('assets/images/user.png'),
+              backgroundImage: AssetImage(me.profileImage),
             ),
             SizedBox(width: 15),
-            Text('Zain Nhalwy', style: Theme.of(context).textTheme.bodyLarge),
+            Text(me.name, style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
         actions: [
