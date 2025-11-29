@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:daleel_app_project/data/dummy_data.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,15 +12,96 @@ class AddingApartmentScreen extends StatefulWidget {
 }
 
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
-  File? _selectedImage;
-  ApartmentCountry? _selectedCountry;
+  File? _selectedImageController;
+  ApartmentCountry? _selectedCountryController;
+  final _apartmentHeadDescriptionController = TextEditingController();
+  final _apartmentRate = 5.0;
+  final _apartmentPriceContoller = TextEditingController();
+  final _apartmentFloorController = TextEditingController();
+  final _apartmentBedroomsController = TextEditingController();
+  final _apartmentBathroomsController = TextEditingController();
+  final _apartmentAreaController = TextEditingController();
+  final _apartmentPuplisherName = 'Zain';
+  final List<String> _apartmentPictureController = [];
+  final _apartmetnDescriptionController = TextEditingController();
+  final List<String> _apartmentComments = [];
 
   Future _pickImageFromGallery() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return null;
     setState(() {
-      _selectedImage = File(image.path);
+      _selectedImageController = File(image.path);
     });
+  }
+
+  void _saveApartment() {
+    if (_selectedImageController == null ||
+        _selectedCountryController == null ||
+        _apartmentHeadDescriptionController.text.isEmpty ||
+        _apartmentPriceContoller.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('invaled data', style: TextStyle(color: Colors.red)),
+          content: Text('some of the data are missing or invaid'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: Text('Okay'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final newApartment = Apartments(
+      apartmentCountry: _selectedCountryController!.name,
+      apartmentPicture: _selectedImageController!.path,
+      apartmentHeadDescripton: _apartmentHeadDescriptionController.text,
+      apartmentRate: _apartmentRate,
+      price: double.tryParse(_apartmentPriceContoller.text) ?? 0,
+      floor: int.tryParse(_apartmentFloorController.text) ?? 0,
+      bedrooms: int.tryParse(_apartmentBedroomsController.text) ?? 0,
+      bathrooms: int.tryParse(_apartmentBathroomsController.text) ?? 0,
+      area: int.tryParse(_apartmentAreaController.text) ?? 0,
+      publisherName: _apartmentPuplisherName,
+      apartmentPictures: _apartmentPictureController,
+      description: _apartmetnDescriptionController.text,
+      comments: _apartmentComments,
+    );
+
+    setState(() {
+      apartmentsList.add(newApartment);
+    });
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Succes'),
+        content: Text('Your apartment added to the list'),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+            },
+            child: Text('Okay'),
+          ),
+        ],
+      ),
+    );
+    _apartmentHeadDescriptionController.clear();
+    _apartmentPriceContoller.clear();
+    _apartmentFloorController.clear();
+    _apartmentBedroomsController.clear();
+    _apartmentBathroomsController.clear();
+    _apartmentAreaController.clear();
+    _apartmetnDescriptionController.clear();
+    _selectedCountryController = null;
+    _selectedImageController = null;
+    _apartmentPictureController.clear();
+    _apartmentComments.clear();
   }
 
   @override
@@ -74,11 +156,13 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: _selectedImage != null
+                            child: _selectedImageController != null
                                 ? Stack(
                                     children: [
                                       Center(
-                                        child: Image.file(_selectedImage!),
+                                        child: Image.file(
+                                          _selectedImageController!,
+                                        ),
                                       ),
                                     ],
                                   )
@@ -133,6 +217,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                     Expanded(
                       child: TextField(
                         maxLength: 20,
+                        controller: _apartmentHeadDescriptionController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Villa , Doplox ....',
@@ -167,6 +252,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
                       Expanded(
                         child: TextField(
+                          controller: _apartmentPriceContoller,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             suffixText: '\$ /Month ',
@@ -196,7 +282,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 SizedBox(width: 20),
                 DropdownButton(
                   elevation: 8,
-                  value: _selectedCountry,
+                  value: _selectedCountryController,
                   items: ApartmentCountry.values
                       .map(
                         (category) => DropdownMenuItem(
@@ -215,7 +301,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                       return;
                     }
                     setState(() {
-                      _selectedCountry = value;
+                      _selectedCountryController = value;
                     });
                   },
                 ),
@@ -256,6 +342,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
                                 Expanded(
                                   child: TextField(
+                                    controller: _apartmentBedroomsController,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -297,9 +384,9 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                             child: Row(
                               children: [
                                 const SizedBox(width: 12),
-
                                 Expanded(
                                   child: TextField(
+                                    controller: _apartmentBathroomsController,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -341,9 +428,9 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                             child: Row(
                               children: [
                                 const SizedBox(width: 12),
-
                                 Expanded(
                                   child: TextField(
+                                    controller: _apartmentFloorController,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -388,6 +475,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
                                 Expanded(
                                   child: TextField(
+                                    controller: _apartmentAreaController,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
@@ -411,7 +499,152 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ],
               ),
             ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                'Apartment Pictures',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: SizedBox(
+                height: 120,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _apartmentPictureController.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return GestureDetector(
+                        onTap: () async {
+                          final image = await ImagePicker().pickImage(
+                            source: ImageSource.gallery,
+                          );
+
+                          if (image == null) return;
+
+                          setState(() {
+                            _apartmentPictureController.add(image.path);
+                          });
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 12),
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: Colors.brown.withOpacity(0.15),
+                          ),
+                          child: const Icon(
+                            Icons.add,
+                            size: 40,
+                            color: Colors.brown,
+                          ),
+                        ),
+                      );
+                    }
+                    final picturePath = _apartmentPictureController[index - 1];
+
+                    return Stack(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 12),
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            image: DecorationImage(
+                              image: FileImage(File(picturePath)),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 4,
+                          right: 4,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _apartmentPictureController.removeAt(index - 1);
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.close,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: 15),
+            Row(
+              children: [
+                SizedBox(width: 15),
+                Text(
+                  'Side Description',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: const Color.fromARGB(174, 248, 245, 245),
+                ),
+                height: 150,
+                child: Row(
+                  children: [
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextField(
+                        maxLength: 120,
+                        maxLines: 3,
+                        controller: _apartmetnDescriptionController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Villa , Doplox ....',
+                          hintStyle: TextStyle(
+                            color: Colors.brown.withAlpha((0.5 * 255).toInt()),
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.brown,
+            minimumSize: Size(double.infinity, 55),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+          ),
+          onPressed: _saveApartment,
+          child: Text(
+            "Add Apartment",
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
         ),
       ),
     );
