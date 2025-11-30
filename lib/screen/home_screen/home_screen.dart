@@ -1,21 +1,30 @@
 import 'dart:async';
 
 import 'package:daleel_app_project/data/dummy_data.dart';
-import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
-  final PageController _pageController = PageController(
-    initialPage: 1,
-    viewportFraction: 0.8,
-  );
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late PageController _pageController;
+  final int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _pageController = PageController(
+      initialPage: _currentPage,
+      viewportFraction: 0.7,
+    );
 
     Timer.periodic(Duration(seconds: 5), (timer) {
       if (_pageController.hasClients) {
@@ -25,7 +34,10 @@ class HomeScreen extends StatelessWidget {
         );
       }
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -33,10 +45,10 @@ class HomeScreen extends StatelessWidget {
             SizedBox(width: 8),
             CircleAvatar(
               radius: 27,
-              backgroundImage: AssetImage(me.profileImage),
+              backgroundImage: AssetImage('assets/images/user.png'),
             ),
             SizedBox(width: 15),
-            Text(me.name, style: Theme.of(context).textTheme.bodyLarge),
+            Text('Zain Nhalwy', style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
         actions: [
@@ -116,13 +128,10 @@ class HomeScreen extends StatelessWidget {
             SizedBox(
               height: 215,
               child: PageView.builder(
+                physics: const ClampingScrollPhysics(),
                 controller: _pageController,
                 itemBuilder: (context, index) {
-                  final realIndex = index % apartmentsList.length;
-
-                  return MostPopularApartmentsWidget(
-                    apartment: apartmentsList[realIndex],
-                  );
+                  return carouselView(index);
                 },
               ),
             ),
@@ -150,6 +159,32 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget carouselView(int index) {
+    return AnimatedBuilder(
+      animation: _pageController,
+      builder: (context, child) {
+        num value = 0.0;
+
+        if (_pageController.hasClients &&
+            _pageController.position.haveDimensions) {
+          value = (_pageController.page ?? _pageController.initialPage) - index;
+          value = value.abs();
+        }
+
+        double scale = (1 - (value * 0.2)).clamp(0.9, 1.0);
+        double opacity = (1 - (value * 0.5)).clamp(0.5, 1.0);
+
+        return Transform.scale(
+          scale: scale,
+          child: Opacity(opacity: opacity, child: child),
+        );
+      },
+      child: MostPopularApartmentsWidget(
+        apartment: apartmentsList[index % apartmentsList.length],
       ),
     );
   }

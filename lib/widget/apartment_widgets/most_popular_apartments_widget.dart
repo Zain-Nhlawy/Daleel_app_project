@@ -11,16 +11,17 @@ class MostPopularApartmentsWidget extends StatelessWidget {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
           Navigator.push(
-          context,
-          MaterialPageRoute(
-        builder: (context) => ApartmentDetailsScreen(apartment: apartment),
-      ),
-    );
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ApartmentDetailsScreen(apartment: apartment),
+            ),
+          );
         },
         child: SizedBox(
           child: Column(
