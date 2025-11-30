@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late PageController _pageController;
-  final int _currentPage = 0;
+  final int _currentPage = 10000;
 
   @override
   void initState() {
@@ -42,12 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Row(
           children: [
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             CircleAvatar(
               radius: 27,
               backgroundImage: AssetImage('assets/images/user.png'),
             ),
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
             Text('Zain Nhalwy', style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
@@ -175,8 +175,8 @@ class _HomeScreenState extends State<HomeScreen> {
           value = value.abs();
         }
 
-        double scale = (1 - (value * 0.2)).clamp(0.9, 1.0);
-        double opacity = (1 - (value * 0.5)).clamp(0.5, 1.0);
+        double scale = (1 - (value * 0.2)).clamp(0.6, 1.0);
+        double opacity = (1 - (value * 0.5)).clamp(0.6, 1.0);
 
         return Transform.scale(
           scale: scale,

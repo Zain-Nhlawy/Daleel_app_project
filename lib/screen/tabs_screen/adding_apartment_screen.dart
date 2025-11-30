@@ -120,17 +120,17 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 15),
+           const SizedBox(height: 15),
             Row(
               children: [
-                SizedBox(width: 15),
+                const SizedBox(width: 15),
                 Text(
                   'Select the Head Image',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
             ),
-            SizedBox(height: 20),
+          const  SizedBox(height: 20),
             Card(
               elevation: 4,
               shape: RoundedRectangleBorder(
@@ -176,7 +176,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                                           context,
                                         ).colorScheme.secondary,
                                       ),
-                                      SizedBox(width: 10),
+                                     const SizedBox(width: 10),
                                     ],
                                   ),
                           ),
@@ -187,10 +187,10 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+          const  SizedBox(height: 15),
             Row(
               children: [
-                SizedBox(width: 15),
+           const     SizedBox(width: 15),
                 Text(
                   'Head Description',
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -238,7 +238,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 SizedBox(width: 15),
 
                 Text('Price', style: Theme.of(context).textTheme.bodyMedium),
-                SizedBox(width: 40),
+              const  SizedBox(width: 40),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -277,7 +277,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
             Row(
               children: [
-                SizedBox(width: 15),
+               const SizedBox(width: 15),
                 Text('Countrey'),
                 SizedBox(width: 20),
                 DropdownButton(
@@ -307,7 +307,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+         const   SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(16),
               child: GridView(
@@ -499,7 +499,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 10),
+          const  SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
@@ -507,7 +507,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-            SizedBox(height: 10),
+          const  SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(15),
               child: SizedBox(
@@ -587,10 +587,10 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+           const SizedBox(height: 15),
             Row(
               children: [
-                SizedBox(width: 15),
+            const    SizedBox(width: 15),
                 Text(
                   'Side Description',
                   style: Theme.of(context).textTheme.bodyMedium,

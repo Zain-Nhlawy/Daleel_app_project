@@ -2,7 +2,7 @@ import 'package:daleel_app_project/screen/booking_screen.dart';
 import 'package:daleel_app_project/widget/custom_text_field.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
 import 'package:flutter/material.dart';
-import '../models/apartments.dart';
+import '../../models/apartments.dart';
 
 class ApartmentDetailsScreen extends StatefulWidget {
   final Apartments apartment;

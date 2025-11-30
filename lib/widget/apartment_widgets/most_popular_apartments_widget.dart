@@ -1,4 +1,4 @@
-import 'package:daleel_app_project/screen/ApartmentDetails_screen.dart';
+import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:flutter/material.dart';
 import '../../models/apartments.dart';
 
@@ -9,9 +9,9 @@ class MostPopularApartmentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,
+      elevation: 6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+      margin: const EdgeInsets.symmetric(vertical: 6),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
@@ -86,7 +86,7 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
                         Icon(Icons.star, color: Colors.orange, size: 16),

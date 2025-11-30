@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/screen/details_screens/contract_details.dart';
 import 'package:flutter/material.dart';
 import '../../models/contracts.dart';
 
@@ -30,7 +31,14 @@ class ContractDataCardWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ContractDetails(contract: contract),
+            ),
+          );
+        },
         child: SizedBox(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,17 +87,19 @@ class ContractDataCardWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 10),
-
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        //   Icon(Icons.calendar_today_rounded, color: Colors.brown),
+                        const SizedBox(width: 6),
                         Text(
                           "Start: ${contract.startRent.toString().substring(0, 10)}",
                           style: Theme.of(context).textTheme.bodyMedium!
                               .copyWith(fontSize: 15, color: Colors.black54),
                         ),
+                        const SizedBox(width: 60),
+                        // Icon(Icons.calendar_today_rounded, color: Colors.brown),
+                        const SizedBox(width: 6),
                         Text(
                           "End: ${contract.endRent.toString().substring(0, 10)}",
                           style: Theme.of(context).textTheme.bodyMedium!

@@ -1,5 +1,5 @@
 import 'package:daleel_app_project/models/apartments.dart';
-import 'package:daleel_app_project/screen/ApartmentDetails_screen.dart';
+import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:flutter/material.dart';
 
 class NearpyApartmentsWidgets extends StatelessWidget {
