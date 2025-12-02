@@ -85,30 +85,13 @@ class _CountdownTimerBoxState extends State<CountdownTimerBox> {
     super.dispose();
   }
 
-  Color _statusColor(RentStatus status) {
-    switch (status) {
-      case RentStatus.completed:
-        return Colors.green;
-      case RentStatus.pending:
-        return Colors.orange;
-      case RentStatus.cancelled:
-        return Colors.red;
-      case RentStatus.onRent:
-        return Colors.blue;
-    }
-  }
-
-  String _statusText(RentStatus status) {
-    return status.toString().split('.').last;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
         width: 400,
-        height: 160,
+        height: 120,
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
@@ -136,34 +119,6 @@ class _CountdownTimerBoxState extends State<CountdownTimerBox> {
                 ),
               ),
               const SizedBox(height: 8),
-              Container(
-                height: 45,
-                width: 150,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 4,
-                  horizontal: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: _statusColor(widget.status).withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 3,
-                  ),
-                  child: Center(
-                    child: Text(
-                      _statusText(widget.status),
-                      style: TextStyle(
-                        color: _statusColor(widget.status),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),

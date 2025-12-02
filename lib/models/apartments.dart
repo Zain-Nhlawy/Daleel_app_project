@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 enum Governorate {
-  Damascus,
+    Damascus,
   Aleppo,
   Daraa,
   Latakia,
@@ -166,7 +166,7 @@ final Map<Governorate, List<City>> governorateCities = {
 
   Governorate.Homs: [
     City.AlWaer,
-    City.Inshaat,
+    City.Inshaat, 
     City.BabSbaa,
     City.Bayada,
     City.Adawiya,

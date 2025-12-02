@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:daleel_app_project/data/dummy_data.dart';
+
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,8 +14,10 @@ class AddingApartmentScreen extends StatefulWidget {
 
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   File? _selectedImageController;
-  Governorate? _selectedCountryController;
-  City? _selectedCityController;
+  Governorate _selectedCountryController = Governorate.Damascus;
+  City _selectedCityController = governorateCities[Governorate.Damascus]![0];
+  late List<City> currentCities =
+      governorateCities[_selectedCountryController]!;
   final _apartmentHeadDescriptionController = TextEditingController();
   final _apartmentRate = 5.0;
   final _apartmentPriceContoller = TextEditingController();
@@ -37,7 +40,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
   void _saveApartment() {
     if (_selectedImageController == null ||
-        _selectedCountryController == null ||
         _apartmentHeadDescriptionController.text.isEmpty ||
         _apartmentPriceContoller.text.isEmpty) {
       showDialog(
@@ -58,7 +60,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     }
 
     final newApartment = Apartments(
-      governorate: _selectedCountryController!,
+      governorate: _selectedCountryController,
       city: _selectedCityController!,
       apartmentPicture: _selectedImageController!.path,
       apartmentHeadDescripton: _apartmentHeadDescriptionController.text,
@@ -100,7 +102,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     _apartmentBathroomsController.clear();
     _apartmentAreaController.clear();
     _apartmetnDescriptionController.clear();
-    _selectedCountryController = null;
     _selectedImageController = null;
     _apartmentPictureController.clear();
     _apartmentComments.clear();
@@ -122,7 +123,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           const SizedBox(height: 15),
+            const SizedBox(height: 15),
             Row(
               children: [
                 const SizedBox(width: 15),
@@ -132,7 +133,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ),
               ],
             ),
-          const  SizedBox(height: 20),
+            const SizedBox(height: 20),
             Card(
               elevation: 4,
               shape: RoundedRectangleBorder(
@@ -178,7 +179,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                                           context,
                                         ).colorScheme.secondary,
                                       ),
-                                     const SizedBox(width: 10),
+                                      const SizedBox(width: 10),
                                     ],
                                   ),
                           ),
@@ -189,10 +190,10 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ),
               ),
             ),
-          const  SizedBox(height: 15),
+            const SizedBox(height: 15),
             Row(
               children: [
-           const     SizedBox(width: 15),
+                const SizedBox(width: 15),
                 Text(
                   'Head Description',
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -240,7 +241,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 SizedBox(width: 15),
 
                 Text('Price', style: Theme.of(context).textTheme.bodyMedium),
-              const  SizedBox(width: 40),
+                const SizedBox(width: 40),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -304,12 +305,50 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                     }
                     setState(() {
                       _selectedCountryController = value;
+                      currentCities =
+                          governorateCities[_selectedCountryController]!;
+                      _selectedCityController = currentCities[0];
                     });
                   },
                 ),
               ],
             ),
-         const   SizedBox(height: 20),
+            const SizedBox(height: 20),
+            SizedBox(height: 15),
+
+            Row(
+              children: [
+                SizedBox(width: 50),
+                Text('City'),
+                SizedBox(width: 50),
+                DropdownButton(
+                  elevation: 8,
+                  value: _selectedCityController,
+                  items: currentCities
+                      .map(
+                        (category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(
+                            category.name.toUpperCase(),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setState(() {
+                      _selectedCityController = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(16),
               child: GridView(
@@ -501,7 +540,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ],
               ),
             ),
-          const  SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
@@ -509,7 +548,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-          const  SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(15),
               child: SizedBox(
@@ -589,10 +628,10 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ),
               ),
             ),
-           const SizedBox(height: 15),
+            const SizedBox(height: 15),
             Row(
               children: [
-            const    SizedBox(width: 15),
+                const SizedBox(width: 15),
                 Text(
                   'Side Description',
                   style: Theme.of(context).textTheme.bodyMedium,
