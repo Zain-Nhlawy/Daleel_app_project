@@ -80,7 +80,7 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                           color: Colors.grey[600],
                         ),
                         Text(
-                          apartment.apartmentCountry,
+                          apartment.governorate.name,
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: Colors.grey[600]),
                         ),

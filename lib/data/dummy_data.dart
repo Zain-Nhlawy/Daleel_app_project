@@ -3,7 +3,9 @@ import 'package:daleel_app_project/models/contracts.dart';
 
 final List<Apartments> apartmentsList = [
   Apartments(
-    apartmentCountry: "Jordan",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic1.png",
 
     apartmentHeadDescripton: "Cozy apartment",
@@ -18,7 +20,7 @@ final List<Apartments> apartmentsList = [
       "assets/images/pic1_7.jpg",
     ],
     apartmentRate: 4.5,
-    price: 1100,
+    rentFee: 1100,
     floor: 2,
     bedrooms: 2,
     bathrooms: 1,
@@ -35,7 +37,9 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "UAE",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic2.png",
 
     apartmentHeadDescripton: "Luxury villa",
@@ -47,7 +51,7 @@ final List<Apartments> apartmentsList = [
       "assets/images/pic2_4.jpg",
     ],
     apartmentRate: 5.0,
-    price: 800,
+    rentFee: 800,
     floor: 1,
     bedrooms: 4,
     bathrooms: 3,
@@ -63,7 +67,9 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "Turkey",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic3.png",
 
     apartmentHeadDescripton: "Sea view apartment",
@@ -76,7 +82,7 @@ final List<Apartments> apartmentsList = [
     ],
 
     apartmentRate: 4.7,
-    price: 700,
+    rentFee: 700,
     floor: 7,
     bedrooms: 3,
     bathrooms: 2,
@@ -92,7 +98,9 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "Spain",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic4.png",
 
     apartmentPictures: [
@@ -107,7 +115,7 @@ final List<Apartments> apartmentsList = [
     apartmentHeadDescripton: "Sunny flat ",
 
     apartmentRate: 4.2,
-    price: 1200,
+    rentFee: 1200,
     floor: 5,
     bedrooms: 2,
     bathrooms: 1,
@@ -119,7 +127,9 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "France",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic5.png",
 
     apartmentPictures: [
@@ -133,7 +143,7 @@ final List<Apartments> apartmentsList = [
     apartmentHeadDescripton: "Charming studio",
 
     apartmentRate: 4.8,
-    price: 600,
+    rentFee: 600,
     floor: 3,
     bedrooms: 1,
     bathrooms: 1,
@@ -149,14 +159,16 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "Italy",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic5.png",
 
     apartmentPictures: ["assets/images/pic5.png", "assets/images/pic3.png"],
     apartmentHeadDescripton: "Elegant apartment",
 
     apartmentRate: 4.6,
-    price: 300,
+    rentFee: 300,
     floor: 4,
     bedrooms: 3,
     bathrooms: 2,
@@ -168,14 +180,16 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "Germany",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic2.png",
 
     apartmentPictures: ["assets/images/pic2.png", "assets/images/pic4.png"],
     apartmentHeadDescripton: "Modern loft",
 
     apartmentRate: 4.4,
-    price: 300,
+    rentFee: 300,
     floor: 6,
     bedrooms: 2,
     bathrooms: 1,
@@ -187,14 +201,16 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "UK",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic1.png",
 
     apartmentPictures: ["assets/images/pic1.png", "assets/images/pic2.png"],
     apartmentHeadDescripton: "Cozy studio",
 
     apartmentRate: 4.3,
-    price: 300,
+    rentFee: 300,
     floor: 2,
     bedrooms: 1,
     bathrooms: 1,
@@ -206,14 +222,16 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "Netherlands",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic3.png",
 
     apartmentPictures: ["assets/images/pic3.png", "assets/images/pic5.png"],
     apartmentHeadDescripton: "Canal-side apartment",
 
     apartmentRate: 4.9,
-    price: 300,
+    rentFee: 300,
     floor: 4,
     bedrooms: 2,
     bathrooms: 1,
@@ -229,14 +247,16 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "Switzerland",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic2.png",
 
     apartmentPictures: ["assets/images/pic2.png", "assets/images/pic4.png"],
     apartmentHeadDescripton: "Mountain view chalet",
 
     apartmentRate: 4.8,
-    price: 300,
+    rentFee: 300,
     floor: 1,
     bedrooms: 3,
     bathrooms: 2,
@@ -248,14 +268,16 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "Saudi Arabia",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic5.png",
 
     apartmentPictures: ["assets/images/pic5.png", "assets/images/pic1.png"],
     apartmentHeadDescripton: "Premium flat",
 
     apartmentRate: 4.5,
-    price: 300,
+    rentFee: 300,
     floor: 8,
     bedrooms: 3,
     bathrooms: 2,
@@ -267,7 +289,9 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "Qatar",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic1.png",
 
     apartmentPictures: [
@@ -278,7 +302,7 @@ final List<Apartments> apartmentsList = [
     apartmentHeadDescripton: "Luxury residence",
 
     apartmentRate: 5.0,
-    price: 1000,
+    rentFee: 1000,
     floor: 10,
     bedrooms: 4,
     bathrooms: 3,
@@ -290,14 +314,16 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "Egypt",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic4.png",
 
     apartmentPictures: ["assets/images/pic4.png", "assets/images/pic5.png"],
     apartmentHeadDescripton: "Nile view apartment",
 
     apartmentRate: 4.1,
-    price: 300,
+    rentFee: 300,
     floor: 9,
     bedrooms: 3,
     bathrooms: 2,
@@ -309,14 +335,16 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "USA",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic4.png",
 
     apartmentPictures: ["assets/images/pic4.png", "assets/images/pic2.png"],
     apartmentHeadDescripton: "Spacious condo",
 
     apartmentRate: 4.7,
-    price: 300,
+    rentFee: 300,
     floor: 15,
     bedrooms: 2,
     bathrooms: 2,
@@ -328,14 +356,16 @@ final List<Apartments> apartmentsList = [
   ),
 
   Apartments(
-    apartmentCountry: "Canada",
+    governorate: Governorate.Damascus,
+    city: City.OldCity,
+    isAvailable: true, 
     apartmentPicture: "assets/images/pic2.png",
 
     apartmentPictures: ["assets/images/pic2.png", "assets/images/pic3.png"],
     apartmentHeadDescripton: "Modern apartment",
 
     apartmentRate: 4.6,
-    price: 300,
+    rentFee: 300,
     floor: 11,
     bedrooms: 2,
     bathrooms: 2,

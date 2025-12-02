@@ -242,7 +242,7 @@ class ApartmentInfoSection extends StatelessWidget {
             const SizedBox(width: 6),
             Expanded(
               child: Text(
-                apartment.apartmentCountry,
+                apartment.governorate.name+' / '+apartment.city.name,
                 style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[700]),
               ),
             ),
@@ -256,7 +256,7 @@ class ApartmentInfoSection extends StatelessWidget {
         Row(
           children: [
             const Icon(Icons.attach_money, color: Colors.green, size: 22),
-            Text("${apartment.price} / month",
+            Text("${apartment.rentFee} / month",
                 style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[700])),
           ],
         ),

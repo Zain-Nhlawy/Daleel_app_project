@@ -13,7 +13,8 @@ class AddingApartmentScreen extends StatefulWidget {
 
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   File? _selectedImageController;
-  ApartmentCountry? _selectedCountryController;
+  Governorate? _selectedCountryController;
+  City? _selectedCityController;
   final _apartmentHeadDescriptionController = TextEditingController();
   final _apartmentRate = 5.0;
   final _apartmentPriceContoller = TextEditingController();
@@ -57,11 +58,12 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     }
 
     final newApartment = Apartments(
-      apartmentCountry: _selectedCountryController!.name,
+      governorate: _selectedCountryController!,
+      city: _selectedCityController!,
       apartmentPicture: _selectedImageController!.path,
       apartmentHeadDescripton: _apartmentHeadDescriptionController.text,
       apartmentRate: _apartmentRate,
-      price: double.tryParse(_apartmentPriceContoller.text) ?? 0,
+      rentFee: double.tryParse(_apartmentPriceContoller.text) ?? 0,
       floor: int.tryParse(_apartmentFloorController.text) ?? 0,
       bedrooms: int.tryParse(_apartmentBedroomsController.text) ?? 0,
       bathrooms: int.tryParse(_apartmentBathroomsController.text) ?? 0,
@@ -277,13 +279,13 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
             Row(
               children: [
-               const SizedBox(width: 15),
-                Text('Countrey'),
+                SizedBox(width: 15),
+                Text('Governorate'),
                 SizedBox(width: 20),
                 DropdownButton(
                   elevation: 8,
                   value: _selectedCountryController,
-                  items: ApartmentCountry.values
+                  items: Governorate.values
                       .map(
                         (category) => DropdownMenuItem(
                           value: category,

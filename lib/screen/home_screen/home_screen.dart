@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:daleel_app_project/data/dummy_data.dart';
+import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 
@@ -47,8 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
               radius: 27,
               backgroundImage: AssetImage('assets/images/user.png'),
             ),
-            const SizedBox(width: 15),
-            Text('Zain Nhalwy', style: Theme.of(context).textTheme.bodyLarge),
+            SizedBox(width: 15),
+            Text(me.firstName +' '+ me.lastName, style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
         actions: [
