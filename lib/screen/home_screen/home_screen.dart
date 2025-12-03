@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundImage: AssetImage('assets/images/user.png'),
             ),
             SizedBox(width: 15),
-            Text(me.firstName +' '+ me.lastName, style: Theme.of(context).textTheme.bodyLarge),
+            Text(me.name, style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
         actions: [

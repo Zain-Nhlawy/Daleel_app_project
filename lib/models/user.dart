@@ -15,9 +15,10 @@
   });
 }*/
 
+import 'package:daleel_app_project/data/me.dart';
+
 class User {
-  final String firstName;
-  final String lastName;
+  final String name;
   final String profileImage;
   final String personIdImage;
   final String phone;
@@ -26,8 +27,7 @@ class User {
   final String? verificationState;
 
   const User({
-    required this.firstName,
-    required this.lastName,
+    required this.name,
     required this.profileImage,
     required this.personIdImage,
     required this.phone,
@@ -35,4 +35,8 @@ class User {
     required this.birthdate,
     this.verificationState,
   });
+
+  static User fromJson(data) {
+    return me;
+  }
 }

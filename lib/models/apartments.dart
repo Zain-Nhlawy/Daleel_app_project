@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:daleel_app_project/models/user.dart';
+
 enum Governorate {
     Damascus,
   Aleppo,
@@ -255,7 +257,7 @@ class Apartments {
   final int bedrooms;
   final int bathrooms;
   final int area;
-  final String publisherName;
+  final User publisher;
 
   final String apartmentPicture;
   final List<String> apartmentPictures;
@@ -275,12 +277,33 @@ class Apartments {
     required this.bedrooms,
     required this.bathrooms,
     required this.area,
-    required this.publisherName,
+    required this.publisher,
     required this.apartmentPicture,
     this.apartmentPictures = const [],
     this.description = "",
     this.comments = const [],
     this.isAvailable = true,
   });
-}
 
+  static Apartments formJson(data) {
+    final List<String> apartmentPictures = [];
+    for(final d in data['images']) {
+      apartmentPictures.add(d.toString());
+    }
+    return Apartments(
+      description: data['description'],
+      isAvailable: (data['isAvailable'] == 1),
+      apartmentPictures: apartmentPictures,
+      apartmentHeadDescripton: data['headDescription'],
+      governorate: Governorate.AlSwuayda, 
+      city: City.AbouRummaneh,
+      apartmentRate: data['average_rating']*1.0,
+      rentFee: data['rentFee']*1.0,
+      floor: data['floor'],
+      bedrooms: data['bedrooms'],
+      bathrooms: data['bathrooms'],
+      area: data['area'],
+      publisher: User.fromJson(data['user']),
+      apartmentPicture: "assets/images/user.png");
+  }
+}

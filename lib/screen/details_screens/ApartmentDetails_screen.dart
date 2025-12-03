@@ -471,7 +471,7 @@ class PublisherSection extends StatelessWidget {
             const SizedBox(width: 12),
 
             Text(
-              apartment.publisherName,
+              apartment.publisher.name,
               style:
                   theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
             ),
