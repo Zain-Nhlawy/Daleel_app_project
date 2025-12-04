@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:daleel_app_project/data/dummy_data.dart';
+import 'package:daleel_app_project/data/me.dart';
 
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   final _apartmentBedroomsController = TextEditingController();
   final _apartmentBathroomsController = TextEditingController();
   final _apartmentAreaController = TextEditingController();
-  final _apartmentPuplisherName = 'Zain';
+  final _apartmentPuplisher = me;
   final List<String> _apartmentPictureController = [];
   final _apartmetnDescriptionController = TextEditingController();
   final List<String> _apartmentComments = [];
@@ -70,7 +71,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       bedrooms: int.tryParse(_apartmentBedroomsController.text) ?? 0,
       bathrooms: int.tryParse(_apartmentBathroomsController.text) ?? 0,
       area: int.tryParse(_apartmentAreaController.text) ?? 0,
-      publisherName: _apartmentPuplisherName,
+      publisher: _apartmentPuplisher,
       apartmentPictures: _apartmentPictureController,
       description: _apartmetnDescriptionController.text,
       comments: _apartmentComments,

@@ -52,5 +52,5 @@ final theme = ThemeData(
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(theme: theme, home: SplashScreen()));//BookingCalendar
+  runApp(MaterialApp(theme: theme, home: SplashScreen()));
 }

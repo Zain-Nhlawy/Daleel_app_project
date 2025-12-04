@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/contracts.dart';
 
@@ -27,7 +28,7 @@ final List<Apartments> apartmentsList = [
     area: 85,
     description:
         "A cozy apartment located in the heart of Amman, close to shops and public transport. Perfect for small families or couples.",
-    publisherName: "Omar Khaled",
+    publisher: me,
     comments: [
       "Very comfortable and clean.",
       "Great location in the city.",
@@ -58,7 +59,7 @@ final List<Apartments> apartmentsList = [
     area: 250,
     description:
         "Luxury villa with private pool and garden, located in a prime area of Dubai. Perfect for a lavish vacation stay.",
-    publisherName: "Lina Saeed",
+    publisher: me,
     comments: [
       "Amazing luxury feeling!",
       "The pool area is fantastic.",
@@ -89,7 +90,7 @@ final List<Apartments> apartmentsList = [
     area: 140,
     description:
         "Apartment with stunning sea views and modern interior. Near restaurants and local attractions.",
-    publisherName: "Yousef Karam",
+    publisher: me,
     comments: [
       "The sea view is breathtaking!",
       "Perfect place for families.",
@@ -122,7 +123,7 @@ final List<Apartments> apartmentsList = [
     area: 90,
     description:
         "A bright and sunny flat with balcony, located near the city center and cultural attractions.",
-    publisherName: "Maria Lopez",
+    publisher: me,
     comments: ["Very sunny and warm.", "Nice balcony view."],
   ),
 
@@ -150,7 +151,7 @@ final List<Apartments> apartmentsList = [
     area: 55,
     description:
         "A charming studio in Paris with elegant design, close to cafes and public transport.",
-    publisherName: "Jean Marc",
+    publisher: me,
     comments: [
       "Perfect for couples.",
       "Amazing neighborhood.",
@@ -175,7 +176,7 @@ final List<Apartments> apartmentsList = [
     area: 130,
     description:
         "Elegant apartment with spacious rooms and classic design, located near Rome's main attractions.",
-    publisherName: "Marco Rossi",
+    publisher: me,
     comments: ["Feels like home!", "Close to tourist attractions."],
   ),
 
@@ -196,7 +197,7 @@ final List<Apartments> apartmentsList = [
     area: 100,
     description:
         "Modern loft in the heart of Berlin, close to nightlife and shops. Minimalist and stylish design.",
-    publisherName: "Leon Fritz",
+    publisher: me,
     comments: ["Very modern and stylish.", "Quiet neighborhood."],
   ),
 
@@ -217,7 +218,7 @@ final List<Apartments> apartmentsList = [
     area: 45,
     description:
         "A small but cozy studio, perfect for solo travelers, near metro and shopping areas.",
-    publisherName: "Oliver Smith",
+    publisher: me,
     comments: ["Great for solo travelers.", "Close to metro station."],
   ),
 
@@ -238,7 +239,7 @@ final List<Apartments> apartmentsList = [
     area: 85,
     description:
         "Beautiful canal-side apartment with modern interiors. Walking distance to restaurants and shops.",
-    publisherName: "Van Dijk",
+    publisher: me,
     comments: [
       "Amazing canal view!",
       "Loved the interior design.",
@@ -263,7 +264,7 @@ final List<Apartments> apartmentsList = [
     area: 160,
     description:
         "Chalet with breathtaking mountain views, perfect for winter and summer holidays.",
-    publisherName: "Müller Jonas",
+    publisher: me,
     comments: ["Beautiful mountain scenery.", "Close to hiking trails."],
   ),
 
@@ -284,7 +285,7 @@ final List<Apartments> apartmentsList = [
     area: 150,
     description:
         "Premium flat with modern amenities and city view, ideal for business travelers.",
-    publisherName: "Abdullah Fahad",
+    publisher: me,
     comments: ["Spacious and clean.", "Great city view."],
   ),
 
@@ -309,7 +310,7 @@ final List<Apartments> apartmentsList = [
     area: 220,
     description:
         "Luxury residence in the heart of Doha with modern design and premium facilities.",
-    publisherName: "Hamad Jassim",
+    publisher: me,
     comments: ["Top class luxury!", "Amazing furnishing."],
   ),
 
@@ -330,7 +331,7 @@ final List<Apartments> apartmentsList = [
     area: 140,
     description:
         "Apartment with stunning Nile views, modern interior and central location.",
-    publisherName: "Mostafa Adel",
+    publisher: me,
     comments: ["Nile view is fantastic.", "Great value for money."],
   ),
 
@@ -351,7 +352,7 @@ final List<Apartments> apartmentsList = [
     area: 120,
     description:
         "Spacious condo in the heart of New York, close to metro and main attractions.",
-    publisherName: "Jake Wilson",
+    publisher: me,
     comments: ["Very modern.", "Close to everything."],
   ),
 
@@ -372,7 +373,7 @@ final List<Apartments> apartmentsList = [
     area: 110,
     description:
         "Modern apartment with minimalist design, near downtown and transportation.",
-    publisherName: "Lucas Brown",
+    publisher: me,
     comments: ["Quiet and clean."],
   ),
 ];

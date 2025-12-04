@@ -32,17 +32,4 @@ class UserService {
     return null;
   }
 
-/*
-  Future<User?> getProfile() async {
-    try {
-      final response = await apiClient.dio.get('auth/me');
-      if (response.statusCode == 200) {
-        return User.fromJson(response.data);
-      }
-    } catch (e) {
-      print('Profile error: $e');
-    }
-    return null;
-  }
-  */
 }
