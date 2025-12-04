@@ -1,14 +1,17 @@
 import 'dart:async';
 
+import 'package:daleel_app_project/controllers/user_controller.dart';
 import 'package:daleel_app_project/data/dummy_data.dart';
 import 'package:daleel_app_project/data/me.dart';
+import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final UserController userController;
+  const HomeScreen({super.key, required this.userController});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -39,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = widget.userController.user;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -46,10 +50,19 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(width: 8),
             CircleAvatar(
               radius: 27,
-              backgroundImage: AssetImage('assets/images/user.png'),
+              backgroundImage: (user != null &&
+                      user.profileImage.isNotEmpty)
+                  ? NetworkImage(user.profileImage)
+                  : const AssetImage('assets/images/user.png')
+                      as ImageProvider,
             ),
             SizedBox(width: 15),
-            Text(me.firstName +' '+ me.lastName, style: Theme.of(context).textTheme.bodyLarge),
+            Text(
+              user != null
+                  ? '${user.firstName} ${user.lastName}'
+                  : 'any_name :)',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),        
           ],
         ),
         actions: [

@@ -1,20 +1,3 @@
-/*class User {
-  final String name;
-  final String profileImage;
-  final String personIdImage;
-  final String phone;
-  final String email;
-  final String birthdate;
-  const User({
-    required this.name, 
-    required this.profileImage, 
-    required this.personIdImage, 
-    required this.phone, 
-    required this.email, 
-    required this.birthdate
-  });
-}*/
-
 class User {
   final String firstName;
   final String lastName;
@@ -24,6 +7,7 @@ class User {
   final String email;
   final String birthdate;
   final String? verificationState;
+  final String? token;
 
   const User({
     required this.firstName,
@@ -34,5 +18,34 @@ class User {
     required this.email,
     required this.birthdate,
     this.verificationState,
+    this.token,
   });
+
+  factory User.fromJson(Map<String, dynamic> json,{String? token}) {
+    return User(
+      firstName: json['first_name'] ?? '',
+      lastName: json['last_name'] ?? '',
+      profileImage: json['profileImage'] ?? '',
+      personIdImage: json['personIdImage'] ?? '',
+      phone: json['phone'] ?? '',
+      email: json['email'] ?? '',
+      birthdate: json['birthdate'] ?? '',
+      verificationState: json['verificationState'],
+      token: token,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'firstName': firstName,
+      'lastName': lastName,
+      'profileImage': profileImage,
+      'personIdImage': personIdImage,
+      'phone': phone,
+      'email': email,
+      'birthdate': birthdate,
+      'verificationState': verificationState,
+      'token': token,
+    };
+  }
 }

@@ -1,11 +1,15 @@
+import 'package:daleel_app_project/controllers/user_controller.dart';
+import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/widget/profile_screen_widgets/profile_options.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final UserController userController;
+  const ProfileScreen({super.key, required this.userController});
 
   @override
   Widget build(BuildContext context) {
+    final user = userController.user;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -26,7 +30,11 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 65,
-                      backgroundImage: AssetImage('assets/images/user.png'),
+                      backgroundImage: (user != null &&
+                              user.profileImage.isNotEmpty)
+                          ? NetworkImage(user.profileImage)
+                          : const AssetImage('assets/images/user.png')
+                              as ImageProvider,
                     ),
                     Positioned(
                       bottom: 0,
@@ -49,7 +57,9 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Zain Nhlawy',
+                      user != null
+                          ? '${user.firstName} ${user.lastName}'
+                          : 'any_name :)',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     SizedBox(height: 8),
