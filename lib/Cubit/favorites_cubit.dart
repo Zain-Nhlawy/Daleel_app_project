@@ -22,7 +22,7 @@ class FavoritesCubit extends Cubit<FavoritesState> {
         final data = jsonDecode(current.body)['data'];
         List<Apartments> apartments = [];
         for(final d in data) {
-          apartments.add(Apartments.formJson(d));
+          apartments.add(Apartments.fromJson(d));
         }
         emit(FavoritesLoaded(apartments));
       }

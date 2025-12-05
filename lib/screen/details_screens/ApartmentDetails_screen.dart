@@ -1,3 +1,5 @@
+import 'package:daleel_app_project/data/me.dart';
+import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/screen/booking_screen.dart';
 import 'package:daleel_app_project/widget/custom_text_field.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
@@ -90,7 +92,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                         onSend: () {
                           if (_newCommentController.text.isNotEmpty) {
                             setState(() {
-                              comments.add(_newCommentController.text);
+                              comments.add(Comment(user: me,text: _newCommentController.text));
                               _newCommentController.clear();
                               showAllComments = true;
                             });
@@ -328,7 +330,7 @@ class DescriptionSection extends StatelessWidget {
 
 
 class CommentsSection extends StatelessWidget {
-  final List<String> comments;
+  final List<Comment> comments;
   final bool showAll;
   final ThemeData theme;
   final TextEditingController controller;
@@ -362,9 +364,9 @@ class CommentsSection extends StatelessWidget {
               Column(
                 children: [
                   _commentRow(
-                    name: "User ${i + 1}",
-                    image: "assets/images/profilePic.png",
-                    comment: comments[i],
+                    name: "${comments[i].user.firstName} ${comments[i].user.lastName}",
+                    image: comments[i].user.profileImage,
+                    comment: comments[i].text,
                     theme: theme,
                   ),
                   if (i < comments.length - 1)

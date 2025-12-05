@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 
 class BookingCalendar extends StatefulWidget {
+  const BookingCalendar({super.key});
   @override
   _BookingCalendarState createState() => _BookingCalendarState();
 }

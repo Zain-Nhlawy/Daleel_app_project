@@ -3,6 +3,7 @@ import 'package:daleel_app_project/data/dummy_data.dart';
 import 'package:daleel_app_project/data/me.dart';
 
 import 'package:daleel_app_project/models/apartments.dart';
+import 'package:daleel_app_project/models/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -29,7 +30,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   final _apartmentPuplisher = me;
   final List<String> _apartmentPictureController = [];
   final _apartmetnDescriptionController = TextEditingController();
-  final List<String> _apartmentComments = [];
+  final List<Comment> _apartmentComments = [];
 
   Future _pickImageFromGallery() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);

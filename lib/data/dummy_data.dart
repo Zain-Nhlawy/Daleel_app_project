@@ -1,5 +1,6 @@
 import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/models/apartments.dart';
+import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/models/contracts.dart';
 
 final List<Apartments> apartmentsList = [
@@ -30,10 +31,9 @@ final List<Apartments> apartmentsList = [
         "A cozy apartment located in the heart of Amman, close to shops and public transport. Perfect for small families or couples.",
     publisher: me,
     comments: [
-      "Very comfortable and clean.",
-      "Great location in the city.",
-      "Host is very friendly.",
-      "Would visit again!",
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
     ],
   ),
 
@@ -61,9 +61,9 @@ final List<Apartments> apartmentsList = [
         "Luxury villa with private pool and garden, located in a prime area of Dubai. Perfect for a lavish vacation stay.",
     publisher: me,
     comments: [
-      "Amazing luxury feeling!",
-      "The pool area is fantastic.",
-      "Very clean and modern.",
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
     ],
   ),
 
@@ -92,9 +92,9 @@ final List<Apartments> apartmentsList = [
         "Apartment with stunning sea views and modern interior. Near restaurants and local attractions.",
     publisher: me,
     comments: [
-      "The sea view is breathtaking!",
-      "Perfect place for families.",
-      "Close to restaurants.",
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
     ],
   ),
 
@@ -124,7 +124,11 @@ final List<Apartments> apartmentsList = [
     description:
         "A bright and sunny flat with balcony, located near the city center and cultural attractions.",
     publisher: me,
-    comments: ["Very sunny and warm.", "Nice balcony view."],
+    comments: [
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
+    ],
   ),
 
   Apartments(
@@ -153,9 +157,9 @@ final List<Apartments> apartmentsList = [
         "A charming studio in Paris with elegant design, close to cafes and public transport.",
     publisher: me,
     comments: [
-      "Perfect for couples.",
-      "Amazing neighborhood.",
-      "Small but very cozy.",
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
     ],
   ),
 
@@ -177,7 +181,11 @@ final List<Apartments> apartmentsList = [
     description:
         "Elegant apartment with spacious rooms and classic design, located near Rome's main attractions.",
     publisher: me,
-    comments: ["Feels like home!", "Close to tourist attractions."],
+    comments: [
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
+    ],
   ),
 
   Apartments(
@@ -198,7 +206,11 @@ final List<Apartments> apartmentsList = [
     description:
         "Modern loft in the heart of Berlin, close to nightlife and shops. Minimalist and stylish design.",
     publisher: me,
-    comments: ["Very modern and stylish.", "Quiet neighborhood."],
+    comments: [
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
+    ],
   ),
 
   Apartments(
@@ -219,7 +231,11 @@ final List<Apartments> apartmentsList = [
     description:
         "A small but cozy studio, perfect for solo travelers, near metro and shopping areas.",
     publisher: me,
-    comments: ["Great for solo travelers.", "Close to metro station."],
+    comments: [
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
+    ],
   ),
 
   Apartments(
@@ -241,9 +257,9 @@ final List<Apartments> apartmentsList = [
         "Beautiful canal-side apartment with modern interiors. Walking distance to restaurants and shops.",
     publisher: me,
     comments: [
-      "Amazing canal view!",
-      "Loved the interior design.",
-      "Very clean and peaceful.",
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
     ],
   ),
 
@@ -265,8 +281,11 @@ final List<Apartments> apartmentsList = [
     description:
         "Chalet with breathtaking mountain views, perfect for winter and summer holidays.",
     publisher: me,
-    comments: ["Beautiful mountain scenery.", "Close to hiking trails."],
-  ),
+    comments: [
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
+    ],  ),
 
   Apartments(
     governorate: Governorate.Damascus,
@@ -286,7 +305,11 @@ final List<Apartments> apartmentsList = [
     description:
         "Premium flat with modern amenities and city view, ideal for business travelers.",
     publisher: me,
-    comments: ["Spacious and clean.", "Great city view."],
+    comments: [
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
+    ],
   ),
 
   Apartments(
@@ -311,7 +334,11 @@ final List<Apartments> apartmentsList = [
     description:
         "Luxury residence in the heart of Doha with modern design and premium facilities.",
     publisher: me,
-    comments: ["Top class luxury!", "Amazing furnishing."],
+    comments: [
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
+    ],
   ),
 
   Apartments(
@@ -332,7 +359,11 @@ final List<Apartments> apartmentsList = [
     description:
         "Apartment with stunning Nile views, modern interior and central location.",
     publisher: me,
-    comments: ["Nile view is fantastic.", "Great value for money."],
+    comments: [
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
+    ],
   ),
 
   Apartments(
@@ -353,7 +384,11 @@ final List<Apartments> apartmentsList = [
     description:
         "Spacious condo in the heart of New York, close to metro and main attractions.",
     publisher: me,
-    comments: ["Very modern.", "Close to everything."],
+    comments: [
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
+    ],
   ),
 
   Apartments(
@@ -374,7 +409,11 @@ final List<Apartments> apartmentsList = [
     description:
         "Modern apartment with minimalist design, near downtown and transportation.",
     publisher: me,
-    comments: ["Quiet and clean."],
+    comments: [
+      Comment(user: me, text: "Amazing luxury feeling!"),
+      Comment(user: me, text: "The pool area is fantastic."),
+      Comment(user: me, text: "Very clean and modern."),
+    ],
   ),
 ];
 

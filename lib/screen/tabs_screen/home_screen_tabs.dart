@@ -1,5 +1,4 @@
 import 'package:daleel_app_project/controllers/user_controller.dart';
-import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/screen/profile_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/adding_apartment_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/contract_screen.dart';

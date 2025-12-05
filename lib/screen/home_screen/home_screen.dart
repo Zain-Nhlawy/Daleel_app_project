@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:daleel_app_project/controllers/user_controller.dart';
 import 'package:daleel_app_project/data/dummy_data.dart';
-import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
