@@ -1,42 +1,51 @@
-/*class User {
-  final String name;
-  final String profileImage;
-  final String personIdImage;
-  final String phone;
-  final String email;
-  final String birthdate;
-  const User({
-    required this.name, 
-    required this.profileImage, 
-    required this.personIdImage, 
-    required this.phone, 
-    required this.email, 
-    required this.birthdate
-  });
-}*/
-
-import 'package:daleel_app_project/data/me.dart';
-
 class User {
-  final String name;
+  final String firstName;
+  final String lastName;
   final String profileImage;
   final String personIdImage;
   final String phone;
   final String email;
   final String birthdate;
   final String? verificationState;
+  final String? token;
 
   const User({
-    required this.name,
+    required this.firstName,
+    required this.lastName,
     required this.profileImage,
     required this.personIdImage,
     required this.phone,
     required this.email,
     required this.birthdate,
     this.verificationState,
+    this.token,
   });
 
-  static User fromJson(data) {
-    return me;
+  factory User.fromJson(Map<String, dynamic> json,{String? token}) {
+    return User(
+      firstName: json['first_name'] ?? '',
+      lastName: json['last_name'] ?? '',
+      profileImage: json['profileImage'] ?? '',
+      personIdImage: json['personIdImage'] ?? '',
+      phone: json['phone'] ?? '',
+      email: json['email'] ?? '',
+      birthdate: json['birthdate'] ?? '',
+      verificationState: json['verificationState'],
+      token: token,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'firstName': firstName,
+      'lastName': lastName,
+      'profileImage': profileImage,
+      'personIdImage': personIdImage,
+      'phone': phone,
+      'email': email,
+      'birthdate': birthdate,
+      'verificationState': verificationState,
+      'token': token,
+    };
   }
 }

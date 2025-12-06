@@ -1,7 +1,11 @@
+import 'package:daleel_app_project/controllers/user_controller.dart';
+import 'package:daleel_app_project/core/storage/secure_storage.dart';
+import 'package:daleel_app_project/core/network/dio_client.dart';
+import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
+import 'package:daleel_app_project/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'signUp_screen.dart';
 import '../widget/custom_text_field.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,11 +19,27 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool showCard = false;
 
+  late UserService userService;
+  late UserController userController; 
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() => showCard = true);
+
+    userService = UserService(
+      apiClient: DioClient(storage: AppSecureStorage()),
+      storage: AppSecureStorage(),
+    );
+
+    userController = UserController(
+      userService: userService,
+      storage: AppSecureStorage(),
+    );
+
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        showCard = true;
+      });
     });
   }
 
@@ -36,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _login() {
+  void _login() async {
     final phone = _phoneController.text.trim();
     final password = _passwordController.text;
 
@@ -45,7 +65,22 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    print("Phone: $phone, Password: $password");
+    final loggedUser = await userController.login(phone, password);
+
+    if (loggedUser == null) {
+      _showError("Login failed. Check your credentials.");
+      return;
+    }
+
+    print("Logged in user: ${loggedUser.firstName}");
+
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, anim1, anim2) => HomeScreenTabs(userController: userController),
+        transitionDuration: const Duration(seconds: 1),
+      ),
+    );
   }
 
   @override
@@ -53,7 +88,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: Image.asset("assets/images/Background.jpg", fit: BoxFit.cover)),
+          Positioned.fill(
+            child: Image.asset(
+              "assets/images/Background.jpg",
+              fit: BoxFit.cover,
+            ),
+          ),
           const _HeaderLogo(),
           AnimatedPositioned(
             duration: const Duration(milliseconds: 400),
@@ -114,18 +154,55 @@ class LoginCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.brown.withOpacity(0.7),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(40)),
-        boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, -4))],
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, -4))
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 16),
-          const Text("Welcome back!", textAlign: TextAlign.center, style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold, color: Colors.white)),
+          const Text(
+            "Welcome back!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 44,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
           const SizedBox(height: 20),
-          CustomTextField(controller: phoneController, label: "Phone Number", icon: Icons.phone, keyboardType: TextInputType.phone),
-          CustomTextField(controller: passwordController, label: "Password", icon: Icons.lock, keyboardType: TextInputType.text, obscure: true),
+          CustomTextField(
+            controller: phoneController,
+            label: "Phone Number",
+            icon: Icons.phone,
+            keyboardType: TextInputType.phone,
+          ),
+          CustomTextField(
+            controller: passwordController,
+            label: "Password",
+            icon: Icons.lock,
+            keyboardType: TextInputType.text,
+            obscure: true,
+          ),
           const SizedBox(height: 20),
-          Center(child: SizedBox(width: 180, height: 55, child: OutlinedButton(onPressed: onLogin, style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white), foregroundColor: Colors.white), child: const Text("Login", style: TextStyle(color: Colors.white, fontSize: 20))))),
+          Center(
+            child: SizedBox(
+              width: 180,
+              height: 55,
+              child: OutlinedButton(
+                onPressed: onLogin,
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.white),
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text(
+                  "Login",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+            ),
+          ),
           const SizedBox(height: 30),
           const _SignUpLink(),
         ],
@@ -145,8 +222,17 @@ class _SignUpLink extends StatelessWidget {
         children: [
           const Text("Don't have an account?", style: TextStyle(color: Colors.white70)),
           TextButton(
-            onPressed: () => Navigator.push(context, PageRouteBuilder(pageBuilder: (context, anim1, anim2) => const SignUpScreen(), transitionDuration: const Duration(seconds: 1))),
-            child: const Text("Sign Up", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, anim1, anim2) => const SignUpScreen(),
+                transitionDuration: const Duration(seconds: 1),
+              ),
+            ),
+            child: const Text(
+              "Sign Up",
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),

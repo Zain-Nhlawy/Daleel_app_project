@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/models/user.dart';
 
 enum Governorate {
@@ -263,7 +264,7 @@ class Apartments {
   final List<String> apartmentPictures;
 
   final String description;
-  final List<String> comments;
+  final List<Comment> comments;
 
   final bool isAvailable;
 
@@ -285,25 +286,38 @@ class Apartments {
     this.isAvailable = true,
   });
 
-  static Apartments formJson(data) {
+  factory Apartments.fromJson(Map<String, dynamic> json) {
     final List<String> apartmentPictures = [];
-    for(final d in data['images']) {
+    for(final d in json['images']) {
       apartmentPictures.add(d.toString());
     }
     return Apartments(
-      description: data['description'],
-      isAvailable: (data['isAvailable'] == 1),
+      description: json['description'],
+      isAvailable: (json['isAvailable'] == 1),
       apartmentPictures: apartmentPictures,
-      apartmentHeadDescripton: data['headDescription'],
+      apartmentHeadDescripton: json['headDescription'],
       governorate: Governorate.AlSwuayda, 
       city: City.AbouRummaneh,
-      apartmentRate: data['average_rating']*1.0,
-      rentFee: data['rentFee']*1.0,
-      floor: data['floor'],
-      bedrooms: data['bedrooms'],
-      bathrooms: data['bathrooms'],
-      area: data['area'],
-      publisher: User.fromJson(data['user']),
+      apartmentRate: json['average_rating']*1.0,
+      rentFee: json['rentFee']*1.0,
+      floor: json['floor'],
+      bedrooms: json['bedrooms'],
+      bathrooms: json['bathrooms'],
+      area: json['area'],
+      publisher: User.fromJson(json['user']),
       apartmentPicture: "assets/images/user.png");
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'description': description,
+      'isAvailable': isAvailable,
+      'headDescription': apartmentHeadDescripton,
+      'rentFee': rentFee,
+      'floor': floor,
+      'bedrooms': bedrooms,
+      'bathrooms': bathrooms,
+      'area': area
+    };
   }
 }

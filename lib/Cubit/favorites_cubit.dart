@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:daleel_app_project/Cubit/favorites_state.dart';
 import 'package:daleel_app_project/data/dummy_data.dart';
 import 'package:daleel_app_project/data/me.dart';
@@ -23,7 +22,7 @@ class FavoritesCubit extends Cubit<FavoritesState> {
         final data = jsonDecode(current.body)['data'];
         List<Apartments> apartments = [];
         for(final d in data) {
-          apartments.add(Apartments.formJson(d));
+          apartments.add(Apartments.fromJson(d));
         }
         emit(FavoritesLoaded(apartments));
       }
