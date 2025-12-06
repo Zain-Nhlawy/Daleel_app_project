@@ -62,7 +62,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
     final newApartment = Apartments(
       governorate: _selectedCountryController,
-      city: _selectedCityController!,
+      city: _selectedCityController,
       apartmentPicture: _selectedImageController!.path,
       apartmentHeadDescripton: _apartmentHeadDescriptionController.text,
       apartmentRate: _apartmentRate,
