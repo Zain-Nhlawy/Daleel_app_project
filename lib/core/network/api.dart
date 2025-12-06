@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class Api {
   late Dio dio;
-
+  
   Api() {
     dio = Dio(
       BaseOptions(

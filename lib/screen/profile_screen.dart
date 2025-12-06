@@ -1,5 +1,4 @@
 import 'package:daleel_app_project/controllers/user_controller.dart';
-import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/widget/profile_screen_widgets/profile_options.dart';
 import 'package:flutter/material.dart';
 

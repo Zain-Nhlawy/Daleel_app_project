@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:daleel_app_project/screen/login_screen.dart';
-import 'package:daleel_app_project/screen/signUp_screen.dart';
+import 'package:lottie/lottie.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'widgets/animated_logo.dart';
 import 'widgets/welcome_card.dart';
+import 'package:daleel_app_project/screen/login_screen.dart';
+import 'package:daleel_app_project/screen/signUp_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,12 +13,14 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnim;
   late Animation<double> _fadeAnim;
 
   bool showWelcomeCard = false;
+  final player = AudioPlayer();
 
   @override
   void initState() {
@@ -27,13 +31,18 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       duration: const Duration(seconds: 3),
     );
 
-    _scaleAnim = Tween(begin: 0.7, end: 1.9)
-    .chain(CurveTween(curve: Curves.easeOut))
-    .animate(_controller);
+    _scaleAnim = Tween(
+      begin: 0.7,
+      end: 1.9,
+    ).chain(CurveTween(curve: Curves.easeOut)).animate(_controller);
 
     _fadeAnim = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
-    _controller.forward().then((_) {
+    _controller.forward();
+
+    player.play(AssetSource("sounds/splashSounds.mp3"));
+
+    Future.delayed(const Duration(seconds: 4), () {
       setState(() {
         showWelcomeCard = true;
       });
@@ -43,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   void dispose() {
     _controller.dispose();
+    player.dispose();
     super.dispose();
   }
 
@@ -57,6 +67,18 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               fit: BoxFit.cover,
             ),
           ),
+
+          Positioned.fill(
+            child: Center(
+              child: Lottie.asset(
+                "assets/lottie/logoSplash.json",
+                width: 250,
+                height: 250,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+
           Column(
             children: [
               AnimatedPadding(
@@ -70,27 +92,31 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 ),
               ),
               const Spacer(),
-              WelcomeCard(
-                showWelcomeCard: showWelcomeCard,
-                onLogin: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
-                      transitionDuration: const Duration(seconds: 1),
-                    ),
-                  );
-                },
-                onCreateAccount: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => const SignUpScreen(),
-                      transitionDuration: const Duration(seconds: 1),
-                    ),
-                  );
-                },
-              ),
+
+              if (showWelcomeCard)
+                WelcomeCard(
+                  showWelcomeCard: showWelcomeCard,
+                  onLogin: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const LoginScreen(),
+                        transitionDuration: const Duration(seconds: 1),
+                      ),
+                    );
+                  },
+                  onCreateAccount: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const SignUpScreen(),
+                        transitionDuration: const Duration(seconds: 1),
+                      ),
+                    );
+                  },
+                ),
             ],
           ),
         ],
