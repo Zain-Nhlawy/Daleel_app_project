@@ -1,4 +1,3 @@
-import 'package:daleel_app_project/controllers/user_controller.dart';
 import 'package:daleel_app_project/screen/profile_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/adding_apartment_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/contract_screen.dart';
@@ -6,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:daleel_app_project/screen/home_screen/home_screen.dart';
 
 class HomeScreenTabs extends StatefulWidget {
-  final UserController userController; 
-  const HomeScreenTabs({super.key, required this.userController});
+  const HomeScreenTabs({super.key});
 
 
   @override
@@ -24,11 +22,11 @@ class _MainScreenState extends State<HomeScreenTabs> {
   void initState() {
     super.initState();
     _pages = [
-      HomeScreen(userController: widget.userController), 
+      HomeScreen(), 
       const ContractScreen(),
       const AddingApartmentScreen(),
       const Center(child: Text('Chat')),
-      ProfileScreen(userController: widget.userController), 
+      ProfileScreen(), 
     ];
   }
 

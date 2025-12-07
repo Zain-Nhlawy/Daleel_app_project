@@ -1,11 +1,8 @@
-import 'package:daleel_app_project/controllers/user_controller.dart';
-import 'package:daleel_app_project/core/storage/secure_storage.dart';
-import 'package:daleel_app_project/core/network/dio_client.dart';
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
-import 'package:daleel_app_project/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'signUp_screen.dart';
 import '../widget/custom_text_field.dart';
+import '../../dependencies.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,22 +16,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool showCard = false;
 
-  late UserService userService;
-  late UserController userController; 
 
   @override
   void initState() {
     super.initState();
-
-    userService = UserService(
-      apiClient: DioClient(storage: AppSecureStorage()),
-      storage: AppSecureStorage(),
-    );
-
-    userController = UserController(
-      userService: userService,
-      storage: AppSecureStorage(),
-    );
 
     Future.delayed(const Duration(milliseconds: 300), () {
       setState(() {
@@ -77,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, anim1, anim2) => HomeScreenTabs(userController: userController),
+        pageBuilder: (context, anim1, anim2) => HomeScreenTabs(),
         transitionDuration: const Duration(seconds: 1),
       ),
     );

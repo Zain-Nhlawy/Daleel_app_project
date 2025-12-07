@@ -4,6 +4,8 @@ import 'signup2_screen.dart';
 import '../widget/custom_text_field.dart';
 import '../widget/upload_button.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../dependencies.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

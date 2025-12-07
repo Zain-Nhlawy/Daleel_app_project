@@ -5,12 +5,11 @@ import 'package:daleel_app_project/data/dummy_data.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
-
+import '../../dependencies.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  final UserController userController;
-  const HomeScreen({super.key, required this.userController});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -41,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final User? user = widget.userController.user;
+    final User? user = userController.user;
     return Scaffold(
       appBar: AppBar(
         title: Row(

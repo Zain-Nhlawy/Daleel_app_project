@@ -22,7 +22,7 @@ class UserService {
       if (response.statusCode == 200) {
         final data = response.data['data']; 
         final token = data['token'];    
-        final user = User.fromJson(data['user'],token: token, );
+        final user = User.fromJson(data['user'],token: token,);
         await storage.write(StorageKeys.token, token);
         return user;
       }
