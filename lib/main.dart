@@ -54,6 +54,8 @@ final theme = ThemeData(
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  
   runApp(MaterialApp(theme: theme, home:SplashScreen() ,   routes: {
         "/login": (context) => const LoginScreen(),
        // "/home": (context) => const HomeScreen(),
