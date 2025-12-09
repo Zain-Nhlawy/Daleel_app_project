@@ -16,6 +16,9 @@ class DioClient extends Api {
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
+          if (options.data is FormData) {
+            options.headers['Content-Type'] = 'multipart/form-data';
+          }
 
           return handler.next(options);
         },
@@ -31,6 +34,7 @@ class DioClient extends Api {
       LogInterceptor(
         requestBody: true,
         responseBody: true,
+        error: true,
       ),
     );
   }

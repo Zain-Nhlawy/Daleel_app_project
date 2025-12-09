@@ -116,35 +116,37 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
             ),
           ),
 
-
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(12),
-              child: SizedBox(
-                height: 55,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => BookingCalendar()),
-                    );
-                  },
+            //child: SafeArea(
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(12),
+                child: SizedBox(
+                  height: 55,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.colorScheme.primary,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BookingCalendar()),
+                      );
+                    },
                     child: Text(
-                    "Book Now",
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(color: Colors.white, fontSize: 18),
+                      "Book Now",
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(color: Colors.white, fontSize: 18),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+          //),
+
         ],
       ),
     );
