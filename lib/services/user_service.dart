@@ -56,6 +56,29 @@ Future<User?> register(FormData formData) async {
 }
 
 
+Future<User?> getProfile() async {
+  try {
+    final token = await storage.read(StorageKeys.token);
+    final response = await apiClient.dio.get(
+      'v1/auth/me',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final data = response.data['data'];
+      final user = User.fromJson(data, token: token);
+      return user;
+    }
+  } catch (e) {
+    print('GetProfile error: $e');
+  }
+  return null;
+}
+
+
+
   Future<bool> logout() async {
   try {
     final response = await apiClient.dio.post('auth/logout');
