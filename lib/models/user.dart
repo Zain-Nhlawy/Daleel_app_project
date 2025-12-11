@@ -6,6 +6,8 @@ class User {
   final String phone;
   final String email;
   final String birthdate;
+  final String location;      
+  final String password;      
   final String? verificationState;
   final String? token;
 
@@ -17,11 +19,13 @@ class User {
     required this.phone,
     required this.email,
     required this.birthdate,
+    required this.location,    
+    required this.password,    
     this.verificationState,
     this.token,
   });
 
-  factory User.fromJson(Map<String, dynamic> json,{String? token}) {
+  factory User.fromJson(Map<String, dynamic> json, {String? token}) {
     return User(
       firstName: json['first_name'] ?? '',
       lastName: json['last_name'] ?? '',
@@ -30,6 +34,8 @@ class User {
       phone: json['phone'] ?? '',
       email: json['email'] ?? '',
       birthdate: json['birthdate'] ?? '',
+      location: json['location'] ?? '',      
+      password: json['password'] ?? '',    
       verificationState: json['verificationState'],
       token: token,
     );
@@ -44,6 +50,8 @@ class User {
       'phone': phone,
       'email': email,
       'birthdate': birthdate,
+      'location': location,       
+      'password': password,      
       'verificationState': verificationState,
       'token': token,
     };

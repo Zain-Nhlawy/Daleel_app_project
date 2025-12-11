@@ -10,7 +10,7 @@ class DioClient extends Api {
       InterceptorsWrapper(
   onRequest: (options, handler) async {
 
-  const token = "1|URjPdkzYa71eE7Ams1wfK5deOhIZGBpVZ7JW2Fugad5ec12f";
+  const token = "5|vHynopmMsAsN15DyGryC2nQz2OAiGlfPC3sLZD6Geb7fbb52";
 
   options.headers['Authorization'] = 'Bearer $token';
 

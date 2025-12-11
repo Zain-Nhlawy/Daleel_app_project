@@ -98,7 +98,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                                   id: 0,
                                   content: _newCommentController.text,
                                   userId: 3,
-                                  departmentId: widget.apartment.id,
+                                  departmentId:
+                                      widget.apartment.id,
                                   user: me,
                                 ),
                               );
