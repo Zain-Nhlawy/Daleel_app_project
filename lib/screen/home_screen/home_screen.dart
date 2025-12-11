@@ -1,8 +1,7 @@
 import 'dart:async';
-
-import 'package:daleel_app_project/controllers/user_controller.dart';
-import 'package:daleel_app_project/data/dummy_data.dart';
+import 'package:daleel_app_project/models/apartments2.dart';
 import 'package:daleel_app_project/models/user.dart';
+import 'package:daleel_app_project/repository/apartment_repo.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 import '../../dependencies.dart';
@@ -13,6 +12,18 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
+}
+
+final repo = ApartmentRepo(dioClient: dioClient);
+List<Apartments2> apartments = [];
+
+Future<void> loadApartments() async {
+  try {
+    apartments = await repo.getApartments();
+    print(apartments);
+  } catch (e) {
+    print('Error fetching apartments: ');
+  }
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -36,6 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
     });
+
+    loadApartments().then((_) {
+      setState(() {});
+    });
   }
 
   @override
@@ -48,11 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(width: 8),
             CircleAvatar(
               radius: 27,
-              backgroundImage: (user != null &&
-                      user.profileImage.isNotEmpty)
+              backgroundImage: (user != null && user.profileImage.isNotEmpty)
                   ? NetworkImage(user.profileImage)
-                  : const AssetImage('assets/images/user.png')
-                      as ImageProvider,
+                  : const AssetImage('assets/images/user.png') as ImageProvider,
             ),
             SizedBox(width: 15),
             Text(
@@ -60,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? '${user.firstName} ${user.lastName}'
                   : 'any_name :)',
               style: Theme.of(context).textTheme.bodyLarge,
-            ),        
+            ),
           ],
         ),
         actions: [
@@ -164,9 +177,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: apartmentsList.length,
+                itemCount: apartments.length,
                 itemBuilder: (context, index) =>
-                    NearpyApartmentsWidgets(apartment: apartmentsList[index]),
+                    NearpyApartmentsWidgets(apartment: apartments[index]),
               ),
             ),
           ],
@@ -196,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
       child: MostPopularApartmentsWidget(
-        apartment: apartmentsList[index % apartmentsList.length],
+        apartment: apartments[index % apartments.length],
       ),
     );
   }

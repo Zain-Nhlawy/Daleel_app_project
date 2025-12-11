@@ -1,10 +1,10 @@
+import 'package:daleel_app_project/models/apartments2.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:flutter/material.dart';
-import '../../models/apartments.dart';
 
 class MostPopularApartmentsWidget extends StatelessWidget {
   const MostPopularApartmentsWidget({super.key, required this.apartment});
-  final Apartments apartment;
+  final Apartments2 apartment;
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +34,14 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                   child: Container(
                     height: 115,
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Image.asset(
-                      apartment.apartmentPicture,
-                      fit: BoxFit.cover,
-                    ),
+                    child:
+                        apartment.images != null && apartment.images!.isNotEmpty
+                        ? Image.network(apartment.images![0])
+                        : Image.asset("assets/images/user.png"),
                   ),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -54,11 +52,12 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          apartment.apartmentHeadDescripton,
+                          apartment.headDescription!,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
+                                overflow: TextOverflow.ellipsis,
                               ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -80,7 +79,7 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                           color: Colors.grey[600],
                         ),
                         Text(
-                          apartment.governorate.name,
+                          apartment.location!['city'],
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: Colors.grey[600]),
                         ),
@@ -92,7 +91,7 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                         Icon(Icons.star, color: Colors.orange, size: 16),
                         const SizedBox(width: 4),
                         Text(
-                          apartment.apartmentRate.toString(),
+                          apartment.averageRating.toString(),
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),

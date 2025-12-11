@@ -1,4 +1,5 @@
-import 'package:daleel_app_project/models/apartments.dart';
+
+import 'package:daleel_app_project/models/apartments2.dart';
 
 enum RentStatus { cancelled, completed, pending, onRent }
 
@@ -16,7 +17,7 @@ class Contracts {
     required this.contractApartment,
   });
   
-  final Apartments contractApartment;
+  final Apartments2 contractApartment;
   final RentStatus rentStatus;
   final DateTime startRent;
   final DateTime endRent;

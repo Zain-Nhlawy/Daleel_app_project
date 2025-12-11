@@ -1,4 +1,5 @@
-import 'package:daleel_app_project/models/apartments.dart';
+
+import 'package:daleel_app_project/models/apartments2.dart';
 import 'package:equatable/equatable.dart';
 
 class FavoritesState extends Equatable {
@@ -9,7 +10,7 @@ class FavoritesState extends Equatable {
 }
 
 class FavoritesLoaded extends FavoritesState {
-  final List<Apartments> apartments;
+  final List<Apartments2> apartments;
   const FavoritesLoaded(this.apartments);
 
   @override

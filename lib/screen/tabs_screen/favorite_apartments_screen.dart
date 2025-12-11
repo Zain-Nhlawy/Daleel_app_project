@@ -9,7 +9,6 @@ class FavoriteApartmentsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // context.read<FavoritesCubit>().loadFavorites(1);
     return Scaffold(
         appBar: AppBar(
           title: Text('Favorites', style: Theme.of(context).textTheme.bodyLarge),

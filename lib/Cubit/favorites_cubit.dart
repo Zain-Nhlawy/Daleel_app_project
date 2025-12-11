@@ -1,13 +1,26 @@
 import 'dart:convert';
 import 'package:daleel_app_project/Cubit/favorites_state.dart';
-import 'package:daleel_app_project/data/dummy_data.dart';
 import 'package:daleel_app_project/data/me.dart';
-import 'package:daleel_app_project/models/apartments.dart';
+import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/models/apartments2.dart';
+import 'package:daleel_app_project/repository/apartment_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
+final repo = ApartmentRepo(dioClient: dioClient);
+List<Apartments2> apartments = [];
+
+Future<void> loadApartments() async {
+  try {
+    apartments = await repo.getApartments();
+    print(apartments);
+  } catch (e) {
+    print('Error fetching apartments: ');
+  }
+}
+
 class FavoritesCubit extends Cubit<FavoritesState> {
-  FavoritesCubit() : super(FavoritesLoaded(apartmentsList));
+  FavoritesCubit() : super(FavoritesLoaded(apartments));
 
   Future loadFavorites(int page) async {
     emit(FavoritesLoading());
@@ -20,9 +33,9 @@ class FavoritesCubit extends Cubit<FavoritesState> {
       );
       if(current.statusCode == 200) {
         final data = jsonDecode(current.body)['data'];
-        List<Apartments> apartments = [];
+        List<Apartments2> apartments = [];
         for(final d in data) {
-          apartments.add(Apartments.fromJson(d));
+          apartments.add(Apartments2.fromJson(d));
         }
         emit(FavoritesLoaded(apartments));
       }

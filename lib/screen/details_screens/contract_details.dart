@@ -61,7 +61,7 @@ class ContractDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
-                    contract.contractApartment.apartmentPicture,
+                    contract.contractApartment.images![0],
                     width: double.infinity,
                     height: 200,
                     fit: BoxFit.cover,
@@ -91,7 +91,7 @@ class ContractDetails extends StatelessWidget {
                               child: Text(
                                 contract
                                     .contractApartment
-                                    .apartmentHeadDescripton,
+                                    .headDescription!,
                                 style: Theme.of(context).textTheme.headlineSmall
                                     ?.copyWith(fontWeight: FontWeight.bold),
                                 overflow: TextOverflow.ellipsis,

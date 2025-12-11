@@ -1,13 +1,13 @@
 import 'package:daleel_app_project/data/me.dart';
+import 'package:daleel_app_project/models/apartments2.dart';
 import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/screen/booking_screen.dart';
 import 'package:daleel_app_project/widget/custom_text_field.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
 import 'package:flutter/material.dart';
-import '../../models/apartments.dart';
 
 class ApartmentDetailsScreen extends StatefulWidget {
-  final Apartments apartment;
+  final Apartments2 apartment;
 
   const ApartmentDetailsScreen({super.key, required this.apartment});
 
@@ -23,7 +23,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    selectedImage = widget.apartment.apartmentPictures.first;
+    selectedImage = 'assets/images/user.png';
     _newCommentController = TextEditingController();
   }
 
@@ -36,7 +36,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final comments = widget.apartment.comments;
+    //final comments = widget.apartment.comments;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,13 +54,11 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-
                 ImagesSection(
                   selectedImage: selectedImage,
-                  images: widget.apartment.apartmentPictures.isNotEmpty
-                      ? widget.apartment.apartmentPictures
-                      : [widget.apartment.apartmentPicture],
+                  images: widget.apartment.images!.isNotEmpty
+                      ? widget.apartment.images!
+                      : ['assets/images/user.png'],
                   onImageSelected: (img) {
                     setState(() => selectedImage = img);
                   },
@@ -71,37 +69,47 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-
-                      ApartmentInfoSection(apartment: widget.apartment, theme: theme),
+                      ApartmentInfoSection(
+                        apartment: widget.apartment,
+                        theme: theme,
+                      ),
 
                       const SizedBox(height: 24),
 
-
-                      DescriptionSection(apartment: widget.apartment, theme: theme),
+                      DescriptionSection(
+                        apartment: widget.apartment,
+                        theme: theme,
+                      ),
 
                       const SizedBox(height: 30),
 
-
                       CommentsSection(
-                        comments: comments,
+                        comments: widget.apartment.comments!,
                         showAll: showAllComments,
                         theme: theme,
                         controller: _newCommentController,
-                        onToggleShow: () => setState(() => showAllComments = !showAllComments),
+                        onToggleShow: () =>
+                            setState(() => showAllComments = !showAllComments),
                         onSend: () {
                           if (_newCommentController.text.isNotEmpty) {
                             setState(() {
-                              comments.add(Comment(user: me,text: _newCommentController.text));
+                              widget.apartment.comments!.add(
+                                Comment(
+                                  id: 0,
+                                  content: _newCommentController.text,
+                                  userId: 3,
+                                  departmentId: widget.apartment.id,
+                                  user: me,
+                                ),
+                              );
+
                               _newCommentController.clear();
                               showAllComments = true;
                             });
                           }
                         },
                       ),
-
                       const SizedBox(height: 26),
-
 
                       PublisherSection(
                         apartment: widget.apartment,
@@ -115,7 +123,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
               ],
             ),
           ),
-
 
           Positioned(
             left: 0,
@@ -133,13 +140,17 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BookingCalendar()),
+                      MaterialPageRoute(
+                        builder: (context) => BookingCalendar(),
+                      ),
                     );
                   },
-                    child: Text(
+                  child: Text(
                     "Book Now",
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(color: Colors.white, fontSize: 18),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),
@@ -150,7 +161,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
     );
   }
 }
-
 
 class ImagesSection extends StatelessWidget {
   final String selectedImage;
@@ -196,7 +206,7 @@ class ImagesSection extends StatelessWidget {
                         color: Colors.black26,
                         blurRadius: 4,
                         offset: Offset(0, 2),
-                      )
+                      ),
                     ],
                     image: DecorationImage(
                       image: AssetImage(img),
@@ -213,9 +223,8 @@ class ImagesSection extends StatelessWidget {
   }
 }
 
-
 class ApartmentInfoSection extends StatelessWidget {
-  final Apartments apartment;
+  final Apartments2 apartment;
   final ThemeData theme;
 
   const ApartmentInfoSection({
@@ -230,7 +239,7 @@ class ApartmentInfoSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          apartment.apartmentHeadDescripton,
+          apartment.headDescription!,
           style: theme.textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.bold,
             fontSize: 22,
@@ -244,13 +253,18 @@ class ApartmentInfoSection extends StatelessWidget {
             const SizedBox(width: 6),
             Expanded(
               child: Text(
-                apartment.governorate.name+' / '+apartment.city.name,
-                style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[700]),
+                apartment.location!['city'] +
+                    // ignore: prefer_interpolation_to_compose_strings
+                    ' / ' +
+                    apartment.location!['city'],
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: Colors.grey[700],
+                ),
               ),
             ),
             const Icon(Icons.star_rounded, color: Colors.amber, size: 24),
             const SizedBox(width: 4),
-            Text(apartment.apartmentRate.toStringAsFixed(1)),
+            Text(apartment.averageRating.toString()),
           ],
         ),
         const SizedBox(height: 6),
@@ -258,8 +272,12 @@ class ApartmentInfoSection extends StatelessWidget {
         Row(
           children: [
             const Icon(Icons.attach_money, color: Colors.green, size: 22),
-            Text("${apartment.rentFee} / month",
-                style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[700])),
+            Text(
+              "${apartment.rentFee} / month",
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: Colors.grey[700],
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 22),
@@ -273,7 +291,12 @@ class ApartmentInfoSection extends StatelessWidget {
           ),
           children: [
             _infoTile(Icons.bed, "Bedroom", "${apartment.bedrooms}", theme),
-            _infoTile(Icons.shower, "Bathroom", "${apartment.bathrooms}", theme),
+            _infoTile(
+              Icons.shower,
+              "Bathroom",
+              "${apartment.bathrooms}",
+              theme,
+            ),
             _infoTile(Icons.apartment, "Floor", "${apartment.floor}", theme),
             _infoTile(Icons.square_foot, "Area", "${apartment.area} m²", theme),
           ],
@@ -291,8 +314,12 @@ class ApartmentInfoSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(title, style: theme.textTheme.bodyMedium),
-            Text(value,
-                style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+            Text(
+              value,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ],
@@ -300,9 +327,8 @@ class ApartmentInfoSection extends StatelessWidget {
   }
 }
 
-
 class DescriptionSection extends StatelessWidget {
-  final Apartments apartment;
+  final Apartments2 apartment;
   final ThemeData theme;
 
   const DescriptionSection({
@@ -316,18 +342,21 @@ class DescriptionSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Description",
-            style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
+        Text(
+          "Description",
+          style: theme.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         const SizedBox(height: 10),
         Text(
-          apartment.description,
+          apartment.description!,
           style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[700]),
         ),
       ],
     );
   }
 }
-
 
 class CommentsSection extends StatelessWidget {
   final List<Comment> comments;
@@ -352,21 +381,27 @@ class CommentsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Comments",
-            style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
+        Text(
+          "Comments",
+          style: theme.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         const SizedBox(height: 16),
-
         Column(
           children: [
-            for (int i = 0;
-                i < (showAll ? comments.length : comments.length.clamp(0, 3));
-                i++)
+            for (
+              int i = 0;
+              i < (showAll ? comments.length : comments.length.clamp(0, 3));
+              i++
+            )
               Column(
                 children: [
                   _commentRow(
-                    name: "${comments[i].user.firstName} ${comments[i].user.lastName}",
-                    image: comments[i].user.profileImage,
-                    comment: comments[i].text,
+                    name:
+                        "${comments[i].user?.firstName ?? ''} ${comments[i].user?.lastName ?? ''}",
+                    image: comments[i].user!.profileImage,
+                    comment: comments[i].content,
                     theme: theme,
                   ),
                   if (i < comments.length - 1)
@@ -384,7 +419,6 @@ class CommentsSection extends StatelessWidget {
               ),
           ],
         ),
-
         const SizedBox(height: 16),
 
         Row(
@@ -432,9 +466,12 @@ class CommentsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(name,
-                  style:
-                      theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+              Text(
+                name,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 4),
               Text(comment, style: theme.textTheme.bodyMedium),
             ],
@@ -445,9 +482,8 @@ class CommentsSection extends StatelessWidget {
   }
 }
 
-
 class PublisherSection extends StatelessWidget {
-  final Apartments apartment;
+  final Apartments2 apartment;
   final ThemeData theme;
 
   const PublisherSection({
@@ -460,8 +496,12 @@ class PublisherSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Published By",
-            style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
+        Text(
+          "Published By",
+          style: theme.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         const SizedBox(height: 12),
 
         Row(
@@ -473,9 +513,10 @@ class PublisherSection extends StatelessWidget {
             const SizedBox(width: 12),
 
             Text(
-              apartment.publisher.firstName,
-              style:
-                  theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+              'flan',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
             ),
 
             const Spacer(),
@@ -487,8 +528,7 @@ class PublisherSection extends StatelessWidget {
               textColor: theme.colorScheme.primary,
               icon: Icons.chat_bubble_outline,
               onPressed: () {},
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             ),
           ],
         ),

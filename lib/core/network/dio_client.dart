@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'api.dart';
 import '../storage/secure_storage.dart';
-import '../storage/storage_keys.dart';
-
 
 class DioClient extends Api {
   final AppSecureStorage storage;
@@ -10,15 +8,14 @@ class DioClient extends Api {
   DioClient({required this.storage}) : super() {
     dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          final token = await storage.read(StorageKeys.token);
+  onRequest: (options, handler) async {
 
-          if (token != null && token.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer $token';
-          }
+  const token = "1|URjPdkzYa71eE7Ams1wfK5deOhIZGBpVZ7JW2Fugad5ec12f";
 
-          return handler.next(options);
-        },
+  options.headers['Authorization'] = 'Bearer $token';
+
+  return handler.next(options);
+},
 
         onError: (error, handler) async {
           print("API Error: ${error.response?.data}");
@@ -27,11 +24,6 @@ class DioClient extends Api {
       ),
     );
 
-    dio.interceptors.add(
-      LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-      ),
-    );
+    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
   }
 }

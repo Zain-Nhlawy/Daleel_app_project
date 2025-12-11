@@ -48,4 +48,5 @@ class User {
       'token': token,
     };
   }
+
 }
