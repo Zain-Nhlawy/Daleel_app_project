@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-<<<<<<< HEAD
-=======
+
 import '../data/governorates_data.dart';
 import '../widget/signup_widgets/signup_page1.dart';
 import '../widget/signup_widgets/signup_page2.dart';
 import 'package:daleel_app_project/screen/pick_location_screen.dart';
 import '../../dependencies.dart';
->>>>>>> f4e5bf8c3654076794ee0309f63f1e3435a6a64f
-
-
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
