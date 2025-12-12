@@ -49,52 +49,54 @@ class _SplashScreenState extends State<WelcomeCardScreen> with SingleTickerProvi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              "assets/images/Background.jpg",
-              fit: BoxFit.cover,
-            ),
-          ),
-          Column(
-            children: [
-              AnimatedPadding(
-                duration: const Duration(milliseconds: 600),
-                padding: EdgeInsets.only(top: showWelcomeCard ? 140 : 200),
-                child: Center(
-                  child: AnimatedLogo(
-                    scaleAnim: _scaleAnim,
-                    fadeAnim: _fadeAnim,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              WelcomeCard(
-                showWelcomeCard: showWelcomeCard,
-                onLogin: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
-                      transitionDuration: const Duration(seconds: 1),
-                    ),
-                  );
-                },
-                onCreateAccount: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => const SignUpScreen(),
-                      transitionDuration: const Duration(seconds: 1),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ],
+    body: Stack(
+      children: [
+        Positioned.fill(
+          child: Image.asset("assets/images/Background.jpg", fit: BoxFit.cover),
+        ),
+
+      AnimatedPositioned(
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeOut,
+        top: showWelcomeCard ? 170 : 250, 
+        left: 0,
+        right: 0,
+        child: AnimatedLogo(
+          scaleAnim: _scaleAnim,
+          fadeAnim: _fadeAnim,
+        ),
       ),
-    );
-  }
+
+      AnimatedPositioned(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOut,
+        bottom: showWelcomeCard ? 0 : -400,
+        left: 0,
+        right: 0,
+        child: WelcomeCard(
+          showWelcomeCard: showWelcomeCard,
+          onLogin: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const LoginScreen(),
+                transitionDuration: const Duration(seconds: 1),
+              ),
+            );
+          },
+          onCreateAccount: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const SignUpScreen(),
+                transitionDuration: const Duration(seconds: 1),
+              ),
+            );
+          },
+        ),
+      ),
+    ],
+    ),
+  );
+}
 }

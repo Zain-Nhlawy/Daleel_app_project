@@ -28,6 +28,7 @@ class UserService {
         await storage.write(StorageKeys.token, token);
         return user;
       }
+      print('Response data: ${response.data}');
     } catch (e) {
       print('Login error: $e');
     }
@@ -49,6 +50,7 @@ Future<User?> register(FormData formData) async {
       await storage.write(StorageKeys.token, token);
       return user;
     }
+    print('Response data: ${response.data}');
   } catch (e) {
     print('Register error: $e');
   }
@@ -71,6 +73,7 @@ Future<User?> getProfile() async {
       final user = User.fromJson(data, token: token);
       return user;
     }
+    print('Response data: ${response.data}');
   } catch (e) {
     print('GetProfile error: $e');
   }

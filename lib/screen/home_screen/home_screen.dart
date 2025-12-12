@@ -46,12 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(width: 8),
             CircleAvatar(
               radius: 27,
-              backgroundImage: (user != null &&
-                      user.profileImage.isNotEmpty)
-                  ? NetworkImage(user.profileImage)
-                  : const AssetImage('assets/images/user.png')
-                      as ImageProvider,
+              backgroundImage: (user != null && user.profileImage.isNotEmpty)
+                  ? NetworkImage("http://10.0.2.2:8000${user.profileImage}")
+                  : const AssetImage('assets/images/user.png') as ImageProvider,
             ),
+
             SizedBox(width: 15),
             Text(
               user != null

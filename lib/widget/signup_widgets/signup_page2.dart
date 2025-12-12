@@ -32,6 +32,7 @@ class SignUpPage2 extends StatelessWidget {
         color: Colors.brown.withOpacity(0.7),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(40)),
       ),
+      child: SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -49,6 +50,7 @@ class SignUpPage2 extends StatelessWidget {
             controller: phone,
             label: "Phone Number",
             icon: Icons.phone,
+            keyboardType: TextInputType.phone,
           ),
 
           CustomTextField(
@@ -63,6 +65,7 @@ class SignUpPage2 extends StatelessWidget {
             controller: password,
             label: "Password",
             icon: Icons.lock,
+            keyboardType: TextInputType.text,
             obscure: true,
           ),
 
@@ -70,6 +73,7 @@ class SignUpPage2 extends StatelessWidget {
             controller: confirmPassword,
             label: "Confirm Password",
             icon: Icons.lock,
+            keyboardType: TextInputType.text,
             obscure: true,
           ),
 
@@ -116,6 +120,7 @@ class SignUpPage2 extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }
