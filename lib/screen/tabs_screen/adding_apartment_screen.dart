@@ -16,6 +16,8 @@ class AddingApartmentScreen extends StatefulWidget {
 }
 
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
+  bool _isAvailable = true;
+  var _selectedStatusController = 'unfurnished';
   final TextEditingController _locationController = TextEditingController();
   Map<String, dynamic>? selectedLocation;
   File? _selectedImageController;
@@ -78,8 +80,8 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         bathrooms: int.tryParse(_apartmentBathroomsController.text) ?? 0,
         area: double.tryParse(_apartmentAreaController.text),
         description: _apartmetnDescriptionController.text,
-        isAvailable: false,
-        status: 'unfurnished',
+        isAvailable: _isAvailable,
+        status: _selectedStatusController,
       );
 
       setState(() {
@@ -312,68 +314,58 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 15),
-            Row(
-              children: [
-                SizedBox(width: 15),
-                Text('Select Apartment Location'),
-                SizedBox(width: 20),
-              ],
-            ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withOpacity(0.5),
-                    width: 1,
-                  ),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  onTap: _pickLocation,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 15,
-                    ),
-
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 24,
-                        ),
-                        const SizedBox(width: 15),
-
-                        Expanded(
-                          child: Text(
-                            _locationController.text,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onBackground,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                        ),
-                      ],
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: [
+                  Text('Status', style: Theme.of(context).textTheme.bodyMedium),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: const Color.fromARGB(174, 248, 245, 245),
+                      ),
+                      height: 48,
+                      child: DropdownButton(
+                        isExpanded: true,
+                        underline: const SizedBox.shrink(),
+                        elevation: 8,
+                        value: _selectedStatusController,
+                        items:
+                            ['partially furnished', 'unfurnished', 'furnished']
+                                .map(
+                                  (category) => DropdownMenuItem(
+                                    value: category,
+                                    child: Text(
+                                      category.toUpperCase(),
+                                      style: TextStyle(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (value) {
+                          if (value == null) {
+                            return;
+                          }
+                          setState(() {
+                            _selectedStatusController = value;
+                          });
+                        },
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
-
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
+            SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.all(16),
               child: GridView(
@@ -563,6 +555,102 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                     ],
                   ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withOpacity(0.3),
+                    width: 1,
+                  ),
+                ),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.event_available_outlined,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  title: Text(
+                    'Available for Rent Now',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                  ),
+                  trailing: Switch(
+                    value: _isAvailable,
+                    onChanged: (newValue) {
+                      setState(() {
+                        _isAvailable = newValue;
+                      });
+                    },
+                    activeColor: Colors.white,
+                    activeTrackColor: Theme.of(context).colorScheme.primary,
+                  ),
+                  onTap: () {
+                    setState(() {
+                      _isAvailable = !_isAvailable;
+                    });
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withOpacity(0.5),
+                    width: 1,
+                  ),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: InkWell(
+                  onTap: _pickLocation,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 15,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.location_on_outlined,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 24,
+                        ),
+                        const SizedBox(width: 15),
+                        Expanded(
+                          child: Text(
+                            _locationController.text.isEmpty
+                                ? 'Select Apartment Location'
+                                : _locationController.text,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  color: _locationController.text.isEmpty
+                                      ? Colors.grey.shade600
+                                      : Theme.of(
+                                          context,
+                                        ).colorScheme.onBackground,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 10),
