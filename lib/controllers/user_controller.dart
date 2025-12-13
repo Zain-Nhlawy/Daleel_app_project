@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 class UserController {
   final UserService userService;
   final AppSecureStorage storage;
+  
 
   User? _user;
   User? get user => _user;

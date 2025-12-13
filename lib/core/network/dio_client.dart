@@ -1,4 +1,3 @@
-import 'package:daleel_app_project/data/me.dart' as StorageKeys;
 import 'package:dio/dio.dart';
 import 'api.dart';
 import '../storage/secure_storage.dart';
@@ -12,7 +11,6 @@ class DioClient extends Api {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           final token = await storage.read(StorageKeys.token);
-
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }

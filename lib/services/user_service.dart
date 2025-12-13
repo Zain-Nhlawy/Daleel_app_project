@@ -4,7 +4,6 @@ import '../models/user.dart';
 import '../core/storage/storage_keys.dart';
 import 'package:dio/dio.dart';
 
-
 class UserService {
   final DioClient apiClient;
   final AppSecureStorage storage;
@@ -26,6 +25,7 @@ class UserService {
         final token = data['token'];    
         final user = User.fromJson(data['user'],token: token,);
         await storage.write(StorageKeys.token, token);
+        print('Token received from server: $token');
         return user;
       }
       print('Response data: ${response.data}');
@@ -70,20 +70,13 @@ Future<User?> register(FormData formData) async {
 
 Future<User?> getProfile() async {
   try {
-    final token = await storage.read(StorageKeys.token);
-    final response = await apiClient.dio.get(
-      'v1/auth/me',
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-    );
+    final response = await apiClient.dio.get('auth/me');
 
     if (response.statusCode == 200) {
       final data = response.data['data'];
-      final user = User.fromJson(data, token: token);
-      return user;
+      final token = await storage.read(StorageKeys.token);
+      return User.fromJson(data, token: token);
     }
-    print('Response data: ${response.data}');
   } catch (e) {
     print('GetProfile error: $e');
   }
@@ -92,10 +85,20 @@ Future<User?> getProfile() async {
 
 
 
+
   Future<bool> logout() async {
   try {
+    print('🔹 Logging out...');
+    final token = await storage.read(StorageKeys.token);
+    if (token == null) {
+      print('⚠️ No token found, cannot logout properly');
+      return false;
+    }
+    else{
+      print('🔹 Token found: $token');
+    }
     final response = await apiClient.dio.post('auth/logout');
-
+    print('🔹 Logout request sent');
     if (response.statusCode == 200) {
       await storage.delete(StorageKeys.token);
       return true;

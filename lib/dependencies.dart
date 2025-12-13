@@ -4,7 +4,6 @@ import 'services/user_service.dart';
 import 'controllers/user_controller.dart';
 
 final AppSecureStorage appStorage = AppSecureStorage();
-
 final DioClient dioClient = DioClient(storage: appStorage);
 
 final UserService userService = UserService(
