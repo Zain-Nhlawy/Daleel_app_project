@@ -54,7 +54,7 @@ class ContractDataCardWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Image.asset(
-                      contract.contractApartment.apartmentPicture,
+                      'assets/images/user.png',
                       fit: BoxFit.cover,
                     ),
                   ),

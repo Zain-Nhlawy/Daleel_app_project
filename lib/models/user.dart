@@ -6,8 +6,8 @@ class User {
   final String phone;
   final String email;
   final String birthdate;
-  final String location;      
-  final String password;      
+  final Map<String, dynamic>? location; 
+  final String password;
   final String? verificationState;
   final String? token;
 
@@ -34,8 +34,10 @@ class User {
       phone: json['phone'] ?? '',
       email: json['email'] ?? '',
       birthdate: json['birthdate'] ?? '',
-      location: json['location'] ?? '',      
-      password: json['password'] ?? '',    
+      location: json['location'] != null
+          ? Map<String, dynamic>.from(json['location'])
+          : null, 
+      password: json['password'] ?? '',
       verificationState: json['verificationState'],
       token: token,
     );
@@ -50,8 +52,8 @@ class User {
       'phone': phone,
       'email': email,
       'birthdate': birthdate,
-      'location': location,       
-      'password': password,      
+      'location': location, 
+      'password': password,
       'verificationState': verificationState,
       'token': token,
     };

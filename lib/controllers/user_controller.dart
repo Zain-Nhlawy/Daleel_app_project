@@ -29,7 +29,7 @@ class UserController {
     required String profileImage,
     required String personIdImage,
     required String birthdate,
-    required String location,
+    required Map<String, dynamic> location,
   }) async {
     final profileFile = await MultipartFile.fromFile(profileImage, filename: "profile.jpg");
     final idFile = await MultipartFile.fromFile(personIdImage, filename: "id.jpg");
@@ -43,7 +43,10 @@ class UserController {
       'profileImage': profileFile,
       'personIdImage': idFile,
       'birthdate': birthdate,
-      'location': location,
+      'location[governorate]': location['governorate'],
+      'location[city]': location['city'],
+      'location[district]': location['district'],
+      'location[street]': location['street'],
     });
 
     final registeredUser = await userService.register(formData);

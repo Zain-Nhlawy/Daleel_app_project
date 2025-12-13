@@ -42,6 +42,7 @@ Future<User?> register(FormData formData) async {
       'auth/register',
       data: formData,
     );
+    print('Response data: ${response.data}');
 
     if (response.statusCode == 200) {
       final data = response.data['data'];
@@ -51,11 +52,20 @@ Future<User?> register(FormData formData) async {
       return user;
     }
     print('Response data: ${response.data}');
+  } on DioException catch (e) {
+    print('Register DioException: $e');
+    if (e.response != null) {
+      print('Status code: ${e.response!.statusCode}');
+      print('Data: ${e.response!.data}');
+    } else {
+      print('No response received');
+    }
   } catch (e) {
-    print('Register error: $e');
+    print('Other error: $e');
   }
   return null;
 }
+
 
 
 Future<User?> getProfile() async {

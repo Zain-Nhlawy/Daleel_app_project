@@ -1,9 +1,12 @@
-import 'dart:io';
-import 'package:daleel_app_project/data/dummy_data.dart';
-import 'package:daleel_app_project/data/me.dart';
+// ignore_for_file: unused_element
 
+import 'dart:io';
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/comment.dart';
+import 'package:daleel_app_project/repository/add_apartments_repo.dart';
+import 'package:daleel_app_project/screen/home_screen/home_screen.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -21,34 +24,33 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   late List<City> currentCities =
       governorateCities[_selectedCountryController]!;
   final _apartmentHeadDescriptionController = TextEditingController();
-  final _apartmentRate = 5.0;
   final _apartmentPriceContoller = TextEditingController();
   final _apartmentFloorController = TextEditingController();
   final _apartmentBedroomsController = TextEditingController();
   final _apartmentBathroomsController = TextEditingController();
   final _apartmentAreaController = TextEditingController();
-  final _apartmentPuplisher = me;
-  final List<String> _apartmentPictureController = [];
+  // final List<String> _apartmentPictureController = [];
   final _apartmetnDescriptionController = TextEditingController();
   final List<Comment> _apartmentComments = [];
 
-  Future _pickImageFromGallery() async {
+  final List<File> _apartmentPictures = [];
+
+  Future<void> _pickImageFromGallery() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) return null;
+    if (image == null) return;
     setState(() {
-      _selectedImageController = File(image.path);
+      _apartmentPictures.add(File(image.path));
     });
   }
 
-  void _saveApartment() {
-    if (_selectedImageController == null ||
-        _apartmentHeadDescriptionController.text.isEmpty ||
+  Future<void> _saveApartment() async {
+    if (_apartmentHeadDescriptionController.text.isEmpty ||
         _apartmentPriceContoller.text.isEmpty) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text('invaled data', style: TextStyle(color: Colors.red)),
-          content: Text('some of the data are missing or invaid'),
+          title: Text('Invalid data', style: TextStyle(color: Colors.red)),
+          content: Text('Some of the data are missing or invalid'),
           actions: [
             ElevatedButton(
               onPressed: () {
@@ -59,54 +61,81 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           ],
         ),
       );
+      return;
     }
 
-    final newApartment = Apartments(
-      governorate: _selectedCountryController,
-      city: _selectedCityController,
-      apartmentPicture: _selectedImageController!.path,
-      apartmentHeadDescripton: _apartmentHeadDescriptionController.text,
-      apartmentRate: _apartmentRate,
-      rentFee: double.tryParse(_apartmentPriceContoller.text) ?? 0,
-      floor: int.tryParse(_apartmentFloorController.text) ?? 0,
-      bedrooms: int.tryParse(_apartmentBedroomsController.text) ?? 0,
-      bathrooms: int.tryParse(_apartmentBathroomsController.text) ?? 0,
-      area: int.tryParse(_apartmentAreaController.text) ?? 0,
-      publisher: _apartmentPuplisher,
-      apartmentPictures: _apartmentPictureController,
-      description: _apartmetnDescriptionController.text,
-      comments: _apartmentComments,
-    );
+    List<File> allImages = [];
+    if (_selectedImageController != null) {
+      allImages.add(_selectedImageController!);
+    }
+    allImages.addAll(_apartmentPictures);
 
-    setState(() {
-      apartmentsList.add(newApartment);
-    });
+    Map<String, dynamic> location = {
+      'city': _selectedCityController.name,
+      'governorate': _selectedCountryController.name,
+    };
 
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Succes'),
-        content: Text('Your apartment added to the list'),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-            },
-            child: Text('Okay'),
-          ),
-        ],
-      ),
-    );
-    _apartmentHeadDescriptionController.clear();
-    _apartmentPriceContoller.clear();
-    _apartmentFloorController.clear();
-    _apartmentBedroomsController.clear();
-    _apartmentBathroomsController.clear();
-    _apartmentAreaController.clear();
-    _apartmetnDescriptionController.clear();
-    _selectedImageController = null;
-    _apartmentPictureController.clear();
-    _apartmentComments.clear();
+    final addRepo = AddApartmentsRepo(dioClient: dioClient);
+
+    try {
+      final newApartment = await addRepo.addApartment(
+        userId: 4,
+        images: allImages,
+        location: location,
+        headDescription: _apartmentHeadDescriptionController.text,
+        rentFee: double.tryParse(_apartmentPriceContoller.text) ?? 0,
+        floor: int.tryParse(_apartmentFloorController.text) ?? 0,
+        bedrooms: int.tryParse(_apartmentBedroomsController.text) ?? 0,
+        bathrooms: int.tryParse(_apartmentBathroomsController.text) ?? 0,
+        area: double.tryParse(_apartmentAreaController.text),
+        description: _apartmetnDescriptionController.text,
+        isAvailable: false,
+        status: 'unfurnished',
+      );
+
+      setState(() {
+        apartments.add(newApartment);
+      });
+      _apartmentHeadDescriptionController.clear();
+      _apartmentPriceContoller.clear();
+      _apartmentFloorController.clear();
+      _apartmentBedroomsController.clear();
+      _apartmentBathroomsController.clear();
+      _apartmentAreaController.clear();
+      _apartmetnDescriptionController.clear();
+      _selectedImageController = null;
+      _apartmentPictures.clear();
+      _apartmentComments.clear();
+
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Success'),
+          content: Text('Your apartment was added successfully!'),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text('Okay'),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      print("Error adding apartment: $e");
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Error', style: TextStyle(color: Colors.red)),
+          content: Text('Failed to add apartment. Please try again.'),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text('Okay'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
@@ -557,7 +586,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 height: 120,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: _apartmentPictureController.length + 1,
+                  itemCount: _apartmentPictures.length + 1,
                   itemBuilder: (context, index) {
                     if (index == 0) {
                       return GestureDetector(
@@ -569,7 +598,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                           if (image == null) return;
 
                           setState(() {
-                            _apartmentPictureController.add(image.path);
+                            _apartmentPictures.add(File(image.path));
                           });
                         },
                         child: Container(
@@ -587,7 +616,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                         ),
                       );
                     }
-                    final picturePath = _apartmentPictureController[index - 1];
+                    final picturePath = _apartmentPictures[index - 1];
 
                     return Stack(
                       children: [
@@ -597,7 +626,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
                             image: DecorationImage(
-                              image: FileImage(File(picturePath)),
+                              image: FileImage(picturePath),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -608,7 +637,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                _apartmentPictureController.removeAt(index - 1);
+                                _apartmentPictures.removeAt(index - 1);
                               });
                             },
                             child: Container(

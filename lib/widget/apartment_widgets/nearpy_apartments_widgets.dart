@@ -1,14 +1,17 @@
-import 'package:daleel_app_project/models/apartments.dart';
+
+import 'package:daleel_app_project/models/apartments2.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:flutter/material.dart';
 
 class NearpyApartmentsWidgets extends StatelessWidget {
   const NearpyApartmentsWidgets({super.key, required this.apartment});
 
-  final Apartments apartment;
+  final Apartments2 apartment;
+
+
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -33,7 +36,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                   bottomLeft: Radius.circular(16),
                 ),
                 child: Image.asset(
-                  apartment.apartmentPicture,
+                  'assets/images/user.png',
                   width: 150,
                   height: double.infinity,
                   fit: BoxFit.cover,
@@ -50,7 +53,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        apartment.apartmentHeadDescripton,
+                        apartment.headDescription!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -60,7 +63,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                       ),
 
                       Text(
-                        apartment.governorate.name,
+                        'nano',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -75,7 +78,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            apartment.apartmentRate.toString(),
+                            apartment.averageRating.toString(),
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),

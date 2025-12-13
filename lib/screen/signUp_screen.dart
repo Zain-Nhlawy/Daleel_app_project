@@ -1,11 +1,10 @@
+import 'package:daleel_app_project/data/governorates_data.dart';
+import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/screen/pick_location_screen.dart';
+import 'package:daleel_app_project/widget/signup_widgets/signup_page1.dart';
+import 'package:daleel_app_project/widget/signup_widgets/signup_page2.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../data/governorates_data.dart';
-import '../widget/signup_widgets/signup_page1.dart';
-import '../widget/signup_widgets/signup_page2.dart';
-import 'package:daleel_app_project/screen/pick_location_screen.dart';
-import '../../dependencies.dart';
-
 
 
 class SignUpScreen extends StatefulWidget {
@@ -29,6 +28,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final ImagePicker _picker = ImagePicker();
   String? _profileImagePath;
   String? _idImagePath;
+  Map<String, dynamic>? selectedLocation;
+
 
   bool showCard = false;
   bool showSignUp2 = false;
@@ -98,6 +99,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _showError("Please select profile and ID images");
     return;
   }
+  if (selectedLocation == null) {
+  _showError("Please select location");
+  return;
+}
 
   try {
     final user = await userController.register(
@@ -109,7 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       profileImage: _profileImagePath!,
       personIdImage: _idImagePath!,
       birthdate: _dobController.text,
-      location: _locationController.text,
+      location: selectedLocation!,
     );
 
     if (user != null) {
@@ -122,18 +127,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 }
 
-void _pickLocation() async {
-  final result = await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const PickLocationScreen(),
-    ),
-  );
+  void _pickLocation() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const PickLocationScreen(),
+      ),
+    );
 
-  if (result != null && result is String) {
-    _locationController.text = result;
+    if (result != null && result is Map) {
+      setState(() {
+        selectedLocation = Map<String, dynamic>.from(result);
+
+        _locationController.text =
+            "${result['governorate']}, ${result['city']}, ${result['district']}, ${result['street']}";
+      });
+    }
   }
-}
+
 
 
   @override
