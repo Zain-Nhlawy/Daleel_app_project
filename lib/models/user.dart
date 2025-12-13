@@ -6,7 +6,7 @@ class User {
   final String phone;
   final String email;
   final String birthdate;
-  final Map<String, dynamic>? location; 
+  final Map<String, dynamic>? location;
   final String password;
   final String? verificationState;
   final String? token;
@@ -19,8 +19,8 @@ class User {
     required this.phone,
     required this.email,
     required this.birthdate,
-    required this.location,    
-    required this.password,    
+    required this.location,
+    required this.password,
     this.verificationState,
     this.token,
   });
@@ -36,7 +36,7 @@ class User {
       birthdate: json['birthdate'] ?? '',
       location: json['location'] != null
           ? Map<String, dynamic>.from(json['location'])
-          : null, 
+          : null,
       password: json['password'] ?? '',
       verificationState: json['verificationState'],
       token: token,
@@ -52,7 +52,7 @@ class User {
       'phone': phone,
       'email': email,
       'birthdate': birthdate,
-      'location': location, 
+      'location': location,
       'password': password,
       'verificationState': verificationState,
       'token': token,

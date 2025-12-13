@@ -1,8 +1,6 @@
-// ignore_for_file: unused_element
-
+// ignore_for_file: unused_element, use_build_context_synchronously
 import 'dart:io';
 import 'package:daleel_app_project/dependencies.dart';
-import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
 import 'package:daleel_app_project/screen/home_screen/home_screen.dart';
@@ -20,22 +18,15 @@ class AddingApartmentScreen extends StatefulWidget {
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   final TextEditingController _locationController = TextEditingController();
   Map<String, dynamic>? selectedLocation;
-
   File? _selectedImageController;
-  Governorate _selectedCountryController = Governorate.Damascus;
-  City _selectedCityController = governorateCities[Governorate.Damascus]![0];
-  late List<City> currentCities =
-      governorateCities[_selectedCountryController]!;
   final _apartmentHeadDescriptionController = TextEditingController();
   final _apartmentPriceContoller = TextEditingController();
   final _apartmentFloorController = TextEditingController();
   final _apartmentBedroomsController = TextEditingController();
   final _apartmentBathroomsController = TextEditingController();
   final _apartmentAreaController = TextEditingController();
-  // final List<String> _apartmentPictureController = [];
   final _apartmetnDescriptionController = TextEditingController();
   final List<Comment> _apartmentComments = [];
-
   final List<File> _apartmentPictures = [];
 
   Future<void> _pickImageFromGallery() async {
@@ -73,18 +64,13 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     }
     allImages.addAll(_apartmentPictures);
 
-    Map<String, dynamic> location = {
-      'city': _selectedCityController.name,
-      'governorate': _selectedCountryController.name,
-    };
-
     final addRepo = AddApartmentsRepo(dioClient: dioClient);
 
     try {
       final newApartment = await addRepo.addApartment(
         userId: 4,
         images: allImages,
-        location: location,
+        location: selectedLocation,
         headDescription: _apartmentHeadDescriptionController.text,
         rentFee: double.tryParse(_apartmentPriceContoller.text) ?? 0,
         floor: int.tryParse(_apartmentFloorController.text) ?? 0,
@@ -330,45 +316,63 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
             Row(
               children: [
                 SizedBox(width: 15),
-                Text('Governorate'),
+                Text('Select Apartment Location'),
                 SizedBox(width: 20),
               ],
             ),
             const SizedBox(height: 20),
-            SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withOpacity(0.5),
+                    width: 1,
+                  ),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: InkWell(
+                  onTap: _pickLocation,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 15,
+                    ),
 
-            Row(
-              children: [
-                SizedBox(width: 50),
-                Text('City'),
-                SizedBox(width: 50),
-                DropdownButton(
-                  elevation: 8,
-                  value: _selectedCityController,
-                  items: currentCities
-                      .map(
-                        (category) => DropdownMenuItem(
-                          value: category,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.location_on_outlined,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 24,
+                        ),
+                        const SizedBox(width: 15),
+
+                        Expanded(
                           child: Text(
-                            category.name.toUpperCase(),
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                            _locationController.text,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onBackground,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() {
-                      _selectedCityController = value;
-                    });
-                  },
+                      ],
+                    ),
+                  ),
                 ),
-              ],
+              ),
             ),
+
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(16),
