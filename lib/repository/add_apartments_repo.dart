@@ -40,7 +40,6 @@ FormData formData = FormData.fromMap({
   "location[district]": location["district"] ?? "",
   "location[street]": location["street"] ?? "",
   
-  // ✔️ الصور كمصفوفة images[]
   "images[]": [
     for (var img in images)
       await MultipartFile.fromFile(

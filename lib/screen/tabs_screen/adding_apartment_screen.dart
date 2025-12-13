@@ -6,7 +6,6 @@ import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
 import 'package:daleel_app_project/screen/home_screen/home_screen.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

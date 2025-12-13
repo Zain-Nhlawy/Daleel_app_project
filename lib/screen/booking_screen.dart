@@ -16,6 +16,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
   DateTime? _startDate;
   DateTime? _endDate;
 
+  // ignore: unused_field
   late EventList<Event> _markedDates;
 
   final List<Map<String, String>> availableTimes = [

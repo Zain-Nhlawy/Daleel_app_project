@@ -1,6 +1,4 @@
-import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/models/apartments.dart';
-import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/models/contracts.dart';
 
 final List<Apartments> apartmentsList = [

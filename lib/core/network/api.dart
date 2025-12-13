@@ -6,7 +6,7 @@ class Api {
   Api() {
     dio = Dio(
       BaseOptions(
-        baseUrl: "http://10.47.171.209:8000/api/v1/",
+        baseUrl: "http://10.0.2.2:8000/api/v1/",
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
         sendTimeout: const Duration(seconds: 15),
@@ -16,39 +16,37 @@ class Api {
   }
 
   String handleError(dynamic error) {
-  if (error is DioException) {
-    switch (error.type) {
-      case DioExceptionType.connectionTimeout:
-        return "Connection timed out. Please check your internet.";
+    if (error is DioException) {
+      switch (error.type) {
+        case DioExceptionType.connectionTimeout:
+          return "Connection timed out. Please check your internet.";
 
-      case DioExceptionType.sendTimeout:
-        return "Send timeout. Request took too long to leave the device.";
+        case DioExceptionType.sendTimeout:
+          return "Send timeout. Request took too long to leave the device.";
 
-      case DioExceptionType.receiveTimeout:
-        return "Receive timeout. Server took too long to respond.";
+        case DioExceptionType.receiveTimeout:
+          return "Receive timeout. Server took too long to respond.";
 
-      case DioExceptionType.badCertificate:
-        return "Bad certificate. Server identity could not be verified.";
+        case DioExceptionType.badCertificate:
+          return "Bad certificate. Server identity could not be verified.";
 
-      case DioExceptionType.badResponse:
-        final statusCode = error.response?.statusCode;
-        final data = error.response?.data;
+        case DioExceptionType.badResponse:
+          final statusCode = error.response?.statusCode;
+          final data = error.response?.data;
 
-        return "Server error ($statusCode): ${data ?? "Unknown error"}";
+          return "Server error ($statusCode): ${data ?? "Unknown error"}";
 
-      case DioExceptionType.cancel:
-        return "Request was cancelled.";
+        case DioExceptionType.cancel:
+          return "Request was cancelled.";
 
-      case DioExceptionType.connectionError:
-        return "Network connection failed. No internet or server unreachable.";
+        case DioExceptionType.connectionError:
+          return "Network connection failed. No internet or server unreachable.";
 
-      case DioExceptionType.unknown:
-      default:
-        return "Unexpected error: ${error.message}";
+        case DioExceptionType.unknown:
+          return "Unexpected error: ${error.message}";
+      }
     }
+
+    return "Unknown error occurred";
   }
-
-  return "Unknown error occurred";
-}
-
 }

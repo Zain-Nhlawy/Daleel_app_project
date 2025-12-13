@@ -11,8 +11,9 @@ class PickLocationScreen extends StatefulWidget {
 }
 
 class _PickLocationScreenState extends State<PickLocationScreen> {
-  LatLng _center = LatLng(33.5138, 36.2765); 
-  double _zoom = 9.0;
+  
+  final LatLng _center = LatLng(33.5138, 36.2765); 
+  final double _zoom = 9.0;
 
   LatLng? _selectedLatLng;
 

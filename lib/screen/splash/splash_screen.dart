@@ -1,5 +1,5 @@
 
-import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
+import 'package:daleel_app_project/screen/splash/welcomeCardScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       if (status == AnimationStatus.completed) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const HomeScreenTabs()),
+          MaterialPageRoute(builder: (_) => const WelcomeCardScreen()),
         );
       }
     });
