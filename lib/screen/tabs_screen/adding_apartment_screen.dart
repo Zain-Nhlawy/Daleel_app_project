@@ -6,6 +6,7 @@ import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
 import 'package:daleel_app_project/screen/home_screen/home_screen.dart';
+import 'package:daleel_app_project/screen/pick_location_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -17,6 +18,9 @@ class AddingApartmentScreen extends StatefulWidget {
 }
 
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
+  final TextEditingController _locationController = TextEditingController();
+  Map<String, dynamic>? selectedLocation;
+
   File? _selectedImageController;
   Governorate _selectedCountryController = Governorate.Damascus;
   City _selectedCityController = governorateCities[Governorate.Damascus]![0];
@@ -134,6 +138,22 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           ],
         ),
       );
+    }
+  }
+
+  void _pickLocation() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const PickLocationScreen()),
+    );
+
+    if (result != null && result is Map) {
+      setState(() {
+        selectedLocation = Map<String, dynamic>.from(result);
+
+        _locationController.text =
+            "${result['governorate']}, ${result['city']}, ${result['district']}, ${result['street']}";
+      });
     }
   }
 
@@ -307,40 +327,11 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
               ],
             ),
             SizedBox(height: 15),
-
             Row(
               children: [
                 SizedBox(width: 15),
                 Text('Governorate'),
                 SizedBox(width: 20),
-                DropdownButton(
-                  elevation: 8,
-                  value: _selectedCountryController,
-                  items: Governorate.values
-                      .map(
-                        (category) => DropdownMenuItem(
-                          value: category,
-                          child: Text(
-                            category.name.toUpperCase(),
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() {
-                      _selectedCountryController = value;
-                      currentCities =
-                          governorateCities[_selectedCountryController]!;
-                      _selectedCityController = currentCities[0];
-                    });
-                  },
-                ),
               ],
             ),
             const SizedBox(height: 20),

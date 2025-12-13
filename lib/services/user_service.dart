@@ -28,6 +28,7 @@ class UserService {
         await storage.write(StorageKeys.token, token);
         return user;
       }
+      print('Response data: ${response.data}');
     } catch (e) {
       print('Login error: $e');
     }
@@ -41,6 +42,7 @@ Future<User?> register(FormData formData) async {
       'auth/register',
       data: formData,
     );
+    print('Response data: ${response.data}');
 
     if (response.statusCode == 200) {
       final data = response.data['data'];
@@ -49,11 +51,21 @@ Future<User?> register(FormData formData) async {
       await storage.write(StorageKeys.token, token);
       return user;
     }
+    print('Response data: ${response.data}');
+  } on DioException catch (e) {
+    print('Register DioException: $e');
+    if (e.response != null) {
+      print('Status code: ${e.response!.statusCode}');
+      print('Data: ${e.response!.data}');
+    } else {
+      print('No response received');
+    }
   } catch (e) {
-    print('Register error: $e');
+    print('Other error: $e');
   }
   return null;
 }
+
 
 
 Future<User?> getProfile() async {
@@ -71,6 +83,7 @@ Future<User?> getProfile() async {
       final user = User.fromJson(data, token: token);
       return user;
     }
+    print('Response data: ${response.data}');
   } catch (e) {
     print('GetProfile error: $e');
   }

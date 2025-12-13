@@ -20,6 +20,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
   String governorate = "Unknown governorate";
   String city = "Unknown City";
   String street = "Unknown Street";
+  String district = "Unknown district";
 
   final MapController _mapController = MapController();
 
@@ -91,7 +92,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "$governorate - $city - $street",
+                  "$governorate - $city - $district - $street",
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
@@ -106,8 +107,15 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
               onPressed: () {
                 if (_selectedLatLng == null) return;
 
-                String result = "$governorate, $city, $street";
-                Navigator.pop(context, result);
+                final location = {
+                  "governorate": governorate,
+                  "city": city,
+                  "district": district,
+                  "street": street,
+                };
+
+                Navigator.pop(context, location);
+
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.brown,
@@ -142,18 +150,18 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
       final data = response.data['address'] ?? {};
       if (!mounted) return; 
       setState(() {
-        governorate = data['state'] ??  "Unknown governorate:(";
-        city = data['city'] ??
-              data['county'] ??
-              "Unknown City:(";
-        street = data['suburb'] ?? data['road'] ??  "Unknown Street:(";
+        governorate = data['state'] ?? "Unknown governorate :(";
+        city = data['city'] ?? data['county'] ?? "Unknown city :(";
+        district = data['suburb'] ?? data['neighbourhood'] ?? "Unknown district :(";
+        street = data['road'] ?? "Unknown street :(";
       });
     } catch (e) {
       if (!mounted) return;
       setState(() {
         governorate = "Unknown governorate";
         city = "Unknown City";
-        street = "Unknown Street";
+        district = "Unknown district";
+        street = "Unknown Street"; 
       });
     }
   }

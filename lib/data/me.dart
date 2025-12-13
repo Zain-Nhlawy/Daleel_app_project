@@ -6,10 +6,15 @@ const me = User(
   profileImage: 'assets/images/user.png', 
   personIdImage: 'assets/images/user.png', 
   phone: '0985587575', 
-  location:"bbb",
-  password:"123123",
+  location: {
+    'governorate': 'Damascus Governorate',
+    'city': 'Al-Mazza Municipality',
+    'district': 'Rabwa Neighborhood',
+    'street': 'Unknown street :(',
+  },
+  password: "123123",
   email: 'zain@gmail.com', 
-  birthdate: '2000-5-5'
+  birthdate: '2000-5-5',
 );
 
 const baseURL = "http://192.168.1.103:8000/api";
