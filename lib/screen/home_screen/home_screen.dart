@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:daleel_app_project/models/apartments2.dart';
+import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/repository/apartment_repo.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -215,3 +217,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+

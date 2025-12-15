@@ -1,5 +1,5 @@
 import 'package:daleel_app_project/core/network/dio_client.dart';
-import 'package:daleel_app_project/models/apartments2.dart';
+import 'package:daleel_app_project/models/apartments.dart';
 
 class ApartmentRepo {
   final DioClient dioClient;

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:daleel_app_project/Cubit/favorites_state.dart';
 import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/dependencies.dart';
-import 'package:daleel_app_project/models/apartments2.dart';
+import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/repository/apartment_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;

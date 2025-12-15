@@ -1,7 +1,7 @@
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/contracts.dart';
 
-final List<Apartments> apartmentsList = [
+final List<Apartments2> apartmentsList = [
   // Apartments(
   //   governorate: Governorate.Damascus,
   //   city: City.OldCity,

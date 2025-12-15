@@ -1,5 +1,5 @@
 
-import 'package:daleel_app_project/models/apartments2.dart';
+import 'package:daleel_app_project/models/apartments.dart';
 import 'package:equatable/equatable.dart';
 
 class FavoritesState extends Equatable {

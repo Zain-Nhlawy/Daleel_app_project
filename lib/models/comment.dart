@@ -3,15 +3,15 @@ import 'package:daleel_app_project/models/user.dart';
 class Comment {
   final int id;
   final String content;
-  final int userId;
-  final int departmentId;
+  final String? createdAt;
+  final String? updatedAt;
   final User? user;
 
   Comment({
     required this.id,
     required this.content,
-    required this.userId,
-    required this.departmentId,
+    this.createdAt,
+    this.updatedAt,
     this.user,
   });
 
@@ -19,8 +19,8 @@ class Comment {
     return Comment(
       id: json['id'],
       content: json['content'],
-      userId: json['user_id'],
-      departmentId: json['department_id'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
       user: json['user'] != null ? User.fromJson(json['user']) : null,
     );
   }

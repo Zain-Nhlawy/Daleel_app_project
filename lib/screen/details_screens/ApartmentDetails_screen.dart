@@ -1,10 +1,14 @@
-import 'package:daleel_app_project/data/me.dart';
-import 'package:daleel_app_project/models/apartments2.dart';
-import 'package:daleel_app_project/models/comment.dart';
+import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/screen/booking_screen.dart';
-import 'package:daleel_app_project/widget/custom_text_field.dart';
-import 'package:daleel_app_project/widget/custom_button.dart';
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:flutter/material.dart';
+
+import 'package:daleel_app_project/widget/apartment_details_widgets/images_section.dart';
+import 'package:daleel_app_project/widget/apartment_details_widgets/apartment_info_section.dart';
+import 'package:daleel_app_project/widget/apartment_details_widgets/description_section.dart';
+import 'package:daleel_app_project/widget/apartment_details_widgets/comments_section.dart';
+import 'package:daleel_app_project/widget/apartment_details_widgets/publisher_section.dart';
+
 
 class ApartmentDetailsScreen extends StatefulWidget {
   final Apartments2 apartment;
@@ -16,6 +20,8 @@ class ApartmentDetailsScreen extends StatefulWidget {
 }
 
 class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
+  late Apartments2 apartment;
+  bool isLoading = true;
   late String selectedImage;
   bool showAllComments = false;
   late TextEditingController _newCommentController;
@@ -23,8 +29,30 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    selectedImage = 'assets/images/user.png';
+    apartment = widget.apartment;
+    selectedImage = apartment.images!.isNotEmpty
+        ? apartment.images!.first
+        : 'assets/images/user.png';
     _newCommentController = TextEditingController();
+    _loadApartmentDetails();
+    commentController.fetchComments(apartment.id);
+  }
+
+  void _loadApartmentDetails() async {
+    final updatedApartment =
+        await apartmentController.fetchApartment(apartment.id);
+
+    if (updatedApartment != null) {
+      setState(() {
+        apartment = updatedApartment;
+        selectedImage = apartment.images!.isNotEmpty
+            ? apartment.images!.first
+            : 'assets/images/user.png';
+        isLoading = false;
+      });
+    } else {
+      setState(() => isLoading = false);
+    }
   }
 
   @override
@@ -36,7 +64,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    //final comments = widget.apartment.comments;
 
     return Scaffold(
       appBar: AppBar(
@@ -56,67 +83,60 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
               children: [
                 ImagesSection(
                   selectedImage: selectedImage,
-                  images: widget.apartment.images!.isNotEmpty
-                      ? widget.apartment.images!
+                  images: apartment.images!.isNotEmpty
+                      ? apartment.images!
                       : ['assets/images/user.png'],
                   onImageSelected: (img) {
                     setState(() => selectedImage = img);
                   },
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ApartmentInfoSection(
-                        apartment: widget.apartment,
+                        apartment: apartment,
                         theme: theme,
                       ),
-
                       const SizedBox(height: 24),
-
                       DescriptionSection(
-                        apartment: widget.apartment,
+                        apartment: apartment,
                         theme: theme,
                       ),
-
                       const SizedBox(height: 30),
-
                       CommentsSection(
-                        comments: widget.apartment.comments!,
+                        comments: commentController.comments,
                         showAll: showAllComments,
                         theme: theme,
                         controller: _newCommentController,
                         onToggleShow: () =>
                             setState(() => showAllComments = !showAllComments),
-                        onSend: () {
-                          if (_newCommentController.text.isNotEmpty) {
-                            setState(() {
-                              widget.apartment.comments!.add(
-                                Comment(
-                                  id: 0,
-                                  content: _newCommentController.text,
-                                  userId: 3,
-                                  departmentId:
-                                      widget.apartment.id,
-                                  user: me,
-                                ),
-                              );
+                        onSend: () async {
+                          final content = _newCommentController.text.trim();
+                          if (content.isEmpty) return;
 
-                              _newCommentController.clear();
-                              showAllComments = true;
-                            });
+                          setState(() {
+                            _newCommentController.clear();
+                            showAllComments = true;
+                          });
+
+                          try {
+                              await commentController.addComment(apartment.id, content);
+                          } catch (e) {
+                            print("Failed to add comment: $e");
                           }
+                          await commentController.fetchComments(apartment.id);
+                          setState(() {
+                            apartment.comments = commentController.comments;
+                          });
                         },
                       ),
                       const SizedBox(height: 26),
-
                       PublisherSection(
-                        apartment: widget.apartment,
+                        apartment: apartment,
                         theme: theme,
                       ),
-
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -124,7 +144,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
               ],
             ),
           ),
-
           Positioned(
             left: 0,
             right: 0,
@@ -142,7 +161,9 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BookingCalendar(),
+                        builder: (context) => BookingCalendar(
+                          apartmentId: apartment.id,
+                        ),
                       ),
                     );
                   },
@@ -159,381 +180,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ImagesSection extends StatelessWidget {
-  final String selectedImage;
-  final List<String> images;
-  final ValueChanged<String> onImageSelected;
-
-  const ImagesSection({
-    super.key,
-    required this.selectedImage,
-    required this.images,
-    required this.onImageSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Image.asset(
-          selectedImage,
-          width: double.infinity,
-          height: 260,
-          fit: BoxFit.cover,
-        ),
-        const SizedBox(height: 10),
-
-        SizedBox(
-          height: 90,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            itemCount: images.length,
-            itemBuilder: (context, index) {
-              final img = images[index];
-              return GestureDetector(
-                onTap: () => onImageSelected(img),
-                child: Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  width: 90,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                    image: DecorationImage(
-                      image: AssetImage(img),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class ApartmentInfoSection extends StatelessWidget {
-  final Apartments2 apartment;
-  final ThemeData theme;
-
-  const ApartmentInfoSection({
-    super.key,
-    required this.apartment,
-    required this.theme,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          apartment.headDescription!,
-          style: theme.textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
-        ),
-        const SizedBox(height: 8),
-
-        Row(
-          children: [
-            const Icon(Icons.location_on, color: Colors.red, size: 22),
-            const SizedBox(width: 6),
-            Expanded(
-              child: Text(
-                apartment.location!['city'] +
-                    // ignore: prefer_interpolation_to_compose_strings
-                    ' / ' +
-                    apartment.location!['city'],
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[700],
-                ),
-              ),
-            ),
-            const Icon(Icons.star_rounded, color: Colors.amber, size: 24),
-            const SizedBox(width: 4),
-            Text(apartment.averageRating.toString()),
-          ],
-        ),
-        const SizedBox(height: 6),
-
-        Row(
-          children: [
-            const Icon(Icons.attach_money, color: Colors.green, size: 22),
-            Text(
-              "${apartment.rentFee} / month",
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.grey[700],
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 22),
-
-        GridView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 3.2,
-          ),
-          children: [
-            _infoTile(Icons.bed, "Bedroom", "${apartment.bedrooms}", theme),
-            _infoTile(
-              Icons.shower,
-              "Bathroom",
-              "${apartment.bathrooms}",
-              theme,
-            ),
-            _infoTile(Icons.apartment, "Floor", "${apartment.floor}", theme),
-            _infoTile(Icons.square_foot, "Area", "${apartment.area} m²", theme),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _infoTile(IconData icon, String title, String value, ThemeData theme) {
-    return Row(
-      children: [
-        Icon(icon, color: Colors.blueGrey, size: 32),
-        const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: theme.textTheme.bodyMedium),
-            Text(
-              value,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class DescriptionSection extends StatelessWidget {
-  final Apartments2 apartment;
-  final ThemeData theme;
-
-  const DescriptionSection({
-    super.key,
-    required this.apartment,
-    required this.theme,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Description",
-          style: theme.textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          apartment.description!,
-          style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[700]),
-        ),
-      ],
-    );
-  }
-}
-
-class CommentsSection extends StatelessWidget {
-  final List<Comment> comments;
-  final bool showAll;
-  final ThemeData theme;
-  final TextEditingController controller;
-  final VoidCallback onToggleShow;
-  final VoidCallback onSend;
-
-  const CommentsSection({
-    super.key,
-    required this.comments,
-    required this.showAll,
-    required this.theme,
-    required this.controller,
-    required this.onToggleShow,
-    required this.onSend,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Comments",
-          style: theme.textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Column(
-          children: [
-            for (
-              int i = 0;
-              i < (showAll ? comments.length : comments.length.clamp(0, 3));
-              i++
-            )
-              Column(
-                children: [
-                  _commentRow(
-                    name:
-                        "${comments[i].user?.firstName ?? ''} ${comments[i].user?.lastName ?? ''}",
-                    image: comments[i].user!.profileImage,
-                    comment: comments[i].content,
-                    theme: theme,
-                  ),
-                  if (i < comments.length - 1)
-                    Divider(color: Colors.grey.shade300),
-                ],
-              ),
-
-            if (comments.length > 3)
-              TextButton(
-                onPressed: onToggleShow,
-                child: Text(
-                  showAll ? "Show Less" : "Show More",
-                  style: TextStyle(color: theme.colorScheme.primary),
-                ),
-              ),
-          ],
-        ),
-        const SizedBox(height: 16),
-
-        Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 9),
-                child: CustomTextField(
-                  controller: controller,
-                  label: "",
-                  hint: "Add a comment...",
-                  icon: Icons.comment,
-                  readOnly: false,
-                  borderColor: Colors.brown.shade400,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-
-            CustomButton(
-              text: "Send",
-              bordered: true,
-              color: theme.colorScheme.primary,
-              textColor: theme.colorScheme.primary,
-              onPressed: onSend,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _commentRow({
-    required String name,
-    required String image,
-    required String comment,
-    required ThemeData theme,
-  }) {
-    return Row(
-      children: [
-        CircleAvatar(radius: 22, backgroundImage: AssetImage(image)),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(comment, style: theme.textTheme.bodyMedium),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class PublisherSection extends StatelessWidget {
-  final Apartments2 apartment;
-  final ThemeData theme;
-
-  const PublisherSection({
-    super.key,
-    required this.apartment,
-    required this.theme,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          "Published By",
-          style: theme.textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 12),
-
-        Row(
-          children: [
-            const CircleAvatar(
-              radius: 28,
-              backgroundImage: AssetImage("assets/images/profilePic.png"),
-            ),
-            const SizedBox(width: 12),
-
-            Text(
-              'flan',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-
-            const Spacer(),
-
-            CustomButton(
-              text: "Contact Us",
-              bordered: true,
-              color: theme.colorScheme.primary,
-              textColor: theme.colorScheme.primary,
-              icon: Icons.chat_bubble_outline,
-              onPressed: () {},
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
