@@ -23,32 +23,31 @@ class AddApartmentsRepo {
     int? floor,
   }) async {
     try {
-FormData formData = FormData.fromMap({
-  "user_id": userId,
-  "description": description,
-  "headDescription": headDescription,
-  "rentFee": rentFee,
-  "area": area,
-  "bedrooms": bedrooms,
-  "bathrooms": bathrooms,
-  "floor": floor,
-  "status": status,
-  "isAvailable": isAvailable! ? 1 : 0,
+      FormData formData = FormData.fromMap({
+        "user_id": userId,
+        "description": description,
+        "headDescription": headDescription,
+        "rentFee": rentFee,
+        "area": area,
+        "bedrooms": bedrooms,
+        "bathrooms": bathrooms,
+        "floor": floor,
+        "status": status,
+        "isAvailable": isAvailable! ? 1 : 0,
 
-  "location[city]": location!["city"],
-  "location[governorate]": location["governorate"],
-  "location[district]": location["district"] ?? "",
-  "location[street]": location["street"] ?? "",
-  
-  "images[]": [
-    for (var img in images)
-      await MultipartFile.fromFile(
-        img.path,
-        filename: img.path.split("/").last,
-      )
-  ],
-});
+        "location[city]": location!["city"],
+        "location[governorate]": location["governorate"],
+        "location[district]": location["district"] ?? "",
+        "location[street]": location["street"] ?? "",
 
+        "images[]": [
+          for (var img in images)
+            await MultipartFile.fromFile(
+              img.path,
+              filename: img.path.split("/").last,
+            ),
+        ],
+      });
 
       final response = await dioClient.dio.post(
         "/auth/departments",

@@ -25,4 +25,15 @@ class ApartmentService {
     }
     return null;
   }
+
+  Future<List<Apartments2>> getApartments() async {
+    try {
+      final response = await apiClient.dio.get("/auth/departments?with=images");
+      final data = response.data['data'] as List;
+
+      return data.map((json) => Apartments2.fromJson(json)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

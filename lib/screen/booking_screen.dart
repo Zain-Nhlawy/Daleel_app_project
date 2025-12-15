@@ -62,6 +62,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
     String start = formatDate(_startDate!);
     String end = formatDate(_endDate!);
 
+/*
     final newRent = await rentController.createRent(
       departmentId: widget.apartmentId, 
       startRent: start,
@@ -76,7 +77,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
         ),
       ),
     );
-    }
+    }*/
 
   } else {
     ScaffoldMessenger.of(context).showSnackBar(

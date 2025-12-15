@@ -1,4 +1,4 @@
-import 'package:daleel_app_project/data/dummy_data.dart';
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/widget/contract_widgets/contract_data_card_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -17,16 +17,38 @@ class ContractScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.filter_list_sharp, size: 30),
+            icon: const Icon(Icons.filter_list_sharp, size: 30),
           ),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: contractsData.length,
-          itemBuilder: (context, index) {
-            return ContractDataCardWidget(contract: contractsData[index]);
+        child: FutureBuilder(
+          future: contractController.loadContracts(),
+          builder: (context, snapshot) {
+            /// loading
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            /// error
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+
+            /// no data
+            if (!snapshot.hasData || snapshot.data == null) {
+              return const Center(child: Text('No contracts found'));
+            }
+
+            final contracts = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: contracts.length,
+              itemBuilder: (context, index) {
+                return ContractDataCardWidget(contract: contracts[index]);
+              },
+            );
           },
         ),
       ),

@@ -8,9 +8,7 @@ class ApartmentRepo {
 
   Future<List<Apartments2>> getApartments() async {
     try {
-      final response = await dioClient.dio.get(
-        "/auth/departments",
-      );
+      final response = await dioClient.dio.get("/auth/departments?with=images");
       final data = response.data['data'] as List;
 
       return data.map((json) => Apartments2.fromJson(json)).toList();

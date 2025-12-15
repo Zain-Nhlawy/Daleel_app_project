@@ -7,7 +7,6 @@ import 'package:daleel_app_project/screen/home_screen/home_screen.dart';
 class HomeScreenTabs extends StatefulWidget {
   const HomeScreenTabs({super.key});
 
-
   @override
   State<HomeScreenTabs> createState() => _MainScreenState();
 }
@@ -22,11 +21,11 @@ class _MainScreenState extends State<HomeScreenTabs> {
   void initState() {
     super.initState();
     _pages = [
-      HomeScreen(), 
+      HomeScreen(),
       const ContractScreen(),
       const AddingApartmentScreen(),
       const Center(child: Text('Chat')),
-      ProfileScreen(), 
+      ProfileScreen(),
     ];
   }
 
@@ -40,7 +39,7 @@ class _MainScreenState extends State<HomeScreenTabs> {
           setState(() {
             _currentIndex = index;
           });
-        }
+        },
       ),
 
       bottomNavigationBar: BottomNavigationBar(

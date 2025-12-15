@@ -36,7 +36,9 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                     width: double.infinity,
                     child:
                         apartment.images != null && apartment.images!.isNotEmpty
-                        ? Image.network(apartment.images![0])
+                        ? Image.network(
+                            "http://10.0.2.2:8000${apartment.images![0]}",
+                          )
                         : Image.asset("assets/images/user.png"),
                   ),
                 ),
@@ -51,16 +53,18 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          apartment.headDescription!,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        Expanded(
+                          child: Text(
+                            apartment.headDescription!,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         Text(
                           '30\$ / month',

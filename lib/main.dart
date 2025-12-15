@@ -51,6 +51,6 @@ final theme = ThemeData(
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MaterialApp(theme: theme, home: LoginScreen()));
+  runApp(MaterialApp(theme: theme, home: SplashScreen()));
 
 }

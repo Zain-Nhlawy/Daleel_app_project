@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/user.dart';
-import 'package:daleel_app_project/repository/apartment_repo.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 import '../../dependencies.dart';
@@ -16,25 +15,16 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-final repo = ApartmentRepo(dioClient: dioClient);
-List<Apartments2> apartments = [];
-
-Future<void> loadApartments() async {
-  try {
-    apartments = await repo.getApartments();
-    print(apartments);
-  } catch (e) {
-    print('Error fetching apartments: ');
-  }
-}
-
 class _HomeScreenState extends State<HomeScreen> {
   late PageController _pageController;
   final int _currentPage = 10000;
+  late Future<List<Apartments2>?> _apartmentsFuture;
 
   @override
   void initState() {
     super.initState();
+
+    _apartmentsFuture = apartmentController.loadApartments();
 
     _pageController = PageController(
       initialPage: _currentPage,
@@ -48,10 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
           curve: Curves.easeInOut,
         );
       }
-    });
-
-    loadApartments().then((_) {
-      setState(() {});
     });
   }
 
@@ -155,11 +141,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
             SizedBox(
               height: 215,
-              child: PageView.builder(
-                physics: const ClampingScrollPhysics(),
-                controller: _pageController,
-                itemBuilder: (context, index) {
-                  return carouselView(index);
+              child: FutureBuilder(
+                future: _apartmentsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  if (!snapshot.hasData || snapshot.data == null) {
+                    return const Center(child: Text('No apartments found'));
+                  }
+
+                  final apartments = snapshot.data!;
+
+                  return PageView.builder(
+                    physics: const ClampingScrollPhysics(),
+                    controller: _pageController,
+                    itemBuilder: (context, index) {
+                      return carouselView(index, apartments);
+                    },
+                  );
                 },
               ),
             ),
@@ -175,15 +180,34 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 12),
 
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: apartments.length,
-                itemBuilder: (context, index) =>
-                    NearpyApartmentsWidgets(apartment: apartments[index]),
-              ),
+            FutureBuilder(
+              future: _apartmentsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+
+                if (!snapshot.hasData || snapshot.data == null) {
+                  return const Center(child: Text('No apartments found'));
+                }
+
+                final apartments = snapshot.data!;
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: apartments.length,
+                  itemBuilder: (context, index) {
+                    return NearpyApartmentsWidgets(
+                      apartment: apartments[index],
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
@@ -191,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget carouselView(int index) {
+  Widget carouselView(int index, List<Apartments2> apartments) {
     return AnimatedBuilder(
       animation: _pageController,
       builder: (context, child) {

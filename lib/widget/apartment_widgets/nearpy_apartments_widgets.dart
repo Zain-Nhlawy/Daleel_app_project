@@ -12,7 +12,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
 
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -21,11 +21,12 @@ class NearpyApartmentsWidgets extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         onTap: () {
           Navigator.push(
-          context,
-          MaterialPageRoute(
-        builder: (context) => ApartmentDetailsScreen(apartment: apartment),
-      ),
-    );
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ApartmentDetailsScreen(apartment: apartment),
+            ),
+          );
         },
         child: SizedBox(
           height: 130,
@@ -36,8 +37,8 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                   topLeft: Radius.circular(16),
                   bottomLeft: Radius.circular(16),
                 ),
-                child: Image.asset(
-                  'assets/images/user.png',
+                child: Image.network(
+                  "http://10.0.2.2:8000${apartment.images![0]}",
                   width: 150,
                   height: double.infinity,
                   fit: BoxFit.cover,
