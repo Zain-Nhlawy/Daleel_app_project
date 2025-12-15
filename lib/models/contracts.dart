@@ -1,4 +1,4 @@
-import 'package:daleel_app_project/models/apartments2.dart';
+import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/user.dart';
 
 enum RentStatus { cancelled, completed, pending, onRent }

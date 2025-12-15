@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
@@ -7,7 +8,8 @@ import 'package:intl/intl.dart';
 
 
 class BookingCalendar extends StatefulWidget {
-  const BookingCalendar({super.key});
+  final int apartmentId;
+  const BookingCalendar({super.key, required this.apartmentId});
   @override
   _BookingCalendarState createState() => _BookingCalendarState();
 }
@@ -16,7 +18,6 @@ class _BookingCalendarState extends State<BookingCalendar> {
   DateTime? _startDate;
   DateTime? _endDate;
 
-  // ignore: unused_field
   late EventList<Event> _markedDates;
 
   final List<Map<String, String>> availableTimes = [
@@ -54,6 +55,39 @@ class _BookingCalendarState extends State<BookingCalendar> {
     }
     return false;
   }
+
+
+  void _handleDateSelection(BuildContext context) async{
+  if (_startDate != null && _endDate != null) {
+    String start = formatDate(_startDate!);
+    String end = formatDate(_endDate!);
+
+/*
+    final newRent = await rentController.createRent(
+      departmentId: widget.apartmentId, 
+      startRent: start,
+      endRent: end,
+    );
+
+    if (newRent != null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Selected: ${formatDate(_startDate!)} → ${formatDate(_endDate!)}',
+        ),
+      ),
+    );
+    }*/
+
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please select start and end dates'),
+      ),
+    );
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -333,21 +367,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
               text: 'Confirm Booking',
               color: brown,
               onPressed: () {
-                if (_startDate != null && _endDate != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Selected: ${formatDate(_startDate!)} → ${formatDate(_endDate!)}',
-                      ),
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Please select start and end dates'),
-                    ),
-                  );
-                }
+                _handleDateSelection(context);
               },
             ),
           ),
