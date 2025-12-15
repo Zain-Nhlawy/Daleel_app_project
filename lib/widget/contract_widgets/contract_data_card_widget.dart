@@ -70,7 +70,7 @@ class ContractDataCardWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Renter: ${contract.renterName}",
+                          "Renter: ${contract.user.firstName}",
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium!.copyWith(fontSize: 15),
@@ -78,7 +78,7 @@ class ContractDataCardWidget extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          "Tenant: ${contract.tenantName}",
+                          "Tenant: ${contract.user.firstName}",
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium!.copyWith(fontSize: 15),

@@ -61,7 +61,7 @@ class ContractDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
-                    contract.contractApartment.images![0],
+                    'assets/images/user.png',
                     width: double.infinity,
                     height: 200,
                     fit: BoxFit.cover,
@@ -89,9 +89,7 @@ class ContractDetails extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                contract
-                                    .contractApartment
-                                    .headDescription!,
+                                contract.contractApartment.headDescription!,
                                 style: Theme.of(context).textTheme.headlineSmall
                                     ?.copyWith(fontWeight: FontWeight.bold),
                                 overflow: TextOverflow.ellipsis,
@@ -145,21 +143,21 @@ class ContractDetails extends StatelessWidget {
                         SizedBox(height: 16),
                         _buildPartyInfo(
                           'Renter',
-                          contract.renterName,
-                          contract.renterNumber,
+                          contract.user.firstName,
+                          contract.user.firstName,
                         ),
                         SizedBox(height: 16),
                         _buildPartyInfo(
                           'Tenant',
-                          contract.tenantName,
-                          contract.tenantNumber,
+                          contract.user.firstName,
+                          contract.user.firstName,
                         ),
                         Divider(height: 30, thickness: 1),
 
                         _buildSectionHeader(context, 'Description'),
                         SizedBox(height: 10),
                         Text(
-                          contract.contractDescreption,
+                          contract.contractApartment.headDescription!,
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 16, height: 1.5),
                         ),

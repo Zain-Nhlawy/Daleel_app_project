@@ -57,7 +57,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                 ImagesSection(
                   selectedImage: selectedImage,
                   images: widget.apartment.images!.isNotEmpty
-                      ? widget.apartment.images!
+                      ? widget.apartment.images   !
                       : ['assets/images/user.png'],
                   onImageSelected: (img) {
                     setState(() => selectedImage = img);

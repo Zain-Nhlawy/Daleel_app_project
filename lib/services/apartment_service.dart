@@ -1,10 +1,13 @@
-import 'package:daleel_app_project/core/network/dio_client.dart';
+  import 'package:daleel_app_project/core/network/dio_client.dart';
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/apartments2.dart';
+import '../core/storage/secure_storage.dart';
 
-class ApartmentRepo {
-  final DioClient dioClient;
+class ApartmentService {
+  final DioClient apiClient;
+  final AppSecureStorage storage;
 
-  ApartmentRepo({required this.dioClient});
+  ApartmentService({required this.apiClient, required this.storage});
 
   Future<List<Apartments2>> getApartments() async {
     try {
