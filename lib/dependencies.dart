@@ -1,11 +1,9 @@
 import 'package:daleel_app_project/controllers/apartment_controller.dart';
 import 'package:daleel_app_project/controllers/comment_controller.dart';
 import 'package:daleel_app_project/controllers/contract_controller.dart';
-import 'package:daleel_app_project/controllers/rent_controller.dart';
 import 'package:daleel_app_project/services/apartment_service.dart';
 import 'package:daleel_app_project/services/comment_service.dart';
 import 'package:daleel_app_project/services/contract_service.dart';
-import 'package:daleel_app_project/services/rent_service.dart';
 import 'core/storage/secure_storage.dart';
 import 'core/network/dio_client.dart';
 import 'services/user_service.dart';
