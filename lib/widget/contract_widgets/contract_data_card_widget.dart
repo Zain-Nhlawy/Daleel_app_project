@@ -4,18 +4,19 @@ import '../../models/contracts.dart';
 
 class ContractDataCardWidget extends StatelessWidget {
   const ContractDataCardWidget({super.key, required this.contract});
+
   final Contracts contract;
 
   Color _statusColor(RentStatus status) {
     switch (status) {
       case RentStatus.completed:
-        return Colors.green;
+        return Colors.green.shade700;
       case RentStatus.pending:
-        return Colors.orange;
+        return Colors.orange.shade700;
       case RentStatus.cancelled:
-        return Colors.red;
+        return Colors.red.shade700;
       case RentStatus.onRent:
-        return Colors.blue;
+        return Colors.blue.shade700;
     }
   }
 
@@ -25,12 +26,24 @@ class ContractDataCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    const Color primaryColor = Color(0xFF795548);
+
+    return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         onTap: () {
           Navigator.push(
             context,
@@ -39,102 +52,133 @@ class ContractDataCardWidget extends StatelessWidget {
             ),
           );
         },
-        child: SizedBox(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(4),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    height: 120,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Image.asset(
-                      'assets/images/user.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Renter: ${contract.user.firstName}",
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium!.copyWith(fontSize: 15),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+              child: SizedBox(
+                height: 140,
+                width: double.infinity,
+                child:
+                    contract.contractApartment.images != null &&
+                        contract.contractApartment.images!.isNotEmpty
+                    ? Image.network(
+                        contract.contractApartment.images![0],
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset(
+                              "assets/images/placeholder.png",
+                              fit: BoxFit.cover,
+                            ),
+                      )
+                    : Image.asset(
+                        "assets/images/placeholder.png",
+                        fit: BoxFit.cover,
+                      ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Renter: ${contract.contractApartment.user.firstName}",
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[800],
                         ),
-                        Text(
-                          "Tenant: ${contract.user.firstName}",
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium!.copyWith(fontSize: 15),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        "Tenant: ${contract.user.firstName}",
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[800],
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        //   Icon(Icons.calendar_today_rounded, color: Colors.brown),
-                        const SizedBox(width: 6),
-                        Text(
-                          "Start: ${contract.startRent.toString().substring(0, 10)}",
-                          style: Theme.of(context).textTheme.bodyMedium!
-                              .copyWith(fontSize: 15, color: Colors.black54),
-                        ),
-                        const SizedBox(width: 60),
-                        // Icon(Icons.calendar_today_rounded, color: Colors.brown),
-                        const SizedBox(width: 6),
-                        Text(
-                          "End: ${contract.endRent.toString().substring(0, 10)}",
-                          style: Theme.of(context).textTheme.bodyMedium!
-                              .copyWith(fontSize: 15, color: Colors.black54),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 10),
-                    Container(
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildDateInfo(
+                        context,
+                        "Start",
+                        contract.startRent,
+                        Icons.calendar_today_outlined,
+                      ),
+                      _buildDateInfo(
+                        context,
+                        "End",
+                        contract.endRent,
+                        Icons.calendar_today_outlined,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 4,
-                        horizontal: 10,
+                        vertical: 6,
+                        horizontal: 12,
                       ),
                       decoration: BoxDecoration(
                         color: _statusColor(
                           contract.rentStatus,
                         ).withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         _statusText(contract.rentStatus),
                         style: TextStyle(
                           color: _statusColor(contract.rentStatus),
                           fontWeight: FontWeight.bold,
+                          fontSize: 14,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDateInfo(
+    BuildContext context,
+    String label,
+    DateTime date,
+    IconData icon,
+  ) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.grey[600], size: 18),
+        const SizedBox(width: 6),
+        Text(
+          "$label: ${date.toString().substring(0, 10)}",
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            fontSize: 14,
+            color: Colors.grey[600],
+          ),
+        ),
+      ],
     );
   }
 }

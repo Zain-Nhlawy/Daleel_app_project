@@ -1,4 +1,5 @@
 import 'package:daleel_app_project/Cubit/favorites_cubit.dart';
+import 'package:daleel_app_project/screen/profile_screens/profile_details_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/favorite_apartments_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,23 +10,25 @@ class ProfileOptions extends StatelessWidget {
   const ProfileOptions({super.key});
 
   void _setScreen(context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (ctx) => BlocProvider(
-        create: (context) => FavoritesCubit(),
-        child: FavoriteApartmentsScreen())
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => BlocProvider(
+          create: (context) => FavoritesCubit(),
+          child: FavoriteApartmentsScreen(),
+        ),
+      ),
+    );
   }
 
-
   void _logout(BuildContext context) async {
-      await userController.logout(); 
+    await userController.logout();
 
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const SplashScreen()),
-        (route) => false,
-      );
-    }
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const SplashScreen()),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -52,7 +55,14 @@ class ProfileOptions extends StatelessWidget {
                 ),
               ),
               trailing: Icon(Icons.keyboard_arrow_right_outlined),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileDetailsScreen(),
+                  ),
+                );
+              },
             ),
           ),
 

@@ -3,21 +3,12 @@ import 'package:daleel_app_project/Cubit/favorites_state.dart';
 import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/apartments.dart';
-import 'package:daleel_app_project/repository/apartment_repo.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
-final repo = ApartmentRepo(dioClient: dioClient);
-List<Apartments2> apartments = [];
+List<Apartments2> apartments = apartmentController.apartments!;
 
-Future<void> loadApartments() async {
-  try {
-    apartments = await repo.getApartments();
-    print(apartments);
-  } catch (e) {
-    print('Error fetching apartments: ');
-  }
-}
 
 class FavoritesCubit extends Cubit<FavoritesState> {
   FavoritesCubit() : super(FavoritesLoaded(apartments));

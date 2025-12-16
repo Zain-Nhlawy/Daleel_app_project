@@ -1,15 +1,14 @@
 import 'dart:async';
-import 'package:daleel_app_project/models/apartments.dart';
-import 'package:daleel_app_project/models/user.dart';
-import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartments_widget.dart';
-import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
-import '../../dependencies.dart';
 import 'package:flutter/material.dart';
+
+import '../../dependencies.dart';
+import '../../models/apartments.dart';
+import '../../models/user.dart';
+import '../../widget/apartment_widgets/most_popular_apartments_widget.dart';
+import '../../widget/apartment_widgets/nearpy_apartments_widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
-
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -23,18 +22,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
     _apartmentsFuture = apartmentController.loadApartments();
-
     _pageController = PageController(
       initialPage: _currentPage,
       viewportFraction: 0.7,
     );
 
-    Timer.periodic(Duration(seconds: 5), (timer) {
+    Timer.periodic(const Duration(seconds: 5), (timer) {
       if (_pageController.hasClients) {
         _pageController.nextPage(
-          duration: Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
       }
@@ -42,174 +39,215 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final User? user = userController.user;
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Row(
           children: [
-            const SizedBox(width: 8),
             CircleAvatar(
-              radius: 27,
+              radius: 25,
               backgroundImage: (user != null && user.profileImage.isNotEmpty)
                   ? NetworkImage("http://10.0.2.2:8000${user.profileImage}")
                   : const AssetImage('assets/images/user.png') as ImageProvider,
             ),
-
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
             Text(
-              user != null
-                  ? '${user.firstName} ${user.lastName}'
-                  : 'any_name :)',
-              style: Theme.of(context).textTheme.bodyLarge,
+              user != null ? '${user.firstName} ${user.lastName}' : 'Welcome!',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.notifications_outlined,
-              color: Colors.brown,
+              color: Colors.white,
               size: 32,
             ),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: const Color.fromARGB(174, 248, 245, 245),
-                ),
-                height: 48,
-                child: Row(
-                  children: [
-                    const SizedBox(width: 12),
-                    const Icon(
-                      Icons.search,
-                      size: 28,
-                      color: Color.fromARGB(141, 121, 85, 72),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 219, 155, 132),
+              Color.fromARGB(255, 228, 228, 227),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: SafeArea(
+            bottom: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 60),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.black.withOpacity(0.15),
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Search Here...',
-                          hintStyle: TextStyle(
-                            color: Colors.brown.withAlpha((0.5 * 255).toInt()),
-                            fontSize: 16,
+                    height: 50,
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 20),
+                        const Icon(
+                          Icons.search,
+                          size: 28,
+                          color: Colors.white70,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: TextField(
+                            style: const TextStyle(color: Colors.white),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Search Here...',
+                              hintStyle: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Most Popular',
-                    style: Theme.of(context).textTheme.bodyLarge,
+                const SizedBox(height: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Most Popular',
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                          overlayColor: WidgetStateProperty.all(
+                            Colors.transparent,
+                          ),
+                        ),
+                        child: Text(
+                          'See all',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: Colors.white70),
+                        ),
+                      ),
+                    ],
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      overlayColor: WidgetStateProperty.all(Colors.transparent),
-                    ),
-                    child: Text(
-                      'See all',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(color: Colors.brown),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(
-              height: 215,
-              child: FutureBuilder(
-                future: _apartmentsFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  }
-
-                  if (!snapshot.hasData || snapshot.data == null) {
-                    return const Center(child: Text('No apartments found'));
-                  }
-
-                  final apartments = snapshot.data!;
-
-                  return PageView.builder(
-                    physics: const ClampingScrollPhysics(),
-                    controller: _pageController,
-                    itemBuilder: (context, index) {
-                      return carouselView(index, apartments);
+                ),
+                SizedBox(
+                  height: 215,
+                  child: FutureBuilder<List<Apartments2>?>(
+                    future: _apartmentsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(color: Colors.white),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            'Error: ${snapshot.error}',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }
+                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            'No apartments found',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }
+                      final apartments = snapshot.data!;
+                      return PageView.builder(
+                        physics: const ClampingScrollPhysics(),
+                        controller: _pageController,
+                        itemBuilder: (context, index) {
+                          return carouselView(index, apartments);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 25),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'Close To You',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            FutureBuilder(
-              future: _apartmentsFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
-
-                if (!snapshot.hasData || snapshot.data == null) {
-                  return const Center(child: Text('No apartments found'));
-                }
-
-                final apartments = snapshot.data!;
-
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: apartments.length,
-                  itemBuilder: (context, index) {
-                    return NearpyApartmentsWidgets(
-                      apartment: apartments[index],
+                  ),
+                ),
+                const SizedBox(height: 25),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'Close To You',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                FutureBuilder<List<Apartments2>?>(
+                  future: _apartmentsFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No apartments found'));
+                    }
+                    final apartments = snapshot.data!;
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: apartments.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 4.0,
+                          ),
+                          child: NearpyApartmentsWidgets(
+                            apartment: apartments[index],
+                          ),
+                        );
+                      },
                     );
                   },
-                );
-              },
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -219,20 +257,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return AnimatedBuilder(
       animation: _pageController,
       builder: (context, child) {
-        num value = 0.0;
-
-        if (_pageController.hasClients &&
-            _pageController.position.haveDimensions) {
-          value = (_pageController.page ?? _pageController.initialPage) - index;
-          value = value.abs();
+        double value = 0.0;
+        if (_pageController.position.haveDimensions) {
+          value = (_pageController.page ?? 0) - index;
+          value = (value.abs() * 0.2).clamp(0.0, 1.0);
         }
-
-        double scale = (1 - (value * 0.2)).clamp(0.6, 1.0);
-        double opacity = (1 - (value * 0.5)).clamp(0.6, 1.0);
-
         return Transform.scale(
-          scale: scale,
-          child: Opacity(opacity: opacity, child: child),
+          scale: 1.0 - value,
+          child: Opacity(opacity: (1.0 - value).clamp(0.6, 1.0), child: child),
         );
       },
       child: MostPopularApartmentsWidget(
@@ -241,5 +273,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-

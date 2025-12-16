@@ -2,7 +2,6 @@
 import 'dart:io';
 import 'package:daleel_app_project/Cubit/favorites_cubit.dart';
 import 'package:daleel_app_project/dependencies.dart';
-import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
 import 'package:daleel_app_project/screen/pick_location_screen.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +15,9 @@ class AddingApartmentScreen extends StatefulWidget {
 }
 
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
+  final _formKey = GlobalKey<FormState>();
   bool _isAvailable = true;
-  var _selectedStatusController = 'unfurnished';
+  String _selectedStatusController = 'unfurnished';
   final TextEditingController _locationController = TextEditingController();
   Map<String, dynamic>? selectedLocation;
   File? _selectedImageController;
@@ -28,44 +28,44 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   final _apartmentBathroomsController = TextEditingController();
   final _apartmentAreaController = TextEditingController();
   final _apartmetnDescriptionController = TextEditingController();
-  final List<Comment> _apartmentComments = [];
   final List<File> _apartmentPictures = [];
 
-  Future<void> _pickImageFromGallery() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(
+    ImageSource source, {
+    bool isHeadImage = false,
+  }) async {
+    final image = await ImagePicker().pickImage(
+      source: source,
+      imageQuality: 80,
+    );
     if (image == null) return;
+    final imageFile = File(image.path);
     setState(() {
-      _apartmentPictures.add(File(image.path));
+      if (isHeadImage) {
+        _selectedImageController = imageFile;
+      } else {
+        _apartmentPictures.add(imageFile);
+      }
     });
   }
 
   Future<void> _saveApartment() async {
-    if (_apartmentHeadDescriptionController.text.isEmpty ||
-        _apartmentPriceContoller.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text('Invalid data', style: TextStyle(color: Colors.red)),
-          content: Text('Some of the data are missing or invalid'),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(ctx);
-              },
-              child: Text('Okay'),
-            ),
-          ],
+    if (!_formKey.currentState!.validate() ||
+        _selectedImageController == null ||
+        selectedLocation == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Please fill all required fields, select a location, and add a head image.',
+          ),
+          backgroundColor: Colors.red,
         ),
       );
       return;
     }
 
-    List<File> allImages = [];
-    if (_selectedImageController != null) {
-      allImages.add(_selectedImageController!);
-    }
+    List<File> allImages = [_selectedImageController!];
     allImages.addAll(_apartmentPictures);
-
     final addRepo = AddApartmentsRepo(dioClient: dioClient);
 
     try {
@@ -83,50 +83,47 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         isAvailable: _isAvailable,
         status: _selectedStatusController,
       );
+      apartments.add(newApartment);
 
-      setState(() {
-        apartments.add(newApartment);
-      });
-      _apartmentHeadDescriptionController.clear();
-      _apartmentPriceContoller.clear();
-      _apartmentFloorController.clear();
-      _apartmentBedroomsController.clear();
-      _apartmentBathroomsController.clear();
-      _apartmentAreaController.clear();
-      _apartmetnDescriptionController.clear();
-      _selectedImageController = null;
-      _apartmentPictures.clear();
-      _apartmentComments.clear();
-
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text('Success'),
-          content: Text('Your apartment was added successfully!'),
-          actions: [
-            ElevatedButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: Text('Okay'),
-            ),
-          ],
-        ),
-      );
+      _showSuccessDialog();
     } catch (e) {
-      print("Error adding apartment: $e");
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text('Error', style: TextStyle(color: Colors.red)),
-          content: Text('Failed to add apartment. Please try again.'),
-          actions: [
-            ElevatedButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: Text('Okay'),
-            ),
-          ],
-        ),
-      );
+      _showErrorDialog('Failed to add apartment. Please try again.');
     }
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Success'),
+        content: const Text('Your apartment was added successfully!'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              Navigator.pop(context);
+            },
+            child: const Text('Okay'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Error', style: TextStyle(color: Colors.red)),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Okay'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _pickLocation() async {
@@ -134,672 +131,426 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       context,
       MaterialPageRoute(builder: (_) => const PickLocationScreen()),
     );
-
     if (result != null && result is Map) {
       setState(() {
         selectedLocation = Map<String, dynamic>.from(result);
-
         _locationController.text =
-            "${result['governorate']}, ${result['city']}, ${result['district']}, ${result['street']}";
+            "${result['governorate']}, ${result['city']}, ${result['district']}";
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    const Color primaryColor = Color(0xFF795548);
+    final textStyle = const TextStyle(color: Colors.white);
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
           'Add Apartment',
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: textStyle.copyWith(fontWeight: FontWeight.bold, fontSize: 22),
         ),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 219, 155, 132),
+              Color.fromARGB(255, 255, 255, 255),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+            ).copyWith(top: 100),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildSectionHeader('Main Image', textStyle),
+                _buildHeadImagePicker(primaryColor),
+                const SizedBox(height: 24),
+                _buildSectionHeader('Details', textStyle),
+                _buildTextField(
+                  _apartmentHeadDescriptionController,
+                  'Title (e.g., Modern Villa)',
+                  Icons.title,
+                ),
+                _buildTextField(
+                  _apartmentPriceContoller,
+                  'Price / Month',
+                  Icons.monetization_on,
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 16),
+                _buildStatusDropdown(primaryColor),
+                const SizedBox(height: 10),
+                _buildSectionHeader('Features', textStyle),
+                _buildFeaturesGrid(),
+                const SizedBox(height: 10),
+                _buildSectionHeader('Location', textStyle),
+                _buildLocationPicker(primaryColor),
+                const SizedBox(height: 16),
+                _buildAvailabilitySwitch(primaryColor),
+                const SizedBox(height: 24),
+                _buildSectionHeader('More Pictures', textStyle),
+                _buildImageGallery(primaryColor),
+                const SizedBox(height: 24),
+                _buildSectionHeader('Description', textStyle),
+                _buildTextField(
+                  _apartmetnDescriptionController,
+                  'Tell us more about your place...',
+                  Icons.description,
+                  maxLines: 4,
+                ),
+                const SizedBox(height: 100),
+              ],
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: _buildSaveButton(primaryColor),
+    );
+  }
 
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildSectionHeader(String title, TextStyle style) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4.0, top: 4.0),
+      child: Text(
+        title,
+        style: style.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildHeadImagePicker(Color primaryColor) {
+    return GestureDetector(
+      onTap: () => _pickImage(ImageSource.gallery, isHeadImage: true),
+      child: Container(
+        height: 200,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(20),
+          image: _selectedImageController != null
+              ? DecorationImage(
+                  image: FileImage(_selectedImageController!),
+                  fit: BoxFit.cover,
+                )
+              : null,
+        ),
+        child: _selectedImageController == null
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.add_a_photo_outlined,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Tap to add main image',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              )
+            : Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.close_rounded,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () =>
+                      setState(() => _selectedImageController = null),
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.black.withOpacity(0.5),
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label,
+    IconData icon, {
+    int? maxLines = 1,
+    TextInputType? keyboardType,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        controller: controller,
+        style: const TextStyle(color: Colors.white),
+        keyboardType: keyboardType,
+        maxLines: maxLines,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Colors.white, fontSize: 15),
+          prefixIcon: Icon(icon, color: Colors.white),
+          filled: true,
+          fillColor: Colors.black.withOpacity(0.3),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field cannot be empty';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildStatusDropdown(Color primaryColor) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: _selectedStatusController,
+          isExpanded: true,
+          dropdownColor: primaryColor,
+          icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
+          style: const TextStyle(color: Colors.white, fontSize: 16),
+          items: ['partially furnished', 'unfurnished', 'furnished']
+              .map(
+                (category) => DropdownMenuItem(
+                  value: category,
+                  child: Text(category.toUpperCase()),
+                ),
+              )
+              .toList(),
+          onChanged: (value) {
+            if (value != null) {
+              setState(() => _selectedStatusController = value);
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeaturesGrid() {
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      childAspectRatio: 2.5,
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 10,
+      children: [
+        _buildFeatureField(
+          _apartmentBedroomsController,
+          'Bedrooms',
+          Icons.bed_outlined,
+        ),
+        _buildFeatureField(
+          _apartmentBathroomsController,
+          'Bathrooms',
+          Icons.shower_outlined,
+        ),
+        _buildFeatureField(
+          _apartmentFloorController,
+          'Floor',
+          Icons.layers_outlined,
+        ),
+        _buildFeatureField(
+          _apartmentAreaController,
+          'Area (m²)',
+          Icons.square_foot_outlined,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFeatureField(
+    TextEditingController controller,
+    String label,
+    IconData icon,
+  ) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+        prefixIcon: Icon(icon, color: Colors.white, size: 20),
+        filled: true,
+        fillColor: Colors.black.withOpacity(0.3),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.white),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Required';
+        }
+        if (double.tryParse(value) == null) {
+          return 'Invalid';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildLocationPicker(Color primaryColor) {
+    return GestureDetector(
+      onTap: _pickLocation,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
           children: [
-            const SizedBox(height: 15),
-            Row(
-              children: [
-                const SizedBox(width: 15),
-                Text(
-                  'Select the Head Image',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(16),
-                onTap: () {
-                  _pickImageFromGallery();
-                },
-                child: SizedBox(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Container(
-                            height: 180,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: _selectedImageController != null
-                                ? Stack(
-                                    children: [
-                                      Center(
-                                        child: Image.file(
-                                          _selectedImageController!,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.add_a_photo_outlined,
-                                        size: 50,
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.secondary,
-                                      ),
-                                      const SizedBox(width: 10),
-                                    ],
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 15),
-            Row(
-              children: [
-                const SizedBox(width: 15),
-                Text(
-                  'Head Description',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: const Color.fromARGB(174, 248, 245, 245),
-                ),
-                height: 48,
-                child: Row(
-                  children: [
-                    const SizedBox(width: 12),
-                    const Icon(
-                      Icons.arrow_forward_rounded,
-                      size: 28,
-                      color: Color.fromARGB(141, 121, 85, 72),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: TextField(
-                        maxLength: 20,
-                        controller: _apartmentHeadDescriptionController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Villa , Doplox ....',
-                          hintStyle: TextStyle(
-                            color: Colors.brown.withAlpha((0.5 * 255).toInt()),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 15),
-            Row(
-              children: [
-                SizedBox(width: 15),
-
-                Text('Price', style: Theme.of(context).textTheme.bodyMedium),
-                const SizedBox(width: 40),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color.fromARGB(174, 248, 245, 245),
-                  ),
-                  height: 48,
-                  width: 150,
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 12),
-
-                      Expanded(
-                        child: TextField(
-                          controller: _apartmentPriceContoller,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            suffixText: '\$ /Month ',
-                            border: InputBorder.none,
-
-                            hintText: '0.0',
-                            hintStyle: TextStyle(
-                              color: Colors.brown.withAlpha(
-                                (0.5 * 255).toInt(),
-                              ),
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  Text('Status', style: Theme.of(context).textTheme.bodyMedium),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: const Color.fromARGB(174, 248, 245, 245),
-                      ),
-                      height: 48,
-                      child: DropdownButton(
-                        isExpanded: true,
-                        underline: const SizedBox.shrink(),
-                        elevation: 8,
-                        value: _selectedStatusController,
-                        items:
-                            ['partially furnished', 'unfurnished', 'furnished']
-                                .map(
-                                  (category) => DropdownMenuItem(
-                                    value: category,
-                                    child: Text(
-                                      category.toUpperCase(),
-                                      style: TextStyle(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.primary,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                        onChanged: (value) {
-                          if (value == null) {
-                            return;
-                          }
-                          setState(() {
-                            _selectedStatusController = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 15),
-            SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: GridView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 2,
-                ),
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.bed, color: Colors.blueGrey, size: 32),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Bedrooms',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: const Color.fromARGB(174, 248, 245, 245),
-                            ),
-                            height: 48,
-                            width: 100,
-                            child: Row(
-                              children: [
-                                const SizedBox(width: 12),
-
-                                Expanded(
-                                  child: TextField(
-                                    controller: _apartmentBedroomsController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: '0',
-                                      hintStyle: TextStyle(
-                                        color: Colors.brown.withAlpha(
-                                          (0.5 * 255).toInt(),
-                                        ),
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.shower, color: Colors.blueGrey, size: 32),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Bathrooms',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: const Color.fromARGB(174, 248, 245, 245),
-                            ),
-                            height: 48,
-                            width: 100,
-                            child: Row(
-                              children: [
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: TextField(
-                                    controller: _apartmentBathroomsController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: '0',
-                                      hintStyle: TextStyle(
-                                        color: Colors.brown.withAlpha(
-                                          (0.5 * 255).toInt(),
-                                        ),
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.apartment, color: Colors.blueGrey, size: 32),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Floor',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: const Color.fromARGB(174, 248, 245, 245),
-                            ),
-                            height: 48,
-                            width: 100,
-                            child: Row(
-                              children: [
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: TextField(
-                                    controller: _apartmentFloorController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: '0',
-                                      hintStyle: TextStyle(
-                                        color: Colors.brown.withAlpha(
-                                          (0.5 * 255).toInt(),
-                                        ),
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.square_foot, color: Colors.blueGrey, size: 32),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Area',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: const Color.fromARGB(174, 248, 245, 245),
-                            ),
-                            height: 48,
-                            width: 100,
-                            child: Row(
-                              children: [
-                                const SizedBox(width: 12),
-
-                                Expanded(
-                                  child: TextField(
-                                    controller: _apartmentAreaController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: '0',
-                                      hintStyle: TextStyle(
-                                        color: Colors.brown.withAlpha(
-                                          (0.5 * 255).toInt(),
-                                        ),
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withOpacity(0.3),
-                    width: 1,
-                  ),
-                ),
-                child: ListTile(
-                  leading: Icon(
-                    Icons.event_available_outlined,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  title: Text(
-                    'Available for Rent Now',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-                  ),
-                  trailing: Switch(
-                    value: _isAvailable,
-                    onChanged: (newValue) {
-                      setState(() {
-                        _isAvailable = newValue;
-                      });
-                    },
-                    activeColor: Colors.white,
-                    activeTrackColor: Theme.of(context).colorScheme.primary,
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _isAvailable = !_isAvailable;
-                    });
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withOpacity(0.5),
-                    width: 1,
-                  ),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  onTap: _pickLocation,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 15,
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 24,
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Text(
-                            _locationController.text.isEmpty
-                                ? 'Select Apartment Location'
-                                : _locationController.text,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(
-                                  color: _locationController.text.isEmpty
-                                      ? Colors.grey.shade600
-                                      : Theme.of(
-                                          context,
-                                        ).colorScheme.onBackground,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+            Icon(Icons.location_on_outlined, color: Colors.white),
+            const SizedBox(width: 12),
+            Expanded(
               child: Text(
-                'Apartment Pictures',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: SizedBox(
-                height: 120,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _apartmentPictures.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return GestureDetector(
-                        onTap: () async {
-                          final image = await ImagePicker().pickImage(
-                            source: ImageSource.gallery,
-                          );
-
-                          if (image == null) return;
-
-                          setState(() {
-                            _apartmentPictures.add(File(image.path));
-                          });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 12),
-                          width: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Colors.brown.withOpacity(0.15),
-                          ),
-                          child: const Icon(
-                            Icons.add,
-                            size: 40,
-                            color: Colors.brown,
-                          ),
-                        ),
-                      );
-                    }
-                    final picturePath = _apartmentPictures[index - 1];
-
-                    return Stack(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 12),
-                          width: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            image: DecorationImage(
-                              image: FileImage(picturePath),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 4,
-                          right: 4,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _apartmentPictures.removeAt(index - 1);
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.close,
-                                size: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 15),
-            Row(
-              children: [
-                const SizedBox(width: 15),
-                Text(
-                  'Side Description',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: const Color.fromARGB(174, 248, 245, 245),
-                ),
-                height: 150,
-                child: Row(
-                  children: [
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: TextField(
-                        maxLength: 120,
-                        maxLines: 3,
-                        controller: _apartmetnDescriptionController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Villa , Doplox ....',
-                          hintStyle: TextStyle(
-                            color: Colors.brown.withAlpha((0.5 * 255).toInt()),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                _locationController.text.isEmpty
+                    ? 'Select Apartment Location'
+                    : _locationController.text,
+                style: TextStyle(color: Colors.white),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.brown,
-            minimumSize: Size(double.infinity, 55),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
+    );
+  }
+
+  Widget _buildAvailabilitySwitch(Color primaryColor) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Available for Rent', style: TextStyle(color: Colors.white)),
+          Switch(
+            value: _isAvailable,
+            onChanged: (value) => setState(() => _isAvailable = value),
+            activeTrackColor: primaryColor,
+            activeColor: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImageGallery(Color primaryColor) {
+    return SizedBox(
+      height: 120,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: _apartmentPictures.length + 1,
+        itemBuilder: (context, index) {
+          if (index == _apartmentPictures.length) {
+            return _buildAddImageButton();
+          }
+          return _buildImageThumbnail(_apartmentPictures[index], index);
+        },
+      ),
+    );
+  }
+
+  Widget _buildAddImageButton() {
+    return GestureDetector(
+      onTap: () => _pickImage(ImageSource.gallery),
+      child: Container(
+        width: 100,
+        margin: const EdgeInsets.only(right: 8),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Icon(
+          Icons.add_photo_alternate_outlined,
+          color: Colors.white,
+          size: 40,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageThumbnail(File image, int index) {
+    return Container(
+      width: 100,
+      margin: const EdgeInsets.only(right: 8),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.file(image, fit: BoxFit.cover),
+          ),
+          Positioned(
+            top: 4,
+            right: 4,
+            child: GestureDetector(
+              onTap: () => setState(() => _apartmentPictures.removeAt(index)),
+              child: const Icon(Icons.cancel, color: Colors.white, size: 24),
             ),
           ),
-          onPressed: _saveApartment,
-          child: Text(
-            "Add Apartment",
-            style: TextStyle(fontSize: 18, color: Colors.white),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSaveButton(Color primaryColor) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ElevatedButton(
+        onPressed: _saveApartment,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: primaryColor,
+          minimumSize: const Size(double.infinity, 55),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
           ),
+          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
+        child: const Text("Add Apartment"),
       ),
     );
   }

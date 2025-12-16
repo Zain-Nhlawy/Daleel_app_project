@@ -7,49 +7,83 @@ class ContractScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
           'My Contract',
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.filter_list_sharp, size: 30),
+            icon: const Icon(
+              Icons.filter_list_sharp,
+              size: 30,
+              color: Colors.white,
+            ),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FutureBuilder(
-          future: contractController.loadContracts(),
-          builder: (context, snapshot) {
-            /// loading
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 219, 155, 132),
+              Color.fromARGB(255, 243, 243, 243),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: FutureBuilder(
+            future: contractController.loadContracts(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                );
+              }
 
-            /// error
-            if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            }
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    'Error: ${snapshot.error}',
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                );
+              }
 
-            /// no data
-            if (!snapshot.hasData || snapshot.data == null) {
-              return const Center(child: Text('No contracts found'));
-            }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'No contracts found',
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                );
+              }
 
-            final contracts = snapshot.data!;
-
-            return ListView.builder(
-              itemCount: contracts.length,
-              itemBuilder: (context, index) {
-                return ContractDataCardWidget(contract: contracts[index]);
-              },
-            );
-          },
+              final contracts = snapshot.data!;
+              return ListView.builder(
+                padding: const EdgeInsets.all(8.0),
+                itemCount: contracts.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6.0),
+                    child: ContractDataCardWidget(contract: contracts[index]),
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );
