@@ -2,7 +2,6 @@ import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/screen/booking_screen.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:flutter/material.dart';
-
 import 'package:daleel_app_project/widget/apartment_details_widgets/images_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/apartment_info_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/description_section.dart';

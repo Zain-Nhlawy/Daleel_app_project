@@ -58,10 +58,18 @@ class Apartments2 {
       location: json['location'],
 
       freeTimes: json['free_times'] != null
-          ? List<Map<String, dynamic>>.from(
-              json['free_times'].map((ft) => Map<String, dynamic>.from(ft)),
-            )
-          : [],
+    ? List<Map<String, dynamic>>.from(
+        (json['free_times'] as List).map((ft) {
+          if (ft == null) return {'start_time': '__', 'end_time': '__'};
+          return {
+            'start_time': ft['start_time'] ?? '__',
+            'end_time': ft['end_time'] ?? '__',
+          };
+        }),
+      )
+    : [],
+
+
 
       rentFee: json['rentFee'] != null
           ? double.tryParse(json['rentFee'].toString())

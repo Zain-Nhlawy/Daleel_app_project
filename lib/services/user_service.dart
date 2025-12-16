@@ -88,17 +88,14 @@ Future<User?> getProfile() async {
 
   Future<bool> logout() async {
   try {
-    // print('🔹 Logging out...');
     final token = await storage.read(StorageKeys.token);
     if (token == null) {
-      // print('⚠️ No token found, cannot logout properly');
       return false;
     }
     else{
       print('🔹 Token found: $token');
     }
     final response = await apiClient.dio.post('auth/logout');
-    print('🔹 Logout request sent');
     if (response.statusCode == 200) {
       await storage.delete(StorageKeys.token);
       return true;

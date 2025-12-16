@@ -40,8 +40,16 @@ class ContractService {
     );
 
     if (response.statusCode == 201 || response.statusCode == 200) {
-      return Contracts.fromJson(response.data['data']['rent']);
+    final rentData = response.data?['data']?['rent'];
+    if (rentData != null) {
+      return Contracts.fromJson(rentData);
+    } else {
+      print("Warning: rentData is null");
+      return null;
     }
-    return null;
+    } else {
+      print("Booking failed with status: ${response.statusCode}");
+      return null;
+    }
   }
 }
