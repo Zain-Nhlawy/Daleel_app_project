@@ -2,6 +2,7 @@ import 'package:daleel_app_project/models/contracts.dart';
 import 'package:daleel_app_project/services/contract_service.dart';
 
 class ContractController {
+
   final ContractService contractService;
   ContractController({required this.contractService});
   List<Contracts>? _contracts;
@@ -15,5 +16,19 @@ class ContractController {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<Contracts?> bookApartment({
+    required int apartmentId,
+    required DateTime start,
+    required DateTime end,
+    required double rentFee,
+  }) async {
+    return await contractService.createContract(
+      departmentId: apartmentId,
+      start: start,
+      end: end,
+      rentFee: rentFee,
+    );
   }
 }

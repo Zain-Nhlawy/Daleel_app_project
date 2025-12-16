@@ -33,14 +33,14 @@ class Contracts {
   final RentStatus rentStatus;
   final DateTime startRent;
   final DateTime endRent;
-  final int rentFee;
+  final double  rentFee;
   final User user;
 
   factory Contracts.fromJson(Map<String, dynamic> json) {
     return Contracts(
       startRent: DateTime.parse(json['startRent']),
       endRent: DateTime.parse(json['endRent']),
-      rentFee: double.parse(json['rentFee']).toInt(), 
+      rentFee: json['rentFee'],
       rentStatus: rentStatusFromString(json['status']),
       user: User.fromJson(json['user']),
       contractApartment: Apartments2.fromJson(json['department']),

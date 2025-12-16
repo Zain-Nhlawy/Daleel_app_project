@@ -88,10 +88,10 @@ Future<User?> getProfile() async {
 
   Future<bool> logout() async {
   try {
-    print('🔹 Logging out...');
+    // print('🔹 Logging out...');
     final token = await storage.read(StorageKeys.token);
     if (token == null) {
-      print('⚠️ No token found, cannot logout properly');
+      // print('⚠️ No token found, cannot logout properly');
       return false;
     }
     else{

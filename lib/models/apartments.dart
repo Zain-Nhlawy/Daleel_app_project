@@ -10,7 +10,6 @@ class Apartments2 {
   final String? headDescription;
   final double? area;
   final Map<String, dynamic>? location;
-  final List<Map<String, dynamic>>? freeTimes;
   final double? rentFee;
   final bool? isAvailable;
   final String? status;
@@ -20,6 +19,7 @@ class Apartments2 {
   final double? averageRating;
   final int? reviewCount;
   final List<String>? images;
+  List<Map<String, dynamic>>? freeTimes;
   List<Comment>? comments;
 
   Apartments2({

@@ -162,7 +162,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => BookingCalendar(
-                          apartmentId: apartment.id,
+                          apartment: apartment,
                         ),
                       ),
                     );

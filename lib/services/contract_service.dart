@@ -23,4 +23,26 @@ class ContractService {
     }
     return null;
   }
+
+  Future<Contracts?> createContract({
+    required int departmentId,
+    required DateTime start,
+    required DateTime end,
+    required double  rentFee,
+  }) async {
+    final response = await apiClient.dio.post(
+      "/auth/rents",
+      data: {
+        "department_id": departmentId,
+        "startRent": start.toIso8601String().split('T').first,
+        "endRent": end.toIso8601String().split('T').first,
+        "rentFee": rentFee,
+      },
+    );
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return Contracts.fromJson(response.data['data']['rent']);
+    }
+    return null;
+  }
 }

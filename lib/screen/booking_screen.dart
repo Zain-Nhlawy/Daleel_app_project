@@ -1,4 +1,5 @@
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
@@ -6,10 +7,9 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:intl/intl.dart';
 
-
 class BookingCalendar extends StatefulWidget {
-  final int apartmentId;
-  const BookingCalendar({super.key, required this.apartmentId});
+  final Apartments2 apartment;
+  const BookingCalendar({super.key, required this.apartment});
   @override
   _BookingCalendarState createState() => _BookingCalendarState();
 }
@@ -20,21 +20,36 @@ class _BookingCalendarState extends State<BookingCalendar> {
 
   late EventList<Event> _markedDates;
 
-  final List<Map<String, String>> availableTimes = [
-    {"from": "1/1/2026", "to": "8/8/2026"},
-    {"from": "2/5/2027", "to": "Not specified"},
-    {"from": "12/3/2028", "to": "20/4/2028"},
-  ];
+  List<Map<String, String>> availableTimes = [];
 
   @override
   void initState() {
     super.initState();
     _markedDates = EventList<Event>(events: {});
+    _initAvailableTimes(); 
+  }
+
+  void _initAvailableTimes() {
+    setState(() {
+      availableTimes = widget.apartment.freeTimes != null
+          ? widget.apartment.freeTimes!.map((ft) {
+              final start = ft['start_time']?.toString().split(' ').first ?? '--';
+              final end = ft['end_time']?.toString().split(' ').first ?? 'Not specified';
+              return {'from': start, 'to': end};
+            }).toList()
+          : [];
+    });
   }
 
   String formatDate(DateTime date) => DateFormat('d/M/yyyy').format(date);
 
   void _onDayPressed(DateTime date) {
+    if (date.isBefore(DateTime.now())) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Cannot select past dates')),
+    );
+    return;
+  }
     setState(() {
       if (_startDate == null || (_startDate != null && _endDate != null)) {
         _startDate = date;
@@ -56,38 +71,68 @@ class _BookingCalendarState extends State<BookingCalendar> {
     return false;
   }
 
+  Future<void> _refreshFreeTimes() async {
+    final updatedApartment =
+        await apartmentController.fetchApartment(widget.apartment.id);
 
-  void _handleDateSelection(BuildContext context) async{
-  if (_startDate != null && _endDate != null) {
-    String start = formatDate(_startDate!);
-    String end = formatDate(_endDate!);
-
-/*
-    final newRent = await rentController.createRent(
-      departmentId: widget.apartmentId, 
-      startRent: start,
-      endRent: end,
-    );
-
-    if (newRent != null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Selected: ${formatDate(_startDate!)} → ${formatDate(_endDate!)}',
-        ),
-      ),
-    );
-    }*/
-
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please select start and end dates'),
-      ),
-    );
+    if (updatedApartment != null) {
+      setState(() {
+        widget.apartment.freeTimes = updatedApartment.freeTimes;
+        availableTimes = updatedApartment.freeTimes != null
+            ? updatedApartment.freeTimes!.map((ft) {
+                final start =
+                    ft['start_time']?.toString().split(' ').first ?? '--';
+                final end =
+                    ft['end_time']?.toString().split(' ').first ?? 'Not specified';
+                return {'from': start, 'to': end};
+              }).toList()
+            : [];
+      });
+    }
   }
-}
 
+  void _handleDateSelection(BuildContext context) async {
+    if (_startDate != null && _endDate != null) {
+      try {
+        final contract = await contractController.bookApartment(
+          apartmentId: widget.apartment.id,
+          start: _startDate!,
+          end: _endDate!,
+          rentFee: widget.apartment.rentFee ?? 0.0,
+        );
+        if (!mounted) return;
+
+        if (contract != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Booking successful')),
+          );
+
+          await _refreshFreeTimes(); 
+          if (!mounted) return;
+          Navigator.pop(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Booking failed')),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'This house is rented during this period, please choose another time.',
+            ),
+          ),
+        );
+        print('Error during booking: $e');
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select start and end dates'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,9 +188,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
         backgroundColor: Colors.white70,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.brown[700]),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Column(
@@ -181,6 +224,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
                       ),
                       height: 420,
                       child: CalendarCarousel<Event>(
+                        maxSelectedDate: DateTime(2100, 12, 31),
                         onDayPressed: (date, events) => _onDayPressed(date),
                         weekendTextStyle: TextStyle(color: brownDark),
                         weekdayTextStyle: TextStyle(
@@ -207,55 +251,52 @@ class _BookingCalendarState extends State<BookingCalendar> {
                           Icons.chevron_right,
                           color: brownDark,
                         ),
-                        customDayBuilder:
-                            (
-                              bool isSelectable,
-                              int index,
-                              bool isSelectedDay,
-                              bool isToday,
-                              bool isPrevMonthDay,
-                              TextStyle textStyle,
-                              bool isNextMonthDay,
-                              bool isThisMonthDay,
-                              DateTime day,
-                            ) {
-                              bool inRange = _isInRange(day);
-                              bool isStart =
-                                  _startDate != null &&
-                                  day.isAtSameMomentAs(_startDate!);
-                              bool isEnd =
-                                  _endDate != null &&
-                                  day.isAtSameMomentAs(_endDate!);
+                        customDayBuilder: (
+                          bool isSelectable,
+                          int index,
+                          bool isSelectedDay,
+                          bool isToday,
+                          bool isPrevMonthDay,
+                          TextStyle textStyle,
+                          bool isNextMonthDay,
+                          bool isThisMonthDay,
+                          DateTime day,
+                        ) {
+                          bool inRange = _isInRange(day);
+                          bool isStart =
+                              _startDate != null && day.isAtSameMomentAs(_startDate!);
+                          bool isEnd =
+                              _endDate != null && day.isAtSameMomentAs(_endDate!);
 
-                              BoxDecoration? box;
-                              Color? textColor = brownDark;
+                          BoxDecoration? box;
+                          Color? textColor = brownDark;
 
-                              if (inRange) {
-                                box = BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(8),
-                                );
-                              }
-                              if (isStart || isEnd) {
-                                box = BoxDecoration(
-                                  color: isStart ? Colors.green : Colors.red,
-                                  borderRadius: BorderRadius.circular(12),
-                                );
-                                textColor = Colors.white;
-                              }
+                          if (inRange) {
+                            box = BoxDecoration(
+                              color: Colors.orange.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8),
+                            );
+                          }
+                          if (isStart || isEnd) {
+                            box = BoxDecoration(
+                              color: isStart ? Colors.green : Colors.red,
+                              borderRadius: BorderRadius.circular(12),
+                            );
+                            textColor = Colors.white;
+                          }
 
-                              return Container(
-                                decoration: box,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "${day.day}",
-                                  style: TextStyle(
-                                    color: textColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              );
-                            },
+                          return Container(
+                            decoration: box,
+                            alignment: Alignment.center,
+                            child: Text(
+                              "${day.day}",
+                              style: TextStyle(
+                                color: textColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                     SizedBox(height: 20),
