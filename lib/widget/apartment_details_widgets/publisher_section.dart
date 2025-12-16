@@ -14,7 +14,7 @@ class PublisherSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final img = apartment.user?.profileImage;
+    final img = apartment.user.profileImage;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,15 +29,13 @@ class PublisherSection extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 28,
-              backgroundImage: img == null
-                  ? const AssetImage('assets/images/user.png')
-                  : img.startsWith('http')
+              backgroundImage: img.startsWith('http')
                       ? NetworkImage(img)
                       : NetworkImage('http://10.0.2.2:8000$img'),
             ),
             const SizedBox(width: 12),
             Text(
-              '${apartment.user?.firstName ?? ''} ${apartment.user?.lastName ?? ''}',
+              '${apartment.user.firstName} ${apartment.user.lastName}',
             ),
             const Spacer(),
             CustomButton(

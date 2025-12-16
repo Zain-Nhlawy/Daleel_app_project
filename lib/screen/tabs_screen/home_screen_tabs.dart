@@ -1,4 +1,4 @@
-import 'package:daleel_app_project/screen/profile_screen.dart';
+import 'package:daleel_app_project/screen/profile_screens/profile_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/adding_apartment_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/contract_screen.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +44,7 @@ class _MainScreenState extends State<HomeScreenTabs> {
 
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        iconSize: 30,
+        iconSize: 25,
         currentIndex: _currentIndex,
         selectedItemColor: const Color.fromARGB(255, 83, 55, 45),
         unselectedItemColor: const Color.fromARGB(255, 136, 125, 125),

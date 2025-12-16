@@ -10,7 +10,7 @@ class ContractService {
     try {
       final response = await dioClient.dio.get(
         "/auth/rents",
-        queryParameters: {"with": "user,department"},
+        queryParameters: {"with": "user,department,department.user"},
       );
 
       if (response.statusCode == 200) {
