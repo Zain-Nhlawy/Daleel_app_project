@@ -6,13 +6,11 @@ class Api {
   Api() {
     dio = Dio(
       BaseOptions(
-        baseUrl: "http://10.47.171.209:8000/api/v1/",
+        baseUrl: "http://10.0.2.2:8000/api/v1/",
         connectTimeout: const Duration(seconds: 20),
         receiveTimeout: const Duration(seconds: 20),
         sendTimeout: const Duration(seconds: 20),
-        headers: {
-          "Accept": "application/json",
-        },
+        headers: {"Accept": "application/json"},
       ),
     );
   }

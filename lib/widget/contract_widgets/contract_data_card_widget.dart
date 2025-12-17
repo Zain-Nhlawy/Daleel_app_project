@@ -26,7 +26,6 @@ class ContractDataCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF795548);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),

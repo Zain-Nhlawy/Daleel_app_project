@@ -8,6 +8,9 @@ class ApartmentController {
 
   Apartments2? _apartment;
   Apartments2? get apartment => _apartment;
+ 
+  Apartments2? _favoriteApartment;
+  Apartments2? get favoriteApartment => _favoriteApartment;
 
   Future<Apartments2?> fetchApartment(int id) async {
     try {
@@ -27,6 +30,16 @@ class ApartmentController {
   Future<List<Apartments2>?> loadApartments() async {
     try {
       final apartments = await apartmentService.getApartments();
+      _apartments = apartments;
+      return _apartments  ;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+    Future<List<Apartments2>?> loadMyApartments(int id) async {
+    try {
+      final apartments = await apartmentService.getMyApartment(id);
       _apartments = apartments;
       return _apartments  ;
     } catch (e) {

@@ -1,38 +1,58 @@
-import 'package:daleel_app_project/Cubit/favorites_cubit.dart';
-import 'package:daleel_app_project/Cubit/favorites_state.dart';
+import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FavoriteApartmentsScreen extends StatelessWidget {
+class FavoriteApartmentsScreen extends StatefulWidget {
   const FavoriteApartmentsScreen({super.key});
+
+  @override
+  State<FavoriteApartmentsScreen> createState() =>
+      _FavoriteApartmentsScreenState();
+}
+
+class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
+  late Future<List<Apartments2>?> _myApartmentsFuture;
+
+  void initState() {
+    super.initState();
+    _myApartmentsFuture = apartmentController.loadMyApartments(9);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Favorites', style: Theme.of(context).textTheme.bodyLarge),
-          centerTitle: true,
-        ),
-        body: BlocBuilder<FavoritesCubit, FavoritesState> (
-          builder: (context, state) {
-            if(state is FavoritesError) {
-              return Center(child: Text(state.message));
-            }
-            if(state is FavoritesLoading) {
-              return Center(child: Text("Loading..."));
-            }
-            if(state is FavoritesLoaded) {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.apartments.length,
-                itemBuilder: (context, index) =>
-                    NearpyApartmentsWidgets(apartment: state.apartments[index]),
-              );
-            }
-            return Text("Hello");
+      appBar: AppBar(
+        title: Text('Favorites', style: Theme.of(context).textTheme.bodyLarge),
+        centerTitle: true,
+      ),
+      body:  FutureBuilder<List<Apartments2>?>(
+        future: _myApartmentsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
           }
-        ) 
-      );
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No apartments found'));
+          }
+          final apartments = snapshot.data!;
+          return ListView.builder(
+            itemCount: apartments.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 4.0,
+                ),
+                child: NearpyApartmentsWidgets(apartment: apartments[index]),
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }
