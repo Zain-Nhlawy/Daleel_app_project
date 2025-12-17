@@ -16,7 +16,6 @@ class AddingApartmentScreen extends StatefulWidget {
 }
 
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
-
   final User? user = userController.user;
   final _formKey = GlobalKey<FormState>();
   bool _isAvailable = true;
@@ -73,7 +72,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
     try {
       final newApartment = await addRepo.addApartment(
-        userId: 4,
+        userId: user!.userId,
         images: allImages,
         location: selectedLocation,
         headDescription: _apartmentHeadDescriptionController.text,

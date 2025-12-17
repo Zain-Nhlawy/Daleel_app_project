@@ -1,10 +1,10 @@
 import 'package:daleel_app_project/Cubit/favorites_cubit.dart';
+import 'package:daleel_app_project/screen/login_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/profile_details_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/favorite_apartments_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../dependencies.dart';
-import 'package:daleel_app_project/screen/splash/splash_screen.dart';
 
 class ProfileOptions extends StatelessWidget {
   const ProfileOptions({super.key});
@@ -24,7 +24,7 @@ class ProfileOptions extends StatelessWidget {
     await userController.logout();
 
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const SplashScreen()),
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
       (route) => false,
     );
   }
@@ -76,7 +76,7 @@ class ProfileOptions extends StatelessWidget {
                   Icons.home_outlined,
                   size: 25,
                   color: Colors.brown,
-                ), // outlined
+                ),
               ),
               title: Text(
                 'My Houses',

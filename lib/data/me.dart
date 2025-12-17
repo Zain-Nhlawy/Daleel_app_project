@@ -1,6 +1,7 @@
 import 'package:daleel_app_project/models/user.dart';
 
 const me = User(
+  userId: 1,
   firstName: 'Zain Nhalwy',
   lastName: 'aaa',
   profileImage: 'assets/images/user.png', 

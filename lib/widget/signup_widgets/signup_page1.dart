@@ -32,7 +32,7 @@ class SignUpPage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 700,
+      // height: 700,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.brown.withOpacity(0.7),
@@ -74,9 +74,7 @@ class SignUpPage1 extends StatelessWidget {
               readOnly: true,
               onTap: pickDate,
             ),
-
             const SizedBox(height: 20),
-
             Row(
               children: [
                 Expanded(
@@ -96,9 +94,7 @@ class SignUpPage1 extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 25),
-
             Center(
               child: SizedBox(
                 width: 180,
