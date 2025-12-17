@@ -1,7 +1,7 @@
 import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/models/user.dart';
 
-const String BASE_URL = "http://10.0.2.2:8000";
+const String BASE_URL = "http://10.47.171.209:8000";
 
 class Apartments2 {
   final int id;
@@ -10,7 +10,6 @@ class Apartments2 {
   final String? headDescription;
   final double? area;
   final Map<String, dynamic>? location;
-  final List<Map<String, dynamic>>? freeTimes;
   final double? rentFee;
   final bool? isAvailable;
   final String? status;
@@ -20,6 +19,7 @@ class Apartments2 {
   final double? averageRating;
   final int? reviewCount;
   final List<String>? images;
+  List<Map<String, dynamic>>? freeTimes;
   List<Comment>? comments;
 
   Apartments2({
@@ -46,7 +46,7 @@ class Apartments2 {
     return Apartments2(
       id: json['id'],
 
-      user: User.fromJson(json['user']),  
+      user: User.fromJson(json['user']),
 
       description: json['description'],
       headDescription: json['headDescription'],
@@ -59,7 +59,13 @@ class Apartments2 {
 
       freeTimes: json['free_times'] != null
           ? List<Map<String, dynamic>>.from(
-              json['free_times'].map((ft) => Map<String, dynamic>.from(ft)),
+              (json['free_times'] as List).map((ft) {
+                if (ft == null) return {'start_time': '__', 'end_time': '__'};
+                return {
+                  'start_time': ft['start_time'] ?? '__',
+                  'end_time': ft['end_time'] ?? '__',
+                };
+              }),
             )
           : [],
 

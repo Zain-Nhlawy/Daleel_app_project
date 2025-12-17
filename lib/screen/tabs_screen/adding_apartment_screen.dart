@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:daleel_app_project/Cubit/favorites_cubit.dart';
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
 import 'package:daleel_app_project/screen/pick_location_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ class AddingApartmentScreen extends StatefulWidget {
 }
 
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
+
+  final User? user = userController.user;
   final _formKey = GlobalKey<FormState>();
   bool _isAvailable = true;
   String _selectedStatusController = 'unfurnished';

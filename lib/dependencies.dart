@@ -23,15 +23,6 @@ final UserController userController = UserController(
 );
 
 
-/*
-final RentService rentService = RentService(
-  apiClient: dioClient
-);
-final RentController rentController = RentController(
-  rentService: rentService,
-);
-*/
-
 
 final ApartmentService apartmentService = ApartmentService(
   apiClient: dioClient

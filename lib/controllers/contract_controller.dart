@@ -16,4 +16,18 @@ class ContractController {
       rethrow;
     }
   }
+
+  Future<Contracts?> bookApartment({
+    required int apartmentId,
+    required DateTime start,
+    required DateTime end,
+    required double rentFee,
+  }) async {
+    return await contractService.createContract(
+      departmentId: apartmentId,
+      start: start,
+      end: end,
+      rentFee: rentFee,
+    );
+  }
 }
