@@ -21,12 +21,11 @@ class SignUpPage2 extends StatelessWidget {
     required this.signUp,
   });
 
-  
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 730,
+      // height: 730,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.brown.withOpacity(0.7),
@@ -83,8 +82,19 @@ class SignUpPage2 extends StatelessWidget {
             child: SizedBox(
               width: 180,
               height: 55,
-              child: OutlinedButton(
-                onPressed: signUp,
+              child:
+              OutlinedButton(
+                onPressed: () {
+                  signUp(); 
+
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, anim1, anim2) => const LoginScreen(),
+                      transitionDuration: const Duration(milliseconds: 600),
+                    ),
+                  );
+                },
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Colors.white),
                   foregroundColor: Colors.white,

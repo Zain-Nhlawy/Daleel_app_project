@@ -1,12 +1,10 @@
 import 'package:daleel_app_project/screen/login_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
-import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
-  //colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFE2DEDA)),
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
     primary: Color(0xFF8B5E3C),
@@ -50,6 +48,8 @@ final theme = ThemeData(
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(theme: theme, home: SplashScreen()));
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: theme, home: SplashScreen()));
 
 }

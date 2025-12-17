@@ -14,19 +14,24 @@ class ImagesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ImageProvider _getImage(String img) {
-    //   if (img.startsWith('http')) return NetworkImage(img);
-    //   return AssetImage(img);
-    // }
 
-    ImageProvider _getImage(String img) {
+ImageProvider _getImage(String? img) {
+  if (img == null || img.isEmpty) {
+    return const AssetImage('assets/images/user.png');
+  }
+
   if (img.startsWith('http')) {
     return NetworkImage(img);
-  } else {
-    final baseUrl = 'http://10.0.2.2:8000'; 
+  }
+
+  if (img.startsWith('/')) {
+    const baseUrl = 'http://10.0.2.2:8000';
     return NetworkImage('$baseUrl$img');
   }
+
+  return const AssetImage('assets/images/user.png');
 }
+
 
 
     return Column(
