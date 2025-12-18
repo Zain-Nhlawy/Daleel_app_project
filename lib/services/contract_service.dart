@@ -10,7 +10,9 @@ class ContractService {
     try {
       final response = await dioClient.dio.get(
         "/auth/rents",
-        queryParameters: {"with": "user,department,department.user"},
+        queryParameters: {
+          "with": "user,department,department.user,department.images",
+        },
       );
 
       if (response.statusCode == 200) {
@@ -27,7 +29,7 @@ class ContractService {
     required int departmentId,
     required DateTime start,
     required DateTime end,
-    required double  rentFee,
+    required double rentFee,
   }) async {
     final response = await apiClient.dio.post(
       "/auth/rents",

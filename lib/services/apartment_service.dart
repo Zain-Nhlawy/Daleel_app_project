@@ -29,7 +29,22 @@ class ApartmentService {
 
   Future<List<Apartments2>> getApartments() async {
     try {
-      final response = await apiClient.dio.get("/auth/departments?with=images,user");
+      final response = await apiClient.dio.get(
+        "/auth/departments?with=images,user",
+      );
+      final data = response.data['data'] as List;
+
+      return data.map((json) => Apartments2.fromJson(json)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Apartments2>> getMyApartment(int id) async {
+    try {
+      final response = await apiClient.dio.get(
+        "/auth/departments?user=$id&with=user,images",
+      );
       final data = response.data['data'] as List;
 
       return data.map((json) => Apartments2.fromJson(json)).toList();

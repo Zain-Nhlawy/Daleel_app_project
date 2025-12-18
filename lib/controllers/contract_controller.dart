@@ -2,7 +2,6 @@ import 'package:daleel_app_project/models/contracts.dart';
 import 'package:daleel_app_project/services/contract_service.dart';
 
 class ContractController {
-
   final ContractService contractService;
   ContractController({required this.contractService});
   // List<Contracts>? _contracts;

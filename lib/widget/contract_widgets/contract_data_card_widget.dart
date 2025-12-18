@@ -26,8 +26,6 @@ class ContractDataCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF795548);
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
@@ -70,12 +68,12 @@ class ContractDataCardWidget extends StatelessWidget {
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             Image.asset(
-                              "assets/images/placeholder.png",
+                              "assets/images/user.png",
                               fit: BoxFit.cover,
                             ),
                       )
                     : Image.asset(
-                        "assets/images/placeholder.png",
+                        "assets/images/user.png",
                         fit: BoxFit.cover,
                       ),
               ),
