@@ -10,6 +10,9 @@ class Api {
         connectTimeout: const Duration(seconds: 20),
         receiveTimeout: const Duration(seconds: 20),
         sendTimeout: const Duration(seconds: 20),
+        validateStatus: (status) {
+          return status != null && status < 500;
+        },
         headers: {
           "Accept": "application/json",
         },

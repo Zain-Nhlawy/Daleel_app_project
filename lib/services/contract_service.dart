@@ -14,7 +14,7 @@ class ContractService {
       );
 
       if (response.statusCode == 200) {
-        final List rents = response.data['data']['rents'];
+        final List rents = response.data['data'];//['rents'];
         return rents.map((json) => Contracts.fromJson(json)).toList();
       }
     } catch (e) {
@@ -40,7 +40,7 @@ class ContractService {
     );
 
     if (response.statusCode == 201 || response.statusCode == 200) {
-    final rentData = response.data?['data']?['rent'];
+    final rentData = response.data?['data'];//?['rent'];
     if (rentData != null) {
       return Contracts.fromJson(rentData);
     } else {
