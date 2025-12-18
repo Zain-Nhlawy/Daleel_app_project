@@ -29,7 +29,10 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json, {String? token}) {
     return User(
-      userId: json['id'] ?? 0,
+      // userId: json['id'] ?? 0,
+      userId: json['id'] is int
+    ? json['id']
+    : int.tryParse(json['id']?.toString() ?? '0') ?? 0,
       firstName: json['first_name'] ?? '',
       lastName: json['last_name'] ?? '',
       profileImage: json['profileImage'] ?? '',
@@ -41,7 +44,7 @@ class User {
           ? Map<String, dynamic>.from(json['location'])
           : null,
       password: json['password'] ?? '',
-      verificationState: json['verificationState'],
+      verificationState: json['verification_state'] ?? null,
       token: token,
     );
   }

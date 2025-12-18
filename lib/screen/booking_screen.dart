@@ -6,6 +6,8 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel, EventList;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:intl/intl.dart';
+import 'package:daleel_app_project/dependencies.dart';
+
 
 class BookingCalendar extends StatefulWidget {
   final Apartments2 apartment;
@@ -79,49 +81,68 @@ void initState() {
   }
 
   Future<void> _confirmBooking() async {
-    if (_startDate == null || _endDate == null) {
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Please select start and end dates')),
-      );
-      return;
-    }
 
-    setState(() {
-      _isProcessing = true;
-    });
+  await userController.getProfile();
+  final user = userController.user;
 
-    try {
-      await contractController.bookApartment(
-        apartmentId: widget.apartment.id,
-        start: _startDate!,
-        end: _endDate!,
-        rentFee: widget.apartment.rentFee ?? 0.0,
-      );
+  if (user == null) {
+    _scaffoldMessengerKey.currentState?.showSnackBar(
+      const SnackBar(content: Text('User data not available')),
+    );
+    return;
+  }
 
-      if (!mounted) return; 
+  if (user.verificationState != 'verified') {
+    _scaffoldMessengerKey.currentState?.showSnackBar(
+      const SnackBar(
+        content: Text('Your account is not allowed to make bookings'),
+      ),
+    );
+    return;
+  }
 
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Booking successful')),
-      );
+  if (_startDate == null || _endDate == null) {
+    _scaffoldMessengerKey.currentState?.showSnackBar(
+      const SnackBar(content: Text('Please select start and end dates')),
+    );
+    return;
+  }
 
-      if (!mounted) return; 
-      Navigator.pop(context);
+  setState(() => _isProcessing = true);
 
-    } catch (e) {
-      if (!mounted) return; 
+  try {
+    await contractController.bookApartment(
+      apartmentId: widget.apartment.id,
+      start: _startDate!,
+      end: _endDate!,
+      rentFee: widget.apartment.rentFee ?? 0.0,
+    );
 
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(content: Text('Booking failed: This apartment is already rented for the selected period.')),
-      );
-      print('error: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isProcessing = false;
-        });
-      }
+    if (!mounted) return;
+
+    _scaffoldMessengerKey.currentState?.showSnackBar(
+      const SnackBar(content: Text('Booking successful')),
+    );
+    if (!mounted) return;
+    Navigator.pop(context);
+
+  } catch (e) {
+    if (!mounted) return;
+
+    _scaffoldMessengerKey.currentState?.showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Booking failed: This apartment is already rented for the selected period.',
+        ),
+      ),
+    );
+  } finally {
+    if (mounted) {
+      setState(() => _isProcessing = false);
     }
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -379,7 +400,6 @@ void initState() {
                                   ],
                                 );
                               }).toList(),
-
                             ],
                           ),
                         ),
