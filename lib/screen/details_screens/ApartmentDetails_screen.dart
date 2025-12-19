@@ -40,7 +40,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   void _loadApartmentDetails() async {
     final updatedApartment =
         await apartmentController.fetchApartment(apartment.id);
-
+    if (!mounted) return;
     if (updatedApartment != null) {
       setState(() {
         apartment = updatedApartment;
@@ -114,18 +114,17 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                         onSend: () async {
                           final content = _newCommentController.text.trim();
                           if (content.isEmpty) return;
-
                           setState(() {
                             _newCommentController.clear();
                             showAllComments = true;
                           });
-
                           try {
                               await commentController.addComment(apartment.id, content);
                           } catch (e) {
                             print("Failed to add comment: $e");
                           }
                           await commentController.fetchComments(apartment.id);
+                          if (!mounted) return;
                           setState(() {
                             apartment.comments = commentController.comments;
                           });

@@ -22,7 +22,7 @@ class _MainScreenState extends State<HomeScreenTabs> {
     super.initState();
     _pages = [
       HomeScreen(),
-      const ContractScreen(),
+      ContractScreen(),
       const AddingApartmentScreen(),
       const Center(child: Text('Chat')),
       ProfileScreen(),

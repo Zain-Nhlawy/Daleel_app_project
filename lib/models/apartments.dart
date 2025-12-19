@@ -1,7 +1,6 @@
 import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/models/user.dart';
-
 const String BASE_URL = baseURL;
 
 class Apartments2 {
@@ -94,7 +93,7 @@ class Apartments2 {
           : null,
 
       images: json['images'] != null
-          ? List<String>.from(json['images'].map((img) => "$BASE_URL$img"))
+          ? List<String>.from(json['images'].map((img) => "$baseURL$img"))
           : [],
 
       comments: json['comments'] != null
