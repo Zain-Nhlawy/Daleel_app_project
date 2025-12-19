@@ -23,6 +23,7 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Favorites', style: Theme.of(context).textTheme.bodyLarge),
         centerTitle: true,
       ),

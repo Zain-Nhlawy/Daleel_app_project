@@ -48,7 +48,7 @@ class MostPopularApartmentsWidget extends StatelessWidget {
                 width: double.infinity,
                 child: apartment.images != null && apartment.images!.isNotEmpty
                     ? Image.network(
-                        apartment.images![0],
+                      apartment.images![0],
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             Image.asset(
