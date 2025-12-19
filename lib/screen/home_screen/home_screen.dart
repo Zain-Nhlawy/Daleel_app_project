@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Row(
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
               radius: 25,
               backgroundImage: (user != null && user.profileImage.isNotEmpty)
                   ? NetworkImage(
-                      "http://10.47.171.209:8000${user.profileImage}",
+                      baseUrl+user.profileImage,
                     )
                   : const AssetImage('assets/images/user.png') as ImageProvider,
             ),

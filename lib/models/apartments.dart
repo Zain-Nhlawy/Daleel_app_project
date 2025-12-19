@@ -1,7 +1,8 @@
+import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/models/user.dart';
 
-const String BASE_URL = "http://10.47.171.209:8000";
+const String BASE_URL = baseURL;
 
 class Apartments2 {
   final int id;
