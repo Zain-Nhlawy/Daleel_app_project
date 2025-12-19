@@ -12,7 +12,6 @@ import 'controllers/user_controller.dart';
 final AppSecureStorage appStorage = AppSecureStorage();
 final DioClient dioClient = DioClient(storage: appStorage);
 
-
 final UserService userService = UserService(
   apiClient: dioClient,
   storage: appStorage,
@@ -21,32 +20,21 @@ final UserController userController = UserController(
   userService: userService,
   storage: appStorage,
 );
-
-
-
 final ApartmentService apartmentService = ApartmentService(
-  apiClient: dioClient
-);
-final ApartmentController apartmentController = ApartmentController(
-  apartmentService: apartmentService
-);
-
-
-
-final CommentService commentService = CommentService(
   apiClient: dioClient,
 );
+final ApartmentController apartmentController = ApartmentController(
+  apartmentService: apartmentService,
+);
+
+final CommentService commentService = CommentService(apiClient: dioClient);
 final CommentController commentController = CommentController(
   commentService: commentService,
 );
 
-
-final ContractService contractService = ContractService(
-  apiClient: dioClient,
-);
+final ContractService contractService = ContractService(apiClient: dioClient);
 final ContractController contractController = ContractController(
   contractService: contractService,
 );
 
-final  String baseUrl = "http://10.0.2.2:8000";
-
+final String baseUrl = "http://10.0.2.2:8000";
