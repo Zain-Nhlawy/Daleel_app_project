@@ -17,7 +17,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
 
   LatLng? _selectedLatLng;
 
-  String governorate = "Unknown governorate";
+  String governorate = "Damascus Governorate";
   String city = "Unknown City";
   String street = "Unknown Street";
   String district = "Unknown district";
@@ -150,19 +150,14 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
       final data = response.data['address'] ?? {};
       if (!mounted) return; 
       setState(() {
-        governorate = data['state'] ?? "Unknown governorate :(";
+        governorate = data['state'] ?? "Damascus Governorate";
         city = data['city'] ?? data['county'] ?? "Unknown city :(";
         district = data['suburb'] ?? data['neighbourhood'] ?? "Unknown district :(";
         street = data['road'] ?? "Unknown street :(";
       });
     } catch (e) {
       if (!mounted) return;
-      setState(() {
-        governorate = "Unknown governorate";
-        city = "Unknown City";
-        district = "Unknown district";
-        street = "Unknown Street"; 
-      });
+      print("No internet connection or API error: $e");
     }
   }
 }

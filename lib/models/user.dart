@@ -65,4 +65,22 @@ class User {
       'token': token,
     };
   }
+
+  factory User.empty() {
+  return const User(
+    userId: 0,
+    firstName: '',
+    lastName: '',
+    profileImage: '',
+    personIdImage: '',
+    phone: '',
+    email: '',
+    birthdate: '',
+    location: null,
+    password: '',
+    verificationState: null,
+    token: null,
+  );
+}
+
 }

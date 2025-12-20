@@ -1,4 +1,3 @@
-import 'package:daleel_app_project/data/governorates_data.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/screen/pick_location_screen.dart';
 import 'package:daleel_app_project/widget/signup_widgets/signup_page1.dart';
@@ -13,15 +12,15 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-
+class _SignUpScreenState extends State<SignUpScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
-
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _locationController = TextEditingController();
 
   final ImagePicker _picker = ImagePicker();
@@ -29,21 +28,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _idImagePath;
   Map<String, dynamic>? selectedLocation;
 
-
   bool showCard = false;
   bool showSignUp2 = false;
+  late AnimationController _animationController;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    ));
+
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() => showCard = true);
+      _animationController.forward();
     });
   }
 
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   void _showError(String msg) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(msg), backgroundColor: Colors.red));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(msg), backgroundColor: Colors.red));
   }
 
   Future<void> _pickDate() async {
@@ -78,51 +98,64 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return;
     }
 
-    setState(() => showSignUp2 = true);
+    setState(() {
+      showSignUp2 = true;
+      _animationController.forward(from: 0);
+    });
   }
 
-  void _signUp() async {
-  if (_phoneController.text.isEmpty ||
-      _passwordController.text.isEmpty ||
-      _confirmPasswordController.text.isEmpty) {
-    _showError("Missing fields");
-    return;
+  void _backToPage1() {
+    setState(() {
+      showSignUp2 = false;
+      _animationController.forward(from: 0);
+    });
   }
 
-  if (_passwordController.text != _confirmPasswordController.text) {
-    _showError("Passwords do not match");
-    return;
-  }
+  Future<bool> _signUp() async {
+    if (_phoneController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      _showError("Missing fields");
+      return false;
+    }
 
-  if (_profileImagePath == null || _idImagePath == null) {
-    _showError("Please select profile and ID images");
-    return;
-  }
-  if (selectedLocation == null) {
-  _showError("Please select location");
-  return;
-}
+    if (_passwordController.text != _confirmPasswordController.text) {
+      _showError("Passwords do not match");
+      return false;
+    }
 
-  try {
-    final user = await userController.register(
-      firstName: _firstNameController.text,
-      lastName: _lastNameController.text,
-      phone: _phoneController.text,
-      password: _passwordController.text,
-      confirmPassword: _confirmPasswordController.text,
-      profileImage: _profileImagePath!,
-      personIdImage: _idImagePath!,
-      birthdate: _dobController.text,
-      location: selectedLocation!,
-    );
+    if (_profileImagePath == null || _idImagePath == null) {
+      _showError("Please select profile and ID images");
+      return false;
+    }
+    if (selectedLocation == null) {
+      _showError("Please select location");
+      return  false;
+    }
 
-    if (user != null) {
+    try {
+      final user = await userController.register(
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        phone: _phoneController.text,
+        password: _passwordController.text,
+        confirmPassword: _confirmPasswordController.text,
+        profileImage: _profileImagePath!,
+        personIdImage: _idImagePath!,
+        birthdate: _dobController.text,
+        location: selectedLocation!,
+      );
+
+      if (user != null) {
       print("ACCOUNT CREATED: ${user.firstName} ${user.lastName}");
+      return true; 
     } else {
       _showError("Registration failed");
+      return false;
     }
   } catch (e) {
     _showError("Error during registration: $e");
+    return false;
   }
 }
 
@@ -137,14 +170,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (result != null && result is Map) {
       setState(() {
         selectedLocation = Map<String, dynamic>.from(result);
-
         _locationController.text =
             "${result['governorate']}, ${result['city']}, ${result['district']}, ${result['street']}";
       });
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -153,9 +183,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset("assets/images/Background.jpg", fit: BoxFit.cover),
+            child:
+                Image.asset("assets/images/Background.jpg", fit: BoxFit.cover),
           ),
-
           const SafeArea(
             child: Padding(
               padding: EdgeInsets.only(top: 1, left: 20),
@@ -170,73 +200,74 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
 
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeOut,
-            bottom: showCard ? (showSignUp2 ? -700 : 0) : -700,
-            left: 0,
-            right: 0,
-            child: SignUpPage1(
-              firstName: _firstNameController,
-              lastName: _lastNameController,
-              dob: _dobController,
-              profileImage: _profileImagePath,
-              idImage: _idImagePath,
-              pickDate: _pickDate,
-              pickProfile: _pickProfileImage,
-              pickID: _pickIDImage,
-              nextPage: _next,
-            ),
-          ),
-
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeOut,
-            bottom: showCard ? (showSignUp2 ? 0 : -700) : -700,
-            left: 0,
-            right: 0,
-            child: SignUpPage2(
-              phone: _phoneController,
-              password: _passwordController,
-              confirmPassword: _confirmPasswordController,
-              location: _locationController,
-              pickLocation: _pickLocation,
-              signUp: _signUp,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class LocationPickerDialog extends StatelessWidget {
-  final Function(String) onSelected;
-
-  const LocationPickerDialog({super.key, required this.onSelected});
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: SizedBox(
-        height: 400,
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            const Text("Select Your Location", style: TextStyle(fontSize: 18)),
-            const Divider(),
-            Expanded(
-              child: ListView.builder(
-                itemCount: governorates.length,
-                itemBuilder: (_, i) => ListTile(
-                  title: Text(governorates[i]),
-                  onTap: () => onSelected(governorates[i]),
+          if (!showSignUp2)
+            Positioned(
+              top: 160,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: SlideTransition(
+                position: _slideAnimation,
+                child: SignUpPage1(
+                  firstName: _firstNameController,
+                  lastName: _lastNameController,
+                  dob: _dobController,
+                  profileImage: _profileImagePath,
+                  idImage: _idImagePath,
+                  pickDate: _pickDate,
+                  pickProfile: _pickProfileImage,
+                  pickID: _pickIDImage,
+                  nextPage: _next,
                 ),
               ),
             ),
-          ],
-        ),
+
+          if (showSignUp2)
+            Positioned(
+              top: 160,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: SlideTransition(
+                position: _slideAnimation,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back,
+                                color: Colors.brown),
+                            onPressed: _backToPage1,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            "Back",
+                            style: TextStyle(
+                              color: Colors.brown,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: SignUpPage2(
+                        phone: _phoneController,
+                        password: _passwordController,
+                        confirmPassword: _confirmPasswordController,
+                        location: _locationController,
+                        pickLocation: _pickLocation,
+                        signUp: _signUp,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

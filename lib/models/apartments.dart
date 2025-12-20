@@ -43,62 +43,75 @@ class Apartments2 {
   });
 
   factory Apartments2.fromJson(Map<String, dynamic> json) {
-    return Apartments2(
-      id: json['id'],
+  return Apartments2(
+    id: json['id'] ?? 0,
 
-      user: User.fromJson(json['user']),
+    user: json['user'] != null
+        ? User.fromJson(json['user'])
+        : User.empty(), 
 
-      description: json['description'],
-      headDescription: json['headDescription'],
+    description: json['description'],
+    headDescription: json['headDescription'],
 
-      area: json['area'] != null
-          ? double.tryParse(json['area'].toString())
-          : null,
+    area: json['area'] != null
+        ? double.tryParse(json['area'].toString())
+        : null,
 
-      location: json['location'],
+    location: json['location'] != null && json['location'] is Map
+        ? Map<String, dynamic>.from(json['location'])
+        : null,
 
-      freeTimes: json['free_times'] != null
-          ? List<Map<String, dynamic>>.from(
-              (json['free_times'] as List).map((ft) {
-                if (ft == null) return {'start_time': '__', 'end_time': '__'};
-                return {
-                  'start_time': ft['start_time'] ?? '__',
-                  'end_time': ft['end_time'] ?? '__',
-                };
-              }),
-            )
-          : [],
+    freeTimes: json['free_times'] is List
+        ? List<Map<String, dynamic>>.from(
+            json['free_times'].map((ft) => {
+              'start_time': ft?['start_time'] ?? '__',
+              'end_time': ft?['end_time'] ?? '__',
+            }),
+          )
+        : [],
 
-      rentFee: json['rentFee'] != null
-          ? double.tryParse(json['rentFee'].toString())
-          : null,
+    rentFee: json['rentFee'] != null
+        ? double.tryParse(json['rentFee'].toString())
+        : null,
 
-      isAvailable: int.parse(json['isAvailable'].toString()) == 1,
+    isAvailable: json['isAvailable'] != null
+        ? json['isAvailable'].toString() == '1'
+        : null,
 
-      status: json['status'],
+    status: json['status'],
 
-      bedrooms: int.parse(json['bedrooms'].toString()),
-      bathrooms: int.parse(json['bathrooms'].toString()),
+    bedrooms: json['bedrooms'] != null
+        ? int.tryParse(json['bedrooms'].toString())
+        : null,
 
-      floor: json['floor'] != null
-          ? int.tryParse(json['floor'].toString())
-          : null,
+    bathrooms: json['bathrooms'] != null
+        ? int.tryParse(json['bathrooms'].toString())
+        : null,
 
-      averageRating: json['average_rating'] != null
-          ? double.tryParse(json['average_rating'].toString())
-          : null,
+    floor: json['floor'] != null
+        ? int.tryParse(json['floor'].toString())
+        : null,
 
-      reviewCount: json['review_count'] != null
-          ? int.tryParse(json['review_count'].toString())
-          : null,
+    averageRating: json['average_rating'] != null
+        ? double.tryParse(json['average_rating'].toString())
+        : null,
 
-      images: json['images'] != null
-          ? List<String>.from(json['images'].map((img) => "$BASE_URL$img"))
-          : [],
+    reviewCount: json['review_count'] != null
+        ? int.tryParse(json['review_count'].toString())
+        : null,
 
-      comments: json['comments'] != null
-          ? List<Comment>.from(json['comments'].map((c) => Comment.fromJson(c)))
-          : [],
-    );
-  }
+    images: json['images'] is List
+        ? List<String>.from(
+            json['images'].map((img) => "$BASE_URL$img"),
+          )
+        : [],
+
+    comments: json['comments'] is List
+        ? List<Comment>.from(
+            json['comments'].map((c) => Comment.fromJson(c)),
+          )
+        : [],
+  );
+}
+
 }

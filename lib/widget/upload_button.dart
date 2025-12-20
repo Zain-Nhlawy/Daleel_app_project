@@ -26,6 +26,7 @@ class UploadButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

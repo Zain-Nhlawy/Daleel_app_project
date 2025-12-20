@@ -24,28 +24,34 @@ class ApartmentInfoSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Row(
-          children: [
-            const Icon(Icons.location_on, color: Colors.red),
-            const SizedBox(width: 6),
-            Expanded(
-              child: Text(
-                '${apartment.location?['governorate']} / ${apartment.location?['city']}',
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Row(
+            children: [
+              const Icon(Icons.location_on, color: Colors.red),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  '${apartment.location?['governorate']} / ${apartment.location?['city']}',
+                ),
               ),
-            ),
-            const Icon(Icons.star, color: Colors.amber),
-            Text(apartment.averageRating.toString()),
-          ],
+              const Icon(Icons.star, color: Colors.amber),
+              Text(apartment.averageRating.toString()),
+            ],
+          ),
         ),
-        Row(
-          children: [
-            const Icon(Icons.attach_money, color: Colors.green),
-            const SizedBox(width: 6),
-            Text(
-              "${apartment.rentFee} / Day",
-              style: theme.textTheme.bodyMedium,
-            ),
-          ],
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Row(
+            children: [
+              const Icon(Icons.attach_money, color: Colors.green),
+              const SizedBox(width: 6),
+              Text(
+                "${apartment.rentFee} / Day",
+                style: theme.textTheme.bodyMedium,
+              ),
+            ],
+          ),
         ),
       ],
     );

@@ -1,12 +1,12 @@
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel, EventList;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:intl/intl.dart';
-import 'package:daleel_app_project/dependencies.dart';
 
 
 class BookingCalendar extends StatefulWidget {
@@ -35,17 +35,18 @@ void initState() {
   super.initState();
   _markedDates = EventList<Event>(events: {});
 
-
   if (widget.apartment.freeTimes != null) {
-  availableTimes = widget.apartment.freeTimes!.map((ft) {
-    if (ft == null) return {'from': '__', 'to': '__'};
-    final start = ft['start_time']?.toString().split(' ').first ?? '__';
-    final end = ft['end_time']?.toString().split(' ').first ?? '__';
-    return {'from': start, 'to': end};
-  }).toList();
+    availableTimes = widget.apartment.freeTimes!.map((ft) {
+      if (ft == null) return {'from': '__', 'to': '__'};
+      final start = ft['start_time']?.toString()?.split(' ')?.first ?? '__';
+      final end = ft['end_time']?.toString()?.split(' ')?.first ?? '__';
+      return {'from': start, 'to': end};
+    }).toList();
   } else {
     availableTimes = [];
   }
+  
+  print('Available times: $availableTimes');
 }
 
 
@@ -80,37 +81,33 @@ void initState() {
     return false;
   }
 
-  Future<void> _confirmBooking() async {
-
-  await userController.getProfile();
-  final user = userController.user;
-
-  if (user == null) {
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      const SnackBar(content: Text('User data not available')),
-    );
-    return;
-  }
-
-  if (user.verificationState != 'verified') {
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      const SnackBar(
-        content: Text('Your account is not allowed to make bookings'),
-      ),
-    );
-    return;
-  }
-
-  if (_startDate == null || _endDate == null) {
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      const SnackBar(content: Text('Please select start and end dates')),
-    );
-    return;
-  }
+Future<void> _confirmBooking() async {
+  if (_isProcessing) return;
 
   setState(() => _isProcessing = true);
 
   try {
+    await userController.getProfile();
+    final user = userController.user;
+
+    if (user == null) {
+      throw Exception('User not found');
+    }
+
+    if (user.verificationState != 'verified') {
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        const SnackBar(content: Text('Your account is not allowed')),
+      );
+      return;
+    }
+
+    if (_startDate == null || _endDate == null) {
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        const SnackBar(content: Text('Please select dates')),
+      );
+      return;
+    }
+
     await contractController.bookApartment(
       apartmentId: widget.apartment.id,
       start: _startDate!,
@@ -119,29 +116,77 @@ void initState() {
     );
 
     if (!mounted) return;
+    Navigator.pop(context); 
 
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      const SnackBar(content: Text('Booking successful')),
-    );
-    if (!mounted) return;
-    Navigator.pop(context);
-
-  } catch (e) {
+  } on DioException catch (e) {
     if (!mounted) return;
 
+    String? message;
+
+    if (e.response?.data != null) {
+      final data = e.response!.data;
+      if (data is Map<String, dynamic>) {
+        message = data['message'] as String?;
+      } else if (data is String) {
+        message = data;
+      }
+    }
+
+    final statusCode = e.response?.statusCode;
+
+    if (statusCode == 401) {
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        const SnackBar(content: Text('Unauthorized, please login again')),
+      );
+      return;
+    }
+
+    if (statusCode == 500) {
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        const SnackBar(content: Text('Server error, try again later')),
+      );
+      return;
+    }
+
     _scaffoldMessengerKey.currentState?.showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Booking failed: This apartment is already rented for the selected period.',
-        ),
-      ),
+      SnackBar(content: Text(message ?? 'Booking failed')),
     );
+
+  } on Exception catch (e) {
+  if (!mounted) return;
+  
+  String errorMessage = e.toString();
+  
+  int lastColonIndex = errorMessage.lastIndexOf(':');
+  String cleanMessage;
+  
+  if (lastColonIndex != -1 && lastColonIndex < errorMessage.length - 1) {
+    cleanMessage = errorMessage.substring(lastColonIndex + 1).trim();
+  } else {
+    cleanMessage = errorMessage;
+  }
+  
+  cleanMessage = cleanMessage
+      .replaceAll('Exception', '')
+      .replaceAll('Error', '')
+      .trim();
+  
+  if (cleanMessage.length < 3) {
+    cleanMessage = 'Booking failed';
+  }
+  
+  _scaffoldMessengerKey.currentState?.showSnackBar(
+    SnackBar(content: Text(cleanMessage)),
+  );
+
+
   } finally {
     if (mounted) {
       setState(() => _isProcessing = false);
     }
   }
 }
+
 
 
   @override
