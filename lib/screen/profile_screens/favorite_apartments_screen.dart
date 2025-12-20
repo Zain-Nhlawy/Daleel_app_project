@@ -1,4 +1,5 @@
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
@@ -24,7 +25,7 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorites', style: Theme.of(context).textTheme.bodyLarge),
+        title: Text(AppLocalizations.of(context)!.favorites, style: Theme.of(context).textTheme.bodyLarge),
         centerTitle: true,
       ),
       body: FutureBuilder<List<Apartments2>?>(
@@ -34,10 +35,10 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'));
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No apartments found'));
+            return Center(child: Text(AppLocalizations.of(context)!.noApartmentsFound));
           }
           final apartments = snapshot.data!;
           return ListView.builder(

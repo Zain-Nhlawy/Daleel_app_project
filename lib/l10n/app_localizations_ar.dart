@@ -132,4 +132,208 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get confirmPassword => 'تأكيد كلمة المرور';
+
+  @override
+  String get welcome => 'مرحبًا';
+
+  @override
+  String get intro =>
+      'حيث تلتقي الراحة بالثقة في كل اختيار للإيجار.\nدليل – نساعدك على العثور على منزلك بسهولة ودون عناء.';
+
+  @override
+  String get profileDetails => 'تفاصيل الملف الشخصي';
+
+  @override
+  String get myHouses => 'منازلي';
+
+  @override
+  String get contractsHistory => 'سجل العقود';
+
+  @override
+  String get favorites => 'المفضلة';
+
+  @override
+  String get settings => 'الإعدادات';
+
+  @override
+  String get logout => 'تسجيل الخروج';
+
+  @override
+  String get renter => 'مؤجر';
+
+  @override
+  String get tenant => 'مستأجر';
+
+  @override
+  String get timeRemaining => 'الوقت المتبقي';
+
+  @override
+  String get noDescription => 'لا يوجد وصف';
+
+  @override
+  String get month => 'شهر';
+
+  @override
+  String get unknownCity => 'مدينة غير معروفة';
+
+  @override
+  String get day => 'يوم';
+
+  @override
+  String get comments => 'التعليقات';
+
+  @override
+  String get noCommentsYet => 'لا توجد تعليقات بعد';
+
+  @override
+  String get showMore => 'عرض المزيد';
+
+  @override
+  String get showLess => 'عرض أقل';
+
+  @override
+  String get addAComment => 'أضف تعليقًا...';
+
+  @override
+  String get send => 'إرسال';
+
+  @override
+  String get description => 'الوصف';
+
+  @override
+  String get contactUs => 'تواصل معنا';
+
+  @override
+  String get details => 'التفاصيل';
+
+  @override
+  String get bookNow => 'احجز الآن';
+
+  @override
+  String get contractDetails => 'تفاصيل العقد';
+
+  @override
+  String get rentFee => 'قيمة الإيجار';
+
+  @override
+  String get contractPeriod => 'مدة العقد';
+
+  @override
+  String get startDate => 'تاريخ البدء';
+
+  @override
+  String get endDate => 'تاريخ الانتهاء';
+
+  @override
+  String get partiesInvolved => 'الأطراف المعنية';
+
+  @override
+  String get viewApartmentDetails => 'عرض تفاصيل الشقة';
+
+  @override
+  String get number => 'الرقم';
+
+  @override
+  String get name => 'الاسم';
+
+  @override
+  String get publishedBy => 'نُشر بواسطة';
+
+  @override
+  String get pleaseFillAllRequiredFieldsSelectALocationAndAddAHeadImage =>
+      'يرجى تعبئة جميع الحقول المطلوبة، اختيار الموقع، وإضافة صورة رئيسية.';
+
+  @override
+  String get failedToAddApartmentPleaseTryAgain =>
+      'فشل إضافة الشقة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get yourApartmentWasAddedSuccessfully => 'تمت إضافة شقتك بنجاح!';
+
+  @override
+  String get error => 'خطأ';
+
+  @override
+  String get okay => 'حسنًا';
+
+  @override
+  String get addApartment => 'إضافة شقة';
+
+  @override
+  String get mainImage => 'الصورة الرئيسية';
+
+  @override
+  String get price => 'السعر';
+
+  @override
+  String get features => 'المميزات';
+
+  @override
+  String get morePictures => 'صور إضافية';
+
+  @override
+  String get tellUsMoreAboutYourPlace => 'أخبرنا المزيد عن مكانك...';
+
+  @override
+  String get tapToAddMainImage => 'اضغط لإضافة الصورة الرئيسية';
+
+  @override
+  String get thisFieldCannotBeEmpty => 'هذا الحقل لا يمكن أن يكون فارغًا';
+
+  @override
+  String get bathrooms => 'الحمّامات';
+
+  @override
+  String get bedrooms => 'غرف النوم';
+
+  @override
+  String get floor => 'الطابق';
+
+  @override
+  String get areaM2 => 'المساحة (م²)';
+
+  @override
+  String get selectApartmentLocation => 'اختر موقع الشقة';
+
+  @override
+  String get availableForRent => 'متاح للإيجار';
+
+  @override
+  String get success => 'نجاح';
+
+  @override
+  String get titleegModernVilla => 'العنوان (مثال: فيلا عصرية)';
+
+  @override
+  String get myContract => 'عقدي';
+
+  @override
+  String get noContractsFound => 'لا توجد عقود';
+
+  @override
+  String get noApartmentsFound => 'لا توجد شقق';
+
+  @override
+  String get fullName => 'الاسم الكامل';
+
+  @override
+  String get email => 'البريد الإلكتروني';
+
+  @override
+  String get editProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get myProfile => 'ملفي الشخصي';
+
+  @override
+  String get searchHere => 'ابحث هنا';
+
+  @override
+  String get mostPopular => 'الأكثر شيوعًا';
+
+  @override
+  String get seeAll => 'عرض الكل';
+
+  @override
+  String get closeToYou => 'بالقرب منك';
 }

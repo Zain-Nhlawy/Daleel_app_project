@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import '../../dependencies.dart';
@@ -64,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(width: 15),
             Text(
-              user != null ? '${user.firstName} ${user.lastName}' : 'Welcome!',
+              user != null ? '${user.firstName} ${user.lastName}' : '${AppLocalizations.of(context)!.welcome}!',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -121,10 +122,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           child: TextField(
                             style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Search Here...',
-                              hintStyle: TextStyle(
+                              hintText: '${AppLocalizations.of(context)!.searchHere}...',
+                              hintStyle: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 16,
                               ),
@@ -142,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Most Popular',
+                        AppLocalizations.of(context)!.mostPopular,
                         style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(
                               color: Colors.white,
@@ -157,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         child: Text(
-                          'See all',
+                          AppLocalizations.of(context)!.seeAll,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: Colors.white70),
                         ),
@@ -178,15 +179,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (snapshot.hasError) {
                         return Center(
                           child: Text(
-                            'Error: ${snapshot.error}',
+                            '${AppLocalizations.of(context)!.error}: ${snapshot.error}',
                             style: const TextStyle(color: Colors.white),
                           ),
                         );
                       }
                       if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(
+                        return Center(
                           child: Text(
-                            'No apartments found',
+                            AppLocalizations.of(context)!.noApartmentsFound,
                             style: TextStyle(color: Colors.white),
                           ),
                         );
@@ -221,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    'Close To You',
+                    AppLocalizations.of(context)!.closeToYou,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -236,10 +237,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
+                      return Center(child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'));
                     }
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('No apartments found'));
+                      return Center(child: Text(AppLocalizations.of(context)!.noApartmentsFound));
                     }
                     final apartments = snapshot.data!;
                     final nearApartments = apartments

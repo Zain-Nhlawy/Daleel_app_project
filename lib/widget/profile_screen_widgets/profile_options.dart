@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/login_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/my_houses_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/profile_details_screen.dart';
@@ -44,7 +45,7 @@ class ProfileOptions extends StatelessWidget {
               ),
               title: Text(
                 textAlign: TextAlign.justify,
-                'Profile Details',
+                AppLocalizations.of(context)!.profileDetails,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -71,7 +72,7 @@ class ProfileOptions extends StatelessWidget {
                 child: Icon(Icons.home_outlined, size: 25, color: Colors.brown),
               ),
               title: Text(
-                'My Houses',
+                AppLocalizations.of(context)!.myHouses,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -99,7 +100,7 @@ class ProfileOptions extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'Contracts History',
+                AppLocalizations.of(context)!.contractsHistory,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -126,7 +127,7 @@ class ProfileOptions extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'Favorites',
+                AppLocalizations.of(context)!.favorites,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -152,7 +153,7 @@ class ProfileOptions extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'Settings',
+                AppLocalizations.of(context)!.settings,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -172,7 +173,7 @@ class ProfileOptions extends StatelessWidget {
               ),
               title: Text(
                 textAlign: TextAlign.justify,
-                'Logout',
+                AppLocalizations.of(context)!.logout,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,

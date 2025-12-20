@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/contracts.dart';
 import 'package:flutter/material.dart';
 
@@ -108,7 +109,7 @@ class _CountdownTimerBoxState extends State<CountdownTimerBox> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Time Remaining', style: TextStyle(fontSize: 17)),
+              Text(AppLocalizations.of(context)!.timeRemaining, style: TextStyle(fontSize: 17)),
               const SizedBox(height: 5),
               Text(
                 '$years  : $months : $days : $hours : $minutes : $seconds ',

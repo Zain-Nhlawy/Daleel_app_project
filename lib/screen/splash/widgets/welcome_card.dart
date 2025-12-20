@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 class WelcomeCard extends StatelessWidget {
   final bool showWelcomeCard;
@@ -23,20 +24,19 @@ class WelcomeCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "Welcome",
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.welcome,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 44,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            "Where comfort meets certainty in every rental choice.\n"
-            "Daleel – helping you find home, hassle-free.",
+          Text(
+            AppLocalizations.of(context)!.intro,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white70, fontSize: 14),
+            style: const TextStyle(color: Colors.white70, fontSize: 14),
           ),
           const SizedBox(height: 20),
           OutlinedButton(
@@ -46,9 +46,9 @@ class WelcomeCard extends StatelessWidget {
               foregroundColor: Colors.white,
               minimumSize: const Size(250, 55),
             ),
-            child: const Text(
-              "Login",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+            child: Text(
+              AppLocalizations.of(context)!.login,
+              style: const TextStyle(color: Colors.white, fontSize: 20),
             ),
           ),
           const SizedBox(height: 12),
@@ -59,9 +59,9 @@ class WelcomeCard extends StatelessWidget {
               foregroundColor: Colors.white,
               minimumSize: const Size(250, 55),
             ),
-            child: const Text(
-              "Sign Up",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+            child: Text(
+              AppLocalizations.of(context)!.signUp,
+              style: const TextStyle(color: Colors.white, fontSize: 20),
             ),
           ),
         ],

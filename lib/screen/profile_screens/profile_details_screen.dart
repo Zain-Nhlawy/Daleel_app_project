@@ -1,6 +1,5 @@
-
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-
 import '../../dependencies.dart';
 
 class ProfileDetailsScreen extends StatelessWidget {
@@ -17,8 +16,8 @@ class ProfileDetailsScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: const Text(
-          'Profile Details',
+        title: Text(
+          AppLocalizations.of(context)!.profileDetails,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
@@ -116,7 +115,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       buildDetailTile(
                         context,
                         icon: Icons.person_outline,
-                        title: 'Full Name',
+                        title: AppLocalizations.of(context)!.fullName,
                         subtitle:
                             '${displayUser.firstName} ${displayUser.lastName}',
                         onTap: () {},
@@ -129,7 +128,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       buildDetailTile(
                         context,
                         icon: Icons.email_outlined,
-                        title: 'Email',
+                        title: AppLocalizations.of(context)!.email,
                         subtitle: displayUser.email,
                         onTap: () {},
                         primaryColor: primaryColor,
@@ -141,7 +140,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       buildDetailTile(
                         context,
                         icon: Icons.phone_outlined,
-                        title: 'Phone Number',
+                        title: AppLocalizations.of(context)!.phoneNumber,
                         subtitle: displayUser.phone,
                         onTap: () {},
                         // ignore: unnecessary_null_comparison
@@ -169,7 +168,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: const Text('Edit Profile'),
+                  child: Text(AppLocalizations.of(context)!.editProfile),
                 ),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/chats_sceens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import '../../models/apartments.dart';
@@ -21,7 +22,7 @@ class PublisherSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Published By",
+          AppLocalizations.of(context)!.publishedBy,
           style: theme.textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -39,7 +40,7 @@ class PublisherSection extends StatelessWidget {
             Text('${apartment.user.firstName} ${apartment.user.lastName}'),
             const Spacer(),
             CustomButton(
-              text: "Contact Us",
+              text: AppLocalizations.of(context)!.contactUs,
               bordered: true,
               color: theme.colorScheme.primary,
               textColor: theme.colorScheme.primary,

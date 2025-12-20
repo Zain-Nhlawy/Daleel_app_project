@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/core/network/dio_client.dart';
 import 'package:daleel_app_project/core/storage/secure_storage.dart';
 import 'package:daleel_app_project/models/apartments.dart';
@@ -123,7 +124,7 @@ class _MostPopularApartmentsWidgetState
                     children: [
                       Expanded(
                         child: Text(
-                          widget.apartment.headDescription ?? 'No Description',
+                          widget.apartment.headDescription ?? AppLocalizations.of(context)!.noDescription,
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -135,7 +136,7 @@ class _MostPopularApartmentsWidgetState
                         ),
                       ),
                       Text(
-                        '${widget.apartment.rentFee ?? 'N/A'}\$ / month',
+                        '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.month}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: primaryColor,
                           fontWeight: FontWeight.bold,
@@ -154,7 +155,7 @@ class _MostPopularApartmentsWidgetState
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
-                          widget.apartment.location?['city'] ?? 'Unknown City',
+                          widget.apartment.location?['city'] ?? AppLocalizations.of(context)!.unknownCity,
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: Colors.grey[600]),
                           overflow: TextOverflow.ellipsis,

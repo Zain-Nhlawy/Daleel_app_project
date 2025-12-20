@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/screen/booking_screen.dart';
 import 'package:daleel_app_project/dependencies.dart';
@@ -67,7 +68,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Details', style: theme.textTheme.titleMedium),
+        title: Text(AppLocalizations.of(context)!.details, style: theme.textTheme.titleMedium),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -160,7 +161,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                     );
                   },
                   child: Text(
-                    "Book Now",
+                    AppLocalizations.of(context)!.bookNow,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.white,
                       fontSize: 18,
