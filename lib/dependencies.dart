@@ -1,9 +1,11 @@
 import 'package:daleel_app_project/controllers/apartment_controller.dart';
 import 'package:daleel_app_project/controllers/comment_controller.dart';
 import 'package:daleel_app_project/controllers/contract_controller.dart';
+import 'package:daleel_app_project/controllers/notification_controller.dart';
 import 'package:daleel_app_project/services/apartment_service.dart';
 import 'package:daleel_app_project/services/comment_service.dart';
 import 'package:daleel_app_project/services/contract_service.dart';
+import 'package:daleel_app_project/services/notification_service.dart';
 import 'core/storage/secure_storage.dart';
 import 'core/network/dio_client.dart';
 import 'services/user_service.dart';
@@ -27,19 +29,21 @@ final ApartmentController apartmentController = ApartmentController(
   apartmentService: apartmentService,
 );
 
-final CommentService commentService = CommentService(
-  apiClient: dioClient
-);
+final CommentService commentService = CommentService(apiClient: dioClient);
 final CommentController commentController = CommentController(
   commentService: commentService,
 );
 
-final ContractService contractService = ContractService(
-  apiClient: dioClient
-);
+final ContractService contractService = ContractService(apiClient: dioClient);
 final ContractController contractController = ContractController(
   contractService: contractService,
 );
 
-final String baseUrl = "http://10.0.2.2:8000";
+final NotificationService notificationService = NotificationService(
+  apiClient: dioClient,
+);
+final NotificationController notificationController = NotificationController(
+  notificationService: notificationService,
+);
 
+final String baseUrl = "http://10.0.2.2:8000";

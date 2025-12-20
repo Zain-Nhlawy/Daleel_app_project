@@ -4,7 +4,7 @@ import '../services/comment_service.dart';
 
 class CommentController extends ChangeNotifier {
   final CommentService commentService;
-
+  
   CommentController({required this.commentService});
 
   List<Comment> _comments = [];
