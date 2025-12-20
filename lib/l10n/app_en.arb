@@ -106,5 +106,6 @@
   "mostPopular": "Most Popular",
   "seeAll": "See All",
   "closeToYou": "Close To You",
-  "area": "Area"
+  "area": "Area",
+  "requestSubmittedYourApartmentIsNowPendingAdminApproval": "Request Submitted!\nYour apartment is now pending admin approval."
 }

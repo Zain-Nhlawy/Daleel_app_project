@@ -106,5 +106,6 @@
   "mostPopular": "الأكثر شيوعًا",
   "seeAll": "عرض الكل",
   "closeToYou": "بالقرب منك",
-  "area": "المساحة"
+  "area": "المساحة",
+  "requestSubmittedYourApartmentIsNowPendingAdminApproval": "تم تقديم الطلب!\nشقتك الآن قيد انتظار موافقة الإدارة."
 }

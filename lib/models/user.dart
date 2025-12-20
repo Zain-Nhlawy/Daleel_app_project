@@ -1,5 +1,3 @@
-const String BASE_URL = "http://10.0.2.2:8000";
-
 class User {
   final int userId;
   final String firstName;
@@ -69,20 +67,19 @@ class User {
   }
 
   factory User.empty() {
-  return const User(
-    userId: 0,
-    firstName: '',
-    lastName: '',
-    profileImage: '',
-    personIdImage: '',
-    phone: '',
-    email: '',
-    birthdate: '',
-    location: null,
-    password: '',
-    verificationState: null,
-    token: null,
-  );
-}
-
+    return const User(
+      userId: 0,
+      firstName: '',
+      lastName: '',
+      profileImage: '',
+      personIdImage: '',
+      phone: '',
+      email: '',
+      birthdate: '',
+      location: null,
+      password: '',
+      verificationState: null,
+      token: null,
+    );
+  }
 }

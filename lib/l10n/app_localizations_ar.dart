@@ -339,4 +339,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get area => 'المساحة';
+
+  @override
+  String get requestSubmittedYourApartmentIsNowPendingAdminApproval =>
+      'تم تقديم الطلب!\nشقتك الآن قيد انتظار موافقة الإدارة.';
 }

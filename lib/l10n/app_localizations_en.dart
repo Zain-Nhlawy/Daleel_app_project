@@ -340,4 +340,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get area => 'Area';
+
+  @override
+  String get requestSubmittedYourApartmentIsNowPendingAdminApproval =>
+      'Request Submitted!\nYour apartment is now pending admin approval.';
 }

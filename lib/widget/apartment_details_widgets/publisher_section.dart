@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/chats_sceens/chat_screen.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class PublisherSection extends StatelessWidget {
               radius: 28,
               backgroundImage: img.startsWith('http')
                   ? NetworkImage(img)
-                  : NetworkImage('http://10.0.2.2:8000$img'),
+                  : NetworkImage('$baseUrl$img'),
             ),
             const SizedBox(width: 12),
             Text('${apartment.user.firstName} ${apartment.user.lastName}'),

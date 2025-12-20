@@ -120,8 +120,8 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
             size: 50,
           ),
         ),
-        content: const Text(
-          'Request Submitted!\nYour apartment is now pending admin approval.',
+        content: Text(
+          AppLocalizations.of(context)!.requestSubmittedYourApartmentIsNowPendingAdminApproval,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 16),
         ),
@@ -294,7 +294,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           ),
           textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        child: const Text("Add Apartment"),
+        child: Text(AppLocalizations.of(context)!.addApartment),
       ),
     );
   }
