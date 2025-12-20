@@ -40,7 +40,6 @@ void initState() {
 
   if (widget.apartment.freeTimes != null) {
     availableTimes = widget.apartment.freeTimes!.map((ft) {
-      if (ft == null) return {'from': '__', 'to': '__'};
       final start = ft['start_time']?.toString()?.split(' ')?.first ?? '__';
       final end = ft['end_time']?.toString()?.split(' ')?.first ?? '__';
       return {'from': start, 'to': end};

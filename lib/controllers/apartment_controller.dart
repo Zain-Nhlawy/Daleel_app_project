@@ -27,21 +27,22 @@ class ApartmentController {
 
   List<Apartments2>? _apartments;
   List<Apartments2>? get apartments => _apartments;
+
   Future<List<Apartments2>?> loadApartments() async {
     try {
       final apartments = await apartmentService.getApartments();
       _apartments = apartments;
-      return _apartments  ;
+      return _apartments;
     } catch (e) {
       rethrow;
     }
   }
 
-    Future<List<Apartments2>?> loadMyApartments(int id) async {
+  Future<List<Apartments2>?> loadMyApartments(int id) async {
     try {
       final apartments = await apartmentService.getMyApartment(id);
       _apartments = apartments;
-      return _apartments  ;
+      return _apartments;
     } catch (e) {
       rethrow;
     }
@@ -51,11 +52,16 @@ class ApartmentController {
     _apartment = null;
   }
 
-//  Future<bool> toggleFavoriteApartment(int id) async{
-// try {
-//   bool isAdded = await apartmentService.toggleFavorite(id);
+  List<Apartments2>? _favouriteApartments;
+  List<Apartments2>? get favouriteApartments => _favouriteApartments;
 
-// }
-
-//  }
+  Future<List<Apartments2>?> loadFavouriteApartments() async {
+    try {
+      final apartments = await apartmentService.getFavouriteApartments();
+      _favouriteApartments = apartments;
+      return _favouriteApartments;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
