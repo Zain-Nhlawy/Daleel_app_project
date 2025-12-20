@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late PageController _pageController;
-  final int _currentPage = 10000;
+  final int _currentPage = 5;
   late Future<List<Apartments2>?> _apartmentsFuture;
 
   @override
@@ -59,9 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             CircleAvatar(
               radius: 25,
               backgroundImage: (user != null && user.profileImage.isNotEmpty)
-                  ? NetworkImage(
-                      baseUrl+user.profileImage,
-                    )
+                  ? NetworkImage(baseUrl + user.profileImage)
                   : const AssetImage('assets/images/user.png') as ImageProvider,
             ),
             const SizedBox(width: 15),
@@ -194,11 +192,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       }
                       final apartments = snapshot.data!;
+                      apartments.sort(
+                        (a, b) =>
+                            a.reviewCount!.compareTo(b.reviewCount as num),
+                      );
+                      if (apartments.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 100,
+                            horizontal: 100,
+                          ),
+                          child: Center(child: Text("no apartments near you")),
+                        );
+                      }
+
+                      final popularApartment = apartments.sublist(1, 6);
                       return PageView.builder(
                         physics: const ClampingScrollPhysics(),
                         controller: _pageController,
                         itemBuilder: (context, index) {
-                          return carouselView(index, apartments);
+                          return carouselView(index, popularApartment);
                         },
                       );
                     },
@@ -229,6 +242,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const Center(child: Text('No apartments found'));
                     }
                     final apartments = snapshot.data!;
+                    final nearApartments = apartments
+                        .where(
+                          (apartment) =>
+                              apartment.location!['city'] ==
+                              user!.location!['city'],
+                        )
+                        .toList();
+                    if (nearApartments.isEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 100,
+                          horizontal: 100,
+                        ),
+                        child: Center(child: Text("no apartments near you")),
+                      );
+                    }
+
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -240,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             vertical: 4.0,
                           ),
                           child: NearpyApartmentsWidgets(
-                            apartment: apartments[index],
+                            apartment: nearApartments[index],
                           ),
                         );
                       },

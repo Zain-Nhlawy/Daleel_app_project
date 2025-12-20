@@ -13,6 +13,7 @@ class MyChatsScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           "My Messages",
           style: TextStyle(

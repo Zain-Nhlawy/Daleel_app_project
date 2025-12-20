@@ -46,9 +46,9 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                   width: 120,
                   height: 100,
                   child:
-                      apartment.images != null && apartment.images!.isNotEmpty
+                      apartment.images.isNotEmpty
                       ? Image.network(
-                          apartment.images![0],
+                          apartment.images[0],
                           width: 120,
                           height: 100,
                           fit: BoxFit.cover,

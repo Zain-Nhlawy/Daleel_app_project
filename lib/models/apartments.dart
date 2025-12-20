@@ -2,8 +2,7 @@ import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/models/user.dart';
 
- String BASE_URL = baseUrl;
-
+String BASE_URL = baseUrl;
 
 class Apartments2 {
   final int id;
@@ -20,10 +19,11 @@ class Apartments2 {
   final int? floor;
   final double? averageRating;
   final int? reviewCount;
-  final List<String>? images;
+  final List<String> images;
   List<Map<String, dynamic>>? freeTimes;
-  List<Comment>? comments;
- final  bool? state;
+  List? comments;
+  final bool? state;
+  final bool isFavorited;
 
   Apartments2({
     required this.id,
@@ -42,25 +42,50 @@ class Apartments2 {
     this.floor,
     this.averageRating,
     this.reviewCount,
-    this.images,
+    required this.images,
     this.comments,
+    this.isFavorited = false,
   });
 
   factory Apartments2.fromJson(Map<String, dynamic> json) {
-    return Apartments2(
-      id: json['id'],
-      state: int.parse(json['verification_state'].toString()) == 1,
-      user: User.fromJson(json['user']),
+    int? _safeParseInt(dynamic value) {
+      if (value == null) return null;
+      if (value is int) return value;
+      if (value is double) return value.toInt();
+      if (value is String) return int.tryParse(value);
+      return null;
+    }
 
+    double? _safeParseDouble(dynamic value) {
+      if (value == null) return null;
+      if (value is double) return value;
+      if (value is int) return value.toDouble();
+      if (value is String) return double.tryParse(value);
+      return null;
+    }
+
+    List<String> parsedImages = [];
+    if (json['images'] != null) {
+      if (json['images'] is List) {
+        parsedImages = List<String>.from(
+          json['images'].map((img) {
+            String imageUrl = img.toString();
+            return imageUrl.startsWith('http') ? imageUrl : "$baseUrl$imageUrl";
+          }),
+        );
+      }
+    }
+
+    return Apartments2(
+      id: _safeParseInt(json['id']) ?? 0,
+      state: _safeParseInt(json['verification_state']) == 1,
+      user: User.fromJson(json['user']),
       description: json['description'],
       headDescription: json['headDescription'],
-
-      area: json['area'] != null
-          ? double.tryParse(json['area'].toString())
+      area: _safeParseDouble(json['area']),
+      location: json['location'] != null
+          ? Map<String, dynamic>.from(json['location'])
           : null,
-
-      location: json['location'],
-
       freeTimes: json['free_times'] != null
           ? List<Map<String, dynamic>>.from(
               (json['free_times'] as List).map((ft) {
@@ -72,37 +97,19 @@ class Apartments2 {
               }),
             )
           : [],
-
-      rentFee: json['rentFee'] != null
-          ? double.tryParse(json['rentFee'].toString())
-          : null,
-
-      isAvailable: int.parse(json['isAvailable'].toString()) == 1,
-
+      rentFee: _safeParseDouble(json['rentFee']),
+      isAvailable: _safeParseInt(json['isAvailable']) == 1,
       status: json['status'],
-
-      bedrooms: int.parse(json['bedrooms'].toString()),
-      bathrooms: int.parse(json['bathrooms'].toString()),
-
-      floor: json['floor'] != null
-          ? int.tryParse(json['floor'].toString())
-          : null,
-
-      averageRating: json['average_rating'] != null
-          ? double.tryParse(json['average_rating'].toString())
-          : null,
-
-      reviewCount: json['review_count'] != null
-          ? int.tryParse(json['review_count'].toString())
-          : null,
-
-      images: json['images'] != null
-          ? List<String>.from(json['images'].map((img) => "$baseUrl$img"))
-          : [],
-
+      bedrooms: _safeParseInt(json['bedrooms']),
+      bathrooms: _safeParseInt(json['bathrooms']),
+      floor: _safeParseInt(json['floor']),
+      averageRating: _safeParseDouble(json['average_rating']),
+      reviewCount: _safeParseInt(json['review_count']),
+      images: parsedImages,
       comments: json['comments'] != null
-          ? List<Comment>.from(json['comments'].map((c) => Comment.fromJson(c)))
+          ? List.from(json['comments'].map((c) => Comment.fromJson(c)))
           : [],
+      isFavorited: json['is_favorited'] == true,
     );
   }
 }

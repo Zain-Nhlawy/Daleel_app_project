@@ -61,10 +61,9 @@ class ContractDataCardWidget extends StatelessWidget {
                 height: 140,
                 width: double.infinity,
                 child:
-                    contract.contractApartment.images != null &&
-                        contract.contractApartment.images!.isNotEmpty
+                    contract.contractApartment.images.isNotEmpty
                     ? Image.network(
-                        contract.contractApartment.images![0],
+                        contract.contractApartment.images[0],
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             Image.asset(

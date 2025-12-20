@@ -1,4 +1,3 @@
-
 import 'package:daleel_app_project/widget/profile_screen_widgets/profile_options.dart';
 import 'package:flutter/material.dart';
 import '../../../dependencies.dart';
@@ -12,6 +11,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'My Profile',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -71,9 +71,7 @@ class ProfileScreen extends StatelessWidget {
                           radius: 45,
                           backgroundImage:
                               (user != null && user.profileImage.isNotEmpty)
-                              ? NetworkImage(
-                                  baseUrl+user.profileImage,
-                                )
+                              ? NetworkImage(baseUrl + user.profileImage)
                               : const AssetImage('assets/images/user.png')
                                     as ImageProvider,
                         ),

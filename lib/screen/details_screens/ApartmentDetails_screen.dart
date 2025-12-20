@@ -28,8 +28,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   void initState() {
     super.initState();
     apartment = widget.apartment;
-    selectedImage = apartment.images!.isNotEmpty
-        ? apartment.images!.first
+    selectedImage = apartment.images.isNotEmpty
+        ? apartment.images.first
         : 'assets/images/user.png';
     _newCommentController = TextEditingController();
     _loadApartmentDetails();
@@ -44,8 +44,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
     if (updatedApartment != null) {
       setState(() {
         apartment = updatedApartment;
-        selectedImage = apartment.images!.isNotEmpty
-            ? apartment.images!.first
+        selectedImage = apartment.images.isNotEmpty
+            ? apartment.images.first
             : 'assets/images/user.png';
         isLoading = false;
       });
@@ -82,8 +82,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
               children: [
                 ImagesSection(
                   selectedImage: selectedImage,
-                  images: apartment.images!.isNotEmpty
-                      ? apartment.images!
+                  images: apartment.images.isNotEmpty
+                      ? apartment.images
                       : ['assets/images/user.png'],
                   onImageSelected: (img) {
                     setState(() => selectedImage = img);

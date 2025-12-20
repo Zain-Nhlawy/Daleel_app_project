@@ -87,10 +87,9 @@ class ContractDetails extends StatelessWidget {
       width: double.infinity,
       height: 200,
       child:
-          contract.contractApartment.images != null &&
-              contract.contractApartment.images!.isNotEmpty
+          contract.contractApartment.images.isNotEmpty
           ? Image.network(
-              contract.contractApartment.images![0],
+              contract.contractApartment.images[0],
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => _buildImageError(),
             )

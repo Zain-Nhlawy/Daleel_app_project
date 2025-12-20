@@ -127,12 +127,13 @@ class _ContractScreenState extends State<ContractScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'My Contract',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -186,9 +187,7 @@ class _ContractScreenState extends State<ContractScreen> {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      child: ContractDataCardWidget(
-                        contract: contracts[index],
-                      ),
+                      child: ContractDataCardWidget(contract: contracts[index]),
                     );
                   },
                 ),
@@ -200,4 +199,3 @@ class _ContractScreenState extends State<ContractScreen> {
     );
   }
 }
-

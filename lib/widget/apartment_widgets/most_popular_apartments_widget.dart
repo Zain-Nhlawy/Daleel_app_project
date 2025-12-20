@@ -16,7 +16,7 @@ class MostPopularApartmentsWidget extends StatefulWidget {
 
 class _MostPopularApartmentsWidgetState
     extends State<MostPopularApartmentsWidget> {
-  bool _isFavorited = false;
+  late bool? _isFavorited = widget.apartment.isFavorited;
 
   void _handleFavoriteToggle() async {
     final apartmentService = ApartmentService(
@@ -28,7 +28,7 @@ class _MostPopularApartmentsWidgetState
     );
     if (success) {
       setState(() {
-        _isFavorited = !_isFavorited;
+        _isFavorited = !_isFavorited!;
       });
     } else {
       print("Failed to update favorite status.");
@@ -75,11 +75,9 @@ class _MostPopularApartmentsWidgetState
                   child: SizedBox(
                     height: 110,
                     width: double.infinity,
-                    child:
-                        widget.apartment.images != null &&
-                            widget.apartment.images!.isNotEmpty
+                    child: widget.apartment.images.isNotEmpty
                         ? Image.network(
-                            widget.apartment.images![0],
+                            widget.apartment.images[0],
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) =>
                                 Image.asset(
@@ -105,8 +103,8 @@ class _MostPopularApartmentsWidgetState
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                       icon: Icon(
-                        _isFavorited ? Icons.favorite : Icons.favorite_border,
-                        color: _isFavorited ? Colors.red : Colors.white,
+                        _isFavorited! ? Icons.favorite : Icons.favorite_border,
+                        color: _isFavorited! ? Colors.red : Colors.white,
                         size: 22,
                       ),
                       onPressed: _handleFavoriteToggle,

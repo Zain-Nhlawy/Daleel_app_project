@@ -1,8 +1,7 @@
 // ignore_for_file: unused_element, use_build_context_synchronously, deprecated_member_use
 
 import 'dart:io';
-// --- تأكد من استدعاء الملف اللي حطيت فيه الـ sheet ---
-import 'package:daleel_app_project/screen/confirm_add_screen.dart'; // <--- مثال، غيره لاسم ملفك الصحيح
+import 'package:daleel_app_project/screen/confirm_add_screen.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
@@ -19,7 +18,6 @@ class AddingApartmentScreen extends StatefulWidget {
 }
 
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
-  // --- المتغيرات بقيت كما هي ---
   final User? user = userController.user;
   final _formKey = GlobalKey<FormState>();
   bool _isAvailable = true;
@@ -35,8 +33,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   final _apartmentAreaController = TextEditingController();
   final _apartmetnDescriptionController = TextEditingController();
   final List<File> _apartmentPictures = [];
-
-  // --- كل الدوال اللوجيكية اللي عدلناها صحيحة وبتبقى ---
 
   Future<void> _pickImage(
     ImageSource source, {
