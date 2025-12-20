@@ -124,7 +124,8 @@ class _MostPopularApartmentsWidgetState
                     children: [
                       Expanded(
                         child: Text(
-                          widget.apartment.headDescription ?? AppLocalizations.of(context)!.noDescription,
+                          widget.apartment.headDescription ??
+                              AppLocalizations.of(context)!.noDescription,
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -136,7 +137,7 @@ class _MostPopularApartmentsWidgetState
                         ),
                       ),
                       Text(
-                        '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.month}',
+                        '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: primaryColor,
                           fontWeight: FontWeight.bold,
@@ -155,7 +156,8 @@ class _MostPopularApartmentsWidgetState
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
-                          widget.apartment.location?['city'] ?? AppLocalizations.of(context)!.unknownCity,
+                          widget.apartment.location?['city'] ??
+                              AppLocalizations.of(context)!.unknownCity,
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: Colors.grey[600]),
                           overflow: TextOverflow.ellipsis,

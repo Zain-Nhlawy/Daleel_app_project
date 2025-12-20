@@ -47,8 +47,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                 child: SizedBox(
                   width: 120,
                   height: 100,
-                  child:
-                      apartment.images.isNotEmpty
+                  child: apartment.images.isNotEmpty
                       ? Image.network(
                           apartment.images[0],
                           width: 120,
@@ -73,7 +72,8 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      apartment.headDescription ?? AppLocalizations.of(context)!.noDescription,
+                      apartment.headDescription ??
+                          AppLocalizations.of(context)!.noDescription,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -93,7 +93,8 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            apartment.location?['city'] ?? AppLocalizations.of(context)!.unknownCity,
+                            apartment.location?['city'] ??
+                                AppLocalizations.of(context)!.unknownCity,
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(color: Colors.grey[600]),
                             overflow: TextOverflow.ellipsis,
@@ -123,7 +124,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          '${apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.month}',
+                          '${apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: primaryColor,
