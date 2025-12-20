@@ -337,4 +337,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get closeToYou => 'Close To You';
+
+  @override
+  String get area => 'Area';
 }
