@@ -79,7 +79,9 @@ class Apartments2 {
     return Apartments2(
       id: _safeParseInt(json['id']) ?? 0,
       state: _safeParseInt(json['verification_state']) == 1,
-      user: User.fromJson(json['user']),
+      user: json['user'] != null
+        ? User.fromJson(json['user'])
+        : User.empty(), 
       description: json['description'],
       headDescription: json['headDescription'], 
       area: _safeParseDouble(json['area']),
