@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import '../../dependencies.dart';
@@ -19,6 +20,18 @@ class _HomeScreenState extends State<HomeScreen> {
   late PageController _pageController;
   final int _currentPage = 5;
   late Future<List<Apartments2>?> _apartmentsFuture;
+  Future<void> initNotifications() async {
+    final messaging = FirebaseMessaging.instance;
+    await messaging.requestPermission();
+    String? token = await messaging.getToken();
+    // print('FCM TOKEN: $token');
+    if (token != null) {
+      // sendTokenToServer(token);
+    }
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
+      // sendTokenToServer(newToken);
+    });
+  }
 
   @override
   void initState() {
@@ -37,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
     });
+    initNotifications();
   }
 
   @override
