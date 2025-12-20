@@ -305,7 +305,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get titleegModernVilla => 'العنوان (مثال: فيلا عصرية)';
 
   @override
-  String get myContract => 'عقدي';
+  String get myContracts => 'عقودي';
 
   @override
   String get noContractsFound => 'لا توجد عقود';

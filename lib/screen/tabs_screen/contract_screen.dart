@@ -37,7 +37,7 @@ class _ContractScreenState extends State<ContractScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          AppLocalizations.of(context)!.myContract,
+          AppLocalizations.of(context)!.myContracts,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.bold,

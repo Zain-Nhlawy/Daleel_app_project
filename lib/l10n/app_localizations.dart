@@ -674,11 +674,11 @@ abstract class AppLocalizations {
   /// **'Title (e.g., Modern Villa)'**
   String get titleegModernVilla;
 
-  /// No description provided for @myContract.
+  /// No description provided for @myContracts.
   ///
   /// In en, this message translates to:
-  /// **'My Contract'**
-  String get myContract;
+  /// **'My Contracts'**
+  String get myContracts;
 
   /// No description provided for @noContractsFound.
   ///

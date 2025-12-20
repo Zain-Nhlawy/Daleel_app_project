@@ -306,7 +306,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titleegModernVilla => 'Title (e.g., Modern Villa)';
 
   @override
-  String get myContract => 'My Contract';
+  String get myContracts => 'My Contracts';
 
   @override
   String get noContractsFound => 'No contracts found';
