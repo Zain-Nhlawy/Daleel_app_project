@@ -1,4 +1,4 @@
-import 'package:daleel_app_project/data/me.dart';
+
 import 'package:daleel_app_project/widget/profile_screen_widgets/profile_options.dart';
 import 'package:flutter/material.dart';
 import '../../../dependencies.dart';
@@ -72,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
                           backgroundImage:
                               (user != null && user.profileImage.isNotEmpty)
                               ? NetworkImage(
-                                  baseURL+user.profileImage,
+                                  baseUrl+user.profileImage,
                                 )
                               : const AssetImage('assets/images/user.png')
                                     as ImageProvider,

@@ -83,7 +83,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   Future<void> _saveApartment(File contractImage) async {
     final addRepo = AddApartmentsRepo(dioClient: dioClient);
     try {
-      final newApartment = await addRepo.addApartment(
+      await addRepo.addApartment(
         userId: user!.userId,
         images: [_selectedImageController!, ..._apartmentPictures],
         // contractImage: contractImage,

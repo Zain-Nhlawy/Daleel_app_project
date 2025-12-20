@@ -1,13 +1,12 @@
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel, EventList;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:intl/intl.dart';
-
-
 class BookingCalendar extends StatefulWidget {
   final Apartments2 apartment;
   const BookingCalendar({super.key, required this.apartment});
@@ -23,7 +22,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
   // ignore: unused_field
   late EventList<Event> _markedDates;
 
-List<Map<String, String>> availableTimes = [];
+  List<Map<String, String>> availableTimes = [];
 
   bool _isProcessing = false;
 
@@ -31,29 +30,31 @@ List<Map<String, String>> availableTimes = [];
       GlobalKey<ScaffoldMessengerState>();
 
   @override
-void initState() {
-  super.initState();
-  _markedDates = EventList<Event>(events: {});
+  void initState() {
+    super.initState();
+    _markedDates = EventList<Event>(events: {});
 
 
-  if (widget.apartment.freeTimes != null) {
-  availableTimes = widget.apartment.freeTimes!.map((ft) {
-    final start = ft['start_time']?.toString().split(' ').first ?? '__';
-    final end = ft['end_time']?.toString().split(' ').first ?? '__';
-    return {'from': start, 'to': end};
-  }).toList();
-  } else {
-    availableTimes = [];
+    if (widget.apartment.freeTimes != null) {
+      availableTimes = widget.apartment.freeTimes!.map((ft) {
+        // ignore: unnecessary_null_comparison, dead_code
+        if (ft == null) return {'from': '__', 'to': '__'};
+        final start = ft['start_time']?.toString().split(' ').first ?? '__';
+        final end = ft['end_time']?.toString().split(' ').first ?? '__';
+        return {'from': start, 'to': end};
+      }).toList();
+    } else {
+      availableTimes = [];
+    }
+
   }
-}
-
 
   String formatDate(DateTime date) => DateFormat('d/M/yyyy').format(date);
 
   void _onDayPressed(DateTime date) {
     if (date.isBefore(DateTime.now())) {
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Cannot select past dates')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.cannotSelectPastDates)),
       );
       return;
     }
@@ -80,68 +81,65 @@ void initState() {
   }
 
   Future<void> _confirmBooking() async {
+    await userController.getProfile();
+    final user = userController.user;
 
-  await userController.getProfile();
-  final user = userController.user;
+    if (user == null) {
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.userDataNotAvailable)),
+      );
+      return;
+    }
 
-  if (user == null) {
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      const SnackBar(content: Text('User data not available')),
-    );
-    return;
-  }
-
-  if (user.verificationState != 'verified') {
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      const SnackBar(
-        content: Text('Your account is not allowed to make bookings'),
-      ),
-    );
-    return;
-  }
-
-  if (_startDate == null || _endDate == null) {
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      const SnackBar(content: Text('Please select start and end dates')),
-    );
-    return;
-  }
-
-  setState(() => _isProcessing = true);
-
-  try {
-    await contractController.bookApartment(
-      apartmentId: widget.apartment.id,
-      start: _startDate!,
-      end: _endDate!,
-      rentFee: widget.apartment.rentFee ?? 0.0,
-    );
-
-    if (!mounted) return;
-
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      const SnackBar(content: Text('Booking successful')),
-    );
-    if (!mounted) return;
-    Navigator.pop(context);
-
-  } catch (e) {
-    if (!mounted) return;
-
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Booking failed: This apartment is already rented for the selected period.',
+    if (user.verificationState != 'verified') {
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.yourAccountIsNotAllowedToMakeBookings),
         ),
-      ),
-    );
-  } finally {
-    if (mounted) {
-      setState(() => _isProcessing = false);
+      );
+      return;
+    }
+
+    if (_startDate == null || _endDate == null) {
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectStartAndEndDates)),
+      );
+      return;
+    }
+
+    setState(() => _isProcessing = true);
+
+    try {
+      await contractController.bookApartment(
+        apartmentId: widget.apartment.id,
+        start: _startDate!,
+        end: _endDate!,
+        rentFee: widget.apartment.rentFee ?? 0.0,
+      );
+
+      if (!mounted) return;
+
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.bookingSuccessful)),
+      );
+      if (!mounted) return;
+      Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
+
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.bookingPeriodUnavailable,
+          ),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
+      }
     }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +152,7 @@ void initState() {
         _startDate!,
         Event(
           date: _startDate!,
-          title: 'Start',
+          title: AppLocalizations.of(context)!.start,
           dot: Container(
             margin: EdgeInsets.symmetric(horizontal: 1.0),
             decoration: BoxDecoration(
@@ -172,7 +170,7 @@ void initState() {
         _endDate!,
         Event(
           date: _endDate!,
-          title: 'End',
+          title: AppLocalizations.of(context)!.end,
           dot: Container(
             margin: EdgeInsets.symmetric(horizontal: 1.0),
             decoration: BoxDecoration(
@@ -189,12 +187,12 @@ void initState() {
     return WillPopScope(
       onWillPop: () async => !_isProcessing,
       child: ScaffoldMessenger(
-        key: _scaffoldMessengerKey, 
+        key: _scaffoldMessengerKey,
         child: Scaffold(
           backgroundColor: Colors.grey[100],
           appBar: AppBar(
             title: Text(
-              'Booking Details',
+              AppLocalizations.of(context)!.bookingDetails,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             elevation: 0,
@@ -214,7 +212,7 @@ void initState() {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Select Date",
+                          AppLocalizations.of(context)!.selectDate,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -238,8 +236,7 @@ void initState() {
                           height: 420,
                           child: CalendarCarousel<Event>(
                             maxSelectedDate: DateTime(2100, 12, 31),
-                            onDayPressed: (date, events) =>
-                                _onDayPressed(date),
+                            onDayPressed: (date, events) => _onDayPressed(date),
                             weekendTextStyle: TextStyle(color: brownDark),
                             weekdayTextStyle: TextStyle(
                               color: Colors.blue[900],
@@ -267,53 +264,55 @@ void initState() {
                             ),
                             customDayBuilder:
                                 (
-                              bool isSelectable,
-                              int index,
-                              bool isSelectedDay,
-                              bool isToday,
-                              bool isPrevMonthDay,
-                              TextStyle textStyle,
-                              bool isNextMonthDay,
-                              bool isThisMonthDay,
-                              DateTime day,
-                            ) {
-                              bool inRange = _isInRange(day);
-                              bool isStart =
-                                  _startDate != null &&
+                                  bool isSelectable,
+                                  int index,
+                                  bool isSelectedDay,
+                                  bool isToday,
+                                  bool isPrevMonthDay,
+                                  TextStyle textStyle,
+                                  bool isNextMonthDay,
+                                  bool isThisMonthDay,
+                                  DateTime day,
+                                ) {
+                                  bool inRange = _isInRange(day);
+                                  bool isStart =
+                                      _startDate != null &&
                                       day.isAtSameMomentAs(_startDate!);
-                              bool isEnd =
-                                  _endDate != null &&
+                                  bool isEnd =
+                                      _endDate != null &&
                                       day.isAtSameMomentAs(_endDate!);
 
-                              BoxDecoration? box;
-                              Color? textColor = brownDark;
+                                  BoxDecoration? box;
+                                  Color? textColor = brownDark;
 
-                              if (inRange) {
-                                box = BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(8),
-                                );
-                              }
-                              if (isStart || isEnd) {
-                                box = BoxDecoration(
-                                  color: isStart ? Colors.green : Colors.red,
-                                  borderRadius: BorderRadius.circular(12),
-                                );
-                                textColor = Colors.white;
-                              }
+                                  if (inRange) {
+                                    box = BoxDecoration(
+                                      color: Colors.orange.withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(8),
+                                    );
+                                  }
+                                  if (isStart || isEnd) {
+                                    box = BoxDecoration(
+                                      color: isStart
+                                          ? Colors.green
+                                          : Colors.red,
+                                      borderRadius: BorderRadius.circular(12),
+                                    );
+                                    textColor = Colors.white;
+                                  }
 
-                              return Container(
-                                decoration: box,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "${day.day}",
-                                  style: TextStyle(
-                                    color: textColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              );
-                            },
+                                  return Container(
+                                    decoration: box,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "${day.day}",
+                                      style: TextStyle(
+                                        color: textColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  );
+                                },
                           ),
                         ),
                         SizedBox(height: 20),
@@ -321,7 +320,7 @@ void initState() {
                           children: [
                             Expanded(
                               child: _dateBox(
-                                label: "Start",
+                                label: AppLocalizations.of(context)!.start,
                                 date: _startDate,
                                 icon: Icons.play_arrow,
                                 color: brown,
@@ -330,7 +329,7 @@ void initState() {
                             SizedBox(width: 16),
                             Expanded(
                               child: _dateBox(
-                                label: "End",
+                                label: AppLocalizations.of(context)!.end,
                                 date: _endDate,
                                 icon: Icons.flag,
                                 color: brown,
@@ -340,7 +339,7 @@ void initState() {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          "Available Times",
+                          AppLocalizations.of(context)!.availableTimes,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -362,7 +361,9 @@ void initState() {
                           ),
                           padding: EdgeInsets.all(12),
                           child: Table(
-                            border: TableBorder.all(color: Colors.grey.shade300),
+                            border: TableBorder.all(
+                              color: Colors.grey.shade300,
+                            ),
                             children: [
                               TableRow(
                                 decoration: BoxDecoration(
@@ -372,15 +373,19 @@ void initState() {
                                   Padding(
                                     padding: EdgeInsets.all(8),
                                     child: Text(
-                                      'From',
-                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                      AppLocalizations.of(context)!.from,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.all(8),
                                     child: Text(
-                                      'To',
-                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                      AppLocalizations.of(context)!.to,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -422,7 +427,7 @@ void initState() {
                   ],
                 ),
                 child: CustomButton(
-                  text: _isProcessing ? 'Processing...' : 'Confirm Booking',
+                  text: _isProcessing ? AppLocalizations.of(context)!.processing : AppLocalizations.of(context)!.confirmBooking,
                   color: brown,
                   onPressed: () {
                     if (!_isProcessing) _confirmBooking();

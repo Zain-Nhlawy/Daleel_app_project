@@ -1,4 +1,4 @@
-import 'package:daleel_app_project/data/me.dart';
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:dio/dio.dart';
 
 class Api {
@@ -7,7 +7,7 @@ class Api {
   Api() {
     dio = Dio(
       BaseOptions(
-        baseUrl: "$baseURL/api/v1/",
+        baseUrl: "$baseUrl/api/v1/",
         connectTimeout: const Duration(seconds: 20),
         receiveTimeout: const Duration(seconds: 20),
         sendTimeout: const Duration(seconds: 20),

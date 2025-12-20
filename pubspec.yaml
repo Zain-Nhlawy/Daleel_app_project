@@ -1,5 +1,5 @@
 name: daleel_app_project
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,7 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
@@ -42,18 +44,18 @@ dependencies:
   google_fonts: ^6.3.2
   image_picker: ^1.2.1
   flutter_calendar_carousel: ^2.0.3
-  intl: ^0.19.0
   lottie: ^2.4.0
   audioplayers: ^6.5.1
   flutter_map: ^6.1.0
   latlong2: ^0.9.0
   geocoding: ^2.1.0
-  
-  
+  firebase_core: ^3.8.0
+  firebase_auth: ^5.3.0
+  cloud_firestore: ^5.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -67,11 +69,11 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  generate: true
+  uses-material-design: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   assets:

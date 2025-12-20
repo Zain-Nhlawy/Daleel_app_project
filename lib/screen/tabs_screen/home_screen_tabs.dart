@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/screen/chats_sceens/my_chats_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/profile_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/adding_apartment_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/contract_screen.dart';
@@ -24,7 +25,7 @@ class _MainScreenState extends State<HomeScreenTabs> {
       HomeScreen(),
       ContractScreen(),
       const AddingApartmentScreen(),
-      const Center(child: Text('Chat')),
+      const Center(child: MyChatsScreen()),
       ProfileScreen(),
     ];
   }
@@ -61,21 +62,12 @@ class _MainScreenState extends State<HomeScreenTabs> {
         },
 
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.handshake_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box_outlined),
-            label: '',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.explore_outlined), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.handshake_outlined), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.add_box_outlined), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.chat_outlined), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
-        ],
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: '')
+        ]
       ),
     );
   }

@@ -1,6 +1,7 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
-import 'signUp_screen.dart';
+import 'signup_screen.dart';
 import '../widget/custom_text_field.dart';
 import '../../dependencies.dart';
 
@@ -46,14 +47,14 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = _passwordController.text;
 
     if (phone.isEmpty || password.isEmpty) {
-      _showError("Please fill all fields.");
+      _showError(AppLocalizations.of(context)!.pleaseFillAllFields);
       return;
     }
 
     final loggedUser = await userController.login(phone, password);
 
     if (loggedUser == null) {
-      _showError("Login failed. Check your credentials.");
+      _showError(AppLocalizations.of(context)!.loginFailedCheckYourCredentials);
       return;
     }
 
@@ -147,10 +148,10 @@ class LoginCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 16),
-          const Text(
-            "Welcome back!",
+          Text(
+            AppLocalizations.of(context)!.welcomeBack,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 44,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -159,13 +160,13 @@ class LoginCard extends StatelessWidget {
           const SizedBox(height: 20),
           CustomTextField(
             controller: phoneController,
-            label: "Phone Number",
+            label: AppLocalizations.of(context)!.phoneNumber,
             icon: Icons.phone,
             keyboardType: TextInputType.phone,
           ),
           CustomTextField(
             controller: passwordController,
-            label: "Password",
+            label: AppLocalizations.of(context)!.password,
             icon: Icons.lock,
             keyboardType: TextInputType.text,
             obscure: true,
@@ -181,9 +182,9 @@ class LoginCard extends StatelessWidget {
                   side: const BorderSide(color: Colors.white),
                   foregroundColor: Colors.white,
                 ),
-                child: const Text(
-                  "Login",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                child: Text(
+                  AppLocalizations.of(context)!.login,
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
             ),
@@ -205,7 +206,10 @@ class _SignUpLink extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text("Don't have an account?", style: TextStyle(color: Colors.white70)),
+          Text(
+            AppLocalizations.of(context)!.dontHaveAnAccount, 
+            style: const TextStyle(color: Colors.white70)
+          ),
           TextButton(
             onPressed: () => Navigator.push(
               context,
@@ -214,9 +218,9 @@ class _SignUpLink extends StatelessWidget {
                 transitionDuration: const Duration(seconds: 1),
               ),
             ),
-            child: const Text(
-              "Sign Up",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            child: Text(
+              AppLocalizations.of(context)!.signUp,
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
         ],
