@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:daleel_app_project/data/me.dart';
 import 'package:flutter/material.dart';
 
 import '../../dependencies.dart';
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
               radius: 25,
               backgroundImage: (user != null && user.profileImage.isNotEmpty)
                   ? NetworkImage(
-                      baseUrl+user.profileImage,
+                      baseURL+user.profileImage,
                     )
                   : const AssetImage('assets/images/user.png') as ImageProvider,
             ),

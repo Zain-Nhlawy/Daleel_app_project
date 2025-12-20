@@ -1,4 +1,3 @@
-import 'package:daleel_app_project/screen/login_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

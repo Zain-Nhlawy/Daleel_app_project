@@ -1,6 +1,7 @@
 import 'package:daleel_app_project/data/me.dart';
 import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/models/user.dart';
+
 const String BASE_URL = baseURL;
 
 class Apartments2 {
@@ -21,10 +22,12 @@ class Apartments2 {
   final List<String>? images;
   List<Map<String, dynamic>>? freeTimes;
   List<Comment>? comments;
+ final  bool? state;
 
   Apartments2({
     required this.id,
     required this.user,
+    this.state,
     this.description,
     this.headDescription,
     this.area,
@@ -45,7 +48,7 @@ class Apartments2 {
   factory Apartments2.fromJson(Map<String, dynamic> json) {
     return Apartments2(
       id: json['id'],
-
+      state: int.parse(json['verification_state'].toString()) == 1,
       user: User.fromJson(json['user']),
 
       description: json['description'],

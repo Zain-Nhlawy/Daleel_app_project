@@ -52,4 +52,23 @@ class ApartmentService {
       rethrow;
     }
   }
+
+
+  Future<bool> toggleFavorite(int apartmentId) async {
+    try {
+      final response = await apiClient.dio.post(
+        'auth/departments/$apartmentId/favorite/toggle',
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {    
+        print('Success: ${response.data['message']}');
+        return true; 
+      } else {
+        print('Failed to toggle favorite. Status code: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('Error toggling favorite: $e');
+      return false; 
+    }
+  }
 }

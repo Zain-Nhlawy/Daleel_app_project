@@ -1,33 +1,33 @@
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/apartments.dart';
+import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 import 'package:flutter/material.dart';
 
-class FavoriteApartmentsScreen extends StatefulWidget {
-  const FavoriteApartmentsScreen({super.key});
+class MyHousesScreen extends StatefulWidget {
+  const MyHousesScreen({super.key});
 
   @override
-  State<FavoriteApartmentsScreen> createState() =>
+  State<MyHousesScreen> createState() =>
       _FavoriteApartmentsScreenState();
 }
 
-class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
+class _FavoriteApartmentsScreenState extends State<MyHousesScreen> {
   late Future<List<Apartments2>?> _myApartmentsFuture;
-
+  final User? user = userController.user;
   void initState() {
     super.initState();
-    _myApartmentsFuture = apartmentController.loadMyApartments(9);
+    _myApartmentsFuture = apartmentController.loadMyApartments(user!.userId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('Favorites', style: Theme.of(context).textTheme.bodyLarge),
+        title: Text('My Houses', style: Theme.of(context).textTheme.bodyLarge),
         centerTitle: true,
       ),
-      body:  FutureBuilder<List<Apartments2>?>(
+      body: FutureBuilder<List<Apartments2>?>(
         future: _myApartmentsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

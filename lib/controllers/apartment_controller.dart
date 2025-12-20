@@ -50,4 +50,12 @@ class ApartmentController {
   void clearApartment() {
     _apartment = null;
   }
+
+//  Future<bool> toggleFavoriteApartment(int id) async{
+// try {
+//   bool isAdded = await apartmentService.toggleFavorite(id);
+
+// }
+
+//  }
 }
