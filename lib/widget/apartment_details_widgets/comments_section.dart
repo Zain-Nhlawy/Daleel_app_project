@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import '../../models/comment.dart';
@@ -98,7 +99,7 @@ class CommentsSection extends StatelessWidget {
       return NetworkImage(fixedUrl);
     }
 
-    return NetworkImage('http://10.0.2.2:8000$image');
+    return NetworkImage('$baseUrl$image');
   }
 
   Widget _commentRow({

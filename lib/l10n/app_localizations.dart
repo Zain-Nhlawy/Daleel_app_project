@@ -674,11 +674,11 @@ abstract class AppLocalizations {
   /// **'Title (e.g., Modern Villa)'**
   String get titleegModernVilla;
 
-  /// No description provided for @myContract.
+  /// No description provided for @myContracts.
   ///
   /// In en, this message translates to:
-  /// **'My Contract'**
-  String get myContract;
+  /// **'My Contracts'**
+  String get myContracts;
 
   /// No description provided for @noContractsFound.
   ///
@@ -745,6 +745,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Area'**
   String get area;
+
+  /// No description provided for @requestSubmittedYourApartmentIsNowPendingAdminApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Submitted!\nYour apartment is now pending admin approval.'**
+  String get requestSubmittedYourApartmentIsNowPendingAdminApproval;
 }
 
 class _AppLocalizationsDelegate

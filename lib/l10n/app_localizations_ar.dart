@@ -305,7 +305,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get titleegModernVilla => 'العنوان (مثال: فيلا عصرية)';
 
   @override
-  String get myContract => 'عقدي';
+  String get myContracts => 'عقودي';
 
   @override
   String get noContractsFound => 'لا توجد عقود';
@@ -339,4 +339,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get area => 'المساحة';
+
+  @override
+  String get requestSubmittedYourApartmentIsNowPendingAdminApproval =>
+      'تم تقديم الطلب!\nشقتك الآن قيد انتظار موافقة الإدارة.';
 }

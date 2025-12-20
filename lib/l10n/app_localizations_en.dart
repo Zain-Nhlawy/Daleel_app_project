@@ -306,7 +306,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titleegModernVilla => 'Title (e.g., Modern Villa)';
 
   @override
-  String get myContract => 'My Contract';
+  String get myContracts => 'My Contracts';
 
   @override
   String get noContractsFound => 'No contracts found';
@@ -340,4 +340,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get area => 'Area';
+
+  @override
+  String get requestSubmittedYourApartmentIsNowPendingAdminApproval =>
+      'Request Submitted!\nYour apartment is now pending admin approval.';
 }

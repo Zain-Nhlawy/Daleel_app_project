@@ -95,7 +95,7 @@
   "availableForRent": "متاح للإيجار",
   "success": "نجاح",
   "titleegModernVilla": "العنوان (مثال: فيلا عصرية)",
-  "myContract": "عقدي",
+  "myContracts": "عقودي",
   "noContractsFound": "لا توجد عقود",
   "noApartmentsFound": "لا توجد شقق",
   "fullName": "الاسم الكامل",
@@ -106,5 +106,6 @@
   "mostPopular": "الأكثر شيوعًا",
   "seeAll": "عرض الكل",
   "closeToYou": "بالقرب منك",
-  "area": "المساحة"
+  "area": "المساحة",
+  "requestSubmittedYourApartmentIsNowPendingAdminApproval": "تم تقديم الطلب!\nشقتك الآن قيد انتظار موافقة الإدارة."
 }
