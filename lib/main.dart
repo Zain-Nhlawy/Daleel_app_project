@@ -61,7 +61,7 @@ void main() async {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      locale: Locale('ar'),
+      locale: Locale('en'),
       debugShowCheckedModeBanner: false,
       theme: theme,
       home: SplashScreen(),

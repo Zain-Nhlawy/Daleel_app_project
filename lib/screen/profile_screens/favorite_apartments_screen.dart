@@ -1,7 +1,9 @@
+import 'package:daleel_app_project/core/network/dio_client.dart';
+import 'package:daleel_app_project/core/storage/secure_storage.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
-import 'package:daleel_app_project/models/user.dart';
+import 'package:daleel_app_project/services/apartment_service.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -14,47 +16,120 @@ class FavoriteApartmentsScreen extends StatefulWidget {
 }
 
 class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
-  late Future<List<Apartments2>?> _myApartmentsFuture;
-  final User? user = userController.user;
+  List<Apartments2> _favoriteApartments = [];
+  bool _isLoading = true;
+  String? _error;
+
+  @override
   void initState() {
     super.initState();
-    _myApartmentsFuture = apartmentController.loadMyApartments(user!.userId);
+    _fetchFavoriteApartments();
+  }
+
+  Future<void> _fetchFavoriteApartments() async {
+    try {
+      final apartments = await apartmentController.loadFavouriteApartments();
+      if (mounted) {
+        setState(() {
+          _favoriteApartments = apartments ?? [];
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  void _dismissApartment(Apartments2 apartment, int index) {
+    final removedApartment = _favoriteApartments[index];
+    setState(() {
+      _favoriteApartments.removeAt(index);
+    });
+    final apartmentService = ApartmentService(
+      apiClient: DioClient(storage: AppSecureStorage()),
+    );
+    apartmentService.toggleFavorite(apartment.id);
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 4),
+        content: Text(AppLocalizations.of(context)!.noDescription),
+        action: SnackBarAction(
+          label: AppLocalizations.of(context)!.bookNow,
+          onPressed: () {
+            setState(() {
+              _favoriteApartments.insert(index, removedApartment);
+            });
+            apartmentService.toggleFavorite(apartment.id);
+          },
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.favorites, style: Theme.of(context).textTheme.bodyLarge),
+        title: Text(
+          AppLocalizations.of(context)!.favorites,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         centerTitle: true,
       ),
-      body: FutureBuilder<List<Apartments2>?>(
-        future: _myApartmentsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'));
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text(AppLocalizations.of(context)!.noApartmentsFound));
-          }
-          final apartments = snapshot.data!;
-          return ListView.builder(
-            itemCount: apartments.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 4.0,
-                ),
-                child: NearpyApartmentsWidgets(apartment: apartments[index]),
-              );
-            },
-          );
-        },
-      ),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_error != null) {
+      return Center(
+        child: Text('${AppLocalizations.of(context)!.error}: $_error'),
+      );
+    }
+
+    if (_favoriteApartments.isEmpty) {
+      return Center(
+        child: Text(AppLocalizations.of(context)!.noApartmentsFound),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: _favoriteApartments.length,
+      itemBuilder: (context, index) {
+        final apartment = _favoriteApartments[index];
+        return Dismissible(
+          key: ValueKey(apartment.id),
+          direction: DismissDirection.endToStart,
+          background: Container(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.error.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Icon(Icons.delete, color: Colors.white),
+          ),
+          onDismissed: (_) {
+            _dismissApartment(apartment, index);
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            child: NearpyApartmentsWidgets(apartment: apartment),
+          ),
+        );
+      },
     );
   }
 }
