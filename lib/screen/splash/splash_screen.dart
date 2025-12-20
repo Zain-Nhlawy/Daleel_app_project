@@ -29,29 +29,26 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           Center(
-            
             child: Lottie.asset(
               "assets/lottie/logo.json",
               width: double.infinity,
               height: double.infinity,
               controller: _controller,
               onLoaded: (composition) {
-                  player.play(AssetSource("sounds/splashSounds.mp3"));
+                player.play(AssetSource("sounds/splashSounds.mp3"));
                 _controller
-                  ..duration = composition.duration
-                  ..forward();
+                ..duration = composition.duration
+                ..forward();
               },
-              
             ),
-            
           ),
-          
         ],
       ),
     );

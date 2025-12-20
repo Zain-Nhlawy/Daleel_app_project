@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/details_screens/contract_details.dart';
 import 'package:flutter/material.dart';
 import '../../models/contracts.dart';
@@ -87,7 +88,7 @@ class ContractDataCardWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Renter: ${contract.contractApartment.user.firstName}",
+                        "${AppLocalizations.of(context)!.renter}: ${contract.contractApartment.user.firstName}",
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -97,7 +98,7 @@ class ContractDataCardWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        "Tenant: ${contract.user.firstName}",
+                        "${AppLocalizations.of(context)!.tenant}: ${contract.user.firstName}",
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -114,13 +115,13 @@ class ContractDataCardWidget extends StatelessWidget {
                     children: [
                       _buildDateInfo(
                         context,
-                        "Start",
+                        AppLocalizations.of(context)!.start,
                         contract.startRent,
                         Icons.calendar_today_outlined,
                       ),
                       _buildDateInfo(
                         context,
-                        "End",
+                        AppLocalizations.of(context)!.end,
                         contract.endRent,
                         Icons.calendar_today_outlined,
                       ),

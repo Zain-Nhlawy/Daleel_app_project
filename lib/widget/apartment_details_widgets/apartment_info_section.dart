@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import '../../models/apartments.dart';
 
@@ -42,7 +43,7 @@ class ApartmentInfoSection extends StatelessWidget {
             const Icon(Icons.attach_money, color: Colors.green),
             const SizedBox(width: 6),
             Text(
-              "${apartment.rentFee} / Day",
+              "${apartment.rentFee} / ${AppLocalizations.of(context)!.day}",
               style: theme.textTheme.bodyMedium,
             ),
           ],

@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import '../../models/comment.dart';
 import '../custom_button.dart';
@@ -27,14 +28,14 @@ class CommentsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Comments",
+          AppLocalizations.of(context)!.comments,
           style: theme.textTheme.bodyLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
 
         if (comments.isEmpty)
-          const Text("No comments yet"),
+          Text(AppLocalizations.of(context)!.noCommentsYet),
 
         Column(
         children: [
@@ -53,7 +54,7 @@ class CommentsSection extends StatelessWidget {
             child: TextButton(
               onPressed: onToggleShow,
               child: Text(
-                showAll ? "Show Less" : "Show More",
+                showAll ? AppLocalizations.of(context)!.showLess : AppLocalizations.of(context)!.showMore,
                 style: TextStyle(color: theme.colorScheme.primary),
               ),
             ),
@@ -67,7 +68,7 @@ class CommentsSection extends StatelessWidget {
               child: CustomTextField(
                 controller: controller,
                 label: "",
-                hint: "Add a comment...",
+                hint: AppLocalizations.of(context)!.addAComment,
                 icon: Icons.comment,
                 readOnly: false,
                 borderColor: Colors.brown,
@@ -75,7 +76,7 @@ class CommentsSection extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             CustomButton(
-              text: "Send",
+              text: AppLocalizations.of(context)!.send,
               bordered: true,
               color: theme.colorScheme.primary,
               textColor: theme.colorScheme.primary,

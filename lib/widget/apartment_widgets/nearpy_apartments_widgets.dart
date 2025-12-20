@@ -1,3 +1,5 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
+import 'package:daleel_app_project/l10n/app_localizations_ar.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +73,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      apartment.headDescription ?? 'No Description',
+                      apartment.headDescription ?? AppLocalizations.of(context)!.noDescription,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -91,7 +93,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            apartment.location?['city'] ?? 'Unknown City',
+                            apartment.location?['city'] ?? AppLocalizations.of(context)!.unknownCity,
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(color: Colors.grey[600]),
                             overflow: TextOverflow.ellipsis,
@@ -121,7 +123,7 @@ class NearpyApartmentsWidgets extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          '${apartment.rentFee ?? 'N/A'}\$ / month',
+                          '${apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.month}',
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: primaryColor,
