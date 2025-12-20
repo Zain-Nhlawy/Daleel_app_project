@@ -1,10 +1,14 @@
-// ignore_for_file: unused_element, use_build_context_synchronously
+// ignore_for_file: unused_element, use_build_context_synchronously, deprecated_member_use
+
 import 'dart:io';
+// --- تأكد من استدعاء الملف اللي حطيت فيه الـ sheet ---
+import 'package:daleel_app_project/screen/confirm_add_screen.dart'; // <--- مثال، غيره لاسم ملفك الصحيح
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
 import 'package:daleel_app_project/screen/pick_location_screen.dart';
+import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -16,6 +20,7 @@ class AddingApartmentScreen extends StatefulWidget {
 }
 
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
+  // --- المتغيرات بقيت كما هي ---
   final User? user = userController.user;
   final _formKey = GlobalKey<FormState>();
   bool _isAvailable = true;
@@ -31,6 +36,8 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   final _apartmentAreaController = TextEditingController();
   final _apartmetnDescriptionController = TextEditingController();
   final List<File> _apartmentPictures = [];
+
+  // --- كل الدوال اللوجيكية اللي عدلناها صحيحة وبتبقى ---
 
   Future<void> _pickImage(
     ImageSource source, {
@@ -51,7 +58,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     });
   }
 
-  Future<void> _saveApartment() async {
+  void _triggerSaveProcess() {
     if (!_formKey.currentState!.validate() ||
         _selectedImageController == null ||
         selectedLocation == null) {
@@ -66,15 +73,23 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       return;
     }
 
-    List<File> allImages = [_selectedImageController!];
-    allImages.addAll(_apartmentPictures);
-    final addRepo = AddApartmentsRepo(dioClient: dioClient);
+    showConfirmationSheet(
+      context: context,
+      onConfirm: (File contractImage) {
+        _saveApartment(contractImage);
+      },
+    );
+  }
 
+  Future<void> _saveApartment(File contractImage) async {
+    final addRepo = AddApartmentsRepo(dioClient: dioClient);
     try {
-      final newApartment = await addRepo.addApartment(
+      await addRepo.addApartment(
         userId: user!.userId,
-        images: allImages,
+        images: [_selectedImageController!, ..._apartmentPictures],
+        // contractImage: contractImage,
         location: selectedLocation,
+        state: false,
         headDescription: _apartmentHeadDescriptionController.text,
         rentFee: double.tryParse(_apartmentPriceContoller.text) ?? 0,
         floor: int.tryParse(_apartmentFloorController.text) ?? 0,
@@ -85,26 +100,42 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         isAvailable: _isAvailable,
         status: _selectedStatusController,
       );
-      // apartments.add(newApartment);
-
-      _showSuccessDialog();
+      _showPendingApprovalDialog();
     } catch (e) {
       _showErrorDialog(AppLocalizations.of(context)!.failedToAddApartmentPleaseTryAgain);
+      print(e);
     }
   }
 
-  void _showSuccessDialog() {
+  void _showPendingApprovalDialog() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.success),
-        content: Text(AppLocalizations.of(context)!.yourApartmentWasAddedSuccessfully),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Center(
+          child: Icon(
+            Icons.check_circle_outline,
+            color: Colors.green,
+            size: 50,
+          ),
+        ),
+        content: const Text(
+          'Request Submitted!\nYour apartment is now pending admin approval.',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16),
+        ),
+        actionsAlignment: MainAxisAlignment.center,
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(ctx);
+              Navigator.pushAndRemoveUntil(
+                ctx,
+                MaterialPageRoute(builder: (context) => const HomeScreenTabs()),
+                (Route<dynamic> route) => false,
+              );
             },
-            child: Text(AppLocalizations.of(context)!.okay),
+            child: Text(AppLocalizations.of(context)!.okay, style: TextStyle(fontSize: 16)),
           ),
         ],
       ),
@@ -225,6 +256,25 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     );
   }
 
+  Widget _buildSaveButton(Color primaryColor) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ElevatedButton(
+        onPressed: _triggerSaveProcess,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: primaryColor,
+          minimumSize: const Size(double.infinity, 55),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        child: const Text("Add Apartment"),
+      ),
+    );
+  }
+
   Widget _buildSectionHeader(String title, TextStyle style) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0, top: 4.0),
@@ -256,7 +306,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.add_a_photo_outlined,
                       color: Colors.white,
                       size: 50,
@@ -264,7 +314,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                     const SizedBox(height: 8),
                     Text(
                       AppLocalizations.of(context)!.tapToAddMainImage,
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ],
                 ),
@@ -304,7 +354,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         maxLines: maxLines,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.white, fontSize: 15),
+          labelStyle: const TextStyle(color: Colors.white, fontSize: 15),
           prefixIcon: Icon(icon, color: Colors.white),
           filled: true,
           fillColor: Colors.black.withOpacity(0.3),
@@ -403,7 +453,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+        labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
         prefixIcon: Icon(icon, color: Colors.white, size: 20),
         filled: true,
         fillColor: Colors.black.withOpacity(0.3),
@@ -440,14 +490,14 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         ),
         child: Row(
           children: [
-            Icon(Icons.location_on_outlined, color: Colors.white),
+            const Icon(Icons.location_on_outlined, color: Colors.white),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 _locationController.text.isEmpty
                     ? AppLocalizations.of(context)!.selectApartmentLocation
                     : _locationController.text,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -467,7 +517,10 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(AppLocalizations.of(context)!.availableForRent, style: TextStyle(color: Colors.white)),
+          Text(
+            AppLocalizations.of(context)!.availableForRent, 
+            style: TextStyle(color: Colors.white)
+          ),
           Switch(
             value: _isAvailable,
             onChanged: (value) => setState(() => _isAvailable = value),
@@ -505,7 +558,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           color: Colors.black.withOpacity(0.3),
           borderRadius: BorderRadius.circular(15),
         ),
-        child: Icon(
+        child: const Icon(
           Icons.add_photo_alternate_outlined,
           color: Colors.white,
           size: 40,
@@ -534,25 +587,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSaveButton(Color primaryColor) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ElevatedButton(
-        onPressed: _saveApartment,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: primaryColor,
-          minimumSize: const Size(double.infinity, 55),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        child: Text(AppLocalizations.of(context)!.addApartment),
       ),
     );
   }

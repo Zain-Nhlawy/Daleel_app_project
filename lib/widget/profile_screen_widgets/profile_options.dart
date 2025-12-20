@@ -1,14 +1,15 @@
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/login_screen.dart';
+import 'package:daleel_app_project/screen/profile_screens/my_houses_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/profile_details_screen.dart';
-import 'package:daleel_app_project/screen/tabs_screen/favorite_apartments_screen.dart';
+import 'package:daleel_app_project/screen/profile_screens/favorite_apartments_screen.dart';
 import 'package:flutter/material.dart';
 import '../../dependencies.dart';
 
 class ProfileOptions extends StatelessWidget {
   const ProfileOptions({super.key});
 
-  void _setScreen(context) {
+  void _setFavoriteScreen(context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => FavoriteApartmentsScreen()
@@ -68,11 +69,7 @@ class ProfileOptions extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.home_outlined,
-                  size: 25,
-                  color: Colors.brown,
-                ),
+                child: Icon(Icons.home_outlined, size: 25, color: Colors.brown),
               ),
               title: Text(
                 AppLocalizations.of(context)!.myHouses,
@@ -82,7 +79,12 @@ class ProfileOptions extends StatelessWidget {
                 ),
               ),
               trailing: Icon(Icons.keyboard_arrow_right_outlined),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHousesScreen()),
+                );
+              },
             ),
           ),
           Card(
@@ -133,7 +135,7 @@ class ProfileOptions extends StatelessWidget {
               ),
               trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {
-                _setScreen(context);
+                _setFavoriteScreen(context);
               },
             ),
           ),

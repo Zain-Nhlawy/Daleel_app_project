@@ -7,7 +7,6 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel, EventList;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:intl/intl.dart';
-
 class BookingCalendar extends StatefulWidget {
   final Apartments2 apartment;
   const BookingCalendar({super.key, required this.apartment});
@@ -35,6 +34,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
     super.initState();
     _markedDates = EventList<Event>(events: {});
 
+
     if (widget.apartment.freeTimes != null) {
       availableTimes = widget.apartment.freeTimes!.map((ft) {
         // ignore: unnecessary_null_comparison, dead_code
@@ -46,6 +46,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
     } else {
       availableTimes = [];
     }
+
   }
 
   String formatDate(DateTime date) => DateFormat('d/M/yyyy').format(date);
