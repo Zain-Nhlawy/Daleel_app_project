@@ -8,7 +8,6 @@ import 'package:daleel_app_project/widget/apartment_details_widgets/description_
 import 'package:daleel_app_project/widget/apartment_details_widgets/comments_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/publisher_section.dart';
 
-
 class ApartmentDetailsScreen extends StatefulWidget {
   final Apartments2 apartment;
 
@@ -38,8 +37,9 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   }
 
   void _loadApartmentDetails() async {
-    final updatedApartment =
-        await apartmentController.fetchApartment(apartment.id);
+    final updatedApartment = await apartmentController.fetchApartment(
+      apartment.id,
+    );
     if (!mounted) return;
     if (updatedApartment != null) {
       setState(() {
@@ -94,15 +94,9 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ApartmentInfoSection(
-                        apartment: apartment,
-                        theme: theme,
-                      ),
+                      ApartmentInfoSection(apartment: apartment, theme: theme),
                       const SizedBox(height: 24),
-                      DescriptionSection(
-                        apartment: apartment,
-                        theme: theme,
-                      ),
+                      DescriptionSection(apartment: apartment, theme: theme),
                       const SizedBox(height: 30),
                       CommentsSection(
                         comments: commentController.comments,
@@ -119,7 +113,10 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                             showAllComments = true;
                           });
                           try {
-                              await commentController.addComment(apartment.id, content);
+                            await commentController.addComment(
+                              apartment.id,
+                              content,
+                            );
                           } catch (e) {
                             print("Failed to add comment: $e");
                           }
@@ -131,10 +128,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                         },
                       ),
                       const SizedBox(height: 26),
-                      PublisherSection(
-                        apartment: apartment,
-                        theme: theme,
-                      ),
+
+                      PublisherSection(apartment: apartment, theme: theme),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -159,9 +154,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BookingCalendar(
-                          apartment: apartment,
-                        ),
+                        builder: (context) =>
+                            BookingCalendar(apartment: apartment),
                       ),
                     );
                   },

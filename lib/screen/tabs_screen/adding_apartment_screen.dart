@@ -103,7 +103,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(ctx);
-              Navigator.pop(context);
             },
             child: const Text('Okay'),
           ),
@@ -150,6 +149,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'Add Apartment',
           style: textStyle.copyWith(fontWeight: FontWeight.bold, fontSize: 22),

@@ -11,6 +11,7 @@ class ContractScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'My Contract',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(

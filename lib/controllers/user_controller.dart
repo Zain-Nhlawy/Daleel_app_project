@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 class UserController {
   final UserService userService;
   final AppSecureStorage storage;
-  
 
   User? _user;
   User? get user => _user;
@@ -32,8 +31,14 @@ class UserController {
     required String birthdate,
     required Map<String, dynamic> location,
   }) async {
-    final profileFile = await MultipartFile.fromFile(profileImage, filename: "profile.jpg");
-    final idFile = await MultipartFile.fromFile(personIdImage, filename: "id.jpg");
+    final profileFile = await MultipartFile.fromFile(
+      profileImage,
+      filename: "profile.jpg",
+    );
+    final idFile = await MultipartFile.fromFile(
+      personIdImage,
+      filename: "id.jpg",
+    );
 
     final formData = FormData.fromMap({
       'first_name': firstName,
@@ -61,7 +66,7 @@ class UserController {
     if (_user == null) return;
 
     try {
-      final updatedUser = await userService.getProfile(); 
+      final updatedUser = await userService.getProfile();
       if (updatedUser != null) _user = updatedUser;
     } catch (e) {
       print("GetProfile error: $e");

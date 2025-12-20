@@ -67,7 +67,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                           backgroundImage:
                               (displayUser!.profileImage.isNotEmpty)
                               ? NetworkImage(
-                                  "http://10.0.2.2:8000${displayUser.profileImage}",
+                                       baseUrl+displayUser.profileImage,
                                 )
                               : const AssetImage('assets/images/user.png')
                                     as ImageProvider,
