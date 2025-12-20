@@ -1,7 +1,7 @@
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
-import 'signUp_screen.dart';
+import 'signup_screen.dart';
 import '../widget/custom_text_field.dart';
 import '../../dependencies.dart';
 

@@ -1,9 +1,7 @@
-import 'package:daleel_app_project/Cubit/favorites_cubit.dart';
 import 'package:daleel_app_project/screen/login_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/profile_details_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/favorite_apartments_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../dependencies.dart';
 
 class ProfileOptions extends StatelessWidget {
@@ -12,10 +10,7 @@ class ProfileOptions extends StatelessWidget {
   void _setScreen(context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => BlocProvider(
-          create: (context) => FavoritesCubit(),
-          child: FavoriteApartmentsScreen(),
-        ),
+        builder: (ctx) => FavoriteApartmentsScreen()
       ),
     );
   }

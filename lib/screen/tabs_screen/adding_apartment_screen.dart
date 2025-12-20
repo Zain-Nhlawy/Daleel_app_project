@@ -1,6 +1,5 @@
 // ignore_for_file: unused_element, use_build_context_synchronously
 import 'dart:io';
-import 'package:daleel_app_project/Cubit/favorites_cubit.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
@@ -85,7 +84,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         isAvailable: _isAvailable,
         status: _selectedStatusController,
       );
-      apartments.add(newApartment);
+      // apartments.add(newApartment);
 
       _showSuccessDialog();
     } catch (e) {

@@ -53,7 +53,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
   void _onDayPressed(DateTime date) {
     if (date.isBefore(DateTime.now())) {
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.cannotSclectPastDates)),
+        SnackBar(content: Text(AppLocalizations.of(context)!.cannotSelectPastDates)),
       );
       return;
     }
@@ -129,7 +129,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
       _scaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
           content: Text(
-            AppLocalizations.of(context)!.bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod,
+            AppLocalizations.of(context)!.bookingPeriodUnavailable,
           ),
         ),
       );

@@ -1,4 +1,4 @@
-import 'package:daleel_app_project/data/me.dart';
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:flutter/material.dart';
 
 class ImagesSection extends StatelessWidget {
@@ -26,7 +26,7 @@ ImageProvider _getImage(String? img) {
   }
 
   if (img.startsWith('/')) {
-    return NetworkImage('$baseURL$img');
+    return NetworkImage('$baseUrl$img');
   }
 
   return const AssetImage('assets/images/user.png');

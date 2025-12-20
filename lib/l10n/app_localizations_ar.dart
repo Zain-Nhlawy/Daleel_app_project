@@ -34,7 +34,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'فشل تسجيل الدخول. تحقق من بياناتك.';
 
   @override
-  String get cannotSclectPastDates => 'لا يمكن اختيار تواريخ سابقة';
+  String get cannotSelectPastDates => 'لا يمكن اختيار تواريخ سابقة';
 
   @override
   String get userDataNotAvailable => 'بيانات المستخدم غير متوفرة';
@@ -51,11 +51,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookingSuccessful => 'تم الحجز بنجاح';
 
   @override
-  String get bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod =>
+  String get bookingPeriodUnavailable =>
       'فشل الحجز. هذه الشقة محجوزة بالفعل خلال الفترة المحددة';
 
   @override
-  String get start => 'بدء';
+  String get start => 'بداية';
 
   @override
   String get end => 'نهاية';
@@ -80,4 +80,56 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get confirmBooking => 'تأكيد الحجز';
+
+  @override
+  String get missingFields => 'حقول مفقودة';
+
+  @override
+  String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get pleaseSelectProfileAndIDImages =>
+      'يرجى اختيار صورة الملف الشخصي وصورة الهوية';
+
+  @override
+  String get pleaseSelectLocation => 'يرجى اختيار الموقع';
+
+  @override
+  String get registrationFailed => 'فشل التسجيل';
+
+  @override
+  String get selectYourLocation => 'اختر موقعك';
+
+  @override
+  String get joinAndExplore => 'انضم واستكشف';
+
+  @override
+  String get firstName => 'الاسم الأول';
+
+  @override
+  String get lastName => 'اسم العائلة';
+
+  @override
+  String get dateOfBirth => 'تاريخ الميلاد';
+
+  @override
+  String get profileImage => 'الصورة الشخصية';
+
+  @override
+  String get iDImage => 'صورة الهوية';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get alreadyHaveAnAccount => 'لديك حساب بالفعل؟';
+
+  @override
+  String get createAccount => 'إنشاء حساب';
+
+  @override
+  String get location => 'الموقع';
+
+  @override
+  String get confirmPassword => 'تأكيد كلمة المرور';
 }

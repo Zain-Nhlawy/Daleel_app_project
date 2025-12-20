@@ -24,7 +24,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneNumber => 'Phone Number';
 
   @override
-  String get welcomeBack => 'ًWelcom Back!';
+  String get welcomeBack => 'ًWelcome Back!';
 
   @override
   String get pleaseFillAllFields => 'Please fill all fields.';
@@ -34,7 +34,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Login failed. Check your credentials.';
 
   @override
-  String get cannotSclectPastDates => 'Cannot select past dates';
+  String get cannotSelectPastDates => 'Cannot select past dates';
 
   @override
   String get userDataNotAvailable => 'User data not available';
@@ -51,7 +51,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookingSuccessful => 'Booking successful';
 
   @override
-  String get bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod =>
+  String get bookingPeriodUnavailable =>
       'bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod';
 
   @override
@@ -80,4 +80,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmBooking => 'Confirm Booking';
+
+  @override
+  String get missingFields => 'Missing fields';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get pleaseSelectProfileAndIDImages =>
+      'Please select profile and ID images';
+
+  @override
+  String get pleaseSelectLocation => 'Please select location';
+
+  @override
+  String get registrationFailed => 'Registration Failed';
+
+  @override
+  String get selectYourLocation => 'Select Your Location';
+
+  @override
+  String get joinAndExplore => 'Join and explore';
+
+  @override
+  String get firstName => 'First Name';
+
+  @override
+  String get lastName => 'Last Name';
+
+  @override
+  String get dateOfBirth => 'Date of Birth';
+
+  @override
+  String get profileImage => 'Profile Image';
+
+  @override
+  String get iDImage => 'ID Image';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get alreadyHaveAnAccount => 'Already have an account?';
+
+  @override
+  String get createAccount => 'Create Account';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
 }

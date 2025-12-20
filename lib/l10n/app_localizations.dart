@@ -131,7 +131,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeBack.
   ///
   /// In en, this message translates to:
-  /// **'ًWelcom Back!'**
+  /// **'ًWelcome Back!'**
   String get welcomeBack;
 
   /// No description provided for @pleaseFillAllFields.
@@ -146,11 +146,11 @@ abstract class AppLocalizations {
   /// **'Login failed. Check your credentials.'**
   String get loginFailedCheckYourCredentials;
 
-  /// No description provided for @cannotSclectPastDates.
+  /// No description provided for @cannotSelectPastDates.
   ///
   /// In en, this message translates to:
   /// **'Cannot select past dates'**
-  String get cannotSclectPastDates;
+  String get cannotSelectPastDates;
 
   /// No description provided for @userDataNotAvailable.
   ///
@@ -176,11 +176,11 @@ abstract class AppLocalizations {
   /// **'Booking successful'**
   String get bookingSuccessful;
 
-  /// No description provided for @bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod.
+  /// No description provided for @bookingPeriodUnavailable.
   ///
   /// In en, this message translates to:
   /// **'bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod'**
-  String get bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod;
+  String get bookingPeriodUnavailable;
 
   /// No description provided for @start.
   ///
@@ -235,6 +235,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm Booking'**
   String get confirmBooking;
+
+  /// No description provided for @missingFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing fields'**
+  String get missingFields;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @pleaseSelectProfileAndIDImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select profile and ID images'**
+  String get pleaseSelectProfileAndIDImages;
+
+  /// No description provided for @pleaseSelectLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select location'**
+  String get pleaseSelectLocation;
+
+  /// No description provided for @registrationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Failed'**
+  String get registrationFailed;
+
+  /// No description provided for @selectYourLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Your Location'**
+  String get selectYourLocation;
+
+  /// No description provided for @joinAndExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Join and explore'**
+  String get joinAndExplore;
+
+  /// No description provided for @firstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First Name'**
+  String get firstName;
+
+  /// No description provided for @lastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Name'**
+  String get lastName;
+
+  /// No description provided for @dateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get dateOfBirth;
+
+  /// No description provided for @profileImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Image'**
+  String get profileImage;
+
+  /// No description provided for @iDImage.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Image'**
+  String get iDImage;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @alreadyHaveAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get alreadyHaveAnAccount;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccount;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
 }
 
 class _AppLocalizationsDelegate
