@@ -1,7 +1,8 @@
-import 'package:daleel_app_project/screen/login_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'l10n/app_localizations.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -48,8 +49,21 @@ final theme = ThemeData(
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(
+  runApp(
+    MaterialApp(
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ar'),
+      ],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: Locale('ar'),
       debugShowCheckedModeBanner: false,
-      theme: theme, home: SplashScreen()));
-
+      theme: theme, home: SplashScreen()
+    )
+  );
 }

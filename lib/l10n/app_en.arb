@@ -1,0 +1,10 @@
+{
+  "login": "Login",
+  "signUp": "Sign Up",
+  "dontHaveAnAccount": "Don't have an account?",
+  "password": "Password",
+  "phoneNumber": "Phone Number",
+  "welcomeBack": "ًWelcom Back!",
+  "pleaseFillAllFields": "Please fill all fields.",
+  "loginFailedCheckYourCredentials": "Login failed. Check your credentials."
+}

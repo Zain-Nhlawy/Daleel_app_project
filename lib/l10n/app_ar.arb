@@ -1,0 +1,10 @@
+{
+"login": "تسجيل الدخول",  
+"signUp": "اشتراك",  
+"dontHaveAnAccount": "ليس لديك حساب؟",  
+"password": "كلمة السر",  
+  "phoneNumber": "رقم الهاتف",
+  "welcomeBack": "ًمرحبا مجدداً!",
+  "pleaseFillAllFields": "الرجاء ملأ كل الحقول",
+  "loginFailedCheckYourCredentials": "فشل تسجيل الدخول. تأكد من معلوماتك"
+}
