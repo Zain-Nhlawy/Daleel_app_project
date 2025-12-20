@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
@@ -8,8 +10,6 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel, EventList;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:intl/intl.dart';
-
-
 
 class BookingCalendar extends StatefulWidget {
   final Apartments2 apartment;
@@ -34,30 +34,31 @@ class _BookingCalendarState extends State<BookingCalendar> {
       GlobalKey<ScaffoldMessengerState>();
 
   @override
-void initState() {
-  super.initState();
-  _markedDates = EventList<Event>(events: {});
+  void initState() {
+    super.initState();
+    _markedDates = EventList<Event>(events: {});
 
-  if (widget.apartment.freeTimes != null) {
-    availableTimes = widget.apartment.freeTimes!.map((ft) {
-      final start = ft['start_time']?.toString()?.split(' ')?.first ?? '__';
-      final end = ft['end_time']?.toString()?.split(' ')?.first ?? '__';
-      return {'from': start, 'to': end};
-    }).toList();
-  } else {
-    availableTimes = [];
+    if (widget.apartment.freeTimes != null) {
+      availableTimes = widget.apartment.freeTimes!.map((ft) {
+        final start = ft['start_time']?.toString().split(' ').first ?? '__';
+        final end = ft['end_time']?.toString().split(' ').first ?? '__';
+        return {'from': start, 'to': end};
+      }).toList();
+    } else {
+      availableTimes = [];
+    }
+
+    print('Available times: $availableTimes');
   }
-  
-  print('Available times: $availableTimes');
-}
-
 
   String formatDate(DateTime date) => DateFormat('d/M/yyyy').format(date);
 
   void _onDayPressed(DateTime date) {
     if (date.isBefore(DateTime.now())) {
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.cannotSelectPastDates)),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.cannotSelectPastDates),
+        ),
       );
       return;
     }
@@ -83,122 +84,124 @@ void initState() {
     return false;
   }
 
-Future<void> _confirmBooking() async {
-  if (_isProcessing) return;
+  Future<void> _confirmBooking() async {
+    if (_isProcessing) return;
 
-  setState(() => _isProcessing = true);
+    setState(() => _isProcessing = true);
 
-  try {
-    await userController.getProfile();
-    final user = userController.user;
+    try {
+      await userController.getProfile();
+      final user = userController.user;
 
-    if (user == null) {
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.userDataNotAvailable)),
+      if (user == null) {
+        _scaffoldMessengerKey.currentState?.showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.userDataNotAvailable),
+          ),
+        );
+        return;
+      }
+
+      if (user.verificationState != 'verified') {
+        _scaffoldMessengerKey.currentState?.showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(
+                context,
+              )!.yourAccountIsNotAllowedToMakeBookings,
+            ),
+          ),
+        );
+        return;
+      }
+
+      if (_startDate == null || _endDate == null) {
+        _scaffoldMessengerKey.currentState?.showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.pleaseSelectStartAndEndDates,
+            ),
+          ),
+        );
+        return;
+      }
+
+      await contractController.bookApartment(
+        apartmentId: widget.apartment.id,
+        start: _startDate!,
+        end: _endDate!,
+        rentFee: widget.apartment.rentFee ?? 0.0,
       );
-      return;
-    }
 
-    if (user.verificationState != 'verified') {
+      if (!mounted) return;
+      Navigator.pop(context);
+    } on DioException catch (e) {
+      if (!mounted) return;
+
+      String? message;
+
+      if (e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic>) {
+          message = data['message'] as String?;
+        } else if (data is String) {
+          message = data;
+        }
+      }
+
+      final statusCode = e.response?.statusCode;
+
+      if (statusCode == 401) {
+        _scaffoldMessengerKey.currentState?.showSnackBar(
+          const SnackBar(content: Text('Unauthorized, please login again')),
+        );
+        return;
+      }
+
+      if (statusCode == 500) {
+        _scaffoldMessengerKey.currentState?.showSnackBar(
+          const SnackBar(content: Text('Server error, try again later')),
+        );
+        return;
+      }
+
       _scaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.yourAccountIsNotAllowedToMakeBookings),
+          content: Text(AppLocalizations.of(context)!.bookingPeriodUnavailable),
         ),
       );
-      return;
-    }
+    } on Exception catch (e) {
+      if (!mounted) return;
 
-    if (_startDate == null || _endDate == null) {
+      String errorMessage = e.toString();
+
+      int lastColonIndex = errorMessage.lastIndexOf(':');
+      String cleanMessage;
+
+      if (lastColonIndex != -1 && lastColonIndex < errorMessage.length - 1) {
+        cleanMessage = errorMessage.substring(lastColonIndex + 1).trim();
+      } else {
+        cleanMessage = errorMessage;
+      }
+
+      cleanMessage = cleanMessage
+          .replaceAll('Exception', '')
+          .replaceAll('Error', '')
+          .trim();
+
+      if (cleanMessage.length < 3) {
+        cleanMessage = 'Booking failed';
+      }
+
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectStartAndEndDates)),
+        SnackBar(content: Text(cleanMessage)),
       );
-      return;
-    }
-
-    await contractController.bookApartment(
-      apartmentId: widget.apartment.id,
-      start: _startDate!,
-      end: _endDate!,
-      rentFee: widget.apartment.rentFee ?? 0.0,
-    );
-
-    if (!mounted) return;
-    Navigator.pop(context); 
-
-  } on DioException catch (e) {
-    if (!mounted) return;
-
-    String? message;
-
-    if (e.response?.data != null) {
-      final data = e.response!.data;
-      if (data is Map<String, dynamic>) {
-        message = data['message'] as String?;
-      } else if (data is String) {
-        message = data;
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
       }
     }
-
-    final statusCode = e.response?.statusCode;
-
-    if (statusCode == 401) {
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Unauthorized, please login again')),
-      );
-      return;
-    }
-
-    if (statusCode == 500) {
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Server error, try again later')),
-      );
-      return;
-    }
-
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.bookingPeriodUnavailable,
-          ),
-        ),
-    );
-
-  } on Exception catch (e) {
-  if (!mounted) return;
-  
-  String errorMessage = e.toString();
-  
-  int lastColonIndex = errorMessage.lastIndexOf(':');
-  String cleanMessage;
-  
-  if (lastColonIndex != -1 && lastColonIndex < errorMessage.length - 1) {
-    cleanMessage = errorMessage.substring(lastColonIndex + 1).trim();
-  } else {
-    cleanMessage = errorMessage;
   }
-  
-  cleanMessage = cleanMessage
-      .replaceAll('Exception', '')
-      .replaceAll('Error', '')
-      .trim();
-  
-  if (cleanMessage.length < 3) {
-    cleanMessage = 'Booking failed';
-  }
-  
-  _scaffoldMessengerKey.currentState?.showSnackBar(
-    SnackBar(content: Text(cleanMessage)),
-  );
-
-
-  } finally {
-    if (mounted) {
-      setState(() => _isProcessing = false);
-    }
-  }
-}
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -486,7 +489,9 @@ Future<void> _confirmBooking() async {
                   ],
                 ),
                 child: CustomButton(
-                  text: _isProcessing ? AppLocalizations.of(context)!.processing : AppLocalizations.of(context)!.confirmBooking,
+                  text: _isProcessing
+                      ? AppLocalizations.of(context)!.processing
+                      : AppLocalizations.of(context)!.confirmBooking,
                   color: brown,
                   onPressed: () {
                     if (!_isProcessing) _confirmBooking();
