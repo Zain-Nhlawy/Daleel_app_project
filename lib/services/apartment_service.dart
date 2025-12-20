@@ -6,6 +6,28 @@ class ApartmentService {
 
   ApartmentService({required this.apiClient});
 
+
+  Future<bool?> isFavourite(int id) async {
+    try {
+      final response = await apiClient.dio.get("/auth/favorites/$id");
+
+      final responseData = response.data;
+      if (responseData is Map<String, dynamic> &&
+          responseData.containsKey('data')) {
+        final dataPayload = responseData['data'];
+        if (dataPayload is Map<String, dynamic> &&
+            dataPayload.containsKey('is_favorite')) {
+          return dataPayload['is_favorite'] as bool?;
+        }
+      }
+      print("Unexpected response format from isFavourite API");
+      return null;
+    } catch (e) {
+      print("Error in isFavourite service: $e");
+      return null;
+    }
+  }
+
   Future<Apartments2?> getApartment(int id) async {
     try {
       final response = await apiClient.dio.get(
@@ -53,22 +75,21 @@ class ApartmentService {
     }
   }
 
-
   Future<bool> toggleFavorite(int apartmentId) async {
     try {
       final response = await apiClient.dio.post(
         'auth/departments/$apartmentId/favorite/toggle',
       );
-      if (response.statusCode == 200 || response.statusCode == 201) {    
+      if (response.statusCode == 200 || response.statusCode == 201) {
         print('Success: ${response.data['message']}');
-        return true; 
+        return true;
       } else {
         print('Failed to toggle favorite. Status code: ${response.statusCode}');
         return false;
       }
     } catch (e) {
       print('Error toggling favorite: $e');
-      return false; 
+      return false;
     }
   }
 }

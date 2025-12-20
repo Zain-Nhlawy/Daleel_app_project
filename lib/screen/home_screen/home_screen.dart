@@ -65,7 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(width: 15),
             Text(
-              user != null ? '${user.firstName} ${user.lastName}' : '${AppLocalizations.of(context)!.welcome}!',
+              user != null
+                  ? '${user.firstName} ${user.lastName}'
+                  : '${AppLocalizations.of(context)!.welcome}!',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -124,7 +126,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: '${AppLocalizations.of(context)!.searchHere}...',
+                              hintText:
+                                  '${AppLocalizations.of(context)!.searchHere}...',
                               hintStyle: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 16,
@@ -206,8 +209,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Center(child: Text("no apartments near you")),
                         );
                       }
-
-                      final popularApartment = apartments.sublist(1, 6);
+                      var popularApartment = apartments;
+                      if (apartments.length <= 10) {
+                        popularApartment = apartments;
+                      } else {
+                        popularApartment = apartments.sublist(1, 10);
+                      }
                       return PageView.builder(
                         physics: const ClampingScrollPhysics(),
                         controller: _pageController,
@@ -237,10 +244,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (snapshot.hasError) {
-                      return Center(child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'));
+                      return Center(
+                        child: Text(
+                          '${AppLocalizations.of(context)!.error}: ${snapshot.error}',
+                        ),
+                      );
                     }
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(child: Text(AppLocalizations.of(context)!.noApartmentsFound));
+                      return Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.noApartmentsFound,
+                        ),
+                      );
                     }
                     final apartments = snapshot.data!;
                     final nearApartments = apartments

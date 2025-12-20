@@ -23,7 +23,7 @@ class Apartments2 {
   List<Map<String, dynamic>>? freeTimes;
   List? comments;
   final bool? state;
-  final bool isFavorited;
+  final bool? isFavorited;
 
   Apartments2({
     required this.id,
@@ -44,7 +44,7 @@ class Apartments2 {
     this.reviewCount,
     required this.images,
     this.comments,
-    this.isFavorited = false,
+    this.isFavorited,
   });
 
   factory Apartments2.fromJson(Map<String, dynamic> json) {
@@ -81,7 +81,7 @@ class Apartments2 {
       state: _safeParseInt(json['verification_state']) == 1,
       user: User.fromJson(json['user']),
       description: json['description'],
-      headDescription: json['headDescription'],
+      headDescription: json['headDescription'], 
       area: _safeParseDouble(json['area']),
       location: json['location'] != null
           ? Map<String, dynamic>.from(json['location'])
