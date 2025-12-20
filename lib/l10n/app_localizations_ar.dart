@@ -336,4 +336,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get closeToYou => 'بالقرب منك';
+
+  @override
+  String get area => 'المساحة';
 }

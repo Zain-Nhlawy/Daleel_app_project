@@ -36,16 +36,34 @@ class Contracts {
   final User user;
 
   factory Contracts.fromJson(Map<String, dynamic> json) {
-    return Contracts(
-      startRent: DateTime.parse(json['startRent']),
-      endRent: DateTime.parse(json['endRent']),
-      rentFee: json['rentFee'] != null
+  return Contracts(
+    startRent: json['startRent'] != null
+        ? DateTime.parse(json['startRent'])
+        : DateTime.now(),
+
+    endRent: json['endRent'] != null
+        ? DateTime.parse(json['endRent'])
+        : DateTime.now(),
+
+    rentFee: json['rentFee'] != null
         ? double.tryParse(json['rentFee'].toString()) ?? 0.0
         : 0.0,
-      rentStatus: rentStatusFromString(json['status']),
-      user: User.fromJson(json['user']),
-      contractApartment: Apartments2.fromJson(json['department']),
-    );
-  }
+
+    rentStatus: json['status'] != null
+        ? rentStatusFromString(json['status'])
+        : RentStatus.pending,
+
+    user: User.fromJson(json['user']),
+
+    contractApartment: json['department'] != null
+        ? Apartments2.fromJson(json['department'])
+        : Apartments2(
+            id: 0,
+            user: User.empty(),
+            images: [],
+          ),
+  );
+}
+
 }
 

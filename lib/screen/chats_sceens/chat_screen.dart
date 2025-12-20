@@ -82,7 +82,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -95,9 +94,7 @@ class _ChatScreenState extends State<ChatScreen> {
               backgroundImage: widget.receiverImage.isNotEmpty
                   ? (widget.receiverImage.startsWith('http')
                         ? NetworkImage(widget.receiverImage)
-                        : NetworkImage(
-                            'http://10.0.2.2:8000${widget.receiverImage}',
-                          ))
+                        : NetworkImage('$baseUrl${widget.receiverImage}'))
                   : null,
               child: widget.receiverImage.isEmpty
                   ? const Icon(Icons.person, size: 16)

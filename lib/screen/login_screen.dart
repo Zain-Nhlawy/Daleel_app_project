@@ -12,25 +12,38 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool showCard = false;
-
+  late AnimationController _animationController;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
     super.initState();
 
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 1), 
+      end: Offset.zero, 
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    ));
+
     Future.delayed(const Duration(milliseconds: 300), () {
-      setState(() {
-        showCard = true;
-      });
+      _animationController.forward(); 
     });
   }
 
   @override
   void dispose() {
+    _animationController.dispose();
     _phoneController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -81,16 +94,19 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           const _HeaderLogo(),
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeOut,
-            bottom: showCard ? 0 : -500,
+          
+          Positioned(
+            top: 290, 
             left: 0,
             right: 0,
-            child: LoginCard(
-              phoneController: _phoneController,
-              passwordController: _passwordController,
-              onLogin: _login,
+            bottom: 0, 
+            child: SlideTransition(
+              position: _slideAnimation,
+              child: _LoginCardContent(
+                phoneController: _phoneController,
+                passwordController: _passwordController,
+                onLogin: _login,
+              ),
             ),
           ),
         ],
@@ -120,22 +136,20 @@ class _HeaderLogo extends StatelessWidget {
   }
 }
 
-class LoginCard extends StatelessWidget {
+class _LoginCardContent extends StatelessWidget {
   final TextEditingController phoneController;
   final TextEditingController passwordController;
   final VoidCallback onLogin;
 
-  const LoginCard({
+  const _LoginCardContent({
     required this.phoneController,
     required this.passwordController,
     required this.onLogin,
-    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 550,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.brown.withOpacity(0.7),
@@ -144,54 +158,58 @@ class LoginCard extends StatelessWidget {
           BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, -4))
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: 16),
-          Text(
-            AppLocalizations.of(context)!.welcomeBack,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 44,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 16),
+            Text(
+              AppLocalizations.of(context)!.welcomeBack,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 44,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          CustomTextField(
-            controller: phoneController,
-            label: AppLocalizations.of(context)!.phoneNumber,
-            icon: Icons.phone,
-            keyboardType: TextInputType.phone,
-          ),
-          CustomTextField(
-            controller: passwordController,
-            label: AppLocalizations.of(context)!.password,
-            icon: Icons.lock,
-            keyboardType: TextInputType.text,
-            obscure: true,
-          ),
-          const SizedBox(height: 20),
-          Center(
-            child: SizedBox(
-              width: 180,
-              height: 55,
-              child: OutlinedButton(
-                onPressed: onLogin,
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.white),
-                  foregroundColor: Colors.white,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.login,
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
+            const SizedBox(height: 20),
+            CustomTextField(
+              controller: phoneController,
+              label: AppLocalizations.of(context)!.phoneNumber,
+              icon: Icons.phone,
+              keyboardType: TextInputType.phone,
+            ),
+            const SizedBox(height: 12),
+            CustomTextField(
+              controller: passwordController,
+              label: AppLocalizations.of(context)!.password,
+              icon: Icons.lock,
+              keyboardType: TextInputType.text,
+              obscure: true,
+            ),
+            const SizedBox(height: 20),
+            Center(
+              child: SizedBox(
+                width: 180,
+                height: 55,
+                child: OutlinedButton(
+                  onPressed: onLogin,
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.white),
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.login,
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 30),
-          const _SignUpLink(),
-        ],
+            const SizedBox(height: 30),
+            const _SignUpLink(),
+            const SizedBox(height: 30), 
+          ],
+        ),
       ),
     );
   }

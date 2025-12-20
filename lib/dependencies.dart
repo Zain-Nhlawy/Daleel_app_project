@@ -27,12 +27,16 @@ final ApartmentController apartmentController = ApartmentController(
   apartmentService: apartmentService,
 );
 
-final CommentService commentService = CommentService(apiClient: dioClient);
+final CommentService commentService = CommentService(
+  apiClient: dioClient
+);
 final CommentController commentController = CommentController(
   commentService: commentService,
 );
 
-final ContractService contractService = ContractService(apiClient: dioClient);
+final ContractService contractService = ContractService(
+  apiClient: dioClient
+);
 final ContractController contractController = ContractController(
   contractService: contractService,
 );

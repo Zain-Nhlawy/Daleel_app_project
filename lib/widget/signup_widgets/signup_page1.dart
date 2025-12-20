@@ -8,10 +8,8 @@ class SignUpPage1 extends StatelessWidget {
   final TextEditingController firstName;
   final TextEditingController lastName;
   final TextEditingController dob;
-
   final String? profileImage;
   final String? idImage;
-
   final VoidCallback pickDate;
   final VoidCallback pickProfile;
   final VoidCallback pickID;
@@ -33,7 +31,6 @@ class SignUpPage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 700,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.brown.withOpacity(0.7),
@@ -47,11 +44,12 @@ class SignUpPage1 extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.joinAndExplore,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
             const SizedBox(height: 24),
-
             CustomTextField(
               controller: firstName,
               label: AppLocalizations.of(context)!.firstName,
@@ -59,7 +57,6 @@ class SignUpPage1 extends StatelessWidget {
               keyboardType: TextInputType.name,
             ),
             const SizedBox(height: 12),
-
             CustomTextField(
               controller: lastName,
               label: AppLocalizations.of(context)!.lastName,
@@ -67,7 +64,6 @@ class SignUpPage1 extends StatelessWidget {
               keyboardType: TextInputType.name,
             ),
             const SizedBox(height: 12),
-
             CustomTextField(
               controller: dob,
               label: AppLocalizations.of(context)!.dateOfBirth,
@@ -110,9 +106,7 @@ class SignUpPage1 extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 18),
-
             Center(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -125,8 +119,9 @@ class SignUpPage1 extends StatelessWidget {
                     onPressed: () => Navigator.push(
                       context,
                       PageRouteBuilder(
-                        pageBuilder: (context, anim1, anim2) => const LoginScreen(),
-                        transitionDuration: Duration(milliseconds: 600),
+                        pageBuilder: (context, anim1, anim2) =>
+                            const LoginScreen(),
+                        transitionDuration: const Duration(milliseconds: 600),
                       ),
                     ),
                     child: Text(
@@ -137,6 +132,7 @@ class SignUpPage1 extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 120),
           ],
         ),
       ),

@@ -31,9 +31,8 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
       apiClient: DioClient(storage: AppSecureStorage()),
     );
     try {
-      final bool? result = await apartmentService.isFavourite(
-        widget.apartment.id,
-      );
+      final bool? result =
+          await apartmentService.isFavourite(widget.apartment.id);
       if (mounted) {
         setState(() {
           _isFavorited = result ?? false;
@@ -41,7 +40,6 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
         });
       }
     } catch (e) {
-      print("Error fetching favorite status for nearby apartment: $e");
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -59,9 +57,8 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
       apiClient: DioClient(storage: AppSecureStorage()),
     );
     try {
-      final bool success = await apartmentService.toggleFavorite(
-        widget.apartment.id,
-      );
+      final bool success =
+          await apartmentService.toggleFavorite(widget.apartment.id);
       if (!success && mounted) {
         setState(() {
           _isFavorited = !_isFavorited;
@@ -79,6 +76,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
   @override
   Widget build(BuildContext context) {
     const Color primaryColor = Color(0xFF795548);
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       decoration: BoxDecoration(
@@ -99,7 +97,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
+              builder: (_) =>
                   ApartmentDetailsScreen(apartment: widget.apartment),
             ),
           );
@@ -118,14 +116,12 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                       child: widget.apartment.images.isNotEmpty
                           ? Image.network(
                               widget.apartment.images[0],
-                              width: 120,
-                              height: 100,
                               fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
+                              errorBuilder: (_, __, ___) =>
                                   Image.asset(
-                                    "assets/images/placeholder.png",
-                                    fit: BoxFit.cover,
-                                  ),
+                                "assets/images/placeholder.png",
+                                fit: BoxFit.cover,
+                              ),
                             )
                           : Image.asset(
                               "assets/images/placeholder.png",
@@ -147,8 +143,9 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                           ? const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: CircularProgressIndicator(
-                                strokeWidth: 2.0,
-                                valueColor: AlwaysStoppedAnimation<Color>(
+                                strokeWidth: 2,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(
                                   Colors.white,
                                 ),
                               ),
@@ -160,7 +157,9 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                                 _isFavorited
                                     ? Icons.favorite
                                     : Icons.favorite_border,
-                                color: _isFavorited ? Colors.red : Colors.white,
+                                color: _isFavorited
+                                    ? Colors.red
+                                    : Colors.white,
                               ),
                               onPressed: _handleFavoriteToggle,
                             ),
@@ -179,29 +178,28 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                           AppLocalizations.of(context)!.noDescription,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.grey[800],
-                      ),
+                      style:
+                          Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.grey[800],
+                              ),
                     ),
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        Icon(
-                          Icons.location_on,
-                          size: 14,
-                          color: Colors.grey[600],
-                        ),
+                        Icon(Icons.location_on,
+                            size: 14, color: Colors.grey[600]),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             widget.apartment.location?['city'] ??
                                 AppLocalizations.of(context)!.unknownCity,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: Colors.grey[600]),
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(color: Colors.grey[600]),
                           ),
                         ),
                       ],
@@ -212,25 +210,25 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                       children: [
                         Row(
                           children: [
-                            const Icon(
-                              Icons.star,
-                              color: Colors.orange,
-                              size: 18,
-                            ),
+                            const Icon(Icons.star,
+                                color: Colors.orange, size: 18),
                             const SizedBox(width: 4),
                             Text(
-                              widget.apartment.averageRating?.toStringAsFixed(
-                                    1,
-                                  ) ??
+                              widget.apartment.averageRating
+                                      ?.toStringAsFixed(1) ??
                                   'N/A',
-                              style: Theme.of(context).textTheme.bodySmall
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                         Text(
                           '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.month}',
-                          style: Theme.of(context).textTheme.bodyMedium
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
                               ?.copyWith(
                                 color: primaryColor,
                                 fontWeight: FontWeight.bold,

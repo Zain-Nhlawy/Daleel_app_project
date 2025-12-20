@@ -128,9 +128,7 @@ class MyChatsScreen extends StatelessWidget {
                         backgroundImage: displayImage.isNotEmpty
                             ? (displayImage.startsWith('http')
                                   ? NetworkImage(displayImage)
-                                  : NetworkImage(
-                                      'http://10.0.2.2:8000$displayImage',
-                                    ))
+                                  : NetworkImage('$baseUrl$displayImage'))
                             : null,
                         child: displayImage.isEmpty
                             ? Text(

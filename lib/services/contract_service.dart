@@ -1,6 +1,7 @@
 import 'package:daleel_app_project/core/network/dio_client.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/contracts.dart';
+import 'package:dio/dio.dart';
 
 class ContractService {
   final DioClient apiClient;
@@ -16,7 +17,7 @@ class ContractService {
       );
 
       if (response.statusCode == 200) {
-        final List rents = response.data['data'];//['rents'];
+        final List rents = response.data['data'];
         return rents.map((json) => Contracts.fromJson(json)).toList();
       }
     } catch (e) {
@@ -25,12 +26,13 @@ class ContractService {
     return null;
   }
 
-  Future<Contracts?> createContract({
-    required int departmentId,
-    required DateTime start,
-    required DateTime end,
-    required double rentFee,
-  }) async {
+  Future<Contracts> createContract({
+  required int departmentId,
+  required DateTime start,
+  required DateTime end,
+  required double rentFee,
+}) async {
+  try {
     final response = await apiClient.dio.post(
       "/auth/rents",
       data: {
@@ -40,18 +42,30 @@ class ContractService {
         "rentFee": rentFee,
       },
     );
+    final data = response.data;
+    if (data == null) {
+      throw Exception('Invalid response from server');
+    }
 
-    if (response.statusCode == 201 || response.statusCode == 200) {
-    final rentData = response.data?['data'];//?['rent'];
-    if (rentData != null) {
-      return Contracts.fromJson(rentData);
-    } else {
-      print("Warning: rentData is null");
-      return null;
+    final status = data['status'];
+    final message = data['message'];
+
+    if (status == 'error') {
+      throw Exception(message ?? 'Booking failed');
     }
-    } else {
-      print("Booking failed with status: ${response.statusCode}");
-      return null;
+
+    final rentData = data['data'];
+    if (rentData == null || rentData is! Map<String, dynamic>) {
+      throw Exception('Invalid response structure');
     }
+
+    return Contracts.fromJson(rentData);
+
+  } on DioException catch (e) {
+    throw e;
+  } catch (e) {
+    throw Exception(e.toString());
   }
+}
+
 }

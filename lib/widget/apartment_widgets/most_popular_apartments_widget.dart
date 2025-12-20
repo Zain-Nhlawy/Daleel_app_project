@@ -192,7 +192,7 @@ class _MostPopularApartmentsWidgetState
                         ),
                       ),
                       Text(
-                        '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.month}',
+                        '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: primaryColor,
                           fontWeight: FontWeight.bold,

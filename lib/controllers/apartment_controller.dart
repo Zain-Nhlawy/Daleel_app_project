@@ -8,7 +8,7 @@ class ApartmentController {
 
   Apartments2? _apartment;
   Apartments2? get apartment => _apartment;
- 
+
   Apartments2? _favoriteApartment;
   Apartments2? get favoriteApartment => _favoriteApartment;
 
