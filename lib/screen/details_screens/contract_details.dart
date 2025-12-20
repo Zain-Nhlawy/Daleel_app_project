@@ -87,8 +87,7 @@ class ContractDetails extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: 200,
-      child:
-          contract.contractApartment.images.isNotEmpty
+      child: contract.contractApartment.images.isNotEmpty
           ? Image.network(
               contract.contractApartment.images[0],
               fit: BoxFit.cover,
@@ -137,13 +136,17 @@ class ContractDetails extends StatelessWidget {
           context,
           Icons.monetization_on,
           '${AppLocalizations.of(context)!.rentFee}:',
-          '\$${contract.rentFee.toStringAsFixed(2)}/${AppLocalizations.of(context)!.month}',
+          '\$${contract.rentFee.toStringAsFixed(2)}/${AppLocalizations.of(context)!.day}',
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Divider(thickness: 1, color: accentColor),
         ),
-        _buildSectionHeader(context, AppLocalizations.of(context)!.contractPeriod, primaryColor),
+        _buildSectionHeader(
+          context,
+          AppLocalizations.of(context)!.contractPeriod,
+          primaryColor,
+        ),
         const SizedBox(height: 16),
         _buildDetailRow(
           context,
@@ -162,7 +165,11 @@ class ContractDetails extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Divider(thickness: 1, color: accentColor),
         ),
-        _buildSectionHeader(context, AppLocalizations.of(context)!.partiesInvolved, primaryColor),
+        _buildSectionHeader(
+          context,
+          AppLocalizations.of(context)!.partiesInvolved,
+          primaryColor,
+        ),
         const SizedBox(height: 16),
         _buildPartyInfo(
           context,
@@ -171,7 +178,12 @@ class ContractDetails extends StatelessWidget {
           accentColor,
         ),
         const SizedBox(height: 16),
-        _buildPartyInfo(context, AppLocalizations.of(context)!.tenant, contract.user, accentColor),
+        _buildPartyInfo(
+          context,
+          AppLocalizations.of(context)!.tenant,
+          contract.user,
+          accentColor,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Center(

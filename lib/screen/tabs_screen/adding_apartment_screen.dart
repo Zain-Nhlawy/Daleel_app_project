@@ -61,7 +61,9 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            AppLocalizations.of(context)!.pleaseFillAllRequiredFieldsSelectALocationAndAddAHeadImage,
+            AppLocalizations.of(
+              context,
+            )!.pleaseFillAllRequiredFieldsSelectALocationAndAddAHeadImage,
           ),
           backgroundColor: Colors.red,
         ),
@@ -98,7 +100,9 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       );
       _showPendingApprovalDialog();
     } catch (e) {
-      _showErrorDialog(AppLocalizations.of(context)!.failedToAddApartmentPleaseTryAgain);
+      _showErrorDialog(
+        AppLocalizations.of(context)!.failedToAddApartmentPleaseTryAgain,
+      );
       print(e);
     }
   }
@@ -131,7 +135,10 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 (Route<dynamic> route) => false,
               );
             },
-            child: Text(AppLocalizations.of(context)!.okay, style: TextStyle(fontSize: 16)),
+            child: Text(
+              AppLocalizations.of(context)!.okay,
+              style: TextStyle(fontSize: 16),
+            ),
           ),
         ],
       ),
@@ -142,7 +149,10 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.error, style: TextStyle(color: Colors.red)),
+        title: Text(
+          AppLocalizations.of(context)!.error,
+          style: TextStyle(color: Colors.red),
+        ),
         content: Text(message),
         actions: [
           TextButton(
@@ -206,10 +216,16 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildSectionHeader(AppLocalizations.of(context)!.mainImage, textStyle),
+                _buildSectionHeader(
+                  AppLocalizations.of(context)!.mainImage,
+                  textStyle,
+                ),
                 _buildHeadImagePicker(primaryColor),
                 const SizedBox(height: 24),
-                _buildSectionHeader(AppLocalizations.of(context)!.details, textStyle),
+                _buildSectionHeader(
+                  AppLocalizations.of(context)!.details,
+                  textStyle,
+                ),
                 _buildTextField(
                   _apartmentHeadDescriptionController,
                   AppLocalizations.of(context)!.titleegModernVilla,
@@ -217,25 +233,37 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ),
                 _buildTextField(
                   _apartmentPriceContoller,
-                  '${AppLocalizations.of(context)!.price} / ${AppLocalizations.of(context)!.month}',
+                  '${AppLocalizations.of(context)!.price} / ${AppLocalizations.of(context)!.day}',
                   Icons.monetization_on,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 16),
                 _buildStatusDropdown(primaryColor),
                 const SizedBox(height: 10),
-                _buildSectionHeader(AppLocalizations.of(context)!.features, textStyle),
+                _buildSectionHeader(
+                  AppLocalizations.of(context)!.features,
+                  textStyle,
+                ),
                 _buildFeaturesGrid(),
                 const SizedBox(height: 10),
-                _buildSectionHeader(AppLocalizations.of(context)!.location, textStyle),
+                _buildSectionHeader(
+                  AppLocalizations.of(context)!.location,
+                  textStyle,
+                ),
                 _buildLocationPicker(primaryColor),
                 const SizedBox(height: 16),
                 _buildAvailabilitySwitch(primaryColor),
                 const SizedBox(height: 24),
-                _buildSectionHeader(AppLocalizations.of(context)!.morePictures, textStyle),
+                _buildSectionHeader(
+                  AppLocalizations.of(context)!.morePictures,
+                  textStyle,
+                ),
                 _buildImageGallery(primaryColor),
                 const SizedBox(height: 24),
-                _buildSectionHeader(AppLocalizations.of(context)!.description, textStyle),
+                _buildSectionHeader(
+                  AppLocalizations.of(context)!.description,
+                  textStyle,
+                ),
                 _buildTextField(
                   _apartmetnDescriptionController,
                   AppLocalizations.of(context)!.tellUsMoreAboutYourPlace,
@@ -514,8 +542,8 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            AppLocalizations.of(context)!.availableForRent, 
-            style: TextStyle(color: Colors.white)
+            AppLocalizations.of(context)!.availableForRent,
+            style: TextStyle(color: Colors.white),
           ),
           Switch(
             value: _isAvailable,
