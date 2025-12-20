@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/chats_sceens/my_chats_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/profile_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/adding_apartment_screen.dart';
@@ -32,6 +33,18 @@ class _MainScreenState extends State<HomeScreenTabs> {
 
   @override
   Widget build(BuildContext context) {
+    List<BottomNavigationBarItem> arrayIcons = const [
+      BottomNavigationBarItem(icon: Icon(Icons.explore_outlined), label: ''),
+      BottomNavigationBarItem(icon: Icon(Icons.handshake_outlined), label: ''),
+      BottomNavigationBarItem(icon: Icon(Icons.add_box_outlined), label: ''),
+      BottomNavigationBarItem(icon: Icon(Icons.chat_outlined), label: ''),
+      BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: '')
+    ];
+
+    if(AppLocalizations.of(context)!.localeName == 'ar') {
+      arrayIcons = arrayIcons.reversed.toList();
+    }
+
     return Scaffold(
       body: PageView(
         controller: _pageController,

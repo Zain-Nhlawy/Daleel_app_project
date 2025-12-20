@@ -145,6 +145,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Login failed. Check your credentials.'**
   String get loginFailedCheckYourCredentials;
+
+  /// No description provided for @cannotSclectPastDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot select past dates'**
+  String get cannotSclectPastDates;
+
+  /// No description provided for @userDataNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'User data not available'**
+  String get userDataNotAvailable;
+
+  /// No description provided for @yourAccountIsNotAllowedToMakeBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is not allowed to make bookings'**
+  String get yourAccountIsNotAllowedToMakeBookings;
+
+  /// No description provided for @pleaseSelectStartAndEndDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select start and end dates'**
+  String get pleaseSelectStartAndEndDates;
+
+  /// No description provided for @bookingSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking successful'**
+  String get bookingSuccessful;
+
+  /// No description provided for @bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod'**
+  String get bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod;
+
+  /// No description provided for @start.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get start;
+
+  /// No description provided for @end.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get end;
+
+  /// No description provided for @bookingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Details'**
+  String get bookingDetails;
+
+  /// No description provided for @selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Date'**
+  String get selectDate;
+
+  /// No description provided for @availableTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Times'**
+  String get availableTimes;
+
+  /// No description provided for @from.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get from;
+
+  /// No description provided for @to.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get to;
+
+  /// No description provided for @processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get processing;
+
+  /// No description provided for @confirmBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Booking'**
+  String get confirmBooking;
 }
 
 class _AppLocalizationsDelegate

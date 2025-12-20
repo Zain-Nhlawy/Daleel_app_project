@@ -32,4 +32,52 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get loginFailedCheckYourCredentials =>
       'Login failed. Check your credentials.';
+
+  @override
+  String get cannotSclectPastDates => 'Cannot select past dates';
+
+  @override
+  String get userDataNotAvailable => 'User data not available';
+
+  @override
+  String get yourAccountIsNotAllowedToMakeBookings =>
+      'Your account is not allowed to make bookings';
+
+  @override
+  String get pleaseSelectStartAndEndDates =>
+      'Please select start and end dates';
+
+  @override
+  String get bookingSuccessful => 'Booking successful';
+
+  @override
+  String get bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod =>
+      'bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod';
+
+  @override
+  String get start => 'Start';
+
+  @override
+  String get end => 'End';
+
+  @override
+  String get bookingDetails => 'Booking Details';
+
+  @override
+  String get selectDate => 'Select Date';
+
+  @override
+  String get availableTimes => 'Available Times';
+
+  @override
+  String get from => 'From';
+
+  @override
+  String get to => 'To';
+
+  @override
+  String get processing => 'Processing...';
+
+  @override
+  String get confirmBooking => 'Confirm Booking';
 }

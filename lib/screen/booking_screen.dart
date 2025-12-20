@@ -1,6 +1,7 @@
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel, EventList;
@@ -52,7 +53,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
   void _onDayPressed(DateTime date) {
     if (date.isBefore(DateTime.now())) {
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Cannot select past dates')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.cannotSclectPastDates)),
       );
       return;
     }
@@ -84,15 +85,15 @@ class _BookingCalendarState extends State<BookingCalendar> {
 
     if (user == null) {
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('User data not available')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.userDataNotAvailable)),
       );
       return;
     }
 
     if (user.verificationState != 'verified') {
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(
-          content: Text('Your account is not allowed to make bookings'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.yourAccountIsNotAllowedToMakeBookings),
         ),
       );
       return;
@@ -100,7 +101,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
 
     if (_startDate == null || _endDate == null) {
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Please select start and end dates')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectStartAndEndDates)),
       );
       return;
     }
@@ -118,7 +119,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
       if (!mounted) return;
 
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Booking successful')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.bookingSuccessful)),
       );
       if (!mounted) return;
       Navigator.pop(context);
@@ -126,9 +127,9 @@ class _BookingCalendarState extends State<BookingCalendar> {
       if (!mounted) return;
 
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
-            'Booking failed: This apartment is already rented for the selected period.',
+            AppLocalizations.of(context)!.bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod,
           ),
         ),
       );
@@ -150,7 +151,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
         _startDate!,
         Event(
           date: _startDate!,
-          title: 'Start',
+          title: AppLocalizations.of(context)!.start,
           dot: Container(
             margin: EdgeInsets.symmetric(horizontal: 1.0),
             decoration: BoxDecoration(
@@ -168,7 +169,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
         _endDate!,
         Event(
           date: _endDate!,
-          title: 'End',
+          title: AppLocalizations.of(context)!.end,
           dot: Container(
             margin: EdgeInsets.symmetric(horizontal: 1.0),
             decoration: BoxDecoration(
@@ -190,7 +191,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
           backgroundColor: Colors.grey[100],
           appBar: AppBar(
             title: Text(
-              'Booking Details',
+              AppLocalizations.of(context)!.bookingDetails,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             elevation: 0,
@@ -210,7 +211,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Select Date",
+                          AppLocalizations.of(context)!.selectDate,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -318,7 +319,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
                           children: [
                             Expanded(
                               child: _dateBox(
-                                label: "Start",
+                                label: AppLocalizations.of(context)!.start,
                                 date: _startDate,
                                 icon: Icons.play_arrow,
                                 color: brown,
@@ -327,7 +328,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
                             SizedBox(width: 16),
                             Expanded(
                               child: _dateBox(
-                                label: "End",
+                                label: AppLocalizations.of(context)!.end,
                                 date: _endDate,
                                 icon: Icons.flag,
                                 color: brown,
@@ -337,7 +338,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          "Available Times",
+                          AppLocalizations.of(context)!.availableTimes,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -371,7 +372,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
                                   Padding(
                                     padding: EdgeInsets.all(8),
                                     child: Text(
-                                      'From',
+                                      AppLocalizations.of(context)!.from,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -380,7 +381,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
                                   Padding(
                                     padding: EdgeInsets.all(8),
                                     child: Text(
-                                      'To',
+                                      AppLocalizations.of(context)!.to,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -425,7 +426,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
                   ],
                 ),
                 child: CustomButton(
-                  text: _isProcessing ? 'Processing...' : 'Confirm Booking',
+                  text: _isProcessing ? AppLocalizations.of(context)!.processing : AppLocalizations.of(context)!.confirmBooking,
                   color: brown,
                   onPressed: () {
                     if (!_isProcessing) _confirmBooking();

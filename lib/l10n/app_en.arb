@@ -6,5 +6,20 @@
   "phoneNumber": "Phone Number",
   "welcomeBack": "ًWelcom Back!",
   "pleaseFillAllFields": "Please fill all fields.",
-  "loginFailedCheckYourCredentials": "Login failed. Check your credentials."
+  "loginFailedCheckYourCredentials": "Login failed. Check your credentials.",
+  "cannotSclectPastDates": "Cannot select past dates",
+  "userDataNotAvailable": "User data not available",
+  "yourAccountIsNotAllowedToMakeBookings": "Your account is not allowed to make bookings",
+  "pleaseSelectStartAndEndDates": "Please select start and end dates",
+  "bookingSuccessful": "Booking successful",
+  "bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod": "bookingFailedThisApartmentIsAlreadyRentedForTheSelectedPeriod",
+  "start": "Start",
+  "end": "End",
+  "bookingDetails": "Booking Details",
+  "selectDate": "Select Date",
+  "availableTimes": "Available Times",
+  "from": "From",
+  "to": "To",
+  "processing": "Processing...",
+  "confirmBooking": "Confirm Booking"
 }
