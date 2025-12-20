@@ -1,7 +1,10 @@
-import 'package:daleel_app_project/screen/login_screen.dart';
+import 'l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -46,10 +49,25 @@ final theme = ThemeData(
   splashColor: Colors.transparent,
 );
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(
+    MaterialApp(
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ar'),
+      ],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: Locale('en'),
       debugShowCheckedModeBanner: false,
-      theme: theme, home: SplashScreen()));
-
+      theme: theme,
+      home: SplashScreen()
+    )
+  );
 }

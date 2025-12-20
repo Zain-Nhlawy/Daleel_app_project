@@ -4,9 +4,9 @@ const me = User(
   userId: 1,
   firstName: 'Zain Nhalwy',
   lastName: 'aaa',
-  profileImage: 'assets/images/user.png', 
-  personIdImage: 'assets/images/user.png', 
-  phone: '0985587575', 
+  profileImage: 'assets/images/user.png',
+  personIdImage: 'assets/images/user.png',
+  phone: '0985587575',
   location: {
     'governorate': 'Damascus Governorate',
     'city': 'Al-Mazza Municipality',
@@ -14,9 +14,9 @@ const me = User(
     'street': 'Unknown street :(',
   },
   password: "123123",
-  email: 'zain@gmail.com', 
+  email: 'zain@gmail.com',
   birthdate: '2000-5-5',
 );
 
-const baseURL = "http://192.168.1.103:8000/api";
+
 const token = "1|m6rcv4FDwBM3IpQGvu2PJPbpwDVtTNz10QyBdyyb986ec20c";

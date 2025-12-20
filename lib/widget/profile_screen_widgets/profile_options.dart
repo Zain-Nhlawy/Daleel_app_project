@@ -1,21 +1,18 @@
-import 'package:daleel_app_project/Cubit/favorites_cubit.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/login_screen.dart';
+import 'package:daleel_app_project/screen/profile_screens/my_houses_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/profile_details_screen.dart';
-import 'package:daleel_app_project/screen/tabs_screen/favorite_apartments_screen.dart';
+import 'package:daleel_app_project/screen/profile_screens/favorite_apartments_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../dependencies.dart';
 
 class ProfileOptions extends StatelessWidget {
   const ProfileOptions({super.key});
 
-  void _setScreen(context) {
+  void _setFavoriteScreen(context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => BlocProvider(
-          create: (context) => FavoritesCubit(),
-          child: FavoriteApartmentsScreen(),
-        ),
+        builder: (ctx) => FavoriteApartmentsScreen()
       ),
     );
   }
@@ -48,7 +45,7 @@ class ProfileOptions extends StatelessWidget {
               ),
               title: Text(
                 textAlign: TextAlign.justify,
-                'Profile Details',
+                AppLocalizations.of(context)!.profileDetails,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -72,21 +69,22 @@ class ProfileOptions extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.home_outlined,
-                  size: 25,
-                  color: Colors.brown,
-                ),
+                child: Icon(Icons.home_outlined, size: 25, color: Colors.brown),
               ),
               title: Text(
-                'My Houses',
+                AppLocalizations.of(context)!.myHouses,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
                 ),
               ),
               trailing: Icon(Icons.keyboard_arrow_right_outlined),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHousesScreen()),
+                );
+              },
             ),
           ),
           Card(
@@ -102,7 +100,7 @@ class ProfileOptions extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'Contracts History',
+                AppLocalizations.of(context)!.contractsHistory,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -129,7 +127,7 @@ class ProfileOptions extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'Favorites',
+                AppLocalizations.of(context)!.favorites,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -137,7 +135,7 @@ class ProfileOptions extends StatelessWidget {
               ),
               trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {
-                _setScreen(context);
+                _setFavoriteScreen(context);
               },
             ),
           ),
@@ -155,7 +153,7 @@ class ProfileOptions extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'Settings',
+                AppLocalizations.of(context)!.settings,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
@@ -175,7 +173,7 @@ class ProfileOptions extends StatelessWidget {
               ),
               title: Text(
                 textAlign: TextAlign.justify,
-                'Logout',
+                AppLocalizations.of(context)!.logout,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 19,

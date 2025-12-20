@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import '../../widget/custom_text_field.dart';
 import '../../widget/upload_button.dart';
@@ -40,8 +41,8 @@ class SignUpPage1 extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 8),
-            const Text(
-              "Join and explore",
+            Text(
+              AppLocalizations.of(context)!.joinAndExplore,
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 36,
@@ -51,21 +52,21 @@ class SignUpPage1 extends StatelessWidget {
             const SizedBox(height: 24),
             CustomTextField(
               controller: firstName,
-              label: "First Name",
+              label: AppLocalizations.of(context)!.firstName,
               icon: Icons.person,
               keyboardType: TextInputType.name,
             ),
             const SizedBox(height: 12),
             CustomTextField(
               controller: lastName,
-              label: "Last Name",
+              label: AppLocalizations.of(context)!.lastName,
               icon: Icons.person,
               keyboardType: TextInputType.name,
             ),
             const SizedBox(height: 12),
             CustomTextField(
               controller: dob,
-              label: "Date of Birth",
+              label: AppLocalizations.of(context)!.dateOfBirth,
               icon: Icons.cake,
               readOnly: true,
               onTap: pickDate,
@@ -75,7 +76,7 @@ class SignUpPage1 extends StatelessWidget {
               children: [
                 Expanded(
                   child: UploadButton(
-                    text: "Profile Image",
+                    text: AppLocalizations.of(context)!.profileImage,
                     isUploaded: profileImage != null,
                     onPressed: pickProfile,
                   ),
@@ -83,7 +84,7 @@ class SignUpPage1 extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: UploadButton(
-                    text: "ID Image",
+                    text: AppLocalizations.of(context)!.iDImage,
                     isUploaded: idImage != null,
                     onPressed: pickID,
                   ),
@@ -101,7 +102,7 @@ class SignUpPage1 extends StatelessWidget {
                     side: const BorderSide(color: Colors.white),
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text("Next", style: TextStyle(fontSize: 20)),
+                  child: Text(AppLocalizations.of(context)!.next, style: const TextStyle(fontSize: 20)),
                 ),
               ),
             ),
@@ -110,9 +111,9 @@ class SignUpPage1 extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    "Already have an account?",
-                    style: TextStyle(color: Colors.white70),
+                  Text(
+                    AppLocalizations.of(context)!.alreadyHaveAnAccount,
+                    style: const TextStyle(color: Colors.white70),
                   ),
                   TextButton(
                     onPressed: () => Navigator.push(
@@ -123,10 +124,9 @@ class SignUpPage1 extends StatelessWidget {
                         transitionDuration: const Duration(milliseconds: 600),
                       ),
                     ),
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                    child: Text(
+                      AppLocalizations.of(context)!.login,
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

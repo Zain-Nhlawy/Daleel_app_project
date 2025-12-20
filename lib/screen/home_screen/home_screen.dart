@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import '../../dependencies.dart';
@@ -16,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late PageController _pageController;
-  final int _currentPage = 10000;
+  final int _currentPage = 5;
   late Future<List<Apartments2>?> _apartmentsFuture;
 
   @override
@@ -51,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Row(
@@ -58,14 +60,12 @@ class _HomeScreenState extends State<HomeScreen> {
             CircleAvatar(
               radius: 25,
               backgroundImage: (user != null && user.profileImage.isNotEmpty)
-                  ? NetworkImage(
-                      "http://10.47.171.209:8000${user.profileImage}",
-                    )
+                  ? NetworkImage(baseUrl + user.profileImage)
                   : const AssetImage('assets/images/user.png') as ImageProvider,
             ),
             const SizedBox(width: 15),
             Text(
-              user != null ? '${user.firstName} ${user.lastName}' : 'Welcome!',
+              user != null ? '${user.firstName} ${user.lastName}' : '${AppLocalizations.of(context)!.welcome}!',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -122,10 +122,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           child: TextField(
                             style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Search Here...',
-                              hintStyle: TextStyle(
+                              hintText: '${AppLocalizations.of(context)!.searchHere}...',
+                              hintStyle: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 16,
                               ),
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Most Popular',
+                        AppLocalizations.of(context)!.mostPopular,
                         style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(
                               color: Colors.white,
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         child: Text(
-                          'See all',
+                          AppLocalizations.of(context)!.seeAll,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: Colors.white70),
                         ),
@@ -179,25 +179,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (snapshot.hasError) {
                         return Center(
                           child: Text(
-                            'Error: ${snapshot.error}',
+                            '${AppLocalizations.of(context)!.error}: ${snapshot.error}',
                             style: const TextStyle(color: Colors.white),
                           ),
                         );
                       }
                       if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(
+                        return Center(
                           child: Text(
-                            'No apartments found',
+                            AppLocalizations.of(context)!.noApartmentsFound,
                             style: TextStyle(color: Colors.white),
                           ),
                         );
                       }
                       final apartments = snapshot.data!;
+                      apartments.sort(
+                        (a, b) =>
+                            a.reviewCount!.compareTo(b.reviewCount as num),
+                      );
+                      if (apartments.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 100,
+                            horizontal: 100,
+                          ),
+                          child: Center(child: Text("no apartments near you")),
+                        );
+                      }
+
+                      final popularApartment = apartments.sublist(1, 6);
                       return PageView.builder(
                         physics: const ClampingScrollPhysics(),
                         controller: _pageController,
                         itemBuilder: (context, index) {
-                          return carouselView(index, apartments);
+                          return carouselView(index, popularApartment);
                         },
                       );
                     },
@@ -207,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    'Close To You',
+                    AppLocalizations.of(context)!.closeToYou,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -222,12 +237,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
+                      return Center(child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'));
                     }
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('No apartments found'));
+                      return Center(child: Text(AppLocalizations.of(context)!.noApartmentsFound));
                     }
                     final apartments = snapshot.data!;
+                    final nearApartments = apartments
+                        .where(
+                          (apartment) =>
+                              apartment.location!['city'] ==
+                              user!.location!['city'],
+                        )
+                        .toList();
+                    if (nearApartments.isEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 100,
+                          horizontal: 100,
+                        ),
+                        child: Center(child: Text("no apartments near you")),
+                      );
+                    }
+
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -239,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             vertical: 4.0,
                           ),
                           child: NearpyApartmentsWidgets(
-                            apartment: apartments[index],
+                            apartment: nearApartments[index],
                           ),
                         );
                       },

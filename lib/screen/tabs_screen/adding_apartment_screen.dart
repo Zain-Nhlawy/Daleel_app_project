@@ -1,10 +1,13 @@
-// ignore_for_file: unused_element, use_build_context_synchronously
+// ignore_for_file: unused_element, use_build_context_synchronously, deprecated_member_use
+
 import 'dart:io';
-import 'package:daleel_app_project/Cubit/favorites_cubit.dart';
+import 'package:daleel_app_project/screen/confirm_add_screen.dart';
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
 import 'package:daleel_app_project/screen/pick_location_screen.dart';
+import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -51,14 +54,14 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     });
   }
 
-  Future<void> _saveApartment() async {
+  void _triggerSaveProcess() {
     if (!_formKey.currentState!.validate() ||
         _selectedImageController == null ||
         selectedLocation == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
-            'Please fill all required fields, select a location, and add a head image.',
+            AppLocalizations.of(context)!.pleaseFillAllRequiredFieldsSelectALocationAndAddAHeadImage,
           ),
           backgroundColor: Colors.red,
         ),
@@ -66,15 +69,23 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       return;
     }
 
-    List<File> allImages = [_selectedImageController!];
-    allImages.addAll(_apartmentPictures);
-    final addRepo = AddApartmentsRepo(dioClient: dioClient);
+    showConfirmationSheet(
+      context: context,
+      onConfirm: (File contractImage) {
+        _saveApartment(contractImage);
+      },
+    );
+  }
 
+  Future<void> _saveApartment(File contractImage) async {
+    final addRepo = AddApartmentsRepo(dioClient: dioClient);
     try {
-      final newApartment = await addRepo.addApartment(
+      await addRepo.addApartment(
         userId: user!.userId,
-        images: allImages,
+        images: [_selectedImageController!, ..._apartmentPictures],
+        // contractImage: contractImage,
         location: selectedLocation,
+        state: false,
         headDescription: _apartmentHeadDescriptionController.text,
         rentFee: double.tryParse(_apartmentPriceContoller.text) ?? 0,
         floor: int.tryParse(_apartmentFloorController.text) ?? 0,
@@ -85,27 +96,42 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         isAvailable: _isAvailable,
         status: _selectedStatusController,
       );
-      apartments.add(newApartment);
-
-      _showSuccessDialog();
+      _showPendingApprovalDialog();
     } catch (e) {
-      _showErrorDialog('Failed to add apartment. Please try again.');
+      _showErrorDialog(AppLocalizations.of(context)!.failedToAddApartmentPleaseTryAgain);
+      print(e);
     }
   }
 
-  void _showSuccessDialog() {
+  void _showPendingApprovalDialog() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        title: const Text('Success'),
-        content: const Text('Your apartment was added successfully!'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Center(
+          child: Icon(
+            Icons.check_circle_outline,
+            color: Colors.green,
+            size: 50,
+          ),
+        ),
+        content: const Text(
+          'Request Submitted!\nYour apartment is now pending admin approval.',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16),
+        ),
+        actionsAlignment: MainAxisAlignment.center,
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(ctx);
-              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                ctx,
+                MaterialPageRoute(builder: (context) => const HomeScreenTabs()),
+                (Route<dynamic> route) => false,
+              );
             },
-            child: const Text('Okay'),
+            child: Text(AppLocalizations.of(context)!.okay, style: TextStyle(fontSize: 16)),
           ),
         ],
       ),
@@ -116,12 +142,12 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Error', style: TextStyle(color: Colors.red)),
+        title: Text(AppLocalizations.of(context)!.error, style: TextStyle(color: Colors.red)),
         content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Okay'),
+            child: Text(AppLocalizations.of(context)!.okay),
           ),
         ],
       ),
@@ -150,8 +176,9 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
-          'Add Apartment',
+          AppLocalizations.of(context)!.addApartment,
           style: textStyle.copyWith(fontWeight: FontWeight.bold, fontSize: 22),
         ),
         centerTitle: true,
@@ -179,39 +206,39 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildSectionHeader('Main Image', textStyle),
+                _buildSectionHeader(AppLocalizations.of(context)!.mainImage, textStyle),
                 _buildHeadImagePicker(primaryColor),
                 const SizedBox(height: 24),
-                _buildSectionHeader('Details', textStyle),
+                _buildSectionHeader(AppLocalizations.of(context)!.details, textStyle),
                 _buildTextField(
                   _apartmentHeadDescriptionController,
-                  'Title (e.g., Modern Villa)',
+                  AppLocalizations.of(context)!.titleegModernVilla,
                   Icons.title,
                 ),
                 _buildTextField(
                   _apartmentPriceContoller,
-                  'Price / Month',
+                  '${AppLocalizations.of(context)!.price} / ${AppLocalizations.of(context)!.month}',
                   Icons.monetization_on,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 16),
                 _buildStatusDropdown(primaryColor),
                 const SizedBox(height: 10),
-                _buildSectionHeader('Features', textStyle),
+                _buildSectionHeader(AppLocalizations.of(context)!.features, textStyle),
                 _buildFeaturesGrid(),
                 const SizedBox(height: 10),
-                _buildSectionHeader('Location', textStyle),
+                _buildSectionHeader(AppLocalizations.of(context)!.location, textStyle),
                 _buildLocationPicker(primaryColor),
                 const SizedBox(height: 16),
                 _buildAvailabilitySwitch(primaryColor),
                 const SizedBox(height: 24),
-                _buildSectionHeader('More Pictures', textStyle),
+                _buildSectionHeader(AppLocalizations.of(context)!.morePictures, textStyle),
                 _buildImageGallery(primaryColor),
                 const SizedBox(height: 24),
-                _buildSectionHeader('Description', textStyle),
+                _buildSectionHeader(AppLocalizations.of(context)!.description, textStyle),
                 _buildTextField(
                   _apartmetnDescriptionController,
-                  'Tell us more about your place...',
+                  AppLocalizations.of(context)!.tellUsMoreAboutYourPlace,
                   Icons.description,
                   maxLines: 4,
                 ),
@@ -222,6 +249,25 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         ),
       ),
       bottomNavigationBar: _buildSaveButton(primaryColor),
+    );
+  }
+
+  Widget _buildSaveButton(Color primaryColor) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ElevatedButton(
+        onPressed: _triggerSaveProcess,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: primaryColor,
+          minimumSize: const Size(double.infinity, 55),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        child: const Text("Add Apartment"),
+      ),
     );
   }
 
@@ -256,15 +302,15 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.add_a_photo_outlined,
                       color: Colors.white,
                       size: 50,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Tap to add main image',
-                      style: TextStyle(color: Colors.white),
+                      AppLocalizations.of(context)!.tapToAddMainImage,
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ],
                 ),
@@ -304,7 +350,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         maxLines: maxLines,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.white, fontSize: 15),
+          labelStyle: const TextStyle(color: Colors.white, fontSize: 15),
           prefixIcon: Icon(icon, color: Colors.white),
           filled: true,
           fillColor: Colors.black.withOpacity(0.3),
@@ -319,7 +365,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'This field cannot be empty';
+            return AppLocalizations.of(context)!.thisFieldCannotBeEmpty;
           }
           return null;
         },
@@ -370,22 +416,22 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       children: [
         _buildFeatureField(
           _apartmentBedroomsController,
-          'Bedrooms',
+          AppLocalizations.of(context)!.bedrooms,
           Icons.bed_outlined,
         ),
         _buildFeatureField(
           _apartmentBathroomsController,
-          'Bathrooms',
+          AppLocalizations.of(context)!.bathrooms,
           Icons.shower_outlined,
         ),
         _buildFeatureField(
           _apartmentFloorController,
-          'Floor',
+          AppLocalizations.of(context)!.floor,
           Icons.layers_outlined,
         ),
         _buildFeatureField(
           _apartmentAreaController,
-          'Area (m²)',
+          AppLocalizations.of(context)!.areaM2,
           Icons.square_foot_outlined,
         ),
       ],
@@ -403,7 +449,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+        labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
         prefixIcon: Icon(icon, color: Colors.white, size: 20),
         filled: true,
         fillColor: Colors.black.withOpacity(0.3),
@@ -440,14 +486,14 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         ),
         child: Row(
           children: [
-            Icon(Icons.location_on_outlined, color: Colors.white),
+            const Icon(Icons.location_on_outlined, color: Colors.white),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 _locationController.text.isEmpty
-                    ? 'Select Apartment Location'
+                    ? AppLocalizations.of(context)!.selectApartmentLocation
                     : _locationController.text,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -467,7 +513,10 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Available for Rent', style: TextStyle(color: Colors.white)),
+          Text(
+            AppLocalizations.of(context)!.availableForRent, 
+            style: TextStyle(color: Colors.white)
+          ),
           Switch(
             value: _isAvailable,
             onChanged: (value) => setState(() => _isAvailable = value),
@@ -505,7 +554,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           color: Colors.black.withOpacity(0.3),
           borderRadius: BorderRadius.circular(15),
         ),
-        child: Icon(
+        child: const Icon(
           Icons.add_photo_alternate_outlined,
           color: Colors.white,
           size: 40,
@@ -534,25 +583,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSaveButton(Color primaryColor) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ElevatedButton(
-        onPressed: _saveApartment,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: primaryColor,
-          minimumSize: const Size(double.infinity, 55),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        child: const Text("Add Apartment"),
       ),
     );
   }

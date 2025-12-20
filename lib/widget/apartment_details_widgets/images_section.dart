@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:flutter/material.dart';
 
 class ImagesSection extends StatelessWidget {
@@ -25,7 +26,6 @@ ImageProvider _getImage(String? img) {
   }
 
   if (img.startsWith('/')) {
-    const baseUrl = 'http://10.0.2.2:8000';
     return NetworkImage('$baseUrl$img');
   }
 

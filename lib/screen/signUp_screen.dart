@@ -1,4 +1,5 @@
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/pick_location_screen.dart';
 import 'package:daleel_app_project/widget/signup_widgets/signup_page1.dart';
 import 'package:daleel_app_project/widget/signup_widgets/signup_page2.dart';
@@ -94,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen>
         _dobController.text.isEmpty ||
         _profileImagePath == null ||
         _idImagePath == null) {
-      _showError("Please complete all fields");
+      _showError(AppLocalizations.of(context)!.pleaseFillAllFields);
       return;
     }
 
@@ -115,17 +116,17 @@ class _SignUpScreenState extends State<SignUpScreen>
     if (_phoneController.text.isEmpty ||
         _passwordController.text.isEmpty ||
         _confirmPasswordController.text.isEmpty) {
-      _showError("Missing fields");
+      _showError(AppLocalizations.of(context)!.missingFields);
       return false;
     }
 
     if (_passwordController.text != _confirmPasswordController.text) {
-      _showError("Passwords do not match");
+      _showError(AppLocalizations.of(context)!.passwordsDoNotMatch);
       return false;
     }
 
     if (_profileImagePath == null || _idImagePath == null) {
-      _showError("Please select profile and ID images");
+      _showError(AppLocalizations.of(context)!.pleaseSelectProfileAndIDImages);
       return false;
     }
     if (selectedLocation == null) {
@@ -150,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen>
       print("ACCOUNT CREATED: ${user.firstName} ${user.lastName}");
       return true; 
     } else {
-      _showError("Registration failed");
+      _showError(AppLocalizations.of(context)!.registrationFailed);
       return false;
     }
   } catch (e) {

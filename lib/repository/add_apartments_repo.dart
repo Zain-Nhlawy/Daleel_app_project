@@ -11,6 +11,7 @@ class AddApartmentsRepo {
   Future<Apartments2> addApartment({
     required int userId,
     required List<File> images,
+    bool? state,
     String? description,
     String? headDescription,
     double? area,
@@ -34,7 +35,7 @@ class AddApartmentsRepo {
         "floor": floor,
         "status": status,
         "isAvailable": isAvailable! ? 1 : 0,
-
+        "verification_state": state! ? 1 : 0,
         "location[city]": location!["city"],
         "location[governorate]": location["governorate"],
         "location[district]": location["district"] ?? "",

@@ -1,4 +1,5 @@
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/contracts.dart';
 import 'package:daleel_app_project/widget/contract_widgets/contract_data_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -34,12 +35,13 @@ class _ContractScreenState extends State<ContractScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
-          'My Contract',
+          AppLocalizations.of(context)!.myContract,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -69,17 +71,17 @@ class _ContractScreenState extends State<ContractScreen> {
               if (snapshot.hasError) {
                 return Center(
                   child: Text(
-                    'Error: ${snapshot.error}',
+                    '${AppLocalizations.of(context)!.error}: ${snapshot.error}',
                     style: const TextStyle(color: Colors.white70),
                   ),
                 );
               }
 
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(
+                return Center(
                   child: Text(
-                    'No contracts found',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    AppLocalizations.of(context)!.noContractsFound,
+                    style: const TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                 );
               }
@@ -93,9 +95,7 @@ class _ContractScreenState extends State<ContractScreen> {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      child: ContractDataCardWidget(
-                        contract: contracts[index],
-                      ),
+                      child: ContractDataCardWidget(contract: contracts[index]),
                     );
                   },
                 ),
@@ -107,4 +107,3 @@ class _ContractScreenState extends State<ContractScreen> {
     );
   }
 }
-

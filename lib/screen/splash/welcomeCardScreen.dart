@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:daleel_app_project/screen/login_screen.dart';
-import 'package:daleel_app_project/screen/signUp_screen.dart';
+import 'package:daleel_app_project/screen/signup_screen.dart';
 import 'widgets/animated_logo.dart';
 import 'widgets/welcome_card.dart';
 

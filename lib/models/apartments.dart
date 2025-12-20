@@ -1,7 +1,8 @@
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/comment.dart';
 import 'package:daleel_app_project/models/user.dart';
 
-const String BASE_URL = "http://10.47.171.209:8000";
+String BASE_URL = baseUrl;
 
 class Apartments2 {
   final int id;
@@ -18,13 +19,16 @@ class Apartments2 {
   final int? floor;
   final double? averageRating;
   final int? reviewCount;
-  final List<String>? images;
+  final List<String> images;
   List<Map<String, dynamic>>? freeTimes;
-  List<Comment>? comments;
+  List? comments;
+  final bool? state;
+  final bool isFavorited;
 
   Apartments2({
     required this.id,
     required this.user,
+    this.state,
     this.description,
     this.headDescription,
     this.area,
@@ -38,80 +42,74 @@ class Apartments2 {
     this.floor,
     this.averageRating,
     this.reviewCount,
-    this.images,
+    required this.images,
     this.comments,
+    this.isFavorited = false,
   });
 
   factory Apartments2.fromJson(Map<String, dynamic> json) {
-  return Apartments2(
-    id: json['id'] ?? 0,
+    int? _safeParseInt(dynamic value) {
+      if (value == null) return null;
+      if (value is int) return value;
+      if (value is double) return value.toInt();
+      if (value is String) return int.tryParse(value);
+      return null;
+    }
 
-    user: json['user'] != null
-        ? User.fromJson(json['user'])
-        : User.empty(), 
+    double? _safeParseDouble(dynamic value) {
+      if (value == null) return null;
+      if (value is double) return value;
+      if (value is int) return value.toDouble();
+      if (value is String) return double.tryParse(value);
+      return null;
+    }
 
-    description: json['description'],
-    headDescription: json['headDescription'],
+    List<String> parsedImages = [];
+    if (json['images'] != null) {
+      if (json['images'] is List) {
+        parsedImages = List<String>.from(
+          json['images'].map((img) {
+            String imageUrl = img.toString();
+            return imageUrl.startsWith('http') ? imageUrl : "$baseUrl$imageUrl";
+          }),
+        );
+      }
+    }
 
-    area: json['area'] != null
-        ? double.tryParse(json['area'].toString())
-        : null,
-
-    location: json['location'] != null && json['location'] is Map
-        ? Map<String, dynamic>.from(json['location'])
-        : null,
-
-    freeTimes: json['free_times'] is List
-        ? List<Map<String, dynamic>>.from(
-            json['free_times'].map((ft) => {
-              'start_time': ft?['start_time'] ?? '__',
-              'end_time': ft?['end_time'] ?? '__',
-            }),
-          )
-        : [],
-
-    rentFee: json['rentFee'] != null
-        ? double.tryParse(json['rentFee'].toString())
-        : null,
-
-    isAvailable: json['isAvailable'] != null
-        ? json['isAvailable'].toString() == '1'
-        : null,
-
-    status: json['status'],
-
-    bedrooms: json['bedrooms'] != null
-        ? int.tryParse(json['bedrooms'].toString())
-        : null,
-
-    bathrooms: json['bathrooms'] != null
-        ? int.tryParse(json['bathrooms'].toString())
-        : null,
-
-    floor: json['floor'] != null
-        ? int.tryParse(json['floor'].toString())
-        : null,
-
-    averageRating: json['average_rating'] != null
-        ? double.tryParse(json['average_rating'].toString())
-        : null,
-
-    reviewCount: json['review_count'] != null
-        ? int.tryParse(json['review_count'].toString())
-        : null,
-
-    images: json['images'] is List
-        ? List<String>.from(
-            json['images'].map((img) => "$BASE_URL$img"),
-          )
-        : [],
-
-    comments: json['comments'] is List
-        ? List<Comment>.from(
-            json['comments'].map((c) => Comment.fromJson(c)),
-          )
-        : [],
-  );
-}
-
+    return Apartments2(
+      id: _safeParseInt(json['id']) ?? 0,
+      state: _safeParseInt(json['verification_state']) == 1,
+      user: User.fromJson(json['user']),
+      description: json['description'],
+      headDescription: json['headDescription'],
+      area: _safeParseDouble(json['area']),
+      location: json['location'] != null
+          ? Map<String, dynamic>.from(json['location'])
+          : null,
+      freeTimes: json['free_times'] != null
+          ? List<Map<String, dynamic>>.from(
+              (json['free_times'] as List).map((ft) {
+                if (ft == null) return {'start_time': '__', 'end_time': '__'};
+                return {
+                  'start_time': ft['start_time'] ?? '__',
+                  'end_time': ft['end_time'] ?? '__',
+                };
+              }),
+            )
+          : [],
+      rentFee: _safeParseDouble(json['rentFee']),
+      isAvailable: _safeParseInt(json['isAvailable']) == 1,
+      status: json['status'],
+      bedrooms: _safeParseInt(json['bedrooms']),
+      bathrooms: _safeParseInt(json['bathrooms']),
+      floor: _safeParseInt(json['floor']),
+      averageRating: _safeParseDouble(json['average_rating']),
+      reviewCount: _safeParseInt(json['review_count']),
+      images: parsedImages,
+      comments: json['comments'] != null
+          ? List.from(json['comments'].map((c) => Comment.fromJson(c)))
+          : [],
+      isFavorited: json['is_favorited'] == true,
+    );
+  }
 }

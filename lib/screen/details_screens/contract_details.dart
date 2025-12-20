@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/contracts.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:daleel_app_project/widget/contract_widgets/timer_for_contract_widget.dart';
@@ -15,9 +16,9 @@ class ContractDetails extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text(
-          "Contract Details",
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context)!.contractDetails,
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 22,
@@ -87,10 +88,9 @@ class ContractDetails extends StatelessWidget {
       width: double.infinity,
       height: 200,
       child:
-          contract.contractApartment.images != null &&
-              contract.contractApartment.images!.isNotEmpty
+          contract.contractApartment.images.isNotEmpty
           ? Image.network(
-              contract.contractApartment.images![0],
+              contract.contractApartment.images[0],
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => _buildImageError(),
             )
@@ -136,48 +136,48 @@ class ContractDetails extends StatelessWidget {
         _buildDetailRow(
           context,
           Icons.monetization_on,
-          'Rent Fee:',
-          '\$${contract.rentFee.toStringAsFixed(2)}/month',
+          '${AppLocalizations.of(context)!.rentFee}:',
+          '\$${contract.rentFee.toStringAsFixed(2)}/${AppLocalizations.of(context)!.month}',
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Divider(thickness: 1, color: accentColor),
         ),
-        _buildSectionHeader(context, 'Contract Period', primaryColor),
+        _buildSectionHeader(context, AppLocalizations.of(context)!.contractPeriod, primaryColor),
         const SizedBox(height: 16),
         _buildDetailRow(
           context,
           Icons.calendar_today,
-          'Start Date:',
+          '${AppLocalizations.of(context)!.startDate}:',
           '${contract.startRent.toLocal()}'.split(' ')[0],
         ),
         const SizedBox(height: 12),
         _buildDetailRow(
           context,
           Icons.calendar_today,
-          'End Date:',
+          '${AppLocalizations.of(context)!.endDate}:',
           '${contract.endRent.toLocal()}'.split(' ')[0],
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Divider(thickness: 1, color: accentColor),
         ),
-        _buildSectionHeader(context, 'Parties Involved', primaryColor),
+        _buildSectionHeader(context, AppLocalizations.of(context)!.partiesInvolved, primaryColor),
         const SizedBox(height: 16),
         _buildPartyInfo(
           context,
-          'Renter',
+          AppLocalizations.of(context)!.renter,
           contract.contractApartment.user,
           accentColor,
         ),
         const SizedBox(height: 16),
-        _buildPartyInfo(context, 'Tenant', contract.user, accentColor),
+        _buildPartyInfo(context, AppLocalizations.of(context)!.tenant, contract.user, accentColor),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Center(
             child: ElevatedButton.icon(
               icon: const Icon(Icons.home_outlined),
-              label: const Text('View Apartment Details'),
+              label: Text(AppLocalizations.of(context)!.viewApartmentDetails),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -289,14 +289,14 @@ class ContractDetails extends StatelessWidget {
         _buildDetailRow(
           context,
           Icons.person_outline,
-          'Name:',
+          '${AppLocalizations.of(context)!.name}:',
           user.firstName ?? 'N/A',
         ),
         const SizedBox(height: 8),
         _buildDetailRow(
           context,
           Icons.phone_outlined,
-          'Number:',
+          '${AppLocalizations.of(context)!.number}:',
           user.phone ?? 'N/A',
         ),
       ],

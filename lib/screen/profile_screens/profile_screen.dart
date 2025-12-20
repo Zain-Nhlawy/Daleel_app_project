@@ -1,3 +1,5 @@
+
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/widget/profile_screen_widgets/profile_options.dart';
 import 'package:flutter/material.dart';
 import '../../../dependencies.dart';
@@ -11,8 +13,9 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
-          'My Profile',
+          AppLocalizations.of(context)!.myProfile,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -70,9 +73,7 @@ class ProfileScreen extends StatelessWidget {
                           radius: 45,
                           backgroundImage:
                               (user != null && user.profileImage.isNotEmpty)
-                              ? NetworkImage(
-                                  "http://10.47.171.209:8000${user.profileImage}",
-                                )
+                              ? NetworkImage(baseUrl + user.profileImage)
                               : const AssetImage('assets/images/user.png')
                                     as ImageProvider,
                         ),

@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/screen/booking_screen.dart';
 import 'package:daleel_app_project/dependencies.dart';
@@ -7,7 +8,6 @@ import 'package:daleel_app_project/widget/apartment_details_widgets/apartment_in
 import 'package:daleel_app_project/widget/apartment_details_widgets/description_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/comments_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/publisher_section.dart';
-
 
 class ApartmentDetailsScreen extends StatefulWidget {
   final Apartments2 apartment;
@@ -29,8 +29,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   void initState() {
     super.initState();
     apartment = widget.apartment;
-    selectedImage = apartment.images!.isNotEmpty
-        ? apartment.images!.first
+    selectedImage = apartment.images.isNotEmpty
+        ? apartment.images.first
         : 'assets/images/user.png';
     _newCommentController = TextEditingController();
     _loadApartmentDetails();
@@ -38,14 +38,15 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   }
 
   void _loadApartmentDetails() async {
-    final updatedApartment =
-        await apartmentController.fetchApartment(apartment.id);
+    final updatedApartment = await apartmentController.fetchApartment(
+      apartment.id,
+    );
     if (!mounted) return;
     if (updatedApartment != null) {
       setState(() {
         apartment = updatedApartment;
-        selectedImage = apartment.images!.isNotEmpty
-            ? apartment.images!.first
+        selectedImage = apartment.images.isNotEmpty
+            ? apartment.images.first
             : 'assets/images/user.png';
         isLoading = false;
       });
@@ -67,7 +68,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Details', style: theme.textTheme.titleMedium),
+        title: Text(AppLocalizations.of(context)!.details, style: theme.textTheme.titleMedium),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -82,8 +83,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
               children: [
                 ImagesSection(
                   selectedImage: selectedImage,
-                  images: apartment.images!.isNotEmpty
-                      ? apartment.images!
+                  images: apartment.images.isNotEmpty
+                      ? apartment.images
                       : ['assets/images/user.png'],
                   onImageSelected: (img) {
                     setState(() => selectedImage = img);
@@ -94,15 +95,9 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ApartmentInfoSection(
-                        apartment: apartment,
-                        theme: theme,
-                      ),
+                      ApartmentInfoSection(apartment: apartment, theme: theme),
                       const SizedBox(height: 24),
-                      DescriptionSection(
-                        apartment: apartment,
-                        theme: theme,
-                      ),
+                      DescriptionSection(apartment: apartment, theme: theme),
                       const SizedBox(height: 30),
                       CommentsSection(
                         comments: commentController.comments,
@@ -119,7 +114,10 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                             showAllComments = true;
                           });
                           try {
-                              await commentController.addComment(apartment.id, content);
+                            await commentController.addComment(
+                              apartment.id,
+                              content,
+                            );
                           } catch (e) {
                             print("Failed to add comment: $e");
                           }
@@ -131,10 +129,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                         },
                       ),
                       const SizedBox(height: 26),
-                      PublisherSection(
-                        apartment: apartment,
-                        theme: theme,
-                      ),
+
+                      PublisherSection(apartment: apartment, theme: theme),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -159,14 +155,13 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BookingCalendar(
-                          apartment: apartment,
-                        ),
+                        builder: (context) =>
+                            BookingCalendar(apartment: apartment),
                       ),
                     );
                   },
                   child: Text(
-                    "Book Now",
+                    AppLocalizations.of(context)!.bookNow,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.white,
                       fontSize: 18,

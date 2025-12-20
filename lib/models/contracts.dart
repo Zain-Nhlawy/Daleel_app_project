@@ -60,6 +60,7 @@ class Contracts {
         : Apartments2(
             id: 0,
             user: User.empty(),
+            images: [],
           ),
   );
 }

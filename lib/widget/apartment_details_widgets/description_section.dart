@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import '../../models/apartments.dart';
 
@@ -65,7 +66,7 @@ class DescriptionSection extends StatelessWidget {
         const SizedBox(height: 24),
         
         Text(
-          "Description",
+          AppLocalizations.of(context)!.description,
           style: theme.textTheme.bodyLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
