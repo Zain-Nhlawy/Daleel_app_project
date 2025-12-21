@@ -42,8 +42,6 @@ final ContractController contractController = ContractController(
 final NotificationService notificationService = NotificationService(
   apiClient: dioClient,
 );
-final NotificationController notificationController = NotificationController(
-  notificationService: notificationService,
-);
+
 
 final String baseUrl = "http://10.0.2.2:8000";
