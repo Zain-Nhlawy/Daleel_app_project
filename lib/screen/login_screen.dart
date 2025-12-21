@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'signup_screen.dart';
 import '../widget/custom_text_field.dart';
 import '../../dependencies.dart';
+import 'package:daleel_app_project/main.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,16 +31,13 @@ class _LoginScreenState extends State<LoginScreen>
       duration: const Duration(milliseconds: 400),
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 1), 
-      end: Offset.zero, 
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOut,
-    ));
+    _slideAnimation = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+        .animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+        );
 
     Future.delayed(const Duration(milliseconds: 300), () {
-      _animationController.forward(); 
+      _animationController.forward();
     });
   }
 
@@ -55,6 +55,47 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
+  Future<void> initNotifications() async {
+    final messaging = FirebaseMessaging.instance;
+    await messaging.requestPermission();
+
+    final token = await messaging.getToken();
+    if (token != null) {
+      await notificationService.saveToken(token);
+    }
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
+      await notificationService.saveToken(newToken);
+    });
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'high_importance_channel',
+      'High Importance Notifications',
+      description: 'This channel is used for important notifications.',
+      importance: Importance.high,
+    );
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.createNotificationChannel(channel);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      flutterLocalNotificationsPlugin.show(
+        message.hashCode,
+        message.notification?.title,
+        message.notification?.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            'high_importance_channel',
+            'High Importance Notifications',
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+        ),
+      );
+    });
+  }
+
   void _login() async {
     final phone = _phoneController.text.trim();
     final password = _passwordController.text;
@@ -70,9 +111,7 @@ class _LoginScreenState extends State<LoginScreen>
       _showError(AppLocalizations.of(context)!.loginFailedCheckYourCredentials);
       return;
     }
-
-    print("Logged in user: ${loggedUser.firstName}");
-
+    initNotifications();
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
@@ -94,12 +133,12 @@ class _LoginScreenState extends State<LoginScreen>
             ),
           ),
           const _HeaderLogo(),
-          
+
           Positioned(
-            top: 290, 
+            top: 290,
             left: 0,
             right: 0,
-            bottom: 0, 
+            bottom: 0,
             child: SlideTransition(
               position: _slideAnimation,
               child: _LoginCardContent(
@@ -155,7 +194,11 @@ class _LoginCardContent extends StatelessWidget {
         color: Colors.brown.withOpacity(0.7),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(40)),
         boxShadow: const [
-          BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, -4))
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 10,
+            offset: Offset(0, -4),
+          ),
         ],
       ),
       child: SingleChildScrollView(
@@ -207,7 +250,7 @@ class _LoginCardContent extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             const _SignUpLink(),
-            const SizedBox(height: 30), 
+            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -225,8 +268,8 @@ class _SignUpLink extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppLocalizations.of(context)!.dontHaveAnAccount, 
-            style: const TextStyle(color: Colors.white70)
+            AppLocalizations.of(context)!.dontHaveAnAccount,
+            style: const TextStyle(color: Colors.white70),
           ),
           TextButton(
             onPressed: () => Navigator.push(
@@ -238,7 +281,10 @@ class _SignUpLink extends StatelessWidget {
             ),
             child: Text(
               AppLocalizations.of(context)!.signUp,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],

@@ -47,8 +47,6 @@ class _BookingCalendarState extends State<BookingCalendar> {
     } else {
       availableTimes = [];
     }
-
-    print('Available times: $availableTimes');
   }
 
   String formatDate(DateTime date) => DateFormat('d/M/yyyy').format(date);

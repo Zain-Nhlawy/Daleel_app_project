@@ -6,7 +6,6 @@ class CommentService {
 
   CommentService({required this.apiClient});
 
-
   Future<List<Comment>?> getComments(int departmentId) async {
     try {
       final response = await apiClient.dio.get(
@@ -18,9 +17,7 @@ class CommentService {
         final data = response.data['data'] as List;
         return data.map((c) => Comment.fromJson(c)).toList();
       }
-    } catch (e) {
-      print('Error fetching comments: $e');
-    }
+    } catch (e) {}
     return null;
   }
 
@@ -28,20 +25,14 @@ class CommentService {
     try {
       final response = await apiClient.dio.post(
         'auth/departments/$departmentId/comments',
-        data: {
-          'content': content,
-        },
+        data: {'content': content},
       );
 
       if (response.statusCode == 201) {
         final data = response.data['data'];
         return Comment.fromJson(data);
-      } else {
-        print('Failed to add comment. Status code: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error in addComment: $e');
-    }
+      } else {}
+    } catch (e) {}
 
     return null;
   }

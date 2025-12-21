@@ -9,9 +9,7 @@ class NotificationController extends ChangeNotifier {
   Future<void> addToken(String token) async {
     if (token.isEmpty) return;
     try {
-      await notificationService.getToken(token);
-    } catch (e) {
-      print(e);
-    }
+      await notificationService.saveTokenIfChanged(token);
+    } catch (e) {}
   }
 }

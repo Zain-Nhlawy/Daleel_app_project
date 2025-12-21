@@ -22,7 +22,6 @@ class DioClient extends Api {
         },
 
         onError: (error, handler) async {
-          print("API Error: ${error.response?.data}");
           return handler.next(error);
         },
       ),
