@@ -4,14 +4,14 @@ import 'package:daleel_app_project/models/contracts.dart';
 import 'package:daleel_app_project/widget/contract_widgets/contract_data_card_widget.dart';
 import 'package:flutter/material.dart';
 
-class ContractScreen extends StatefulWidget {
-  const ContractScreen({super.key});
+class ContractHistoryScreen extends StatefulWidget {
+  const ContractHistoryScreen({super.key});
 
   @override
-  State<ContractScreen> createState() => _ContractScreenState();
+  State<ContractHistoryScreen> createState() => _ContractScreenState();
 }
 
-class _ContractScreenState extends State<ContractScreen> {
+class _ContractScreenState extends State<ContractHistoryScreen> {
   late Future<List<Contracts>> _contractsFuture;
 
   @override
@@ -35,9 +35,8 @@ class _ContractScreenState extends State<ContractScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text(
-          AppLocalizations.of(context)!.myContracts,
+          "Contract History",
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -87,26 +86,23 @@ class _ContractScreenState extends State<ContractScreen> {
               }
 
               final contracts = snapshot.data!;
-              final realTimeContract = contracts
+              final completedContract = contracts
                   .where(
                     (a) =>
-                        a.rentStatus == RentStatus.onRent ||
-                        a.rentStatus == RentStatus.pending,
+                        a.rentStatus == RentStatus.completed ||
+                        a.rentStatus == RentStatus.cancelled,
                   )
                   .toList();
-              if (realTimeContract.isEmpty) {
-                return Center(child: Text("No Contract Found"));  
-              }
               return RefreshIndicator(
                 onRefresh: () async => _refreshContracts(),
                 child: ListView.builder(
                   padding: const EdgeInsets.all(8.0),
-                  itemCount: realTimeContract.length,
+                  itemCount: completedContract.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6.0),
                       child: ContractDataCardWidget(
-                        contract: realTimeContract[index],
+                        contract: completedContract[index],
                       ),
                     );
                   },

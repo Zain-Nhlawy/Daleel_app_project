@@ -59,9 +59,9 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 4),
-        content: Text(AppLocalizations.of(context)!.noDescription),
+        content: Text("favourite removed"),
         action: SnackBarAction(
-          label: AppLocalizations.of(context)!.bookNow,
+          label: "Undo",
           onPressed: () {
             setState(() {
               _favoriteApartments.insert(index, removedApartment);

@@ -8,17 +8,16 @@ class ProfileDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayUser = userController.user;
-
     const Color primaryColor = Color.fromARGB(255, 219, 107, 66);
     const Color accentColor = Color.fromARGB(255, 228, 228, 227);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
           AppLocalizations.of(context)!.profileDetails,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
             color: Colors.white,
@@ -66,9 +65,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                           radius: 80,
                           backgroundImage:
                               (displayUser!.profileImage.isNotEmpty)
-                              ? NetworkImage(
-                                       baseUrl+displayUser.profileImage,
-                                )
+                              ? NetworkImage(baseUrl + displayUser.profileImage)
                               : const AssetImage('assets/images/user.png')
                                     as ImageProvider,
                         ),
@@ -95,15 +92,63 @@ class ProfileDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                Text(
-                  '${displayUser.firstName} ${displayUser.lastName}',
-                  style: const TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        const Text(
+                          "Personal Image",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          width: 130,
+                          height: 160,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: primaryColor, width: 1.5),
+                          ),
+                          child: Image.network(
+                            baseUrl + displayUser.profileImage,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "ID Image",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          width: 130,
+                          height: 160,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: primaryColor, width: 1.5),
+                          ),
+                          child: Image.network(
+                            baseUrl + displayUser.personIdImage,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
+
                 const SizedBox(height: 40),
                 Container(
                   decoration: BoxDecoration(
@@ -127,9 +172,9 @@ class ProfileDetailsScreen extends StatelessWidget {
                       ),
                       buildDetailTile(
                         context,
-                        icon: Icons.email_outlined,
-                        title: AppLocalizations.of(context)!.email,
-                        subtitle: displayUser.email,
+                        icon: Icons.location_city,
+                        title: "City",
+                        subtitle: displayUser.location!["city"],
                         onTap: () {},
                         primaryColor: primaryColor,
                       ),
@@ -207,20 +252,4 @@ class ProfileDetailsScreen extends StatelessWidget {
           : null,
     );
   }
-}
-
-class User {
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String? phone;
-  final String profileImage;
-
-  User({
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    this.phone,
-    required this.profileImage,
-  });
 }

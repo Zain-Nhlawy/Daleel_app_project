@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:daleel_app_project/controllers/notification_controller.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
       // sendTokenToServer(newToken);
-        notificationService.getToken(token!);
+      notificationService.getToken(token!);
     });
   }
 
@@ -295,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: apartments.length,
+                      itemCount: nearApartments.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(
