@@ -1,4 +1,3 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import '../core/network/dio_client.dart';
 
 class NotificationService {
@@ -18,18 +17,5 @@ class NotificationService {
     }
   }
 
-  Future<void> saveTokenIfChanged(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    final savedToken = prefs.getString('fcm_token');
 
-    if (savedToken == token) {
-      return;
-    }
-
-    final success = await saveToken(token);
-
-    if (success) {
-      await prefs.setString('fcm_token', token);
-    }
-  }
 }
