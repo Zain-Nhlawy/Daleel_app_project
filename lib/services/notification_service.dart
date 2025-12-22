@@ -5,20 +5,17 @@ class NotificationService {
 
   NotificationService({required this.apiClient});
 
-  Future<String?> getToken(String token) async {
+  Future<bool> saveToken(String token) async {
     try {
       final response = await apiClient.dio.post(
         'auth/save-fcm-token',
-        data: {'fcm-token': token},
+        data: {'fcm_token': token},
       );
-      if (response.statusCode == 201) {
-        final data = response.data['data'];
-        return data;
-      } else
-        print("error");
+      return response.statusCode == 200 || response.statusCode == 201;
     } catch (e) {
-      print(e);
+      return false;
     }
-    return null;
   }
+
+
 }

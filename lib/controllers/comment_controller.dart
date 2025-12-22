@@ -4,7 +4,7 @@ import '../services/comment_service.dart';
 
 class CommentController extends ChangeNotifier {
   final CommentService commentService;
-  
+
   CommentController({required this.commentService});
 
   List<Comment> _comments = [];
@@ -22,9 +22,7 @@ class CommentController extends ChangeNotifier {
       if (responseComments != null) {
         _comments = responseComments;
       }
-    } catch (e) {
-      print("Error fetching comments: $e");
-    }
+    } catch (e) {}
 
     _isLoading = false;
     notifyListeners();
@@ -42,9 +40,7 @@ class CommentController extends ChangeNotifier {
         _comments.add(newComment);
         notifyListeners();
       }
-    } catch (e) {
-      print("Error adding comment: $e");
-    }
+    } catch (e) {}
 
     _isLoading = false;
     notifyListeners();

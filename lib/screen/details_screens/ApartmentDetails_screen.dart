@@ -72,7 +72,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
         });
       }
     } catch (e) {
-      print("Error fetching favorite status in details: $e");
       if (mounted) {
         setState(() {
           _isFavoriteLoading = false;
@@ -190,9 +189,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                               apartment.id,
                               content,
                             );
-                          } catch (e) {
-                            print("Failed to add comment: $e");
-                          }
+                          } catch (e) {}
                           await commentController.fetchComments(apartment.id);
                           if (!mounted) return;
                           setState(() {

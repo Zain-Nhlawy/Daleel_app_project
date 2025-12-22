@@ -19,9 +19,7 @@ class ApartmentController {
         _apartment = fetchedApartment;
         return _apartment;
       }
-    } catch (e) {
-      print('Error in fetchApartment: $e');
-    }
+    } catch (e) {}
     return null;
   }
 

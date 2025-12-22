@@ -42,13 +42,10 @@ class _SignUpScreenState extends State<SignUpScreen>
       duration: const Duration(milliseconds: 400),
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 1),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOut,
-    ));
+    _slideAnimation = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+        .animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+        );
 
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() => showCard = true);
@@ -63,8 +60,9 @@ class _SignUpScreenState extends State<SignUpScreen>
   }
 
   void _showError(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(msg), backgroundColor: Colors.red));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(msg), backgroundColor: Colors.red));
   }
 
   Future<void> _pickDate() async {
@@ -131,7 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen>
     }
     if (selectedLocation == null) {
       _showError("Please select location");
-      return  false;
+      return false;
     }
 
     try {
@@ -148,24 +146,21 @@ class _SignUpScreenState extends State<SignUpScreen>
       );
 
       if (user != null) {
-      print("ACCOUNT CREATED: ${user.firstName} ${user.lastName}");
-      return true; 
-    } else {
-      _showError(AppLocalizations.of(context)!.registrationFailed);
+        return true;
+      } else {
+        _showError(AppLocalizations.of(context)!.registrationFailed);
+        return false;
+      }
+    } catch (e) {
+      _showError("Error during registration: $e");
       return false;
     }
-  } catch (e) {
-    _showError("Error during registration: $e");
-    return false;
   }
-}
 
   void _pickLocation() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => const PickLocationScreen(),
-      ),
+      MaterialPageRoute(builder: (_) => const PickLocationScreen()),
     );
 
     if (result != null && result is Map) {
@@ -184,8 +179,10 @@ class _SignUpScreenState extends State<SignUpScreen>
       body: Stack(
         children: [
           Positioned.fill(
-            child:
-                Image.asset("assets/images/Background.jpg", fit: BoxFit.cover),
+            child: Image.asset(
+              "assets/images/Background.jpg",
+              fit: BoxFit.cover,
+            ),
           ),
           const SafeArea(
             child: Padding(
@@ -238,8 +235,10 @@ class _SignUpScreenState extends State<SignUpScreen>
                       child: Row(
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.arrow_back,
-                                color: Colors.brown),
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.brown,
+                            ),
                             onPressed: _backToPage1,
                           ),
                           const SizedBox(width: 8),

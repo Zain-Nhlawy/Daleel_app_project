@@ -12,8 +12,7 @@ class PickLocationScreen extends StatefulWidget {
 }
 
 class _PickLocationScreenState extends State<PickLocationScreen> {
-  
-  final LatLng _center = LatLng(33.5138, 36.2765); 
+  final LatLng _center = LatLng(33.5138, 36.2765);
   final double _zoom = 9.0;
 
   LatLng? _selectedLatLng;
@@ -58,7 +57,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
               interactiveFlags: InteractiveFlag.all,
               onTap: (tapPosition, point) async {
                 setState(() {
-                  _selectedLatLng = point; 
+                  _selectedLatLng = point;
                 });
                 if (mounted) await _getAddressFromLatLng(point);
               },
@@ -94,7 +93,10 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "$governorate - $city - $district - $street",
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -116,7 +118,6 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                 };
 
                 Navigator.pop(context, location);
-
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.brown,
@@ -145,20 +146,19 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
             'User-Agent': 'MyFlutterApp/1.0 (myemail@gmail.com)',
             'Accept': 'application/json',
           },
-
         ),
       );
       final data = response.data['address'] ?? {};
-      if (!mounted) return; 
+      if (!mounted) return;
       setState(() {
         governorate = data['state'] ?? "Damascus Governorate";
         city = data['city'] ?? data['county'] ?? "Unknown city :(";
-        district = data['suburb'] ?? data['neighbourhood'] ?? "Unknown district :(";
+        district =
+            data['suburb'] ?? data['neighbourhood'] ?? "Unknown district :(";
         street = data['road'] ?? "Unknown street :(";
       });
     } catch (e) {
       if (!mounted) return;
-      print("No internet connection or API error: $e");
     }
   }
 }

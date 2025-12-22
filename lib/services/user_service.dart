@@ -14,97 +14,66 @@ class UserService {
     try {
       final response = await apiClient.dio.post(
         'auth/login',
-        data: {
-          'phone': phone,
-          'password': password,
-        },
+        data: {'phone': phone, 'password': password},
       );
 
       if (response.statusCode == 200) {
-        final data = response.data['data']; 
-        final token = data['token'];    
-        final user = User.fromJson(data['user'],token: token,);
+        final data = response.data['data'];
+        final token = data['token'];
+        final user = User.fromJson(data['user'], token: token);
         await storage.write(StorageKeys.token, token);
-        print('Token received from server: $token');
         return user;
       }
-      print('Response data: ${response.data}');
-    } catch (e) {
-      print('Login error: $e');
-    }
+    } catch (e) {}
     return null;
   }
 
+  Future<User?> register(FormData formData) async {
+    try {
+      final response = await apiClient.dio.post(
+        'auth/register',
+        data: formData,
+      );
 
-Future<User?> register(FormData formData) async {
-  try {
-    final response = await apiClient.dio.post(
-      'auth/register',
-      data: formData,
-    );
-    print('Response data: ${response.data}');
-
-    if (response.statusCode == 200) {
-      final data = response.data['data'];
-      final token = data['token'];
-      final user = User.fromJson(data['user'], token: token);
-      await storage.write(StorageKeys.token, token);
-      return user;
-    }
-    print('Response data: ${response.data}');
-  } on DioException catch (e) {
-    print('Register DioException: $e');
-    if (e.response != null) {
-      print('Status code: ${e.response!.statusCode}');
-      print('Data: ${e.response!.data}');
-    } else {
-      print('No response received');
-    }
-  } catch (e) {
-    print('Other error: $e');
+      if (response.statusCode == 200) {
+        final data = response.data['data'];
+        final token = data['token'];
+        final user = User.fromJson(data['user'], token: token);
+        await storage.write(StorageKeys.token, token);
+        return user;
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+      } else {}
+    } catch (e) {}
+    return null;
   }
-  return null;
-}
 
+  Future<User?> getProfile() async {
+    try {
+      final response = await apiClient.dio.get('auth/me');
 
-
-Future<User?> getProfile() async {
-  try {
-    final response = await apiClient.dio.get('auth/me');
-
-    if (response.statusCode == 200) {
-      final data = response.data['data'];
-      final token = await storage.read(StorageKeys.token);
-      return User.fromJson(data, token: token);
-    }
-  } catch (e) {
-    print('GetProfile error: $e');
+      if (response.statusCode == 200) {
+        final data = response.data['data'];
+        final token = await storage.read(StorageKeys.token);
+        return User.fromJson(data, token: token);
+      }
+    } catch (e) {}
+    return null;
   }
-  return null;
-}
-
-
-
 
   Future<bool> logout() async {
-  try {
-    final token = await storage.read(StorageKeys.token);
-    if (token == null) {
-      return false;
-    }
-    else{
-      print('🔹 Token found: $token');
-    }
-    final response = await apiClient.dio.post('auth/logout');
-    if (response.statusCode == 200) {
-      await storage.delete(StorageKeys.token);
-      return true;
-    }
-  } catch (e) {
-    print('Logout error: $e');
+    try {
+      final token = await storage.read(StorageKeys.token);
+      if (token == null) {
+        return false;
+      } else {}
+      final response = await apiClient.dio.post('auth/logout');
+      if (response.statusCode == 200) {
+        await storage.delete(StorageKeys.token);
+        return true;
+      }
+    } catch (e) {}
+    return false;
   }
-  return false;
-  }
-
-
 }

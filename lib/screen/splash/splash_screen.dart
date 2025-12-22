@@ -1,9 +1,7 @@
-
 import 'package:daleel_app_project/screen/splash/welcomeCardScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:audioplayers/audioplayers.dart';
-
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,7 +9,9 @@ class SplashScreen extends StatefulWidget {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   final player = AudioPlayer();
   late final AnimationController _controller;
 
@@ -19,7 +19,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
-
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Navigator.pushReplacement(
@@ -44,8 +43,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               onLoaded: (composition) {
                 player.play(AssetSource("sounds/splashSounds.mp3"));
                 _controller
-                ..duration = composition.duration
-                ..forward();
+                  ..duration = composition.duration
+                  ..forward();
               },
             ),
           ),

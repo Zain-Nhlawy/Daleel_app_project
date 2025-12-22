@@ -103,7 +103,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       _showErrorDialog(
         AppLocalizations.of(context)!.failedToAddApartmentPleaseTryAgain,
       );
-      print(e);
     }
   }
 
@@ -121,7 +120,9 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           ),
         ),
         content: Text(
-          AppLocalizations.of(context)!.requestSubmittedYourApartmentIsNowPendingAdminApproval,
+          AppLocalizations.of(
+            context,
+          )!.requestSubmittedYourApartmentIsNowPendingAdminApproval,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 16),
         ),

@@ -42,7 +42,6 @@ class _MostPopularApartmentsWidgetState
         });
       }
     } catch (e) {
-      print("Error fetching favorite status: $e");
       if (mounted) {
         setState(() {
           _isLoading = false;

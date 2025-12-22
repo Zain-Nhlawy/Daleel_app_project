@@ -1,5 +1,6 @@
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/login_screen.dart';
+import 'package:daleel_app_project/screen/profile_screens/contract_history_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/my_houses_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/profile_details_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/favorite_apartments_screen.dart';
@@ -10,11 +11,9 @@ class ProfileOptions extends StatelessWidget {
   const ProfileOptions({super.key});
 
   void _setFavoriteScreen(context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => FavoriteApartmentsScreen()
-      ),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (ctx) => FavoriteApartmentsScreen()));
   }
 
   void _logout(BuildContext context) async {
@@ -110,7 +109,14 @@ class ProfileOptions extends StatelessWidget {
                 Icons.keyboard_arrow_right_outlined,
                 color: Colors.black,
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContractHistoryScreen(),
+                  ),
+                );
+              },
             ),
           ),
 
