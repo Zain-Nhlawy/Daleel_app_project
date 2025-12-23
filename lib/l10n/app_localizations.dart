@@ -764,11 +764,11 @@ abstract class AppLocalizations {
   /// **'...'**
   String get points;
 
-  /// No description provided for @myMessages.
+  /// No description provided for @myChats.
   ///
   /// In en, this message translates to:
-  /// **'My Messages'**
-  String get myMessages;
+  /// **'My Chats'**
+  String get myChats;
 
   /// No description provided for @noChatsYetExplorePropertiesToContactOwners.
   ///

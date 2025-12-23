@@ -67,11 +67,11 @@ void main() async {
   await dotenv.load(fileName: ".env");
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  
+
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   final token = await appStorage.read(StorageKeys.token);
-  if(token != null) {
+  if (token != null) {
     userController.updateProfile(await userService.getProfile());
   }
 
