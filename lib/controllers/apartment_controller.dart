@@ -62,4 +62,35 @@ class ApartmentController {
       rethrow;
     }
   }
+
+  // In your ApartmentController
+
+Future<List<Apartments2>?> loadFilteredApartments({
+  String? governorate, // Changed to nullable
+  int? bedrooms,      // Changed to nullable
+  int? bathrooms,     // Changed to nullable
+  double? minArea,   // Changed to nullable
+  double? maxArea,   // Changed to nullable
+  double? minPrice,  // Changed to nullable
+  double? maxPrice,   // Changed to nullable
+}) async {
+  try {
+    // Pass the nullable values down to the service
+    final apartments = await apartmentService.getFilteredApartments(
+      governorate: governorate,
+      bedrooms: bedrooms,
+      bathrooms: bathrooms,
+      minArea: minArea,
+      maxArea: maxArea,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+    );
+    _favouriteApartments = apartments; // Assuming this is correct
+    return _favouriteApartments;
+  } catch (e) {
+    print("Error in controller: $e");
+    rethrow;
+  }
+}
+
 }

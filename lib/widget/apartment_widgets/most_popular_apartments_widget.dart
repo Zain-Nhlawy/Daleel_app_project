@@ -17,42 +17,12 @@ class MostPopularApartmentsWidget extends StatefulWidget {
 
 class _MostPopularApartmentsWidgetState
     extends State<MostPopularApartmentsWidget> {
-  bool _isFavorited = false;
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _fetchInitialFavoriteStatus();
-  }
-
-  void _fetchInitialFavoriteStatus() async {
-    final apartmentService = ApartmentService(
-      apiClient: DioClient(storage: AppSecureStorage()),
-    );
-    try {
-      final bool? result = await apartmentService.isFavourite(
-        widget.apartment.id,
-      );
-      if (mounted) {
-        setState(() {
-          _isFavorited = result ?? false;
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
+  late bool? _isFavorited = widget.apartment.isFavorited;
+  final bool _isLoading = false;
 
   void _handleFavoriteToggle() async {
     setState(() {
-      _isFavorited = !_isFavorited;
+      _isFavorited = !_isFavorited!;
     });
 
     final apartmentService = ApartmentService(
@@ -64,13 +34,13 @@ class _MostPopularApartmentsWidgetState
       );
       if (!success && mounted) {
         setState(() {
-          _isFavorited = !_isFavorited;
+          _isFavorited = !_isFavorited!;
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _isFavorited = !_isFavorited;
+          _isFavorited = !_isFavorited!;
         });
       }
     }
@@ -156,10 +126,10 @@ class _MostPopularApartmentsWidgetState
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             icon: Icon(
-                              _isFavorited
+                              _isFavorited!
                                   ? Icons.favorite
                                   : Icons.favorite_border,
-                              color: _isFavorited ? Colors.red : Colors.white,
+                              color: _isFavorited! ? Colors.red : Colors.white,
                               size: 22,
                             ),
                             onPressed: _handleFavoriteToggle,

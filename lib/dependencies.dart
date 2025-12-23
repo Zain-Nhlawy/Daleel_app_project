@@ -42,4 +42,4 @@ final NotificationService notificationService = NotificationService(
   apiClient: dioClient,
 );
 
-final String baseUrl = "http://192.168.2.110:8000";
+final String baseUrl = "http://10.0.2.2:8000";
