@@ -85,7 +85,7 @@ void main() async {
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   runApp(
     MaterialApp(
-      supportedLocales: const [Locale('en'), Locale('ar')],
+      supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
