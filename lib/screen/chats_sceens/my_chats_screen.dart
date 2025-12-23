@@ -16,7 +16,7 @@ class MyChatsScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          AppLocalizations.of(context)!.myMessages,
+          AppLocalizations.of(context)!.myChats,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -64,7 +64,9 @@ class MyChatsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        AppLocalizations.of(context)!.noChatsYetExplorePropertiesToContactOwners,
+                        AppLocalizations.of(
+                          context,
+                        )!.noChatsYetExplorePropertiesToContactOwners,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.8),

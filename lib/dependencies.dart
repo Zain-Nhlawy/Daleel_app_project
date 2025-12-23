@@ -9,6 +9,7 @@ import 'core/storage/secure_storage.dart';
 import 'core/network/dio_client.dart';
 import 'services/user_service.dart';
 import 'controllers/user_controller.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final AppSecureStorage appStorage = AppSecureStorage();
 final DioClient dioClient = DioClient(storage: appStorage);
@@ -42,4 +43,5 @@ final NotificationService notificationService = NotificationService(
   apiClient: dioClient,
 );
 
-final String baseUrl = "http://10.0.2.2:8000";
+final String baseUrl = dotenv.env['BASE_URL'] ?? '';
+

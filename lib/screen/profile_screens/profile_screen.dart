@@ -94,7 +94,9 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'zainzoon59@gmail.com',
+                              user != null 
+                                  ?  user.email 
+                                  : 'zainzoon59@gmail.com',
                               style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(color: Colors.grey[600]),
                               maxLines: 1,

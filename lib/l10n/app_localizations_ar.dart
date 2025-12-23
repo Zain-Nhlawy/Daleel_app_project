@@ -351,7 +351,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get points => '...';
 
   @override
-  String get myMessages => 'رسائلي';
+  String get myChats => 'My Chats';
 
   @override
   String get noChatsYetExplorePropertiesToContactOwners =>

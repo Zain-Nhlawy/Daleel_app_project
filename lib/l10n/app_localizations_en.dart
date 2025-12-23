@@ -352,7 +352,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get points => '...';
 
   @override
-  String get myMessages => 'My Messages';
+  String get myChats => 'My Chats';
 
   @override
   String get noChatsYetExplorePropertiesToContactOwners =>
