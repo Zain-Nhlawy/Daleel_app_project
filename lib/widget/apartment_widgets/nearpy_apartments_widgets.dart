@@ -198,7 +198,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                           ],
                         ),
                         Text(
-                          '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.month}',
+                          '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: primaryColor,
