@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/screen/splash/welcomeCardScreen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
@@ -5,25 +6,22 @@ import 'package:lottie/lottie.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key, required this.isLoggedIn});
-  final isLoggedIn;
+  const SplashScreen({super.key});
   @override
-  State<SplashScreen> createState() => _SplashScreenState(isLoggedIn: isLoggedIn);
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  _SplashScreenState({required this.isLoggedIn});
   final player = AudioPlayer();
-  late final AnimationController _controller;
-  final isLoggedIn;
+  late final AnimationController _controller;  
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        if (isLoggedIn){
+        if (userController.isLoggedIn){
           Navigator.pushReplacement(
             context,
             PageRouteBuilder(

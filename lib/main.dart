@@ -72,7 +72,7 @@ void main() async {
 
   final token = await appStorage.read(StorageKeys.token);
   if(token != null) {
-    await userService.getProfile();
+    userController.updateProfile(await userService.getProfile());
   }
 
   const AndroidInitializationSettings initializationSettingsAndroid =
@@ -92,10 +92,10 @@ void main() async {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      locale: Locale('en'),
+      locale: Locale(StorageKeys.language),
       debugShowCheckedModeBanner: false,
       theme: theme,
-      home: SplashScreen(isLoggedIn: token != null),
+      home: SplashScreen(),
     ),
   );
 }
