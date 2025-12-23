@@ -15,7 +15,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get signUp => 'إنشاء حساب';
 
   @override
-  String get dontHaveAnAccount => 'ليس لديك حساب؟';
+  String get dontHaveAnAccount => 'لا تملك حسابًا؟';
 
   @override
   String get password => 'كلمة المرور';
@@ -27,7 +27,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get welcomeBack => 'مرحبًا بعودتك!';
 
   @override
-  String get pleaseFillAllFields => 'يرجى تعبئة جميع الحقول.';
+  String get pleaseFillAllFields => 'يرجى ملء جميع الحقول.';
 
   @override
   String get loginFailedCheckYourCredentials =>
@@ -45,20 +45,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pleaseSelectStartAndEndDates =>
-      'يرجى اختيار تاريخي البداية والنهاية';
+      'يرجى تحديد تاريخي البدء والانتهاء';
 
   @override
   String get bookingSuccessful => 'تم الحجز بنجاح';
 
   @override
   String get bookingPeriodUnavailable =>
-      'فشل الحجز. هذه الشقة محجوزة بالفعل خلال الفترة المحددة';
+      'فشل الحجز، هذه الشقة مؤجرة بالفعل خلال الفترة المحددة';
 
   @override
-  String get start => 'بداية';
+  String get start => 'البداية';
 
   @override
-  String get end => 'نهاية';
+  String get end => 'النهاية';
 
   @override
   String get bookingDetails => 'تفاصيل الحجز';
@@ -76,7 +76,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get to => 'إلى';
 
   @override
-  String get processing => 'جارٍ المعالجة...';
+  String get processing => 'جاري المعالجة...';
 
   @override
   String get confirmBooking => 'تأكيد الحجز';
@@ -113,7 +113,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dateOfBirth => 'تاريخ الميلاد';
 
   @override
-  String get profileImage => 'الصورة الشخصية';
+  String get profileImage => 'صورة الملف الشخصي';
 
   @override
   String get iDImage => 'صورة الهوية';
@@ -138,7 +138,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get intro =>
-      'حيث تلتقي الراحة بالثقة في كل اختيار للإيجار.\nدليل – نساعدك على العثور على منزلك بسهولة ودون عناء.';
+      'حيث يلتقي الراحة بالثقة في كل اختيار للإيجار.\nدليل – نساعدك على إيجاد منزلك بكل سهولة.';
 
   @override
   String get profileDetails => 'تفاصيل الملف الشخصي';
@@ -159,7 +159,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get logout => 'تسجيل الخروج';
 
   @override
-  String get renter => 'مؤجر';
+  String get renter => 'مؤجِّر';
 
   @override
   String get tenant => 'مستأجر';
@@ -192,7 +192,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get showLess => 'عرض أقل';
 
   @override
-  String get addAComment => 'أضف تعليقًا...';
+  String get addAComment => 'أضف تعليقًا';
 
   @override
   String get send => 'إرسال';
@@ -241,7 +241,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pleaseFillAllRequiredFieldsSelectALocationAndAddAHeadImage =>
-      'يرجى تعبئة جميع الحقول المطلوبة، اختيار الموقع، وإضافة صورة رئيسية.';
+      'يرجى ملء جميع الحقول المطلوبة، واختيار الموقع، وإضافة صورة رئيسية.';
 
   @override
   String get failedToAddApartmentPleaseTryAgain =>
@@ -272,7 +272,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get morePictures => 'صور إضافية';
 
   @override
-  String get tellUsMoreAboutYourPlace => 'أخبرنا المزيد عن مكانك...';
+  String get tellUsMoreAboutYourPlace => 'أخبرنا المزيد عن مكانك';
 
   @override
   String get tapToAddMainImage => 'اضغط لإضافة الصورة الرئيسية';
@@ -296,10 +296,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectApartmentLocation => 'اختر موقع الشقة';
 
   @override
-  String get availableForRent => 'متاح للإيجار';
+  String get availableForRent => 'متاحة للإيجار';
 
   @override
-  String get success => 'نجاح';
+  String get success => 'تم بنجاح';
 
   @override
   String get titleegModernVilla => 'العنوان (مثال: فيلا عصرية)';
@@ -308,10 +308,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get myContracts => 'عقودي';
 
   @override
-  String get noContractsFound => 'لا توجد عقود';
+  String get noContractsFound => 'لم يتم العثور على عقود';
 
   @override
-  String get noApartmentsFound => 'لا توجد شقق';
+  String get noApartmentsFound => 'لم يتم العثور على شقق';
 
   @override
   String get fullName => 'الاسم الكامل';
@@ -335,12 +335,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get seeAll => 'عرض الكل';
 
   @override
-  String get closeToYou => 'بالقرب منك';
+  String get closeToYou => 'قريب منك';
 
   @override
-  String get area => 'المساحة';
+  String get area => 'المنطقة';
 
   @override
   String get requestSubmittedYourApartmentIsNowPendingAdminApproval =>
-      'تم تقديم الطلب!\nشقتك الآن قيد انتظار موافقة الإدارة.';
+      'تم إرسال الطلب!\nشقتك الآن قيد مراجعة الإدارة.';
+
+  @override
+  String get sayHi => 'قل مرحبًا!';
+
+  @override
+  String get points => '...';
+
+  @override
+  String get myMessages => 'رسائلي';
+
+  @override
+  String get noChatsYetExplorePropertiesToContactOwners =>
+      'لا توجد محادثات بعد.\nاستكشف العقارات للتواصل مع المالكين!';
+
+  @override
+  String get typeAMessage => 'اكتب رسالة';
 }

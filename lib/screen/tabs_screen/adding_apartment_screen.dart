@@ -267,7 +267,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                 ),
                 _buildTextField(
                   _apartmetnDescriptionController,
-                  AppLocalizations.of(context)!.tellUsMoreAboutYourPlace,
+                  "${AppLocalizations.of(context)!.tellUsMoreAboutYourPlace}${AppLocalizations.of(context)!.points}",
                   Icons.description,
                   maxLines: 4,
                 ),
