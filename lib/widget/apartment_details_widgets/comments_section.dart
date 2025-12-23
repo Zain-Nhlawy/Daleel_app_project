@@ -69,7 +69,7 @@ class CommentsSection extends StatelessWidget {
               child: CustomTextField(
                 controller: controller,
                 label: "",
-                hint: AppLocalizations.of(context)!.addAComment,
+                hint: "${AppLocalizations.of(context)!.addAComment}${AppLocalizations.of(context)!.points}",
                 icon: Icons.comment,
                 readOnly: false,
                 borderColor: Colors.brown,

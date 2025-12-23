@@ -58,7 +58,7 @@
   "noCommentsYet": "No Comments Yet",
   "showMore": "Show More",
   "showLess": "Show Less",
-  "addAComment": "Add a comment...",
+  "addAComment": "Add a comment",
   "send": "Send",
   "description": "Description",
   "contactUs": "Contact Us",
@@ -84,7 +84,7 @@
   "price": "Price",
   "features": "Features",
   "morePictures": "More Pictures",
-  "tellUsMoreAboutYourPlace": "Tell us more about your place...",
+  "tellUsMoreAboutYourPlace": "Tell us more about your place",
   "tapToAddMainImage": "Tap to add main image",
   "thisFieldCannotBeEmpty": "This field cannot be empty",
   "bathrooms": "Bathrooms",
@@ -107,5 +107,10 @@
   "seeAll": "See All",
   "closeToYou": "Close To You",
   "area": "Area",
-  "requestSubmittedYourApartmentIsNowPendingAdminApproval": "Request Submitted!\nYour apartment is now pending admin approval."
+  "requestSubmittedYourApartmentIsNowPendingAdminApproval": "Request Submitted!\nYour apartment is now pending admin approval.",
+  "sayHi": "Say hi!",
+  "points": "...",
+  "myMessages": "My Messages",
+  "noChatsYetExplorePropertiesToContactOwners": "No chats yet.\nExplore properties to contact owners!",
+  "typeAMessage": "Type a message"
 }

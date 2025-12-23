@@ -192,7 +192,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showLess => 'Show Less';
 
   @override
-  String get addAComment => 'Add a comment...';
+  String get addAComment => 'Add a comment';
 
   @override
   String get send => 'Send';
@@ -273,7 +273,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get morePictures => 'More Pictures';
 
   @override
-  String get tellUsMoreAboutYourPlace => 'Tell us more about your place...';
+  String get tellUsMoreAboutYourPlace => 'Tell us more about your place';
 
   @override
   String get tapToAddMainImage => 'Tap to add main image';
@@ -344,4 +344,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get requestSubmittedYourApartmentIsNowPendingAdminApproval =>
       'Request Submitted!\nYour apartment is now pending admin approval.';
+
+  @override
+  String get sayHi => 'Say hi!';
+
+  @override
+  String get points => '...';
+
+  @override
+  String get myMessages => 'My Messages';
+
+  @override
+  String get noChatsYetExplorePropertiesToContactOwners =>
+      'No chats yet.\nExplore properties to contact owners!';
+
+  @override
+  String get typeAMessage => 'Type a message';
 }

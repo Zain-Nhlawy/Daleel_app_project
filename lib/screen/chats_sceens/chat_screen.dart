@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -135,10 +136,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Text(
-                          "Say hi!",
-                          style: TextStyle(color: Colors.white70),
+                          AppLocalizations.of(context)!.sayHi,
+                          style: const TextStyle(color: Colors.white70),
                         ),
                       );
                     }
@@ -221,10 +222,10 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 controller: _controller,
-                decoration: const InputDecoration(
-                  hintText: "Type a message...",
+                decoration: InputDecoration(
+                  hintText: "${AppLocalizations.of(context)!.typeAMessage}${AppLocalizations.of(context)!.points}",
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 14),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
                 ),
               ),
             ),

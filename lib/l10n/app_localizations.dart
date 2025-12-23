@@ -455,7 +455,7 @@ abstract class AppLocalizations {
   /// No description provided for @addAComment.
   ///
   /// In en, this message translates to:
-  /// **'Add a comment...'**
+  /// **'Add a comment'**
   String get addAComment;
 
   /// No description provided for @send.
@@ -611,7 +611,7 @@ abstract class AppLocalizations {
   /// No description provided for @tellUsMoreAboutYourPlace.
   ///
   /// In en, this message translates to:
-  /// **'Tell us more about your place...'**
+  /// **'Tell us more about your place'**
   String get tellUsMoreAboutYourPlace;
 
   /// No description provided for @tapToAddMainImage.
@@ -751,6 +751,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Request Submitted!\nYour apartment is now pending admin approval.'**
   String get requestSubmittedYourApartmentIsNowPendingAdminApproval;
+
+  /// No description provided for @sayHi.
+  ///
+  /// In en, this message translates to:
+  /// **'Say hi!'**
+  String get sayHi;
+
+  /// No description provided for @points.
+  ///
+  /// In en, this message translates to:
+  /// **'...'**
+  String get points;
+
+  /// No description provided for @myMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'My Messages'**
+  String get myMessages;
+
+  /// No description provided for @noChatsYetExplorePropertiesToContactOwners.
+  ///
+  /// In en, this message translates to:
+  /// **'No chats yet.\nExplore properties to contact owners!'**
+  String get noChatsYetExplorePropertiesToContactOwners;
+
+  /// No description provided for @typeAMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message'**
+  String get typeAMessage;
 }
 
 class _AppLocalizationsDelegate
