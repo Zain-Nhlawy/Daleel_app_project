@@ -1,3 +1,6 @@
+import 'package:daleel_app_project/core/storage/storage_keys.dart';
+import 'package:daleel_app_project/dependencies.dart';
+
 import 'l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
@@ -60,8 +63,13 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  final token = await appStorage.read(StorageKeys.token);
+  if(token != null) {
+    await userService.getProfile();
+  }
 
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -83,7 +91,7 @@ void main() async {
       locale: Locale('en'),
       debugShowCheckedModeBanner: false,
       theme: theme,
-      home: SplashScreen(),
+      home: SplashScreen(isLoggedIn: token != null),
     ),
   );
 }

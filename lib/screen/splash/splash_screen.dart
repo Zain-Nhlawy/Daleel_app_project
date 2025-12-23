@@ -1,30 +1,43 @@
 import 'package:daleel_app_project/screen/splash/welcomeCardScreen.dart';
+import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
+  const SplashScreen({super.key, required this.isLoggedIn});
+  final isLoggedIn;
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState(isLoggedIn: isLoggedIn);
 }
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
+  _SplashScreenState({required this.isLoggedIn});
   final player = AudioPlayer();
   late final AnimationController _controller;
-
+  final isLoggedIn;
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const WelcomeCardScreen()),
-        );
+        if (isLoggedIn){
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, anim1, anim2) => HomeScreenTabs(),
+              transitionDuration: const Duration(seconds: 1),
+            ),
+          );
+        }
+        else { 
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => WelcomeCardScreen())
+          );
+        }
       }
     });
   }
