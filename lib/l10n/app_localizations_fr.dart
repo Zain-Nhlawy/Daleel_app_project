@@ -38,8 +38,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Impossible de sélectionner des dates passées';
 
   @override
-  String get userDataNotAvailable =>
-      'Les données utilisateur ne sont pas disponibles';
+  String get userDataNotAvailable => 'Données utilisateur non disponibles';
 
   @override
   String get yourAccountIsNotAllowedToMakeBookings =>
@@ -78,7 +77,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get to => 'À';
 
   @override
-  String get processing => 'Traitement...';
+  String get processing => 'Traitement en cours...';
 
   @override
   String get confirmBooking => 'Confirmer la réservation';
@@ -91,7 +90,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pleaseSelectProfileAndIDImages =>
-      'Veuillez sélectionner une photo de profil et une pièce d\'identité';
+      'Veuillez sélectionner une image de profil et une image d\'identité';
 
   @override
   String get pleaseSelectLocation => 'Veuillez sélectionner un emplacement';
@@ -140,13 +139,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get intro =>
-      'Là où le confort rencontre la confiance dans chaque choix de location.\nDaleel – pour trouver votre chez-vous, sans tracas.';
+      'Là où le confort rencontre la confiance dans chaque choix de location.\nDaleel – vous aide à trouver un logement, sans tracas.';
 
   @override
   String get profileDetails => 'Détails du profil';
 
   @override
-  String get myHouses => 'Mes maisons';
+  String get myHouses => 'Mes logements';
 
   @override
   String get contractsHistory => 'Historique des contrats';
@@ -158,7 +157,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settings => 'Paramètres';
 
   @override
-  String get logout => 'Se déconnecter';
+  String get logout => 'Déconnexion';
 
   @override
   String get renter => 'Propriétaire';
@@ -212,7 +211,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bookNow => 'Réserver maintenant';
 
   @override
-  String get updateBooking => 'Update Booking';
+  String get updateBooking => 'Mettre à jour la réservation';
 
   @override
   String get contractDetails => 'Détails du contrat';
@@ -221,7 +220,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rentFee => 'Loyer';
 
   @override
-  String get contractPeriod => 'Période du contrat';
+  String get contractPeriod => 'Durée du contrat';
 
   @override
   String get startDate => 'Date de début';
@@ -230,7 +229,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get endDate => 'Date de fin';
 
   @override
-  String get partiesInvolved => 'Parties impliquées';
+  String get partiesInvolved => 'Parties concernées';
 
   @override
   String get viewApartmentDetails => 'Voir les détails de l\'appartement';
@@ -282,7 +281,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Parlez-nous davantage de votre logement';
 
   @override
-  String get tapToAddMainImage => 'Appuyez pour ajouter l\'image principale';
+  String get tapToAddMainImage => 'Appuyez pour ajouter une image principale';
 
   @override
   String get thisFieldCannotBeEmpty => 'Ce champ ne peut pas être vide';
@@ -325,7 +324,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get fullName => 'Nom complet';
 
   @override
-  String get email => 'E-mail';
+  String get email => 'Email';
 
   @override
   String get editProfile => 'Modifier le profil';
@@ -343,49 +342,49 @@ class AppLocalizationsFr extends AppLocalizations {
   String get seeAll => 'Voir tout';
 
   @override
-  String get closeToYou => 'Près de chez vous';
+  String get closeToYou => 'Près de vous';
 
   @override
   String get area => 'Zone';
 
   @override
   String get requestSubmittedYourApartmentIsNowPendingAdminApproval =>
-      'Demande envoyée !\nVotre appartement est maintenant en attente de validation par l\'administrateur.';
+      'Demande soumise !\nVotre appartement est en attente de l\'approbation de l\'administrateur.';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'Modifier';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'Annuler';
 
   @override
-  String get accept => 'Accept';
+  String get accept => 'Accepter';
 
   @override
-  String get reject => 'Reject';
+  String get reject => 'Refuser';
 
   @override
   String get updateRequestSentWaitingForApproval =>
-      'Your update request has been sent and is waiting for the owner\'s approval';
+      'Votre demande de mise à jour a été envoyée et attend l\'approbation du propriétaire';
 
   @override
-  String get contractUpdatedSuccessfully => 'Contract updated successfully';
+  String get contractUpdatedSuccessfully => 'Contrat mis à jour avec succès';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => 'Confirmer';
 
   @override
   String get confirmCancelContract =>
-      'Are you sure you want to cancel the contract?';
+      'Êtes-vous sûr de vouloir annuler le contrat ?';
 
   @override
-  String get no => 'No';
+  String get no => 'Non';
 
   @override
-  String get yes => 'Yes';
+  String get yes => 'Oui';
 
   @override
-  String get contractCancelled => 'Contract has been cancelled';
+  String get contractCancelled => 'Le contrat a été annulé';
 
   @override
   String get sayHi => 'Dites bonjour !';
@@ -417,4 +416,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get contractRejectedSuccessfully =>
       'Contract has been rejected successfully';
+
+  @override
+  String get favouriteRemoved => 'Favori supprimé';
+
+  @override
+  String get undo => 'Annuler';
+
+  @override
+  String get noApartmentsNearYou => 'Aucun appartement près de chez vous';
 }

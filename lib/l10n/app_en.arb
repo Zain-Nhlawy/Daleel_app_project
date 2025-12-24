@@ -128,5 +128,8 @@
   "contractApprovedSuccessfully": "The contract has been approved successfully",
   "approve": "Approve",
   "confirmRejectContract": "Are you sure you want to reject this contract?",
-  "contractRejectedSuccessfully": "Contract has been rejected successfully"
+  "contractRejectedSuccessfully": "Contract has been rejected successfully",
+  "favouriteRemoved": "favourite removed",
+  "undo": "Undo",
+  "noApartmentsNearYou": "no apartments near you"
 }

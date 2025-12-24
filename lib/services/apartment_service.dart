@@ -83,9 +83,9 @@ class ApartmentService {
     }
   }
 
-  Future<List<Apartments2>> getFavouriteApartments() async {
+  Future<List<Apartments2>> getFavouriteApartments(int page) async {
     try {
-      final response = await apiClient.dio.get("/auth/favorites/me");
+      final response = await apiClient.dio.get("/auth/favorites/me?page=$page");
       final data = response.data['data'] as List;
 
       return data.map((json) => Apartments2.fromJson(json)).toList();
@@ -93,17 +93,15 @@ class ApartmentService {
       rethrow;
     }
   }
-
- // In your ApartmentService
-
-Future<List<Apartments2>> getFilteredApartments({
+Future<List<Apartments2>> getFilteredApartments(int page, {
   String? governorate, 
   int? bedrooms,    
-  int? bathrooms,    
+  int? bathrooms,
   double? minArea,   
   double? maxArea,   
-  double? minPrice,  
-  double? maxPrice,  
+  double? minPrice,
+  double? maxPrice, 
+  String? sort
 }) async {
   try {
 
@@ -111,6 +109,9 @@ Future<List<Apartments2>> getFilteredApartments({
 
     if (governorate != null) {
       queryParameters['governorate'] = governorate;
+    }
+    if (sort != null) {
+      queryParameters['sort'] = sort;
     }
     if (bedrooms != null) {
       queryParameters['bedrooms'] = bedrooms;
@@ -130,8 +131,9 @@ Future<List<Apartments2>> getFilteredApartments({
     if (maxPrice != null) {
       queryParameters['max_price'] = maxPrice;
     }
+    queryParameters['page'] = page;
     final response = await apiClient.dio.get(
-      "/auth/departments",
+      "/auth/departments?with=images,user",
       queryParameters: queryParameters, 
     );
 
@@ -142,5 +144,18 @@ Future<List<Apartments2>> getFilteredApartments({
     rethrow;
   }
 }
+
+  Future<List<Apartments2>> getSearchedApartments(String search) async {
+    try {
+      final response = await apiClient.dio.get(
+        "/auth/departments?search=$search&with=images,user",
+      );
+      final data = response.data['data'] as List;
+
+      return data.map((json) => Apartments2.fromJson(json)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
 
 }

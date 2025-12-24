@@ -53,9 +53,9 @@ class ApartmentController {
   List<Apartments2>? _favouriteApartments;
   List<Apartments2>? get favouriteApartments => _favouriteApartments;
 
-  Future<List<Apartments2>?> loadFavouriteApartments() async {
+  Future<List<Apartments2>?> loadFavouriteApartments(int page) async {
     try {
-      final apartments = await apartmentService.getFavouriteApartments();
+      final apartments = await apartmentService.getFavouriteApartments(page);
       _favouriteApartments = apartments;
       return _favouriteApartments;
     } catch (e) {
@@ -63,20 +63,21 @@ class ApartmentController {
     }
   }
 
-  // In your ApartmentController
 
-Future<List<Apartments2>?> loadFilteredApartments({
-  String? governorate, // Changed to nullable
-  int? bedrooms,      // Changed to nullable
-  int? bathrooms,     // Changed to nullable
-  double? minArea,   // Changed to nullable
-  double? maxArea,   // Changed to nullable
-  double? minPrice,  // Changed to nullable
-  double? maxPrice,   // Changed to nullable
+
+Future<List<Apartments2>?> loadFilteredApartments(int page, {
+  String? governorate,
+  int? bedrooms,    
+  int? bathrooms,    
+  double? minArea, 
+  double? maxArea,   
+  double? minPrice, 
+  double? maxPrice,  
+  String? sort
 }) async {
   try {
-    // Pass the nullable values down to the service
     final apartments = await apartmentService.getFilteredApartments(
+      page,
       governorate: governorate,
       bedrooms: bedrooms,
       bathrooms: bathrooms,
@@ -84,13 +85,27 @@ Future<List<Apartments2>?> loadFilteredApartments({
       maxArea: maxArea,
       minPrice: minPrice,
       maxPrice: maxPrice,
+      sort: sort
     );
-    _favouriteApartments = apartments; // Assuming this is correct
+    _favouriteApartments = apartments;
     return _favouriteApartments;
   } catch (e) {
     print("Error in controller: $e");
     rethrow;
   }
 }
+
+List<Apartments2>? _searchedApartment;
+  List<Apartments2>? get searchedApartment => _searchedApartment;
+
+Future<List<Apartments2>?> loadSearchedApartments(String search) async {
+    try {
+      final searchedApartment = await apartmentService.getSearchedApartments(search);
+      _searchedApartment = searchedApartment;
+      return _searchedApartment;
+    } catch (e) {
+      rethrow;
+    }
+  }
 
 }
