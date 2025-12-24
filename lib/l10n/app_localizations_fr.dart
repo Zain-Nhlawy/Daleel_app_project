@@ -407,4 +407,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get undo => 'Annuler';
+
+  @override
+  String get noApartmentsNearYou => 'Aucun appartement près de chez vous';
 }

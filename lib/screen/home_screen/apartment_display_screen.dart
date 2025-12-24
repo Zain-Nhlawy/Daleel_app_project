@@ -28,12 +28,12 @@ class ApartmentsDisplayScreen extends StatefulWidget {
 
 class _ApartmentsDisplayScreenState extends State<ApartmentsDisplayScreen> {
   late Future<List<Apartments2>?> _myApartmentsFuture;
-
+  int page = 1;
   @override
   void initState() {
     super.initState();
 
-    _myApartmentsFuture = apartmentController.loadFilteredApartments(
+    _myApartmentsFuture = apartmentController.loadFilteredApartments(page,
       governorate: widget.selectedProvince,
       bedrooms: widget.selectedRooms,
       bathrooms: widget.selectedBathrooms,

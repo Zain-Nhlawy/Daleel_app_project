@@ -115,30 +115,41 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
 
     return ListView.builder(
       controller: _controller,
-      itemCount: _favoriteApartments.length,
+      itemCount: _favoriteApartments.length + 1,
       itemBuilder: (context, index) {
-        final apartment = _favoriteApartments[index];
-        return Dismissible(
-          key: ValueKey(apartment.id),
-          direction: DismissDirection.endToStart,
-          background: Container(
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.error.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(20),
+        if(index < _favoriteApartments.length) {
+          final apartment = _favoriteApartments[index];
+          return Dismissible(
+            key: ValueKey(apartment.id),
+            direction: DismissDirection.endToStart,
+            background: Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.error.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Icon(Icons.delete, color: Colors.white),
             ),
-            child: const Icon(Icons.delete, color: Colors.white),
-          ),
-          onDismissed: (_) {
-            _dismissApartment(apartment, index);
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            child: NearpyApartmentsWidgets(apartment: apartment),
-          ),
-        );
+            onDismissed: (_) {
+              _dismissApartment(apartment, index);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              child: NearpyApartmentsWidgets(apartment: apartment),
+            ),
+          );
+        }
+        if(_hasMore) {
+          return Padding(
+            padding: EdgeInsets.all(10),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        else {
+          return const SizedBox(height: 10);
+        }
       },
     );
   }

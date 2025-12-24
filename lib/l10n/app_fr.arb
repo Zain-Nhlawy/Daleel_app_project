@@ -126,5 +126,6 @@
   "noChatsYetExplorePropertiesToContactOwners": "Aucune discussion pour le moment.\nExplorez les propriétés pour contacter les propriétaires !",
   "typeAMessage": "Tapez un message",
   "favouriteRemoved": "Favori supprimé",
-  "undo": "Annuler"
+  "undo": "Annuler",
+  "noApartmentsNearYou": "Aucun appartement près de chez vous"
 }

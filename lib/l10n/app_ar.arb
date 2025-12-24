@@ -126,5 +126,6 @@
   "noChatsYetExplorePropertiesToContactOwners": "لا توجد محادثات بعد.\nاستكشف العقارات للتواصل مع المالكين!",
   "typeAMessage": "اكتب رسالة",
   "favouriteRemoved": "تمت إزالة المفضلة",
-  "undo": "تراجع"
+  "undo": "تراجع",
+  "noApartmentsNearYou": "لا توجد شقق قريبة منك"
 }

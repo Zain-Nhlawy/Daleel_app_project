@@ -402,4 +402,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get undo => 'تراجع';
+
+  @override
+  String get noApartmentsNearYou => 'لا توجد شقق قريبة منك';
 }

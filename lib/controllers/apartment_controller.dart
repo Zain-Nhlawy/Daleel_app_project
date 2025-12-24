@@ -65,7 +65,7 @@ class ApartmentController {
 
   // In your ApartmentController
 
-Future<List<Apartments2>?> loadFilteredApartments({
+Future<List<Apartments2>?> loadFilteredApartments(int page, {
   String? governorate, // Changed to nullable
   int? bedrooms,      // Changed to nullable
   int? bathrooms,     // Changed to nullable
@@ -73,10 +73,12 @@ Future<List<Apartments2>?> loadFilteredApartments({
   double? maxArea,   // Changed to nullable
   double? minPrice,  // Changed to nullable
   double? maxPrice,   // Changed to nullable
+  String? sort
 }) async {
   try {
     // Pass the nullable values down to the service
     final apartments = await apartmentService.getFilteredApartments(
+      page,
       governorate: governorate,
       bedrooms: bedrooms,
       bathrooms: bathrooms,
@@ -84,6 +86,7 @@ Future<List<Apartments2>?> loadFilteredApartments({
       maxArea: maxArea,
       minPrice: minPrice,
       maxPrice: maxPrice,
+      sort: sort
     );
     _favouriteApartments = apartments; // Assuming this is correct
     return _favouriteApartments;

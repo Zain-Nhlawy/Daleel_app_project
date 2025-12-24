@@ -126,5 +126,6 @@
   "noChatsYetExplorePropertiesToContactOwners": "No chats yet.\nExplore properties to contact owners!",
   "typeAMessage": "Type a message",
   "favouriteRemoved": "favourite removed",
-  "undo": "Undo"
+  "undo": "Undo",
+  "noApartmentsNearYou": "no apartments near you"
 }
