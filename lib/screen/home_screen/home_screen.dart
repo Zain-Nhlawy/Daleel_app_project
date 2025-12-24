@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late PageController _pageController;
   final int _currentPage = 5;
   late Future<List<Apartments2>?> _apartmentsFuture;
+  TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -115,14 +116,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       children: [
                         const SizedBox(width: 20),
-                        const Icon(
-                          Icons.search,
-                          size: 28,
-                          color: Colors.white70,
+                        IconButton(
+                          icon: Icon(
+                            Icons.search,
+                            size: 28,
+                            color: Colors.white70,
+                          ),
+                          onPressed: () {},
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: TextField(
+                            controller: searchController,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               border: InputBorder.none,
