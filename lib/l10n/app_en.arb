@@ -4,7 +4,7 @@
   "dontHaveAnAccount": "Don't have an account?",
   "password": "Password",
   "phoneNumber": "Phone Number",
-  "welcomeBack": "ًWelcome Back!",
+  "welcomeBack": "Welcome Back!",
   "pleaseFillAllFields": "Please fill all fields.",
   "loginFailedCheckYourCredentials": "Login failed. Check your credentials.",
   "cannotSelectPastDates": "Cannot select past dates",
@@ -58,7 +58,7 @@
   "noCommentsYet": "No Comments Yet",
   "showMore": "Show More",
   "showLess": "Show Less",
-  "addAComment": "Add a comment...",
+  "addAComment": "Add a comment",
   "send": "Send",
   "description": "Description",
   "contactUs": "Contact Us",
@@ -85,7 +85,7 @@
   "price": "Price",
   "features": "Features",
   "morePictures": "More Pictures",
-  "tellUsMoreAboutYourPlace": "Tell us more about your place...",
+  "tellUsMoreAboutYourPlace": "Tell us more about your place",
   "tapToAddMainImage": "Tap to add main image",
   "thisFieldCannotBeEmpty": "This field cannot be empty",
   "bathrooms": "Bathrooms",
@@ -119,5 +119,10 @@
   "confirmCancelContract": "Are you sure you want to cancel the contract?",
   "no": "No",
   "yes": "Yes",
-  "contractCancelled": "Contract has been cancelled"
+  "contractCancelled": "Contract has been cancelled",
+  "sayHi": "Say hi!",
+  "points": "...",
+  "myChats": "My Chats",
+  "noChatsYetExplorePropertiesToContactOwners": "No chats yet.\nExplore properties to contact owners!",
+  "typeAMessage": "Type a message"
 }

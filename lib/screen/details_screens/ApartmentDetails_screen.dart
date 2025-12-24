@@ -24,8 +24,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   late String selectedImage;
   bool showAllComments = false;
   late TextEditingController _newCommentController;
-  bool _isFavorited = false;
-  bool _isFavoriteLoading = true;
+  late bool? _isFavorited = widget.apartment.isFavorited;
+  final bool _isFavoriteLoading = false;
 
   @override
   void initState() {
@@ -40,7 +40,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
 
   void _loadData() async {
     await _loadApartmentDetails();
-    await _fetchInitialFavoriteStatus();
     await commentController.fetchComments(apartment.id);
   }
 
@@ -61,28 +60,9 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
     });
   }
 
-  Future<void> _fetchInitialFavoriteStatus() async {
-    final apartmentService = ApartmentService(apiClient: dioClient);
-    try {
-      final bool? result = await apartmentService.isFavourite(apartment.id);
-      if (mounted) {
-        setState(() {
-          _isFavorited = result ?? false;
-          _isFavoriteLoading = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isFavoriteLoading = false;
-        });
-      }
-    }
-  }
-
   void _handleFavoriteToggle() async {
     setState(() {
-      _isFavorited = !_isFavorited;
+      _isFavorited = !_isFavorited!;
     });
 
     final apartmentService = ApartmentService(apiClient: dioClient);
@@ -90,13 +70,13 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
       final bool success = await apartmentService.toggleFavorite(apartment.id);
       if (!success && mounted) {
         setState(() {
-          _isFavorited = !_isFavorited;
+          _isFavorited = !_isFavorited!;
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _isFavorited = !_isFavorited;
+          _isFavorited = !_isFavorited!;
         });
       }
     }
@@ -137,8 +117,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                 )
               : IconButton(
                   icon: Icon(
-                    _isFavorited ? Icons.favorite : Icons.favorite_border,
-                    color: _isFavorited ? Colors.red : Colors.black54,
+                    _isFavorited! ? Icons.favorite : Icons.favorite_border,
+                    color: _isFavorited! ? Colors.red : Colors.black54,
                     size: 28,
                   ),
                   onPressed: _handleFavoriteToggle,

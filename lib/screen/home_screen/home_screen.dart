@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
+import 'package:daleel_app_project/screen/home_screen/filters_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../dependencies.dart';
@@ -102,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 60),
+                const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Container(
@@ -132,6 +133,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: 16,
                               ),
                             ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              elevation: 5,
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) => FilterBottomSheetContent(),
+                            );
+                          },
+                          icon: Icon(
+                            Icons.format_list_bulleted_rounded,
+                            size: 30,
+                            color: Colors.white,
                           ),
                         ),
                       ],

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_ar.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_fr.dart';
 
 // ignore_for_file: type=lint
 
@@ -96,6 +97,7 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
     Locale('en'),
+    Locale('fr'),
   ];
 
   /// No description provided for @login.
@@ -131,7 +133,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeBack.
   ///
   /// In en, this message translates to:
-  /// **'ًWelcome Back!'**
+  /// **'Welcome Back!'**
   String get welcomeBack;
 
   /// No description provided for @pleaseFillAllFields.
@@ -455,7 +457,7 @@ abstract class AppLocalizations {
   /// No description provided for @addAComment.
   ///
   /// In en, this message translates to:
-  /// **'Add a comment...'**
+  /// **'Add a comment'**
   String get addAComment;
 
   /// No description provided for @send.
@@ -617,7 +619,7 @@ abstract class AppLocalizations {
   /// No description provided for @tellUsMoreAboutYourPlace.
   ///
   /// In en, this message translates to:
-  /// **'Tell us more about your place...'**
+  /// **'Tell us more about your place'**
   String get tellUsMoreAboutYourPlace;
 
   /// No description provided for @tapToAddMainImage.
@@ -823,6 +825,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contract has been cancelled'**
   String get contractCancelled;
+
+  /// No description provided for @sayHi.
+  ///
+  /// In en, this message translates to:
+  /// **'Say hi!'**
+  String get sayHi;
+
+  /// No description provided for @points.
+  ///
+  /// In en, this message translates to:
+  /// **'...'**
+  String get points;
+
+  /// No description provided for @myChats.
+  ///
+  /// In en, this message translates to:
+  /// **'My Chats'**
+  String get myChats;
+
+  /// No description provided for @noChatsYetExplorePropertiesToContactOwners.
+  ///
+  /// In en, this message translates to:
+  /// **'No chats yet.\nExplore properties to contact owners!'**
+  String get noChatsYetExplorePropertiesToContactOwners;
+
+  /// No description provided for @typeAMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message'**
+  String get typeAMessage;
 }
 
 class _AppLocalizationsDelegate
@@ -836,7 +868,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['ar', 'en'].contains(locale.languageCode);
+      <String>['ar', 'en', 'fr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -849,6 +881,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsAr();
     case 'en':
       return AppLocalizationsEn();
+    case 'fr':
+      return AppLocalizationsFr();
   }
 
   throw FlutterError(

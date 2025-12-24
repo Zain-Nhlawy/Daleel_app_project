@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'chat_screen.dart';
 
@@ -14,9 +15,9 @@ class MyChatsScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text(
-          "My Messages",
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context)!.myChats,
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 22,
@@ -63,7 +64,9 @@ class MyChatsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        "No chats yet.\nExplore properties to contact owners!",
+                        AppLocalizations.of(
+                          context,
+                        )!.noChatsYetExplorePropertiesToContactOwners,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.8),

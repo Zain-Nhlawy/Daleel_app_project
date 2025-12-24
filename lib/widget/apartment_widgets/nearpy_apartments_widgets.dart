@@ -17,57 +17,30 @@ class NearpyApartmentsWidgets extends StatefulWidget {
 }
 
 class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
-  bool _isFavorited = false;
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchInitialFavoriteStatus();
-  }
-
-  void _fetchInitialFavoriteStatus() async {
-    final apartmentService = ApartmentService(
-      apiClient: DioClient(storage: AppSecureStorage()),
-    );
-    try {
-      final bool? result =
-          await apartmentService.isFavourite(widget.apartment.id);
-      if (mounted) {
-        setState(() {
-          _isFavorited = result ?? false;
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
+  late bool? _isFavorited = widget.apartment.isFavorited;
+  final bool _isLoading = false;
 
   void _handleFavoriteToggle() async {
     setState(() {
-      _isFavorited = !_isFavorited;
+      _isFavorited = !_isFavorited!;
     });
 
     final apartmentService = ApartmentService(
       apiClient: DioClient(storage: AppSecureStorage()),
     );
     try {
-      final bool success =
-          await apartmentService.toggleFavorite(widget.apartment.id);
+      final bool success = await apartmentService.toggleFavorite(
+        widget.apartment.id,
+      );
       if (!success && mounted) {
         setState(() {
-          _isFavorited = !_isFavorited;
+          _isFavorited = !_isFavorited!;
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _isFavorited = !_isFavorited;
+          _isFavorited = !_isFavorited!;
         });
       }
     }
@@ -117,8 +90,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                           ? Image.network(
                               widget.apartment.images[0],
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) =>
-                                  Image.asset(
+                              errorBuilder: (_, __, ___) => Image.asset(
                                 "assets/images/placeholder.png",
                                 fit: BoxFit.cover,
                               ),
@@ -144,8 +116,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                               padding: EdgeInsets.all(8.0),
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(
+                                valueColor: AlwaysStoppedAnimation<Color>(
                                   Colors.white,
                                 ),
                               ),
@@ -154,10 +125,10 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                               padding: EdgeInsets.zero,
                               iconSize: 20,
                               icon: Icon(
-                                _isFavorited
+                                _isFavorited!
                                     ? Icons.favorite
                                     : Icons.favorite_border,
-                                color: _isFavorited
+                                color: _isFavorited!
                                     ? Colors.red
                                     : Colors.white,
                               ),
@@ -178,27 +149,27 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                           AppLocalizations.of(context)!.noDescription,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style:
-                          Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.grey[800],
-                              ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.grey[800],
+                      ),
                     ),
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        Icon(Icons.location_on,
-                            size: 14, color: Colors.grey[600]),
+                        Icon(
+                          Icons.location_on,
+                          size: 14,
+                          color: Colors.grey[600],
+                        ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             widget.apartment.location?['city'] ??
                                 AppLocalizations.of(context)!.unknownCity,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
+                            style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(color: Colors.grey[600]),
                           ),
                         ),
@@ -210,16 +181,18 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.star,
-                                color: Colors.orange, size: 18),
+                            const Icon(
+                              Icons.star,
+                              color: Colors.orange,
+                              size: 18,
+                            ),
                             const SizedBox(width: 4),
                             Text(
-                              widget.apartment.averageRating
-                                      ?.toStringAsFixed(1) ??
+                              widget.apartment.averageRating?.toStringAsFixed(
+                                    1,
+                                  ) ??
                                   'N/A',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
+                              style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ],

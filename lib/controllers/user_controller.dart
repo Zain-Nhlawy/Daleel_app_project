@@ -78,7 +78,7 @@ class UserController {
     } catch (e) {}
   }
 
-  void updateProfile(User updatedUser) {
+  void updateProfile(User? updatedUser) {
     _user = updatedUser;
   }
 
