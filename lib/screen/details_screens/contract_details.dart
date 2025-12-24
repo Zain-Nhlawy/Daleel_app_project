@@ -38,14 +38,33 @@ class _ContractDetailsState extends State<ContractDetails> {
     }
   }
 
+  Future<void> _approveContract() async {
+  final approved = await contractController.approveContract(
+    rentId: contract.id,
+  );
+
+  setState(() {
+    contract = approved;
+  });
+}
+
+Future<Contracts> _rejectContract() async {
+  final rejected = await contractController.rejectContract(
+    rentId: contract.id,
+  );
+
+  setState(() {
+    contract = rejected;
+  });
+
+  return rejected;
+}
+
+
   @override
   Widget build(BuildContext context) {
-    final contractFromController = contractController.contracts?.firstWhere(
-          (c) => c.id == widget.contract.id,
-          orElse: () => widget.contract,
-        ) ??
-        widget.contract;
-    final contract = contractFromController;
+
+    final Contracts contract = this.contract;
 
     const Color primaryColor = Color(0xFF795548);
     const Color accentColor = Color(0xFFD7CCC8);
@@ -125,8 +144,9 @@ class _ContractDetailsState extends State<ContractDetails> {
               context,
               contract,
               isTenant: contract.user.userId == user.userId,
-              isOwner: contract.contractApartment.user.userId == user.userId,
               onUpdate: _updateContract,
+              onApprove: _approveContract,
+              onReject: _rejectContract,
             )
           : null,
     );
@@ -370,8 +390,9 @@ Widget _buildBottomActions(
   BuildContext context,
   Contracts contract, {
   required bool isTenant,
-  required bool isOwner,
   required Future<void> Function(DateTime, DateTime) onUpdate,
+  required Future<void> Function() onApprove,
+  required Future<Contracts> Function() onReject,
 }) {
   return Container(
     width: double.infinity,
@@ -459,12 +480,64 @@ Widget _buildBottomActions(
             ),
           ),
 
-        ] else if (isOwner) ...[
+        ] else ...[
           Expanded(
             child: OutlinedButton(
-              onPressed: () {
-                // t
+              onPressed: () async {
+                try {
+                  await onApprove();
+
+                  if (!context.mounted) return;
+
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                            size: 60,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            AppLocalizations.of(context)!
+                                .contractApprovedSuccessfully,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx),
+                          child: Text(AppLocalizations.of(context)!.okay),
+                        ),
+                      ],
+                    ),
+                  );
+
+                } catch (e) {
+                  if (!context.mounted) return;
+
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: Text(AppLocalizations.of(context)!.error),
+                      content: Text(e.toString()),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx),
+                          child: Text(AppLocalizations.of(context)!.okay),
+                        ),
+                      ],
+                    ),
+                  );
+                }
               },
+
+
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.green,
                 side: const BorderSide(color: Colors.green),
@@ -475,8 +548,71 @@ Widget _buildBottomActions(
           const SizedBox(width: 12),
           Expanded(
             child: OutlinedButton(
-              onPressed: () {
-                // f
+              onPressed: () async {
+                final confirm = await showDialog<bool>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text(AppLocalizations.of(context)!.confirm),
+                    content: Text(AppLocalizations.of(context)!.confirmRejectContract),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(ctx, false),
+                        child: Text(AppLocalizations.of(context)!.no),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(ctx, true),
+                        child: Text(AppLocalizations.of(context)!.yes),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (confirm != true) return;
+                try {
+                  await onReject();
+
+                  if (!context.mounted) return;
+
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.cancel, color: Colors.red, size: 60),
+                          const SizedBox(height: 16),
+                          Text(
+                            AppLocalizations.of(context)!.contractRejectedSuccessfully,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx),
+                          child: Text(AppLocalizations.of(context)!.okay),
+                        ),
+                      ],
+                    ),
+                  );
+                } catch (e) {
+                  if (!context.mounted) return;
+
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: Text(AppLocalizations.of(context)!.error),
+                      content: Text(e.toString()),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx),
+                          child: Text(AppLocalizations.of(context)!.okay),
+                        ),
+                      ],
+                    ),
+                  );
+                }
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.red,

@@ -396,4 +396,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get typeAMessage => 'اكتب رسالة';
+
+  @override
+  String get contractApprovedSuccessfully => 'تمت الموافقة على العقد بنجاح';
+
+  @override
+  String get approve => 'قبول';
+
+  @override
+  String get confirmRejectContract => 'هل أنت متأكد من رفض هذا العقد؟';
+
+  @override
+  String get contractRejectedSuccessfully => 'تم رفض العقد بنجاح';
 }

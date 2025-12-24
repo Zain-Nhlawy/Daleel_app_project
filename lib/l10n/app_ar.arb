@@ -127,5 +127,9 @@
   "points": "...",
   "myMessages": "رسائلي",
   "noChatsYetExplorePropertiesToContactOwners": "لا توجد محادثات بعد.\nاستكشف العقارات للتواصل مع المالكين!",
-  "typeAMessage": "اكتب رسالة"
+  "typeAMessage": "اكتب رسالة",
+  "contractApprovedSuccessfully": "تمت الموافقة على العقد بنجاح",
+  "approve": "قبول",
+  "confirmRejectContract": "هل أنت متأكد من رفض هذا العقد؟",
+  "contractRejectedSuccessfully": "تم رفض العقد بنجاح"
 }

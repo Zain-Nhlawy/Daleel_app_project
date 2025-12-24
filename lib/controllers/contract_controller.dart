@@ -19,7 +19,6 @@ class ContractController {
   }
 }
 
-
   Future<Contracts?> bookApartment({
     required int apartmentId,
     required DateTime start,
@@ -33,7 +32,6 @@ class ContractController {
       rentFee: rentFee,
     );
   }
-
 
   Future<Contracts?> updateRent({
   required int rentId,
@@ -58,6 +56,26 @@ class ContractController {
 
   return updatedRent;
 }
+
+Future<Contracts> approveContract({required int rentId}) async {
+  final Contracts approvedRent =
+      await contractService.approveRent(rentId: rentId);
+
+  final index = _contracts.indexWhere((c) => c.id == rentId);
+  if (index != -1) {
+    _contracts[index] = approvedRent;
+  }
+
+  return approvedRent;
+}
+
+Future<Contracts> rejectContract({required int rentId}) async {
+    final rejectedContract =
+        await contractService.rejectRent(rentId: rentId);
+
+    return rejectedContract;
+  }
+
 
 Future<bool> cancelRent({required int rentId}) async {
     final success = await contractService.deleteContract(rentId: rentId);

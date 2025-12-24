@@ -855,6 +855,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Type a message'**
   String get typeAMessage;
+
+  /// No description provided for @contractApprovedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'The contract has been approved successfully'**
+  String get contractApprovedSuccessfully;
+
+  /// No description provided for @approve.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get approve;
+
+  /// No description provided for @confirmRejectContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to reject this contract?'**
+  String get confirmRejectContract;
+
+  /// No description provided for @contractRejectedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract has been rejected successfully'**
+  String get contractRejectedSuccessfully;
 }
 
 class _AppLocalizationsDelegate

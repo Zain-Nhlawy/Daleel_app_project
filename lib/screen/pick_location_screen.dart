@@ -138,7 +138,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
     try {
       final url =
           'https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.latitude}&lon=${pos.longitude}&zoom=18&addressdetails=1&accept-language=en';
-
+      print('$pos');
       final response = await Dio().get(
         url,
         options: Options(

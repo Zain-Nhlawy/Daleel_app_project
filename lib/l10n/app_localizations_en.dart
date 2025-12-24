@@ -398,4 +398,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get typeAMessage => 'Type a message';
+
+  @override
+  String get contractApprovedSuccessfully =>
+      'The contract has been approved successfully';
+
+  @override
+  String get approve => 'Approve';
+
+  @override
+  String get confirmRejectContract =>
+      'Are you sure you want to reject this contract?';
+
+  @override
+  String get contractRejectedSuccessfully =>
+      'Contract has been rejected successfully';
 }

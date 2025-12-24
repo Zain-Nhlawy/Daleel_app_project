@@ -123,6 +123,70 @@ class ContractService {
   }
 }
 
+Future<Contracts> approveRent({required int rentId}) async {
+  try {
+    final response = await apiClient.dio.post(
+      "/auth/rents/$rentId/approve",
+    );
+
+    final dynamic rawData = response.data;
+    if (rawData == null) {
+      throw Exception('Empty response from server');
+    }
+
+    final Map<String, dynamic> data =
+        rawData is String ? jsonDecode(rawData) : Map<String, dynamic>.from(rawData);
+
+    if (data['status'] != 'success') {
+      throw Exception(data['message'] ?? 'Approve failed');
+    }
+
+    final dynamic rentData = data['data'];
+    if (rentData == null || rentData is! Map<String, dynamic>) {
+      throw Exception('Invalid rent data');
+    }
+
+    return Contracts.fromJson(
+      Map<String, dynamic>.from(rentData),
+    );
+  } on DioException catch (e) {
+    throw Exception(
+      e.response?.data?['message'] ??
+          e.message ??
+          'Network error',
+    );
+  } catch (e) {
+    throw Exception(e.toString());
+  }
+}
+
+Future<Contracts> rejectRent({required int rentId}) async {
+  try {
+    final response = await apiClient.dio.post(
+      "/auth/rents/$rentId/reject",
+    );
+
+    final data = response.data;
+    if (data == null) {
+      throw Exception('Empty response from server');
+    }
+
+    if (data['status'] != 'success') {
+      throw Exception(data['message'] ?? 'Reject failed');
+    }
+
+    return Contracts.fromJson(
+      Map<String, dynamic>.from(data['data']),
+    );
+  } on DioException catch (e) {
+    throw Exception(
+      e.response?.data?['message'] ??
+          e.message ??
+          'Network error',
+    );
+  }
+}
+
 Future<bool> deleteContract({required int rentId}) async {
     try {
       final response = await apiClient.dio.delete("/auth/rents/$rentId");
