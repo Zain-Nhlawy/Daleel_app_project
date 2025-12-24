@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       final apartments = snapshot.data!;
                       apartments.sort(
                         (a, b) =>
-                            a.reviewCount!.compareTo(b.reviewCount as num),
+                            a.reviewCount!.compareTo(b.averageRating as num),
                       );
                       if (apartments.isEmpty) {
                         return Padding(

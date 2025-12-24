@@ -63,19 +63,17 @@ class ApartmentController {
     }
   }
 
-  // In your ApartmentController
 
 Future<List<Apartments2>?> loadFilteredApartments({
-  String? governorate, // Changed to nullable
-  int? bedrooms,      // Changed to nullable
-  int? bathrooms,     // Changed to nullable
-  double? minArea,   // Changed to nullable
-  double? maxArea,   // Changed to nullable
-  double? minPrice,  // Changed to nullable
-  double? maxPrice,   // Changed to nullable
+  String? governorate, 
+  int? bedrooms, 
+  int? bathrooms,
+  double? minArea,
+  double? maxArea,   
+  double? minPrice,  
+  double? maxPrice,   
 }) async {
   try {
-    // Pass the nullable values down to the service
     final apartments = await apartmentService.getFilteredApartments(
       governorate: governorate,
       bedrooms: bedrooms,
@@ -85,7 +83,7 @@ Future<List<Apartments2>?> loadFilteredApartments({
       minPrice: minPrice,
       maxPrice: maxPrice,
     );
-    _favouriteApartments = apartments; // Assuming this is correct
+    _favouriteApartments = apartments;
     return _favouriteApartments;
   } catch (e) {
     print("Error in controller: $e");
