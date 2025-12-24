@@ -40,7 +40,8 @@ class _ContractDetailsState extends State<ContractDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final contractFromController = contractController.contracts?.firstWhere(
+    final contractFromController =
+        contractController.contracts?.firstWhere(
           (c) => c.id == widget.contract.id,
           orElse: () => widget.contract,
         ) ??
@@ -51,6 +52,7 @@ class _ContractDetailsState extends State<ContractDetails> {
     const Color accentColor = Color(0xFFD7CCC8);
 
     final User? user = userController.user;
+    // ignore: unused_local_variable
     final bool isTenant = (user != null && contract.user.userId == user.userId);
 
     return Scaffold(
@@ -169,9 +171,9 @@ class _ContractDetailsState extends State<ContractDetails> {
               child: Text(
                 contract.contractApartment.headDescription!,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                    ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
               ),
@@ -323,9 +325,9 @@ class _ContractDetailsState extends State<ContractDetails> {
     return Text(
       title,
       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
+        fontWeight: FontWeight.bold,
+        color: color,
+      ),
     );
   }
 
@@ -365,7 +367,6 @@ class _ContractDetailsState extends State<ContractDetails> {
   }
 }
 
-
 Widget _buildBottomActions(
   BuildContext context,
   Contracts contract, {
@@ -378,12 +379,8 @@ Widget _buildBottomActions(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     decoration: BoxDecoration(
       color: Colors.grey.shade50,
-      borderRadius: const BorderRadius.vertical(
-        bottom: Radius.circular(20),
-      ),
-      border: Border(
-        top: BorderSide(color: Colors.grey.shade300),
-      ),
+      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+      border: Border(top: BorderSide(color: Colors.grey.shade300)),
     ),
     child: Row(
       children: [
@@ -423,7 +420,9 @@ Widget _buildBottomActions(
                   context: context,
                   builder: (ctx) => AlertDialog(
                     title: Text(AppLocalizations.of(context)!.confirm),
-                    content: Text(AppLocalizations.of(context)!.confirmCancelContract),
+                    content: Text(
+                      AppLocalizations.of(context)!.confirmCancelContract,
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(ctx, false),
@@ -441,13 +440,17 @@ Widget _buildBottomActions(
                   try {
                     await contractController.cancelRent(rentId: contract.id);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(AppLocalizations.of(context)!.contractCancelled)),
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(context)!.contractCancelled,
+                        ),
+                      ),
                     );
                     Navigator.pop(context);
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(e.toString())),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(e.toString())));
                   }
                 }
               },
@@ -458,7 +461,6 @@ Widget _buildBottomActions(
               child: Text(AppLocalizations.of(context)!.cancel),
             ),
           ),
-
         ] else if (isOwner) ...[
           Expanded(
             child: OutlinedButton(
@@ -490,6 +492,3 @@ Widget _buildBottomActions(
     ),
   );
 }
-
-
-
