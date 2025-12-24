@@ -83,11 +83,11 @@ class ApartmentService {
     }
   }
 
-  Future<List<Apartments2>> getFavouriteApartments() async {
+  Future<List<Apartments2>> getFavouriteApartments(int page) async {
     try {
-      final response = await apiClient.dio.get("/auth/favorites/me");
+      final response = await apiClient.dio.get("/auth/favorites/me?page=$page");
       final data = response.data['data'] as List;
-
+      
       return data.map((json) => Apartments2.fromJson(json)).toList();
     } catch (e) {
       rethrow;

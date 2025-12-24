@@ -17,21 +17,30 @@ class FavoriteApartmentsScreen extends StatefulWidget {
 
 class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
   List<Apartments2> _favoriteApartments = [];
-  bool _isLoading = true;
+  final ScrollController _controller = ScrollController();
+  bool _isLoading = true, _hasMore = true;
+  int _page = 1;
   String? _error;
 
   @override
   void initState() {
     super.initState();
     _fetchFavoriteApartments();
+    _controller.addListener(() {
+      if(_controller.position.pixels >= _controller.position.maxScrollExtent - 1 && !_isLoading && _hasMore) {
+        _fetchFavoriteApartments();
+      }
+    });
   }
 
   Future<void> _fetchFavoriteApartments() async {
     try {
-      final apartments = await apartmentController.loadFavouriteApartments();
+      final apartments = await apartmentController.loadFavouriteApartments(_page);
       if (mounted) {
         setState(() {
-          _favoriteApartments = apartments ?? [];
+          _favoriteApartments += apartments ?? [];
+          if(apartments == null || apartments.isEmpty) _hasMore = false;
+          _page++;
           _isLoading = false;
         });
       }
@@ -59,9 +68,9 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 4),
-        content: Text("favourite removed"),
+        content: Text(AppLocalizations.of(context)!.favouriteRemoved),
         action: SnackBarAction(
-          label: "Undo",
+          label: AppLocalizations.of(context)!.undo,
           onPressed: () {
             setState(() {
               _favoriteApartments.insert(index, removedApartment);
@@ -105,6 +114,7 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
     }
 
     return ListView.builder(
+      controller: _controller,
       itemCount: _favoriteApartments.length,
       itemBuilder: (context, index) {
         final apartment = _favoriteApartments[index];

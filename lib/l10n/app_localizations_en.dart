@@ -398,4 +398,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get typeAMessage => 'Type a message';
+
+  @override
+  String get favouriteRemoved => 'favourite removed';
+
+  @override
+  String get undo => 'Undo';
 }

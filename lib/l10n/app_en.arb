@@ -124,5 +124,7 @@
   "points": "...",
   "myChats": "My Chats",
   "noChatsYetExplorePropertiesToContactOwners": "No chats yet.\nExplore properties to contact owners!",
-  "typeAMessage": "Type a message"
+  "typeAMessage": "Type a message",
+  "favouriteRemoved": "favourite removed",
+  "undo": "Undo"
 }

@@ -53,9 +53,9 @@ class ApartmentController {
   List<Apartments2>? _favouriteApartments;
   List<Apartments2>? get favouriteApartments => _favouriteApartments;
 
-  Future<List<Apartments2>?> loadFavouriteApartments() async {
+  Future<List<Apartments2>?> loadFavouriteApartments(int page) async {
     try {
-      final apartments = await apartmentService.getFavouriteApartments();
+      final apartments = await apartmentService.getFavouriteApartments(page);
       _favouriteApartments = apartments;
       return _favouriteApartments;
     } catch (e) {

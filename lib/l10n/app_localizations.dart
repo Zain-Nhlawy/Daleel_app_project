@@ -855,6 +855,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Type a message'**
   String get typeAMessage;
+
+  /// No description provided for @favouriteRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'favourite removed'**
+  String get favouriteRemoved;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
 }
 
 class _AppLocalizationsDelegate

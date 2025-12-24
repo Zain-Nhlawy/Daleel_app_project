@@ -15,7 +15,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get signUp => 'إنشاء حساب';
 
   @override
-  String get dontHaveAnAccount => 'لا تملك حسابًا؟';
+  String get dontHaveAnAccount => 'ليس لديك حساب؟';
 
   @override
   String get password => 'كلمة المرور';
@@ -24,7 +24,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get phoneNumber => 'رقم الهاتف';
 
   @override
-  String get welcomeBack => 'مرحبًا بعودتك!';
+  String get welcomeBack => 'مرحباً بعودتك!';
 
   @override
   String get pleaseFillAllFields => 'يرجى ملء جميع الحقول.';
@@ -45,14 +45,14 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pleaseSelectStartAndEndDates =>
-      'يرجى تحديد تاريخي البدء والانتهاء';
+      'يرجى اختيار تاريخ البداية والنهاية';
 
   @override
   String get bookingSuccessful => 'تم الحجز بنجاح';
 
   @override
   String get bookingPeriodUnavailable =>
-      'فشل الحجز، هذه الشقة مؤجرة بالفعل خلال الفترة المحددة';
+      'فشل الحجز. الشقة مؤجرة بالفعل خلال الفترة المحددة';
 
   @override
   String get start => 'البداية';
@@ -134,11 +134,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirmPassword => 'تأكيد كلمة المرور';
 
   @override
-  String get welcome => 'مرحبًا';
+  String get welcome => 'مرحباً';
 
   @override
   String get intro =>
-      'حيث يلتقي الراحة بالثقة في كل اختيار للإيجار.\nدليل – نساعدك على إيجاد منزلك بكل سهولة.';
+      'حيث يلتقي الراحة بالثقة في كل اختيار سكني.\nدليل – يساعدك في العثور على منزلك بسهولة.';
 
   @override
   String get profileDetails => 'تفاصيل الملف الشخصي';
@@ -159,10 +159,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get logout => 'تسجيل الخروج';
 
   @override
-  String get renter => 'مؤجِّر';
+  String get renter => 'المالك';
 
   @override
-  String get tenant => 'مستأجر';
+  String get tenant => 'المستأجر';
 
   @override
   String get timeRemaining => 'الوقت المتبقي';
@@ -192,7 +192,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get showLess => 'عرض أقل';
 
   @override
-  String get addAComment => 'أضف تعليقًا';
+  String get addAComment => 'إضافة تعليق';
 
   @override
   String get send => 'إرسال';
@@ -210,7 +210,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookNow => 'احجز الآن';
 
   @override
-  String get updateBooking => 'تعديل الحجز';
+  String get updateBooking => 'تحديث الحجز';
 
   @override
   String get contractDetails => 'تفاصيل العقد';
@@ -222,10 +222,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get contractPeriod => 'مدة العقد';
 
   @override
-  String get startDate => 'تاريخ البدء';
+  String get startDate => 'تاريخ البداية';
 
   @override
-  String get endDate => 'تاريخ الانتهاء';
+  String get endDate => 'تاريخ النهاية';
 
   @override
   String get partiesInvolved => 'الأطراف المعنية';
@@ -240,15 +240,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get name => 'الاسم';
 
   @override
-  String get publishedBy => 'نُشر بواسطة';
+  String get publishedBy => 'نشر بواسطة';
 
   @override
   String get pleaseFillAllRequiredFieldsSelectALocationAndAddAHeadImage =>
-      'يرجى ملء جميع الحقول المطلوبة، واختيار الموقع، وإضافة صورة رئيسية.';
+      'يرجى ملء جميع الحقول المطلوبة، اختيار الموقع، وإضافة صورة رئيسية.';
 
   @override
   String get failedToAddApartmentPleaseTryAgain =>
-      'فشل إضافة الشقة. يرجى المحاولة مرة أخرى.';
+      'فشل في إضافة الشقة. يرجى المحاولة مرة أخرى.';
 
   @override
   String get yourApartmentWasAddedSuccessfully => 'تمت إضافة شقتك بنجاح!';
@@ -257,7 +257,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get error => 'خطأ';
 
   @override
-  String get okay => 'حسنًا';
+  String get okay => 'حسناً';
 
   @override
   String get addApartment => 'إضافة شقة';
@@ -281,7 +281,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tapToAddMainImage => 'اضغط لإضافة الصورة الرئيسية';
 
   @override
-  String get thisFieldCannotBeEmpty => 'هذا الحقل لا يمكن أن يكون فارغًا';
+  String get thisFieldCannotBeEmpty => 'لا يمكن أن يكون هذا الحقل فارغاً';
 
   @override
   String get bathrooms => 'الحمّامات';
@@ -299,10 +299,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectApartmentLocation => 'اختر موقع الشقة';
 
   @override
-  String get availableForRent => 'متاحة للإيجار';
+  String get availableForRent => 'متاح للإيجار';
 
   @override
-  String get success => 'تم بنجاح';
+  String get success => 'نجاح';
 
   @override
   String get titleegModernVilla => 'العنوان (مثال: فيلا عصرية)';
@@ -332,20 +332,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get searchHere => 'ابحث هنا';
 
   @override
-  String get mostPopular => 'الأكثر شيوعًا';
+  String get mostPopular => 'الأكثر شيوعاً';
 
   @override
   String get seeAll => 'عرض الكل';
 
   @override
-  String get closeToYou => 'قريب منك';
+  String get closeToYou => 'بالقرب منك';
 
   @override
   String get area => 'المنطقة';
 
   @override
   String get requestSubmittedYourApartmentIsNowPendingAdminApproval =>
-      'تم إرسال الطلب!\nشقتك الآن قيد مراجعة الإدارة.';
+      'تم إرسال الطلب!\nشقتك الآن بانتظار موافقة الإدارة.';
 
   @override
   String get edit => 'تعديل';
@@ -361,16 +361,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get updateRequestSentWaitingForApproval =>
-      'تم إرسال طلب التعديل وبانتظار موافقة المالك';
+      'تم إرسال طلب التحديث وينتظر موافقة المالك';
 
   @override
-  String get contractUpdatedSuccessfully => 'تم تعديل العقد بنجاح';
+  String get contractUpdatedSuccessfully => 'تم تحديث العقد بنجاح';
 
   @override
   String get confirm => 'تأكيد';
 
   @override
-  String get confirmCancelContract => 'هل أنت متأكد من إلغاء العقد؟';
+  String get confirmCancelContract => 'هل أنت متأكد أنك تريد إلغاء العقد؟';
 
   @override
   String get no => 'لا';
@@ -382,13 +382,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get contractCancelled => 'تم إلغاء العقد';
 
   @override
-  String get sayHi => 'قل مرحبًا!';
+  String get sayHi => 'قل مرحباً!';
 
   @override
   String get points => '...';
 
   @override
-  String get myChats => 'My Chats';
+  String get myChats => 'محادثاتي';
 
   @override
   String get noChatsYetExplorePropertiesToContactOwners =>
@@ -396,4 +396,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get typeAMessage => 'اكتب رسالة';
+
+  @override
+  String get favouriteRemoved => 'تمت إزالة المفضلة';
+
+  @override
+  String get undo => 'تراجع';
 }
