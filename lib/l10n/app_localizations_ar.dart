@@ -210,6 +210,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookNow => 'احجز الآن';
 
   @override
+  String get updateBooking => 'تعديل الحجز';
+
+  @override
   String get contractDetails => 'تفاصيل العقد';
 
   @override
@@ -343,4 +346,38 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get requestSubmittedYourApartmentIsNowPendingAdminApproval =>
       'تم تقديم الطلب!\nشقتك الآن قيد انتظار موافقة الإدارة.';
+
+  @override
+  String get edit => 'تعديل';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get accept => 'قبول';
+
+  @override
+  String get reject => 'رفض';
+
+  @override
+  String get updateRequestSentWaitingForApproval =>
+      'تم إرسال طلب التعديل وبانتظار موافقة المالك';
+
+  @override
+  String get contractUpdatedSuccessfully => 'تم تعديل العقد بنجاح';
+
+  @override
+  String get confirm => 'تأكيد';
+
+  @override
+  String get confirmCancelContract => 'هل أنت متأكد من إلغاء العقد؟';
+
+  @override
+  String get no => 'لا';
+
+  @override
+  String get yes => 'نعم';
+
+  @override
+  String get contractCancelled => 'تم إلغاء العقد';
 }

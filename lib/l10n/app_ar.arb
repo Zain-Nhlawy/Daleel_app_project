@@ -64,6 +64,7 @@
   "contactUs": "تواصل معنا",
   "details": "التفاصيل",
   "bookNow": "احجز الآن",
+  "updateBooking": "تعديل الحجز",
   "contractDetails": "تفاصيل العقد",
   "rentFee": "قيمة الإيجار",
   "contractPeriod": "مدة العقد",
@@ -107,5 +108,16 @@
   "seeAll": "عرض الكل",
   "closeToYou": "بالقرب منك",
   "area": "المساحة",
-  "requestSubmittedYourApartmentIsNowPendingAdminApproval": "تم تقديم الطلب!\nشقتك الآن قيد انتظار موافقة الإدارة."
+  "requestSubmittedYourApartmentIsNowPendingAdminApproval": "تم تقديم الطلب!\nشقتك الآن قيد انتظار موافقة الإدارة.",
+  "edit": "تعديل",
+  "cancel": "إلغاء",
+  "accept": "قبول",
+  "reject": "رفض",
+  "updateRequestSentWaitingForApproval": "تم إرسال طلب التعديل وبانتظار موافقة المالك",
+  "contractUpdatedSuccessfully": "تم تعديل العقد بنجاح",
+  "confirm": "تأكيد",
+  "confirmCancelContract": "هل أنت متأكد من إلغاء العقد؟",
+  "no": "لا",
+  "yes": "نعم",
+  "contractCancelled": "تم إلغاء العقد"
 }

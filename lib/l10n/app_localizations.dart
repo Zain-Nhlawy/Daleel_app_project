@@ -488,6 +488,12 @@ abstract class AppLocalizations {
   /// **'Book Now'**
   String get bookNow;
 
+  /// No description provided for @updateBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Booking'**
+  String get updateBooking;
+
   /// No description provided for @contractDetails.
   ///
   /// In en, this message translates to:
@@ -751,6 +757,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Request Submitted!\nYour apartment is now pending admin approval.'**
   String get requestSubmittedYourApartmentIsNowPendingAdminApproval;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @accept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get accept;
+
+  /// No description provided for @reject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get reject;
+
+  /// No description provided for @updateRequestSentWaitingForApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Your update request has been sent and is waiting for the owner\'s approval'**
+  String get updateRequestSentWaitingForApproval;
+
+  /// No description provided for @contractUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract updated successfully'**
+  String get contractUpdatedSuccessfully;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @confirmCancelContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel the contract?'**
+  String get confirmCancelContract;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @contractCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract has been cancelled'**
+  String get contractCancelled;
 }
 
 class _AppLocalizationsDelegate

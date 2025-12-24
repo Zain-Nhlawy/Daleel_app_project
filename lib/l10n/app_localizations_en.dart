@@ -210,6 +210,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookNow => 'Book Now';
 
   @override
+  String get updateBooking => 'Update Booking';
+
+  @override
   String get contractDetails => 'Contract Details';
 
   @override
@@ -344,4 +347,39 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get requestSubmittedYourApartmentIsNowPendingAdminApproval =>
       'Request Submitted!\nYour apartment is now pending admin approval.';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get accept => 'Accept';
+
+  @override
+  String get reject => 'Reject';
+
+  @override
+  String get updateRequestSentWaitingForApproval =>
+      'Your update request has been sent and is waiting for the owner\'s approval';
+
+  @override
+  String get contractUpdatedSuccessfully => 'Contract updated successfully';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get confirmCancelContract =>
+      'Are you sure you want to cancel the contract?';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get contractCancelled => 'Contract has been cancelled';
 }

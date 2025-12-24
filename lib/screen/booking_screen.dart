@@ -2,6 +2,7 @@
 
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/apartments.dart';
+import 'package:daleel_app_project/models/contracts.dart';
 import 'package:daleel_app_project/widget/custom_button.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:dio/dio.dart';
@@ -13,7 +14,9 @@ import 'package:intl/intl.dart';
 
 class BookingCalendar extends StatefulWidget {
   final Apartments2 apartment;
-  const BookingCalendar({super.key, required this.apartment});
+  final Contracts? contract;
+  const BookingCalendar({super.key, required this.apartment, this.contract});
+  bool get isEdit => contract != null;
 
   @override
   _BookingCalendarState createState() => _BookingCalendarState();
@@ -37,6 +40,11 @@ class _BookingCalendarState extends State<BookingCalendar> {
   void initState() {
     super.initState();
     _markedDates = EventList<Event>(events: {});
+
+    if (widget.contract != null) {
+    _startDate = widget.contract!.startRent;
+    _endDate = widget.contract!.endRent;
+  }
 
     if (widget.apartment.freeTimes != null) {
       availableTimes = widget.apartment.freeTimes!.map((ft) {
@@ -200,6 +208,103 @@ class _BookingCalendarState extends State<BookingCalendar> {
       }
     }
   }
+
+void _showUpdateRequestDialog({required bool isPendingApproval}) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (ctx) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Center(
+        child: Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+          size: 50,
+        ),
+      ),
+      content: Text(
+        isPendingApproval
+            ? AppLocalizations.of(context)!
+                .updateRequestSentWaitingForApproval
+            : AppLocalizations.of(context)!
+                .contractUpdatedSuccessfully,
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 16),
+      ),
+      actionsAlignment: MainAxisAlignment.center,
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(ctx);
+            Navigator.pop(context, true);
+          },
+          child: Text(
+            AppLocalizations.of(context)!.okay,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
+Future<void> _updateBooking() async {
+  if (_isProcessing) return;
+
+  setState(() => _isProcessing = true);
+
+  try {
+    if (_startDate == null || _endDate == null) {
+      return;
+    }
+
+    final result = await contractController.updateRent(
+      rentId: widget.contract!.id,
+      start: _startDate!,
+      end: _endDate!,
+    );
+
+    if (!mounted) return;
+
+    if (result == null) {
+      Navigator.pop(context, null);
+      _showUpdateRequestDialog(isPendingApproval: true);
+    } else {
+      Navigator.pop(context, {
+        'start': _startDate!,
+        'end': _endDate!,
+      });
+      _showUpdateRequestDialog(isPendingApproval: false);
+    }
+  } catch (e) {
+    if (!mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          AppLocalizations.of(context)!.error,
+          style: const TextStyle(color: Colors.red),
+        ),
+        content: Text(e.toString()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(AppLocalizations.of(context)!.okay),
+          ),
+        ],
+      ),
+    );
+  } finally {
+    if (mounted) setState(() => _isProcessing = false);
+  }
+}
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -489,10 +594,14 @@ class _BookingCalendarState extends State<BookingCalendar> {
                 child: CustomButton(
                   text: _isProcessing
                       ? AppLocalizations.of(context)!.processing
-                      : AppLocalizations.of(context)!.confirmBooking,
+                      : widget.isEdit
+                          ? AppLocalizations.of(context)!.updateBooking
+                          : AppLocalizations.of(context)!.confirmBooking,
                   color: brown,
                   onPressed: () {
-                    if (!_isProcessing) _confirmBooking();
+                    if (!_isProcessing) {
+                      widget.isEdit ? _updateBooking() : _confirmBooking();
+                    }
                   },
                 ),
               ),

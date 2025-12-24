@@ -1,17 +1,57 @@
+import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/contracts.dart';
+import 'package:daleel_app_project/models/user.dart';
+import 'package:daleel_app_project/screen/booking_screen.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:daleel_app_project/widget/contract_widgets/timer_for_contract_widget.dart';
 import 'package:flutter/material.dart';
 
-class ContractDetails extends StatelessWidget {
+class ContractDetails extends StatefulWidget {
   final Contracts contract;
   const ContractDetails({super.key, required this.contract});
 
   @override
+  _ContractDetailsState createState() => _ContractDetailsState();
+}
+
+class _ContractDetailsState extends State<ContractDetails> {
+  late Contracts contract;
+
+  @override
+  void initState() {
+    super.initState();
+    contract = widget.contract;
+  }
+
+  Future<void> _updateContract(DateTime start, DateTime end) async {
+    final updated = await contractController.updateRent(
+      rentId: contract.id,
+      start: start,
+      end: end,
+    );
+
+    if (updated != null) {
+      setState(() {
+        contract = updated;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final contractFromController = contractController.contracts?.firstWhere(
+          (c) => c.id == widget.contract.id,
+          orElse: () => widget.contract,
+        ) ??
+        widget.contract;
+    final contract = contractFromController;
+
     const Color primaryColor = Color(0xFF795548);
     const Color accentColor = Color(0xFFD7CCC8);
+
+    final User? user = userController.user;
+    final bool isTenant = (user != null && contract.user.userId == user.userId);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -80,6 +120,15 @@ class ContractDetails extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: (user != null)
+          ? _buildBottomActions(
+              context,
+              contract,
+              isTenant: contract.user.userId == user.userId,
+              isOwner: contract.contractApartment.user.userId == user.userId,
+              onUpdate: _updateContract,
+            )
+          : null,
     );
   }
 
@@ -120,9 +169,9 @@ class ContractDetails extends StatelessWidget {
               child: Text(
                 contract.contractApartment.headDescription!,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                    ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
               ),
@@ -274,9 +323,9 @@ class ContractDetails extends StatelessWidget {
     return Text(
       title,
       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-        fontWeight: FontWeight.bold,
-        color: color,
-      ),
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
     );
   }
 
@@ -315,3 +364,132 @@ class ContractDetails extends StatelessWidget {
     );
   }
 }
+
+
+Widget _buildBottomActions(
+  BuildContext context,
+  Contracts contract, {
+  required bool isTenant,
+  required bool isOwner,
+  required Future<void> Function(DateTime, DateTime) onUpdate,
+}) {
+  return Container(
+    width: double.infinity,
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    decoration: BoxDecoration(
+      color: Colors.grey.shade50,
+      borderRadius: const BorderRadius.vertical(
+        bottom: Radius.circular(20),
+      ),
+      border: Border(
+        top: BorderSide(color: Colors.grey.shade300),
+      ),
+    ),
+    child: Row(
+      children: [
+        if (isTenant) ...[
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 500),
+                    pageBuilder: (_, __, ___) => BookingCalendar(
+                      apartment: contract.contractApartment,
+                      contract: contract,
+                    ),
+                  ),
+                );
+
+                if (result != null && result is Map<String, DateTime>) {
+                  final newStart = result['start']!;
+                  final newEnd = result['end']!;
+                  await onUpdate(newStart, newEnd);
+                }
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.blue,
+                side: const BorderSide(color: Colors.blue),
+              ),
+              child: Text(AppLocalizations.of(context)!.edit),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () async {
+                final confirm = await showDialog<bool>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text(AppLocalizations.of(context)!.confirm),
+                    content: Text(AppLocalizations.of(context)!.confirmCancelContract),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(ctx, false),
+                        child: Text(AppLocalizations.of(context)!.no),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(ctx, true),
+                        child: Text(AppLocalizations.of(context)!.yes),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (confirm == true) {
+                  try {
+                    await contractController.cancelRent(rentId: contract.id);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(AppLocalizations.of(context)!.contractCancelled)),
+                    );
+                    Navigator.pop(context);
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.toString())),
+                    );
+                  }
+                }
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.red,
+                side: const BorderSide(color: Colors.red),
+              ),
+              child: Text(AppLocalizations.of(context)!.cancel),
+            ),
+          ),
+
+        ] else if (isOwner) ...[
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () {
+                // t
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.green,
+                side: const BorderSide(color: Colors.green),
+              ),
+              child: Text(AppLocalizations.of(context)!.accept),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () {
+                // f
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.red,
+                side: const BorderSide(color: Colors.red),
+              ),
+              child: Text(AppLocalizations.of(context)!.reject),
+            ),
+          ),
+        ],
+      ],
+    ),
+  );
+}
+
+
+

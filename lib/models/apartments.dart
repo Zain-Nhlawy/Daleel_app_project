@@ -114,4 +114,13 @@ class Apartments2 {
       isFavorited: json['is_favorited'] == true,
     );
   }
+
+  factory Apartments2.empty() {
+    return Apartments2(
+      id: 0,
+      user: User.empty(),
+      images: [],
+      freeTimes: [],
+    );
+  }
 }

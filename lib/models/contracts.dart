@@ -14,56 +14,80 @@ RentStatus rentStatusFromString(String status) {
     case 'onrent':
       return RentStatus.onRent;
     default:
-      return RentStatus.pending; 
+      return RentStatus.pending;
   }
 }
 
 class Contracts {
   const Contracts({
+    required this.id,
     required this.startRent,
     required this.endRent,
     required this.rentFee,
     required this.rentStatus,
     required this.contractApartment,
     required this.user,
+    required this.departmentRents,
   });
 
+  final int id;
   final Apartments2 contractApartment;
   final RentStatus rentStatus;
   final DateTime startRent;
   final DateTime endRent;
-  final double  rentFee;
+  final double rentFee;
   final User user;
 
+  final List<Contracts> departmentRents;
+
   factory Contracts.fromJson(Map<String, dynamic> json) {
-  return Contracts(
-    startRent: json['startRent'] != null
-        ? DateTime.parse(json['startRent'])
-        : DateTime.now(),
+    Apartments2? apartment;
+    if (json['department'] != null) {
+      apartment = Apartments2.fromJson(json['department']);
+    }
 
-    endRent: json['endRent'] != null
-        ? DateTime.parse(json['endRent'])
-        : DateTime.now(),
+    List<Contracts> deptRents = [];
+    if (json['department'] != null && json['department']['rents'] != null) {
+      final rentsList = json['department']['rents'] as List;
+      deptRents = rentsList.map((e) {
+        return Contracts(
+          id: e['id'] ?? 0,
+          startRent: e['startRent'] != null
+              ? DateTime.parse(e['startRent'])
+              : DateTime.now(),
+          endRent: e['endRent'] != null
+              ? DateTime.parse(e['endRent'])
+              : DateTime.now(),
+          rentFee: e['rentFee'] != null
+              ? double.tryParse(e['rentFee'].toString()) ?? 0.0
+              : 0.0,
+          rentStatus: e['status'] != null
+              ? rentStatusFromString(e['status'])
+              : RentStatus.pending,
+          user: e['user'] != null ? User.fromJson(e['user']) : User.empty(),
+          contractApartment: apartment ?? Apartments2.empty(),
+          departmentRents: [], 
+        );
+      }).toList();
+    }
 
-    rentFee: json['rentFee'] != null
-        ? double.tryParse(json['rentFee'].toString()) ?? 0.0
-        : 0.0,
-
-    rentStatus: json['status'] != null
-        ? rentStatusFromString(json['status'])
-        : RentStatus.pending,
-
-    user: User.fromJson(json['user']),
-
-    contractApartment: json['department'] != null
-        ? Apartments2.fromJson(json['department'])
-        : Apartments2(
-            id: 0,
-            user: User.empty(),
-            images: [],
-          ),
-  );
+    return Contracts(
+      id: json['id'] ?? 0,
+      startRent: json['startRent'] != null
+          ? DateTime.parse(json['startRent'])
+          : DateTime.now(),
+      endRent: json['endRent'] != null
+          ? DateTime.parse(json['endRent'])
+          : DateTime.now(),
+      rentFee: json['rentFee'] != null
+          ? double.tryParse(json['rentFee'].toString()) ?? 0.0
+          : 0.0,
+      rentStatus: json['status'] != null
+          ? rentStatusFromString(json['status'])
+          : RentStatus.pending,
+      user: User.fromJson(json['user']),
+      contractApartment: apartment ?? Apartments2.empty(),
+      departmentRents: deptRents,
+    );
+  }
 }
-
-}
-

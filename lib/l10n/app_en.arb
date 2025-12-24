@@ -64,6 +64,7 @@
   "contactUs": "Contact Us",
   "details": "Details",
   "bookNow": "Book Now",
+  "updateBooking": "Update Booking",
   "contractDetails": "Contract Details",
   "rentFee": "Rent Fee",
   "contractPeriod": "Contract Period",
@@ -107,5 +108,16 @@
   "seeAll": "See All",
   "closeToYou": "Close To You",
   "area": "Area",
-  "requestSubmittedYourApartmentIsNowPendingAdminApproval": "Request Submitted!\nYour apartment is now pending admin approval."
+  "requestSubmittedYourApartmentIsNowPendingAdminApproval": "Request Submitted!\nYour apartment is now pending admin approval.",
+  "edit": "Edit",
+  "cancel": "Cancel",
+  "accept": "Accept",
+  "reject": "Reject",
+  "updateRequestSentWaitingForApproval": "Your update request has been sent and is waiting for the owner's approval",
+  "contractUpdatedSuccessfully": "Contract updated successfully",
+  "confirm": "Confirm",
+  "confirmCancelContract": "Are you sure you want to cancel the contract?",
+  "no": "No",
+  "yes": "Yes",
+  "contractCancelled": "Contract has been cancelled"
 }

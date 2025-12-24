@@ -52,6 +52,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         TextField(
           controller: widget.controller,
           keyboardType: widget.keyboardType,
+          textDirection: Directionality.of(context),
           obscureText: widget.obscure ? _hide : false,
           readOnly: widget.readOnly,
           onTap: widget.onTap,

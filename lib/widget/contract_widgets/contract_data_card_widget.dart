@@ -3,10 +3,22 @@ import 'package:daleel_app_project/screen/details_screens/contract_details.dart'
 import 'package:flutter/material.dart';
 import '../../models/contracts.dart';
 
-class ContractDataCardWidget extends StatelessWidget {
+class ContractDataCardWidget extends StatefulWidget {
+  final Contracts contract;
   const ContractDataCardWidget({super.key, required this.contract});
 
-  final Contracts contract;
+  @override
+  _ContractDataCardWidgetState createState() => _ContractDataCardWidgetState();
+}
+
+class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
+  late Contracts contract;
+
+  @override
+  void initState() {
+    super.initState();
+    contract = widget.contract;
+  }
 
   Color _statusColor(RentStatus status) {
     switch (status) {
@@ -61,16 +73,15 @@ class ContractDataCardWidget extends StatelessWidget {
               child: SizedBox(
                 height: 140,
                 width: double.infinity,
-                child:
-                    contract.contractApartment.images.isNotEmpty
+                child: contract.contractApartment.images.isNotEmpty
                     ? Image.network(
                         contract.contractApartment.images[0],
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             Image.asset(
-                              "assets/images/user.png",
-                              fit: BoxFit.cover,
-                            ),
+                          "assets/images/user.png",
+                          fit: BoxFit.cover,
+                        ),
                       )
                     : Image.asset(
                         "assets/images/user.png",
@@ -89,20 +100,20 @@ class ContractDataCardWidget extends StatelessWidget {
                       Text(
                         "${AppLocalizations.of(context)!.renter}: ${contract.contractApartment.user.firstName}",
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[800],
-                        ),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[800],
+                            ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         "${AppLocalizations.of(context)!.tenant}: ${contract.user.firstName}",
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[800],
-                        ),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[800],
+                            ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -172,9 +183,9 @@ class ContractDataCardWidget extends StatelessWidget {
         Text(
           "$label: ${date.toString().substring(0, 10)}",
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontSize: 14,
-            color: Colors.grey[600],
-          ),
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
         ),
       ],
     );

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:daleel_app_project/core/network/dio_client.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/contracts.dart';
@@ -12,7 +14,7 @@ class ContractService {
       final response = await dioClient.dio.get(
         "/auth/rents",
         queryParameters: {
-          "with": "user,department,department.user,department.images",
+          "with": "user,department,department.rents,department.user,department.images",
         },
       );
 
@@ -60,6 +62,87 @@ class ContractService {
       return Contracts.fromJson(rentData);
     } on DioException catch (e) {
       throw e;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<Contracts?> updateContract({
+  required int rentId,
+  required DateTime start,
+  required DateTime end,
+}) async {
+  try {
+    final response = await apiClient.dio.put(
+      "/auth/rents/$rentId",
+      data: {
+        "startRent": start.toIso8601String().split('T').first,
+        "endRent": end.toIso8601String().split('T').first,
+      },
+    );
+
+    final dynamic rawData = response.data;
+    if (rawData == null) {
+      throw Exception('Empty response from server');
+    }
+
+    final Map<String, dynamic> data =
+        rawData is String ? jsonDecode(rawData) : Map<String, dynamic>.from(rawData);
+
+    if (data['status'] != 'success') {
+      throw Exception(data['message'] ?? 'Update failed');
+    }
+
+    final dynamic responseData = data['data'];
+
+    if (responseData == null) {
+      throw Exception('No data returned from server');
+    }
+
+    if (data['message']
+        .toString()
+        .contains('approve the update')) {
+      return null;
+    }
+
+    if (responseData is Map<String, dynamic>) {
+      return Contracts.fromJson(
+        Map<String, dynamic>.from(responseData),
+      );
+    }
+
+    throw Exception('Unexpected response format');
+  } on DioException catch (e) {
+    throw Exception(
+      e.response?.data?['message'] ??
+          e.message ??
+          'Network error',
+    );
+  } catch (e) {
+    throw Exception(e.toString());
+  }
+}
+
+Future<bool> deleteContract({required int rentId}) async {
+    try {
+      final response = await apiClient.dio.delete("/auth/rents/$rentId");
+
+      final data = response.data;
+      if (data == null) {
+        throw Exception('Empty response from server');
+      }
+
+      if (data['status'] != 'success') {
+        throw Exception(data['message'] ?? 'Delete failed');
+      }
+
+      return true; 
+    } on DioException catch (e) {
+      throw Exception(
+        e.response?.data?['message'] ??
+        e.message ??
+        'Network error',
+      );
     } catch (e) {
       throw Exception(e.toString());
     }
