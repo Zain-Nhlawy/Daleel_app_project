@@ -6,17 +6,17 @@ import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_scree
 import 'package:daleel_app_project/services/apartment_service.dart';
 import 'package:flutter/material.dart';
 
-class MostPopularApartmentsWidget extends StatefulWidget {
-  const MostPopularApartmentsWidget({super.key, required this.apartment});
+class MostPopularApartmentWidget extends StatefulWidget {
+  const MostPopularApartmentWidget({super.key, required this.apartment});
   final Apartments2 apartment;
 
   @override
-  State<MostPopularApartmentsWidget> createState() =>
-      _MostPopularApartmentsWidgetState();
+  State<MostPopularApartmentWidget> createState() =>
+      _MostPopularApartmentWidgetState();
 }
 
-class _MostPopularApartmentsWidgetState
-    extends State<MostPopularApartmentsWidget> {
+class _MostPopularApartmentWidgetState
+  extends State<MostPopularApartmentWidget> {
   late bool? _isFavorited = widget.apartment.isFavorited;
   final bool _isLoading = false;
 

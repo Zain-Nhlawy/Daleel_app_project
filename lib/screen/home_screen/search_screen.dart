@@ -1,93 +1,90 @@
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 import 'package:flutter/material.dart';
 
-class ApartmentsDisplayScreen extends StatefulWidget {
-  final String? selectedCategory;
-  final RangeValues? priceRange;
-  final String? selectedProvince;
-  final int? selectedRooms;
-  final int? selectedBathrooms;
-  final RangeValues? areaRange;
-
-  const ApartmentsDisplayScreen({
-    super.key,
-
-  });
-
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({required this.search, super.key});
+  final String search;
   @override
-  State<ApartmentsDisplayScreen> createState() =>
-      _ApartmentsDisplayScreenState();
+  State<SearchScreen> createState() => _ApartmentsDisplayScreenState();
 }
 
-class _ApartmentsDisplayScreenState extends State<ApartmentsDisplayScreen> {
+class _ApartmentsDisplayScreenState extends State<SearchScreen> {
   late Future<List<Apartments2>?> _myApartmentsFuture;
-
+  late TextEditingController _controller;
   @override
   void initState() {
     super.initState();
-
-    _myApartmentsFuture = apartmentController.loadFilteredApartments(
-      governorate: widget.selectedProvince,
-      bedrooms: widget.selectedRooms,
-      bathrooms: widget.selectedBathrooms,
-      minArea: widget.areaRange?.start,
-      maxArea: widget.areaRange?.end,
-      minPrice: widget.priceRange?.start,
-      maxPrice: widget.priceRange?.end,
+    _controller = TextEditingController(text: widget.search);
+    _myApartmentsFuture = apartmentController.loadSearchedApartments(
+      widget.search,
     );
   }
 
-  // Widget _buildFilterRow(String label, String value) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(vertical: 4.0),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Text(label, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
-  //         Text(
-  //           value,
-  //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Filtered Results')),
+      appBar: AppBar(title: Text('Search result')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Text(
-            //   'Applied Filters:',
-            //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            // ),
-            // Divider(height: 20, thickness: 1),
-            // _buildFilterRow('Category:', widget.selectedCategory ?? 'Any'),
-            // _buildFilterRow(
-            //   'Price Range:',
-            //   '${widget.priceRange?.start.round() ?? '...'} - ${widget.priceRange?.end.round() ?? '...'}',
-            // ),
-            // _buildFilterRow('Province:', widget.selectedProvince ?? 'Any'),
-            // _buildFilterRow(
-            //   'Rooms:',
-            //   widget.selectedRooms?.toString() ?? 'Any',
-            // ),
-            // _buildFilterRow(
-            //   'Bathrooms:',
-            //   widget.selectedBathrooms?.toString() ?? 'Any',
-            // ),
-            // _buildFilterRow(
-            //   'Area (m²):',
-            //   '${widget.areaRange?.start.round() ?? '...'} - ${widget.areaRange?.end.round() ?? '...'}',
-            // ),
-            SizedBox(height: 20),
+            SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.black.withOpacity(0.20),
+                ),
+                height: 50,
+                child: Row(
+                  children: [
+                    const SizedBox(width: 20),
+                    const Icon(
+                      Icons.search,
+                      size: 28,
+                      color: Color.fromARGB(223, 255, 255, 255),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        style: const TextStyle(color: Colors.white),
+                        textInputAction: TextInputAction.search,
+                        onSubmitted: (value) {
+                          if (value.trim().isEmpty) return;
+
+                          setState(() {
+                            _myApartmentsFuture = apartmentController
+                                .loadSearchedApartments(value);
+                          });
+                        },
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText:
+                              '${AppLocalizations.of(context)!.searchHere}...',
+                          hintStyle: const TextStyle(
+                            color: Color.fromARGB(223, 255, 255, 255),
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
             Expanded(
               child: FutureBuilder<List<Apartments2>?>(
                 future: _myApartmentsFuture,
@@ -100,28 +97,10 @@ class _ApartmentsDisplayScreenState extends State<ApartmentsDisplayScreen> {
                     return const Center(child: Text('An error occurred!'));
                   }
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(
-                      child: Text('No apartments found for these filters.'),
-                    );
+                    return const Center(child: Text('No apartments found '));
                   }
                   final apartments = snapshot.data!;
-                  if (widget.selectedCategory == "Popular") {
-                    apartments.sort(
-                      (a, b) => a.reviewCount!.compareTo(b.reviewCount as num),
-                    );
-                  } else if (widget.selectedCategory == "Most Favorited") {
-                    if (widget.selectedCategory == "Popular") {
-                      apartments.sort(
-                        (a, b) =>
-                            a.reviewCount!.compareTo(b.averageRating as num),
-                      );
-                    } else if (widget.selectedCategory == "Highly Rated") {
-                      apartments.sort(
-                        (a, b) =>
-                            a.reviewCount!.compareTo(b.reviewCount as num),
-                      );
-                    }
-                  }
+
                   return ListView.builder(
                     itemCount: apartments.length,
                     itemBuilder: (context, index) {

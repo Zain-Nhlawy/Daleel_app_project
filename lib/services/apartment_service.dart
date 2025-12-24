@@ -83,9 +83,9 @@ class ApartmentService {
     }
   }
 
-  Future<List<Apartments2>> getFavouriteApartments() async {
+  Future<List<Apartments2>> getFavouriteApartments(int page) async {
     try {
-      final response = await apiClient.dio.get("/auth/favorites/me");
+      final response = await apiClient.dio.get("/auth/favorites/me?page=$page");
       final data = response.data['data'] as List;
 
       return data.map((json) => Apartments2.fromJson(json)).toList();
@@ -93,50 +93,69 @@ class ApartmentService {
       rethrow;
     }
   }
+Future<List<Apartments2>> getFilteredApartments(int page, {
+  String? governorate, 
+  int? bedrooms,    
+  int? bathrooms,
+  double? minArea,   
+  double? maxArea,   
+  double? minPrice,
+  double? maxPrice, 
+  String? sort
+}) async {
+  try {
 
-  Future<List<Apartments2>> getFilteredApartments({
-    String? governorate,
-    int? bedrooms,
-    int? bathrooms,
-    double? minArea,
-    double? maxArea,
-    double? minPrice,
-    double? maxPrice,
-  }) async {
+    final Map<String, dynamic> queryParameters = {};
+
+    if (governorate != null) {
+      queryParameters['governorate'] = governorate;
+    }
+    if (sort != null) {
+      queryParameters['sort'] = sort;
+    }
+    if (bedrooms != null) {
+      queryParameters['bedrooms'] = bedrooms;
+    }
+    if (bathrooms != null) {
+      queryParameters['bathrooms'] = bathrooms;
+    }
+    if (minArea != null) {
+      queryParameters['min_area'] = minArea;
+    }
+    if (maxArea != null) {
+      queryParameters['max_area'] = maxArea;
+    }
+    if (minPrice != null) {
+      queryParameters['min_price'] = minPrice;
+    }
+    if (maxPrice != null) {
+      queryParameters['max_price'] = maxPrice;
+    }
+    queryParameters['page'] = page;
+    final response = await apiClient.dio.get(
+      "/auth/departments?with=images,user",
+      queryParameters: queryParameters, 
+    );
+
+    final data = response.data['data'] as List;
+    return data.map((json) => Apartments2.fromJson(json)).toList();
+  } catch (e) {
+    print("Error in service: $e");
+    rethrow;
+  }
+}
+
+  Future<List<Apartments2>> getSearchedApartments(String search) async {
     try {
-      final Map<String, dynamic> queryParameters = {};
-
-      if (governorate != null) {
-        queryParameters['governorate'] = governorate;
-      }
-      if (bedrooms != null) {
-        queryParameters['bedrooms'] = bedrooms;
-      }
-      if (bathrooms != null) {
-        queryParameters['bathrooms'] = bathrooms;
-      }
-      if (minArea != null) {
-        queryParameters['min_area'] = minArea;
-      }
-      if (maxArea != null) {
-        queryParameters['max_area'] = maxArea;
-      }
-      if (minPrice != null) {
-        queryParameters['min_price'] = minPrice;
-      }
-      if (maxPrice != null) {
-        queryParameters['max_price'] = maxPrice;
-      }
       final response = await apiClient.dio.get(
-        "/auth/departments?with=images,user",
-        queryParameters: queryParameters,
+        "/auth/departments?search=$search&with=images,user",
       );
-
       final data = response.data['data'] as List;
+
       return data.map((json) => Apartments2.fromJson(json)).toList();
     } catch (e) {
-      print("Error in service: $e");
       rethrow;
     }
   }
+
 }
