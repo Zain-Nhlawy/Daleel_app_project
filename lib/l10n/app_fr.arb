@@ -125,7 +125,15 @@
   "myChats": "Mes discussions",
   "noChatsYetExplorePropertiesToContactOwners": "Aucune discussion pour le moment.\nExplorez les propriétés pour contacter les propriétaires !",
   "typeAMessage": "Tapez un message",
+  "contractApprovedSuccessfully": "Le contrat a été approuvé avec succès",
+  "approve": "Approuver",
+  "confirmRejectContract": "Êtes-vous sûr de vouloir rejeter ce contrat ?",
+  "contractRejectedSuccessfully": "Le contrat a été rejeté avec succès",
   "favouriteRemoved": "Favori supprimé",
   "undo": "Annuler",
-  "noApartmentsNearYou": "Aucun appartement près de chez vous"
+  "noApartmentsNearYou": "Aucun appartement près de chez vous",
+  "filteredResults": "Résultats filtrés",
+  "contractHistory": "Historique des contrats",
+  "city": "Ville",
+  "personImage": "Image personnelle"
 }

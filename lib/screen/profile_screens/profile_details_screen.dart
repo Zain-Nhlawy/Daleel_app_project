@@ -98,9 +98,9 @@ class ProfileDetailsScreen extends StatelessWidget {
                   children: [
                     Column(
                       children: [
-                        const Text(
-                          "Personal Image",
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.personImage,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -123,8 +123,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        const Text(
-                          "ID Image",
+                        Text(
+                          AppLocalizations.of(context)!.iDImage,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -173,7 +173,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       buildDetailTile(
                         context,
                         icon: Icons.location_city,
-                        title: "City",
+                        title: AppLocalizations.of(context)!.city,
                         subtitle: displayUser.location!["city"],
                         onTap: () {},
                         primaryColor: primaryColor,

@@ -897,6 +897,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'no apartments near you'**
   String get noApartmentsNearYou;
+
+  /// No description provided for @filteredResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Filtered Results'**
+  String get filteredResults;
+
+  /// No description provided for @contractHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract History'**
+  String get contractHistory;
+
+  /// No description provided for @city.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get city;
+
+  /// No description provided for @personImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Image'**
+  String get personImage;
 }
 
 class _AppLocalizationsDelegate

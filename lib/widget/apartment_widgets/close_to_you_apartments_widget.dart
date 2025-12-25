@@ -77,7 +77,7 @@ class _CloseToYouApartmentsWidgetState extends State<CloseToYouApartmentsWidget>
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: _apartments.length + 1,
+      itemCount: _apartments.length + (_apartments.length >= 10 ? 1 : 0),
       itemBuilder: (context, index) {
         if(index < _apartments.length) {
           return Padding(

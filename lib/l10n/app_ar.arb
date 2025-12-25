@@ -131,5 +131,9 @@
   "contractRejectedSuccessfully": "تم رفض العقد بنجاح",
   "favouriteRemoved": "تمت إزالة المفضلة",
   "undo": "تراجع",
-  "noApartmentsNearYou": "لا توجد شقق قريبة منك"
+  "noApartmentsNearYou": "لا توجد شقق قريبة منك",
+   "filteredResults": "النتائج المُفلترة",
+  "contractHistory": "سجل العقود",
+  "city": "المدينة",
+  "personImage": "الصورة الشخصية"
 }

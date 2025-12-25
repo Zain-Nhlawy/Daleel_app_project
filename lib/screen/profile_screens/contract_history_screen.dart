@@ -36,7 +36,7 @@ class _ContractScreenState extends State<ContractHistoryScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
-          "Contract History",
+          AppLocalizations.of(context)!.contractHistory,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.bold,

@@ -417,4 +417,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noApartmentsNearYou => 'لا توجد شقق قريبة منك';
+
+  @override
+  String get filteredResults => 'النتائج المُفلترة';
+
+  @override
+  String get contractHistory => 'سجل العقود';
+
+  @override
+  String get city => 'المدينة';
+
+  @override
+  String get personImage => 'الصورة الشخصية';
 }
