@@ -9,10 +9,27 @@ class ContractService {
   final DioClient apiClient;
   ContractService({required this.apiClient});
 
-  Future<List<Contracts>?> showContracts() async {
+  Future<List<Contracts>?> showContractsScreen(int page) async {
     try {
       final response = await dioClient.dio.get(
-        "/auth/rents",
+        "/auth/rents/contract?page=${page}",
+        queryParameters: {
+          "with": "user,department,department.rents,department.user,department.images",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List rents = response.data['data'];
+        return rents.map((json) => Contracts.fromJson(json)).toList();
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  Future<List<Contracts>?> showContractsHistory(int page) async {
+    try {
+      final response = await dioClient.dio.get(
+        "/auth/rents/History?page=${page}",
         queryParameters: {
           "with": "user,department,department.rents,department.user,department.images",
         },

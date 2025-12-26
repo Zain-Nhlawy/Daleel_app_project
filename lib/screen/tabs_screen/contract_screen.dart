@@ -13,7 +13,11 @@ class ContractScreen extends StatefulWidget {
 
 class _ContractScreenState extends State<ContractScreen>
     with SingleTickerProviderStateMixin {
-  late Future<List<Contracts>> _contractsFuture;
+  List<Contracts> _contracts = [];
+  final ScrollController _controller = ScrollController();
+  bool _isLoading = true, _hasMore = true;
+  int _page = 1;
+  String? _error;
 
   @override
   void initState() {
@@ -21,11 +25,30 @@ class _ContractScreenState extends State<ContractScreen>
     _loadContracts();
   }
 
-  void _loadContracts() {
-    _contractsFuture = contractController.loadContracts();
+  Future<void> _loadContracts() async {
+    try {
+      final contracts = (await contractController.loadContractsHistory(_page));
+      if (mounted) {
+        setState(() {
+          _contracts += contracts;
+          if(contracts.isEmpty) _hasMore = false;
+          else _page++;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   void _refreshContracts() {
+    _page = 1;
+    _contracts = [];
     setState(() {
       _loadContracts();
     });
@@ -81,59 +104,49 @@ class _ContractScreenState extends State<ContractScreen>
   }
 
   Widget _buildContractsView() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_error != null) {
+      return Center(
+        child: Text('${AppLocalizations.of(context)!.error}: $_error'),
+      );
+    }
+
+    if (_contracts.isEmpty) {
+      return Center(
+        child: Text(AppLocalizations.of(context)!.noContractsFound),
+      );
+    }
+    
     return SafeArea(
-      child: FutureBuilder<List<Contracts>>(
-        future: _contractsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            );
+      child: RefreshIndicator(
+        onRefresh: () async => _refreshContracts(),
+        child: ListView.builder(
+          padding: const EdgeInsets.all(8.0),
+          itemCount:_contracts.length + (_contracts.length >= 10 ? 1 : 0),
+          itemBuilder: (context, index) {
+            if(index < _contracts.length) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: ContractDataCardWidget(
+                  contract: _contracts[index],
+                ),
+              );
+            }
+            if(_hasMore) {
+              return Padding(
+                padding: EdgeInsets.all(10),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+            else {
+              return const SizedBox(height: 10);
+            }
           }
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                '${AppLocalizations.of(context)!.error}: ${snapshot.error}',
-                style: const TextStyle(color: Colors.white70),
-              ),
-            );
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
-              child: Text(
-                AppLocalizations.of(context)!.noContractsFound,
-                style: const TextStyle(color: Colors.white70, fontSize: 16),
-              ),
-            );
-          }
-          final contracts = snapshot.data!;
-          final realTimeContract = contracts
-              .where(
-                (a) =>
-                    a.rentStatus == RentStatus.onRent ||
-                    a.rentStatus == RentStatus.pending,
-              )
-              .toList();
-          if (realTimeContract.isEmpty) {
-            return const Center(child: Text("No Contract Found"));
-          }
-          return RefreshIndicator(
-            onRefresh: () async => _refreshContracts(),
-            child: ListView.builder(
-              padding: const EdgeInsets.all(8.0),
-              itemCount: realTimeContract.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: ContractDataCardWidget(
-                    contract: realTimeContract[index],
-                  ),
-                );
-              },
-            ),
-          );
-        },
-      ),
+        ),
+      )
     );
   }
 

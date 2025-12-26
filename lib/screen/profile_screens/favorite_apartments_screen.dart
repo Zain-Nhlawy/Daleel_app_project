@@ -40,7 +40,7 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
         setState(() {
           _favoriteApartments += apartments ?? [];
           if(apartments == null || apartments.isEmpty) _hasMore = false;
-          _page++;
+          else _page++;
           _isLoading = false;
         });
       }
