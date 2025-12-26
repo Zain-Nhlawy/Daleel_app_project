@@ -22,6 +22,11 @@ class _ContractScreenState extends State<ContractHistoryScreen> {
   void initState() {
     super.initState();
     _loadContracts();
+    _controller.addListener(() {
+      if(_controller.position.pixels >= _controller.position.maxScrollExtent - 1 && !_isLoading && _hasMore) {
+        _loadContracts();
+      }
+    });
   }
 
   Future<void> _loadContracts() async {
@@ -46,9 +51,9 @@ class _ContractScreenState extends State<ContractHistoryScreen> {
   }
 
   void _refreshContracts() {
-    _page = 1;
-    _contracts = [];
     setState(() {
+      _page = 1;
+      _contracts = [];
       _loadContracts();
     });
   }
