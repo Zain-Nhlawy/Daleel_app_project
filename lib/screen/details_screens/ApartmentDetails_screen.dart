@@ -8,11 +8,17 @@ import 'package:daleel_app_project/widget/apartment_details_widgets/comments_sec
 import 'package:daleel_app_project/widget/apartment_details_widgets/description_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/images_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/publisher_section.dart';
+import 'package:daleel_app_project/widget/rate_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ApartmentDetailsScreen extends StatefulWidget {
   final Apartments2 apartment;
-  const ApartmentDetailsScreen({super.key, required this.apartment});
+  final bool withRate;
+  const ApartmentDetailsScreen({
+    super.key,
+    this.withRate = false,
+    required this.apartment,
+  });
 
   @override
   State<ApartmentDetailsScreen> createState() => _ApartmentDetailsScreenState();
@@ -20,6 +26,7 @@ class ApartmentDetailsScreen extends StatefulWidget {
 
 class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   late Apartments2 apartment;
+  late bool withRate;
   bool isLoading = true;
   late String selectedImage;
   bool showAllComments = false;
@@ -31,6 +38,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   void initState() {
     super.initState();
     apartment = widget.apartment;
+    withRate = widget.withRate;
     selectedImage = apartment.images.isNotEmpty
         ? apartment.images.first
         : 'assets/images/user.png';
@@ -41,6 +49,14 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   void _loadData() async {
     await _loadApartmentDetails();
     await commentController.fetchComments(apartment.id);
+    if (withRate && mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final rated = await showRatingDialog(context, apartment.id);
+        if (rated == true && mounted) {
+          await _loadApartmentDetails();
+        }
+      });
+    }
   }
 
   Future<void> _loadApartmentDetails() async {
