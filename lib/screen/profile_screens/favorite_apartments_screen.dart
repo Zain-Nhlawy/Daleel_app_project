@@ -115,7 +115,7 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
 
     return ListView.builder(
       controller: _controller,
-      itemCount: _favoriteApartments.length + 1,
+      itemCount: _favoriteApartments.length + (_favoriteApartments.length >= 10 ? 1 : 0),
       itemBuilder: (context, index) {
         if(index < _favoriteApartments.length) {
           final apartment = _favoriteApartments[index];

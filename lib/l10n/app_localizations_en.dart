@@ -422,4 +422,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noApartmentsNearYou => 'no apartments near you';
+
+  @override
+  String get filteredResults => 'Filtered Results';
+
+  @override
+  String get contractHistory => 'Contract History';
+
+  @override
+  String get city => 'City';
+
+  @override
+  String get personImage => 'Personal Image';
 }

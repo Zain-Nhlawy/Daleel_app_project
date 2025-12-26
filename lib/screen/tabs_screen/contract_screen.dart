@@ -57,7 +57,7 @@ class _ContractScreenState extends State<ContractScreen>
             indicatorWeight: 3,
             tabs: const [
               Tab(text: "Contracts"),
-              Tab(text: "ٌEdits Request"),
+              Tab(text: "Edits Request"),
             ],
           ),
         ),

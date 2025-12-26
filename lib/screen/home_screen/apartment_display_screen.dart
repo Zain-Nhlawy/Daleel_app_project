@@ -1,4 +1,5 @@
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,7 @@ class _ApartmentsDisplayScreenState extends State<ApartmentsDisplayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Filtered Results')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.filteredResults)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -404,18 +404,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get contractApprovedSuccessfully =>
-      'The contract has been approved successfully';
+      'Le contrat a été approuvé avec succès';
 
   @override
-  String get approve => 'Approve';
+  String get approve => 'Approuver';
 
   @override
   String get confirmRejectContract =>
-      'Are you sure you want to reject this contract?';
+      'Êtes-vous sûr de vouloir rejeter ce contrat ?';
 
   @override
   String get contractRejectedSuccessfully =>
-      'Contract has been rejected successfully';
+      'Le contrat a été rejeté avec succès';
 
   @override
   String get favouriteRemoved => 'Favori supprimé';
@@ -425,4 +425,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get noApartmentsNearYou => 'Aucun appartement près de chez vous';
+
+  @override
+  String get filteredResults => 'Résultats filtrés';
+
+  @override
+  String get contractHistory => 'Historique des contrats';
+
+  @override
+  String get city => 'Ville';
+
+  @override
+  String get personImage => 'Image personnelle';
 }
