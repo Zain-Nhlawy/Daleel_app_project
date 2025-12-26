@@ -12,7 +12,7 @@ class ContractService {
   Future<List<Contracts>?> showContractsScreen(int page) async {
     try {
       final response = await dioClient.dio.get(
-        "/auth/rents/contract?page=${page}",
+        "/auth/rents?page=${page}",
         queryParameters: {
           "with":
               "user,department,department.rents,department.user,department.images",
