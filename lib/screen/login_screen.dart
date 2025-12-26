@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'signup_screen.dart';
 import '../widget/custom_text_field.dart';
 import '../../dependencies.dart';
-import 'package:daleel_app_project/main.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -55,47 +53,6 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Future<void> initNotifications() async {
-    final messaging = FirebaseMessaging.instance;
-    await messaging.requestPermission();
-
-    final token = await messaging.getToken();
-    if (token != null) {
-      await notificationService.saveToken(token);
-    }
-    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
-      await notificationService.saveToken(newToken);
-    });
-    const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'high_importance_channel',
-      'High Importance Notifications',
-      description: 'This channel is used for important notifications.',
-      importance: Importance.high,
-    );
-
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >()
-        ?.createNotificationChannel(channel);
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      flutterLocalNotificationsPlugin.show(
-        message.hashCode,
-        message.notification?.title,
-        message.notification?.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            'high_importance_channel',
-            'High Importance Notifications',
-            importance: Importance.max,
-            priority: Priority.high,
-          ),
-        ),
-      );
-    });
-  }
-
   void _login() async {
     final phone = _phoneController.text.trim();
     final password = _passwordController.text;
@@ -111,7 +68,10 @@ class _LoginScreenState extends State<LoginScreen>
       _showError(AppLocalizations.of(context)!.loginFailedCheckYourCredentials);
       return;
     }
-    initNotifications();
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    if (fcmToken != null) {
+      await notificationService.saveToken(fcmToken);
+    }
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
