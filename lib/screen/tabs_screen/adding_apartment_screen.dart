@@ -84,8 +84,11 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     try {
       await addRepo.addApartment(
         userId: user!.userId,
-        images: [_selectedImageController!, ..._apartmentPictures],
-        // contractImage: contractImage,
+        images: [
+          _selectedImageController!,
+          contractImage,
+          ..._apartmentPictures,
+        ],
         location: selectedLocation,
         state: false,
         headDescription: _apartmentHeadDescriptionController.text,

@@ -17,30 +17,37 @@ class NearpyApartmentsWidgets extends StatefulWidget {
 }
 
 class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
-  late bool? _isFavorited = widget.apartment.isFavorited;
-  final bool _isLoading = false;
+  late bool? _isFavorited;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorited = widget.apartment.isFavorited;
+  }
 
   void _handleFavoriteToggle() async {
     setState(() {
-      _isFavorited = !_isFavorited!;
+      _isLoading = true;
     });
 
     final apartmentService = ApartmentService(
       apiClient: DioClient(storage: AppSecureStorage()),
     );
+
     try {
       final bool success = await apartmentService.toggleFavorite(
         widget.apartment.id,
       );
-      if (!success && mounted) {
+      if (success && mounted) {
         setState(() {
           _isFavorited = !_isFavorited!;
         });
       }
-    } catch (e) {
+    } finally {
       if (mounted) {
         setState(() {
-          _isFavorited = !_isFavorited!;
+          _isLoading = false;
         });
       }
     }
@@ -49,7 +56,6 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
   @override
   Widget build(BuildContext context) {
     const Color primaryColor = Color(0xFF795548);
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       decoration: BoxDecoration(
@@ -57,9 +63,9 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.08),
             spreadRadius: 1,
-            blurRadius: 8,
+            blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
@@ -152,7 +158,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Colors.grey[800],
+                        color: Colors.grey[850],
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -160,8 +166,8 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                       children: [
                         Icon(
                           Icons.location_on,
-                          size: 14,
-                          color: Colors.grey[600],
+                          size: 16,
+                          color: primaryColor.withOpacity(0.8),
                         ),
                         const SizedBox(width: 4),
                         Expanded(
@@ -169,13 +175,16 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                             widget.apartment.location?['city'] ??
                                 AppLocalizations.of(context)!.unknownCity,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: Colors.grey[600]),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -199,9 +208,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                         ),
                         Text(
                           '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
+                          style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: primaryColor,
                                 fontWeight: FontWeight.bold,

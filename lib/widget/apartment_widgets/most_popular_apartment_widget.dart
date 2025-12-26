@@ -16,7 +16,7 @@ class MostPopularApartmentWidget extends StatefulWidget {
 }
 
 class _MostPopularApartmentWidgetState
-  extends State<MostPopularApartmentWidget> {
+    extends State<MostPopularApartmentWidget> {
   late bool? _isFavorited = widget.apartment.isFavorited;
   final bool _isLoading = false;
 
