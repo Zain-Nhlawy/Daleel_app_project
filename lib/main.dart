@@ -1,6 +1,6 @@
 import 'package:daleel_app_project/core/storage/storage_keys.dart';
 import 'package:daleel_app_project/dependencies.dart';
-import 'package:daleel_app_project/language_provider.dart';
+import 'package:daleel_app_project/providers.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -138,10 +138,13 @@ void main() async {
     userController.updateProfile(await userService.getProfile());
   }
   language = await appStorage.read(StorageKeys.language) ?? 'en';
-
+  final theme = await appStorage.read(StorageKeys.theme);
+  if(theme != null) {
+    appTheme = theme;
+  }
   runApp(
     ChangeNotifierProvider(
-      create: (context) => LanguageProvider(),
+      create: (context) => SettingsProvider(),
       child: const MyApp(),
     ),
   );
@@ -152,14 +155,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<LanguageProvider>(context);
+    final provider = Provider.of<SettingsProvider>(context);
 
     return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: theme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: provider.currentTheme,
       home: SplashScreen(),
       locale: provider.currentLocale,
       supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],

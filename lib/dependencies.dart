@@ -7,6 +7,7 @@ import 'package:daleel_app_project/services/comment_service.dart';
 import 'package:daleel_app_project/services/contract_service.dart';
 import 'package:daleel_app_project/services/notification_service.dart';
 import 'package:daleel_app_project/services/review_service.dart';
+import 'package:flutter/material.dart';
 import 'core/storage/secure_storage.dart';
 import 'core/network/dio_client.dart';
 import 'services/user_service.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 final AppSecureStorage appStorage = AppSecureStorage();
 final DioClient dioClient = DioClient(storage: appStorage);
 String language = 'en';
+String appTheme = "light";
 final UserService userService = UserService(
   apiClient: dioClient,
   storage: appStorage,
