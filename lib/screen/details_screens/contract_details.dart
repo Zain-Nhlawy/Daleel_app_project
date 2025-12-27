@@ -63,12 +63,10 @@ class _ContractDetailsState extends State<ContractDetails> {
   @override
   Widget build(BuildContext context) {
     final Contracts contract = this.contract;
-
-    const Color primaryColor = Color(0xFF795548);
-    const Color accentColor = Color(0xFFD7CCC8);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     final User? user = userController.user;
-    // ignore: unused_local_variable
     final bool isTenant = (user != null && contract.user.userId == user.userId);
 
     return Scaffold(
@@ -76,24 +74,20 @@ class _ContractDetailsState extends State<ContractDetails> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.contractDetails,
-          style: const TextStyle(
-            color: Colors.white,
+          style: theme.textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            fontSize: 22,
+            color: colorScheme.onPrimary,
           ),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: colorScheme.onPrimary),
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.background,
-            ],
+            colors: [colorScheme.primary, colorScheme.background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -114,7 +108,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: colorScheme.surface,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   clipBehavior: Clip.antiAlias,
@@ -124,11 +118,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                       _buildImageSection(),
                       Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: _buildDetailsSection(
-                          context,
-                          primaryColor,
-                          accentColor,
-                        ),
+                        child: _buildDetailsSection(context, colorScheme),
                       ),
                     ],
                   ),
@@ -142,7 +132,7 @@ class _ContractDetailsState extends State<ContractDetails> {
           ? _buildBottomActions(
               context,
               contract,
-              isTenant: contract.user.userId == user.userId,
+              isTenant: isTenant,
               onUpdate: _updateContract,
               onApprove: _approveContract,
               onReject: _rejectContract,
@@ -172,11 +162,7 @@ class _ContractDetailsState extends State<ContractDetails> {
     );
   }
 
-  Widget _buildDetailsSection(
-    BuildContext context,
-    Color primaryColor,
-    Color accentColor,
-  ) {
+  Widget _buildDetailsSection(BuildContext context, ColorScheme colorScheme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -186,7 +172,7 @@ class _ContractDetailsState extends State<ContractDetails> {
           children: [
             Expanded(
               child: Text(
-                contract.contractApartment.headDescription!,
+                contract.contractApartment.headDescription ?? 'N/A',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
@@ -196,7 +182,7 @@ class _ContractDetailsState extends State<ContractDetails> {
               ),
             ),
             const SizedBox(width: 10),
-            _buildStatusChip(contract.rentStatus),
+            _buildStatusChip(contract.rentStatus, colorScheme),
           ],
         ),
         const SizedBox(height: 16),
@@ -208,12 +194,15 @@ class _ContractDetailsState extends State<ContractDetails> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Divider(thickness: 1, color: accentColor),
+          child: Divider(
+            thickness: 1,
+            color: colorScheme.onSurface.withOpacity(0.1),
+          ),
         ),
         _buildSectionHeader(
           context,
           AppLocalizations.of(context)!.contractPeriod,
-          primaryColor,
+          colorScheme.primary,
         ),
         const SizedBox(height: 16),
         _buildDetailRow(
@@ -231,26 +220,29 @@ class _ContractDetailsState extends State<ContractDetails> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Divider(thickness: 1, color: accentColor),
+          child: Divider(
+            thickness: 1,
+            color: colorScheme.onSurface.withOpacity(0.1),
+          ),
         ),
         _buildSectionHeader(
           context,
           AppLocalizations.of(context)!.partiesInvolved,
-          primaryColor,
+          colorScheme.primary,
         ),
         const SizedBox(height: 16),
         _buildPartyInfo(
           context,
           AppLocalizations.of(context)!.renter,
           contract.contractApartment.user,
-          accentColor,
+          colorScheme.onSurface.withOpacity(0.1),
         ),
         const SizedBox(height: 16),
         _buildPartyInfo(
           context,
           AppLocalizations.of(context)!.tenant,
           contract.user,
-          accentColor,
+          colorScheme.onSurface.withOpacity(0.1),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -269,8 +261,8 @@ class _ContractDetailsState extends State<ContractDetails> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
-                foregroundColor: Colors.white,
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -286,7 +278,7 @@ class _ContractDetailsState extends State<ContractDetails> {
     );
   }
 
-  Widget _buildStatusChip(RentStatus status) {
+  Widget _buildStatusChip(RentStatus status, ColorScheme colorScheme) {
     Color chipColor;
     String statusText = status.toString().split('.').last;
     switch (status) {
@@ -306,8 +298,8 @@ class _ContractDetailsState extends State<ContractDetails> {
     return Chip(
       label: Text(
         statusText,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: colorScheme.onPrimary,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -392,13 +384,18 @@ Widget _buildBottomActions(
   required Future<void> Function() onApprove,
   required Future<Contracts> Function() onReject,
 }) {
+  final theme = Theme.of(context);
+  final colorScheme = theme.colorScheme;
+
   return Container(
     width: double.infinity,
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     decoration: BoxDecoration(
-      color: Colors.grey.shade50,
+      color: colorScheme.surface,
       borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
-      border: Border(top: BorderSide(color: Colors.grey.shade300)),
+      border: Border(
+        top: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)),
+      ),
     ),
     child: Row(
       children: [
@@ -424,8 +421,8 @@ Widget _buildBottomActions(
                 }
               },
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.blue,
-                side: const BorderSide(color: Colors.blue),
+                foregroundColor: colorScheme.primary,
+                side: BorderSide(color: colorScheme.primary),
               ),
               child: Text(AppLocalizations.of(context)!.edit),
             ),
@@ -457,6 +454,7 @@ Widget _buildBottomActions(
                 if (confirm == true) {
                   try {
                     await contractController.cancelRent(rentId: contract.id);
+                    if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
@@ -466,6 +464,7 @@ Widget _buildBottomActions(
                     );
                     Navigator.pop(context);
                   } catch (e) {
+                    if (!context.mounted) return;
                     ScaffoldMessenger.of(
                       context,
                     ).showSnackBar(SnackBar(content: Text(e.toString())));
@@ -473,8 +472,8 @@ Widget _buildBottomActions(
                 }
               },
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.red,
-                side: const BorderSide(color: Colors.red),
+                foregroundColor: colorScheme.error,
+                side: BorderSide(color: colorScheme.error),
               ),
               child: Text(AppLocalizations.of(context)!.cancel),
             ),
@@ -482,60 +481,7 @@ Widget _buildBottomActions(
         ] else ...[
           Expanded(
             child: OutlinedButton(
-              onPressed: () async {
-                try {
-                  await onApprove();
-
-                  if (!context.mounted) return;
-
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: 60,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            AppLocalizations.of(
-                              context,
-                            )!.contractApprovedSuccessfully,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: Text(AppLocalizations.of(context)!.okay),
-                        ),
-                      ],
-                    ),
-                  );
-                } catch (e) {
-                  if (!context.mounted) return;
-
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text(AppLocalizations.of(context)!.error),
-                      content: Text(e.toString()),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: Text(AppLocalizations.of(context)!.okay),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
-
+              onPressed: onApprove,
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.green,
                 side: const BorderSide(color: Colors.green),
@@ -568,57 +514,11 @@ Widget _buildBottomActions(
                 );
 
                 if (confirm != true) return;
-                try {
-                  await onReject();
-
-                  if (!context.mounted) return;
-
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.cancel, color: Colors.red, size: 60),
-                          const SizedBox(height: 16),
-                          Text(
-                            AppLocalizations.of(
-                              context,
-                            )!.contractRejectedSuccessfully,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: Text(AppLocalizations.of(context)!.okay),
-                        ),
-                      ],
-                    ),
-                  );
-                } catch (e) {
-                  if (!context.mounted) return;
-
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text(AppLocalizations.of(context)!.error),
-                      content: Text(e.toString()),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: Text(AppLocalizations.of(context)!.okay),
-                        ),
-                      ],
-                    ),
-                  );
-                }
+                await onReject();
               },
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.red,
-                side: const BorderSide(color: Colors.red),
+                foregroundColor: colorScheme.error,
+                side: BorderSide(color: colorScheme.error),
               ),
               child: Text(AppLocalizations.of(context)!.reject),
             ),

@@ -47,18 +47,20 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF795548);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
 
     return SizedBox(
       width: 230,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: colorScheme.shadow.withOpacity(0.1),
               spreadRadius: 1,
               blurRadius: 8,
               offset: const Offset(0, 4),
@@ -110,7 +112,7 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                     child: Container(
                       height: 35,
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.3),
+                        color: colorScheme.onSurface.withOpacity(0.3),
                         shape: BoxShape.circle,
                       ),
                       child: _isLoading
@@ -118,10 +120,10 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                               width: 32,
                               height: 32,
                               padding: const EdgeInsets.all(8.0),
-                              child: const CircularProgressIndicator(
+                              child: CircularProgressIndicator(
                                 strokeWidth: 2.0,
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white,
+                                  colorScheme.primary,
                                 ),
                               ),
                             )
@@ -133,8 +135,8 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                                     ? Icons.favorite
                                     : Icons.favorite_border,
                                 color: _isFavorited!
-                                    ? Colors.red
-                                    : Colors.white,
+                                    ? colorScheme.error
+                                    : colorScheme.onSurface,
                                 size: 22,
                               ),
                               onPressed: _handleFavoriteToggle,
@@ -150,7 +152,7 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
+                        color: colorScheme.onSurface.withOpacity(0.6),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -166,8 +168,8 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                                   1,
                                 ) ??
                                 'N/A',
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurface,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
@@ -190,23 +192,21 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                           child: Text(
                             widget.apartment.headDescription ??
                                 AppLocalizations.of(context)!.noDescription,
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.grey[800],
-                                ),
+                            style: textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: colorScheme.onSurface,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         Text(
                           '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style: textTheme.bodySmall?.copyWith(
+                            color: colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -216,15 +216,16 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                         Icon(
                           Icons.location_on,
                           size: 14,
-                          color: Colors.grey[600],
+                          color: colorScheme.onSurface.withOpacity(0.7),
                         ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             widget.apartment.location?['city'] ??
                                 AppLocalizations.of(context)!.unknownCity,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: Colors.grey[600]),
+                            style: textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurface.withOpacity(0.7),
+                            ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
