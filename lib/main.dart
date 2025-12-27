@@ -2,7 +2,6 @@ import 'package:daleel_app_project/core/storage/storage_keys.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/language_provider.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
-import 'package:daleel_app_project/screen/profile_screens/settings_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -139,7 +138,7 @@ void main() async {
     userController.updateProfile(await userService.getProfile());
   }
   language = await appStorage.read(StorageKeys.language) ?? 'en';
-  
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => LanguageProvider(),

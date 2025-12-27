@@ -1,18 +1,18 @@
 import 'package:daleel_app_project/core/storage/storage_keys.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/language_provider.dart';
-import 'package:daleel_app_project/main.dart';
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SettingsScreen extends StatefulWidget{
+class SettingsScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _SettingsScreenState();
   }
 }
-class _SettingsScreenState extends State<SettingsScreen>{
+
+class _SettingsScreenState extends State<SettingsScreen> {
   String _selectedLang = language;
   final _localizedValues = {
     'en': {'name': 'English (EN)'},
@@ -42,14 +42,23 @@ class _SettingsScreenState extends State<SettingsScreen>{
             children: [
               // Styled Dropdown Container
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.2)),
+                  border: Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withOpacity(0.2),
+                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.05),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withOpacity(0.05),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -59,9 +68,13 @@ class _SettingsScreenState extends State<SettingsScreen>{
                   child: DropdownButton<String>(
                     value: _selectedLang,
                     // Dynamic icon color based on primary theme
-                    icon: Icon(Icons.language, color: Theme.of(context).colorScheme.primary),
+                    icon: Icon(
+                      Icons.language,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     dropdownColor: Theme.of(context).colorScheme.surface,
-                    isExpanded: true, // Makes it look better inside the container
+                    isExpanded:
+                        true, // Makes it look better inside the container
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.w600,
@@ -73,8 +86,8 @@ class _SettingsScreenState extends State<SettingsScreen>{
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
-                      if(newValue != null) {
-                        setState((){
+                      if (newValue != null) {
+                        setState(() {
                           _selectedLang = newValue;
                         });
                       }
@@ -108,7 +121,10 @@ class _SettingsScreenState extends State<SettingsScreen>{
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.secondary],
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.secondary,
+            ],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),
@@ -130,7 +146,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: 16,
                 fontWeight: FontWeight.w800,
-                letterSpacing: 2.0
+                letterSpacing: 2.0,
               ),
             ),
             SizedBox(width: 10),
