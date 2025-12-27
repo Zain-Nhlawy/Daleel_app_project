@@ -107,6 +107,8 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -115,26 +117,28 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
           style: theme.textTheme.titleMedium,
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           _isFavoriteLoading
-              ? const Padding(
-                  padding: EdgeInsets.all(16.0),
+              ? Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: SizedBox(
                     height: 24,
                     width: 24,
                     child: CircularProgressIndicator(
                       strokeWidth: 2.5,
-                      color: Colors.black54,
+                      color: colorScheme.onSurface.withOpacity(0.6),
                     ),
                   ),
                 )
               : IconButton(
                   icon: Icon(
                     _isFavorited! ? Icons.favorite : Icons.favorite_border,
-                    color: _isFavorited! ? Colors.red : Colors.black54,
+                    color: _isFavorited!
+                        ? colorScheme.error
+                        : colorScheme.onSurface,
                     size: 28,
                   ),
                   onPressed: _handleFavoriteToggle,
@@ -207,13 +211,13 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
             right: 0,
             bottom: 0,
             child: Container(
-              color: Colors.white,
+              color: colorScheme.surface,
               padding: const EdgeInsets.all(12),
               child: SizedBox(
                 height: 55,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
+                    backgroundColor: colorScheme.primary,
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -227,7 +231,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                   child: Text(
                     AppLocalizations.of(context)!.bookNow,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.white,
+                      color: colorScheme.onPrimary,
                       fontSize: 18,
                     ),
                   ),

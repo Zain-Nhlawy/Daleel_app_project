@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
@@ -16,23 +15,30 @@ class MostPopularApartmentsWidget extends StatefulWidget {
 
 class _MostPopularApartmentsWidgetState
     extends State<MostPopularApartmentsWidget> {
-  
   late PageController _pageController;
-  final int _currentPage = 5;
+  final int _initialPage = 0;
   late Future<List<Apartments2>?> _apartmentsFuture;
+  Timer? _autoScrollTimer;
 
   @override
   void initState() {
     super.initState();
-    _apartmentsFuture = apartmentController.loadFilteredApartments(1, sort: "rentcounter_desc");
+    _apartmentsFuture = apartmentController.loadFilteredApartments(
+      1,
+      sort: "rentcounter_desc",
+    );
 
     _pageController = PageController(
-      initialPage: _currentPage,
+      initialPage: _initialPage,
       viewportFraction: 0.7,
     );
-    Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (_pageController.hasClients) {
-        _pageController.nextPage(
+
+    // Auto-scroll every 5 seconds
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 5), (_) {
+      if (_pageController.hasClients && _pageController.positions.isNotEmpty) {
+        final nextPage = _pageController.page!.toInt() + 1;
+        _pageController.animateToPage(
+          nextPage,
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
@@ -43,9 +49,9 @@ class _MostPopularApartmentsWidgetState
   @override
   void dispose() {
     _pageController.dispose();
+    _autoScrollTimer?.cancel();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +65,7 @@ class _MostPopularApartmentsWidgetState
               child: CircularProgressIndicator(color: Colors.white),
             );
           }
+
           if (snapshot.hasError) {
             return Center(
               child: Text(
@@ -67,52 +74,50 @@ class _MostPopularApartmentsWidgetState
               ),
             );
           }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+
+          final apartments = snapshot.data;
+          if (apartments == null || apartments.isEmpty) {
             return Center(
               child: Text(
                 AppLocalizations.of(context)!.noApartmentsFound,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             );
           }
-          final apartments = snapshot.data!;
+
+          // Sort by reviewCount descending
           apartments.sort(
-            (a, b) =>
-                a.reviewCount!.compareTo(b.reviewCount as num),
+            (a, b) => (b.reviewCount ?? 0).compareTo(a.reviewCount ?? 0),
           );
-          if (apartments.isEmpty) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 100,
-                horizontal: 100,
-              ),
-              child: Center(child: Text(AppLocalizations.of(context)!.noApartmentsNearYou)),
-            );
-          }
-          var popularApartment = apartments;
-          if (apartments.length <= 10) {
-            popularApartment = apartments;
-          } else {
-            popularApartment = apartments.sublist(1, 10);
-          }
+
+          // Take top 10
+          final popularApartments = apartments.length > 10
+              ? apartments.sublist(0, 10)
+              : apartments;
+
           return PageView.builder(
-            physics: const ClampingScrollPhysics(),
             controller: _pageController,
+            itemCount: popularApartments.length,
+            physics: const ClampingScrollPhysics(),
             itemBuilder: (context, index) {
-              return carouselView(index, popularApartment);
+              return _carouselView(index, popularApartments);
             },
           );
         },
       ),
     );
   }
-  Widget carouselView(int index, List<Apartments2> apartments) {
+
+  Widget _carouselView(int index, List<Apartments2> apartments) {
     return AnimatedBuilder(
       animation: _pageController,
       builder: (context, child) {
         double value = 0.0;
         if (_pageController.position.haveDimensions) {
-          value = (_pageController.page ?? 0) - index;
+          value =
+              ((_pageController.page ??
+                  _pageController.initialPage.toDouble()) -
+              index.toDouble());
           value = (value.abs() * 0.2).clamp(0.0, 1.0);
         }
         return Transform.scale(
@@ -120,9 +125,7 @@ class _MostPopularApartmentsWidgetState
           child: Opacity(opacity: (1.0 - value).clamp(0.6, 1.0), child: child),
         );
       },
-      child: MostPopularApartmentWidget(
-        apartment: apartments[index % apartments.length],
-      ),
+      child: MostPopularApartmentWidget(apartment: apartments[index]),
     );
   }
 }

@@ -10,6 +10,7 @@ class MyChatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUserId = userController.user?.userId.toString() ?? '';
+    final theme = Theme.of(context);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -17,10 +18,9 @@ class MyChatsScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: Text(
           AppLocalizations.of(context)!.myChats,
-          style: const TextStyle(
-            color: Colors.white,
+          style: theme.textTheme.titleLarge?.copyWith(
+            color: theme.colorScheme.onPrimary,
             fontWeight: FontWeight.bold,
-            fontSize: 22,
           ),
         ),
         centerTitle: true,
@@ -30,10 +30,7 @@ class MyChatsScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.background,
-            ],
+            colors: [theme.colorScheme.primary, theme.colorScheme.background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -47,8 +44,10 @@ class MyChatsScreen extends StatelessWidget {
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(color: Colors.white),
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: theme.colorScheme.onPrimary,
+                  ),
                 );
               }
 
@@ -60,7 +59,7 @@ class MyChatsScreen extends StatelessWidget {
                       Icon(
                         Icons.chat_bubble_outline,
                         size: 60,
-                        color: Colors.white.withOpacity(0.5),
+                        color: theme.colorScheme.onPrimary.withOpacity(0.5),
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -68,9 +67,8 @@ class MyChatsScreen extends StatelessWidget {
                           context,
                         )!.noChatsYetExplorePropertiesToContactOwners,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
-                          fontSize: 16,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onPrimary.withOpacity(0.8),
                         ),
                       ),
                     ],
@@ -116,9 +114,11 @@ class MyChatsScreen extends StatelessWidget {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: theme.colorScheme.onBackground.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: Colors.white.withOpacity(0.1)),
+                      border: Border.all(
+                        color: theme.colorScheme.onBackground.withOpacity(0.1),
+                      ),
                     ),
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
@@ -127,7 +127,8 @@ class MyChatsScreen extends StatelessWidget {
                       ),
                       leading: CircleAvatar(
                         radius: 28,
-                        backgroundColor: Colors.white.withOpacity(0.3),
+                        backgroundColor: theme.colorScheme.onBackground
+                            .withOpacity(0.3),
                         backgroundImage: displayImage.isNotEmpty
                             ? (displayImage.startsWith('http')
                                   ? NetworkImage(displayImage)
@@ -138,8 +139,8 @@ class MyChatsScreen extends StatelessWidget {
                                 displayName.isNotEmpty
                                     ? displayName[0].toUpperCase()
                                     : "?",
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  color: theme.colorScheme.onPrimary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
                                 ),
@@ -148,23 +149,23 @@ class MyChatsScreen extends StatelessWidget {
                       ),
                       title: Text(
                         displayName,
-                        style: const TextStyle(
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 16,
+                          color: theme.colorScheme.onPrimary,
                         ),
                       ),
                       subtitle: Text(
                         lastMessage,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.white.withOpacity(0.7)),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onPrimary.withOpacity(0.7),
+                        ),
                       ),
                       trailing: Text(
                         timeDisplay,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white.withOpacity(0.6),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onPrimary.withOpacity(0.6),
                         ),
                       ),
                       onTap: () {

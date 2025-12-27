@@ -9,39 +9,70 @@ class MyHousesScreen extends StatefulWidget {
   const MyHousesScreen({super.key});
 
   @override
-  State<MyHousesScreen> createState() =>
-      _FavoriteApartmentsScreenState();
+  State<MyHousesScreen> createState() => _FavoriteApartmentsScreenState();
 }
 
 class _FavoriteApartmentsScreenState extends State<MyHousesScreen> {
   late Future<List<Apartments2>?> _myApartmentsFuture;
   final User? user = userController.user;
+
+  @override
   void initState() {
     super.initState();
     _myApartmentsFuture = apartmentController.loadMyApartments(user!.userId);
   }
-  
+
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.myHouses, style: Theme.of(context).textTheme.bodyLarge),
         centerTitle: true,
+        title: Text(
+          AppLocalizations.of(context)!.myHouses,
+          style: textTheme.titleLarge?.copyWith(
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: colorScheme.surface,
+        elevation: 0,
       ),
       body: FutureBuilder<List<Apartments2>?>(
         future: _myApartmentsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: CircularProgressIndicator(color: colorScheme.primary),
+            );
           }
+
           if (snapshot.hasError) {
-            return Center(child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'));
+            return Center(
+              child: Text(
+                '${AppLocalizations.of(context)!.error}: ${snapshot.error}',
+                style: textTheme.bodyMedium?.copyWith(color: colorScheme.error),
+                textAlign: TextAlign.center,
+              ),
+            );
           }
+
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text(AppLocalizations.of(context)!.noApartmentsFound));
+            return Center(
+              child: Text(
+                AppLocalizations.of(context)!.noApartmentsFound,
+                style: textTheme.bodyLarge?.copyWith(
+                  color: colorScheme.onBackground,
+                ),
+              ),
+            );
           }
+
           final apartments = snapshot.data!;
           return ListView.builder(
+            padding: const EdgeInsets.only(top: 8),
             itemCount: apartments.length,
             itemBuilder: (context, index) {
               return Padding(
