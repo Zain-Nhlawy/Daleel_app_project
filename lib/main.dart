@@ -37,7 +37,26 @@ final theme = ThemeData(
   ),
   textTheme: GoogleFonts.nunitoTextTheme(),
 );
-
+final darkTheme = ThemeData(
+  useMaterial3: true,
+  brightness: Brightness.dark,
+  colorScheme: const ColorScheme(
+    brightness: Brightness.dark,
+    primary: Color(0xFFBE7D66),
+    onPrimary: Colors.black,
+    secondary: Color(0xFF8B5E3C),
+    onSecondary: Colors.black,
+    background: Color(0xFF121212),
+    onBackground: Colors.white,
+    surface: Color(0xFF1E1E1E),
+    onSurface: Colors.white,
+    error: Colors.red,
+    onError: Colors.black,
+  ),
+  textTheme: GoogleFonts.nunitoTextTheme(
+    ThemeData(brightness: Brightness.dark).textTheme,
+  ),
+);
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
@@ -122,6 +141,8 @@ void main() async {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: theme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system,
       home: const SplashScreen(),
       supportedLocales: const [Locale('en')],
       localizationsDelegates: const [

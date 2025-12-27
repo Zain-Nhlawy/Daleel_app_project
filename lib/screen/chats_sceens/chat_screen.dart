@@ -114,11 +114,11 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 228, 228, 227),
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.background,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -223,7 +223,8 @@ class _ChatScreenState extends State<ChatScreen> {
               child: TextField(
                 controller: _controller,
                 decoration: InputDecoration(
-                  hintText: "${AppLocalizations.of(context)!.typeAMessage}${AppLocalizations.of(context)!.points}",
+                  hintText:
+                      "${AppLocalizations.of(context)!.typeAMessage}${AppLocalizations.of(context)!.points}",
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(vertical: 14),
                 ),

@@ -24,7 +24,10 @@ class _ContractScreenState extends State<ContractScreen>
     super.initState();
     _loadContracts();
     _controller.addListener(() {
-      if(_controller.position.pixels >= _controller.position.maxScrollExtent - 1 && !_isLoading && _hasMore) {
+      if (_controller.position.pixels >=
+              _controller.position.maxScrollExtent - 1 &&
+          !_isLoading &&
+          _hasMore) {
         _loadContracts();
       }
     });
@@ -36,8 +39,10 @@ class _ContractScreenState extends State<ContractScreen>
       if (mounted) {
         setState(() {
           _contracts += contracts;
-          if(contracts.isEmpty) _hasMore = false;
-          else _page++;
+          if (contracts.isEmpty)
+            _hasMore = false;
+          else
+            _page++;
           _isLoading = false;
         });
       }
@@ -90,11 +95,11 @@ class _ContractScreenState extends State<ContractScreen>
           ),
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 219, 155, 132),
-                Color.fromARGB(255, 243, 243, 243),
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.background,
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -124,34 +129,31 @@ class _ContractScreenState extends State<ContractScreen>
         child: Text(AppLocalizations.of(context)!.noContractsFound),
       );
     }
-    
+
     return SafeArea(
       child: RefreshIndicator(
         onRefresh: () async => _refreshContracts(),
         child: ListView.builder(
           padding: const EdgeInsets.all(8.0),
-          itemCount:_contracts.length + (_contracts.length >= 10 ? 1 : 0),
+          itemCount: _contracts.length + (_contracts.length >= 10 ? 1 : 0),
           itemBuilder: (context, index) {
-            if(index < _contracts.length) {
+            if (index < _contracts.length) {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
-                child: ContractDataCardWidget(
-                  contract: _contracts[index],
-                ),
+                child: ContractDataCardWidget(contract: _contracts[index]),
               );
             }
-            if(_hasMore) {
+            if (_hasMore) {
               return Padding(
                 padding: EdgeInsets.all(10),
                 child: Center(child: CircularProgressIndicator()),
               );
-            }
-            else {
+            } else {
               return const SizedBox(height: 10);
             }
-          }
+          },
         ),
-      )
+      ),
     );
   }
 

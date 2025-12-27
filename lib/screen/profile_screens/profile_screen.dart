@@ -1,4 +1,3 @@
-
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/widget/profile_screen_widgets/profile_options.dart';
 import 'package:flutter/material.dart';
@@ -26,11 +25,11 @@ class ProfileScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 255, 255, 255),
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.background,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -94,8 +93,8 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              user != null 
-                                  ?  user.email 
+                              user != null
+                                  ? user.email
                                   : 'zainzoon59@gmail.com',
                               style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(color: Colors.grey[600]),

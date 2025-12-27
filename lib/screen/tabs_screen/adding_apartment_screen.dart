@@ -201,11 +201,11 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 255, 255, 255),
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.background,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,

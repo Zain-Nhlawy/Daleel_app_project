@@ -39,31 +39,29 @@ class _ContractDetailsState extends State<ContractDetails> {
   }
 
   Future<void> _approveContract() async {
-  final approved = await contractController.approveContract(
-    rentId: contract.id,
-  );
+    final approved = await contractController.approveContract(
+      rentId: contract.id,
+    );
 
-  setState(() {
-    contract = approved;
-  });
-}
+    setState(() {
+      contract = approved;
+    });
+  }
 
-Future<Contracts> _rejectContract() async {
-  final rejected = await contractController.rejectContract(
-    rentId: contract.id,
-  );
+  Future<Contracts> _rejectContract() async {
+    final rejected = await contractController.rejectContract(
+      rentId: contract.id,
+    );
 
-  setState(() {
-    contract = rejected;
-  });
+    setState(() {
+      contract = rejected;
+    });
 
-  return rejected;
-}
-
+    return rejected;
+  }
 
   @override
   Widget build(BuildContext context) {
-
     final Contracts contract = this.contract;
 
     const Color primaryColor = Color(0xFF795548);
@@ -90,11 +88,11 @@ Future<Contracts> _rejectContract() async {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 255, 255, 255),
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.background,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -481,7 +479,6 @@ Widget _buildBottomActions(
               child: Text(AppLocalizations.of(context)!.cancel),
             ),
           ),
-
         ] else ...[
           Expanded(
             child: OutlinedButton(
@@ -504,8 +501,9 @@ Widget _buildBottomActions(
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            AppLocalizations.of(context)!
-                                .contractApprovedSuccessfully,
+                            AppLocalizations.of(
+                              context,
+                            )!.contractApprovedSuccessfully,
                             textAlign: TextAlign.center,
                             style: const TextStyle(fontSize: 16),
                           ),
@@ -519,7 +517,6 @@ Widget _buildBottomActions(
                       ],
                     ),
                   );
-
                 } catch (e) {
                   if (!context.mounted) return;
 
@@ -539,7 +536,6 @@ Widget _buildBottomActions(
                 }
               },
 
-
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.green,
                 side: const BorderSide(color: Colors.green),
@@ -555,7 +551,9 @@ Widget _buildBottomActions(
                   context: context,
                   builder: (ctx) => AlertDialog(
                     title: Text(AppLocalizations.of(context)!.confirm),
-                    content: Text(AppLocalizations.of(context)!.confirmRejectContract),
+                    content: Text(
+                      AppLocalizations.of(context)!.confirmRejectContract,
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(ctx, false),
@@ -584,7 +582,9 @@ Widget _buildBottomActions(
                           const Icon(Icons.cancel, color: Colors.red, size: 60),
                           const SizedBox(height: 16),
                           Text(
-                            AppLocalizations.of(context)!.contractRejectedSuccessfully,
+                            AppLocalizations.of(
+                              context,
+                            )!.contractRejectedSuccessfully,
                             textAlign: TextAlign.center,
                             style: const TextStyle(fontSize: 16),
                           ),
