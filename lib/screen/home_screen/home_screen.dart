@@ -3,6 +3,7 @@ import 'package:daleel_app_project/screen/home_screen/filters_screen.dart';
 import 'package:daleel_app_project/screen/home_screen/notifications_screen.dart';
 import 'package:daleel_app_project/screen/home_screen/search_screen.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/close_to_you_apartments_widget.dart';
+import 'package:daleel_app_project/widget/apartment_widgets/highly_rated_apartmant_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../dependencies.dart';
@@ -60,11 +61,11 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 228, 228, 227),
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.background,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -98,8 +99,7 @@ class HomeScreen extends StatelessWidget {
                         Expanded(
                           child: TextField(
                             style: const TextStyle(color: Colors.white),
-                            textInputAction:
-                                TextInputAction.search, 
+                            textInputAction: TextInputAction.search,
                             onSubmitted: (value) {
                               if (value.trim().isEmpty) return;
 
@@ -144,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -174,9 +174,21 @@ class HomeScreen extends StatelessWidget {
                 ),
                 MostPopularApartmentsWidget(),
                 const SizedBox(height: 25),
-
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    AppLocalizations.of(context)!.highlyRated,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                HighlyRatedApartmentsList(),
+                const SizedBox(height: 12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
                     AppLocalizations.of(context)!.closeToYou,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(

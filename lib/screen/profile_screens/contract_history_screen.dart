@@ -12,33 +12,71 @@ class ContractHistoryScreen extends StatefulWidget {
 }
 
 class _ContractScreenState extends State<ContractHistoryScreen> {
-  late Future<List<Contracts>> _contractsFuture;
+  List<Contracts> _contracts = [];
+  final ScrollController _controller = ScrollController();
+  bool _isLoading = true, _hasMore = true;
+  int _page = 1;
+  String? _error;
 
   @override
   void initState() {
     super.initState();
     _loadContracts();
+    _controller.addListener(() {
+      if (_controller.position.pixels >=
+              _controller.position.maxScrollExtent - 1 &&
+          !_isLoading &&
+          _hasMore) {
+        _loadContracts();
+      }
+    });
   }
 
-  void _loadContracts() {
-    _contractsFuture = contractController.loadContracts();
+  Future<void> _loadContracts() async {
+    try {
+      final contracts = await contractController.loadContractsScreen(_page);
+      if (mounted) {
+        setState(() {
+          _contracts += contracts;
+          if (contracts.isEmpty) {
+            _hasMore = false;
+          } else {
+            _page++;
+          }
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   void _refreshContracts() {
     setState(() {
-      _loadContracts();
+      _page = 1;
+      _contracts = [];
+      _isLoading = true;
     });
+    _loadContracts();
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.contractHistory,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Colors.white,
+          style: textTheme.titleLarge?.copyWith(
+            color: colorScheme.onBackground,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -47,70 +85,69 @@ class _ContractScreenState extends State<ContractHistoryScreen> {
         elevation: 0,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 243, 243, 243),
-            ],
+            colors: [colorScheme.primary, colorScheme.background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
-        child: SafeArea(
-          child: FutureBuilder<List<Contracts>>(
-            future: _contractsFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(color: Colors.white),
-                );
-              }
+        child: SafeArea(child: paginationWidget(colorScheme, textTheme)),
+      ),
+    );
+  }
 
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(
-                    '${AppLocalizations.of(context)!.error}: ${snapshot.error}',
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                );
-              }
+  Widget paginationWidget(ColorScheme colorScheme, TextTheme textTheme) {
+    if (_isLoading) {
+      return Center(
+        child: CircularProgressIndicator(color: colorScheme.primary),
+      );
+    }
 
-              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(
-                  child: Text(
-                    AppLocalizations.of(context)!.noContractsFound,
-                    style: const TextStyle(color: Colors.white70, fontSize: 16),
-                  ),
-                );
-              }
-
-              final contracts = snapshot.data!;
-              final completedContract = contracts
-                  .where(
-                    (a) =>
-                        a.rentStatus == RentStatus.completed ||
-                        a.rentStatus == RentStatus.cancelled,
-                  )
-                  .toList();
-              return RefreshIndicator(
-                onRefresh: () async => _refreshContracts(),
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: completedContract.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      child: ContractDataCardWidget(
-                        contract: completedContract[index],
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
+    if (_error != null) {
+      return Center(
+        child: Text(
+          '${AppLocalizations.of(context)!.error}: $_error',
+          style: textTheme.bodyMedium?.copyWith(color: colorScheme.error),
         ),
+      );
+    }
+
+    if (_contracts.isEmpty) {
+      return Center(
+        child: Text(
+          AppLocalizations.of(context)!.noContractsFound,
+          style: textTheme.bodyLarge?.copyWith(color: colorScheme.onBackground),
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      color: colorScheme.primary,
+      onRefresh: () async => _refreshContracts(),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(8.0),
+        controller: _controller,
+        itemCount: _contracts.length + (_hasMore ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index < _contracts.length) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
+              child: ContractDataCardWidget(contract: _contracts[index]),
+            );
+          }
+
+          if (_hasMore) {
+            return Padding(
+              padding: const EdgeInsets.all(12),
+              child: Center(
+                child: CircularProgressIndicator(color: colorScheme.primary),
+              ),
+            );
+          }
+
+          return const SizedBox(height: 12);
+        },
       ),
     );
   }

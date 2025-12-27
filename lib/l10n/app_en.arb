@@ -142,5 +142,6 @@
   "noNotifications": "No notifications",
   "clearAll": "Clear all",
   "daysUntilStart": "Days until contract starts",
-  "cancellationFee": "Cancellation fee"
+  "cancellationFee": "Cancellation fee",
+  "highlyRated": "Highly Rated"
 }

@@ -21,11 +21,16 @@ class AddingApartmentScreen extends StatefulWidget {
 class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   final User? user = userController.user;
   final _formKey = GlobalKey<FormState>();
+
   bool _isAvailable = true;
   String _selectedStatusController = 'unfurnished';
+
   final TextEditingController _locationController = TextEditingController();
   Map<String, dynamic>? selectedLocation;
+
   File? _selectedImageController;
+  final List<File> _apartmentPictures = [];
+
   final _apartmentHeadDescriptionController = TextEditingController();
   final _apartmentPriceContoller = TextEditingController();
   final _apartmentFloorController = TextEditingController();
@@ -33,7 +38,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   final _apartmentBathroomsController = TextEditingController();
   final _apartmentAreaController = TextEditingController();
   final _apartmetnDescriptionController = TextEditingController();
-  final List<File> _apartmentPictures = [];
 
   Future<void> _pickImage(
     ImageSource source, {
@@ -44,13 +48,12 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       imageQuality: 80,
     );
     if (image == null) return;
-    final imageFile = File(image.path);
+
     setState(() {
-      if (isHeadImage) {
-        _selectedImageController = imageFile;
-      } else {
-        _apartmentPictures.add(imageFile);
-      }
+      final file = File(image.path);
+      isHeadImage
+          ? _selectedImageController = file
+          : _apartmentPictures.add(file);
     });
   }
 
@@ -65,7 +68,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
               context,
             )!.pleaseFillAllRequiredFieldsSelectALocationAndAddAHeadImage,
           ),
-          backgroundColor: Colors.red,
         ),
       );
       return;
@@ -81,11 +83,15 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
   Future<void> _saveApartment(File contractImage) async {
     final addRepo = AddApartmentsRepo(dioClient: dioClient);
+
     try {
       await addRepo.addApartment(
         userId: user!.userId,
-        images: [_selectedImageController!, ..._apartmentPictures],
-        // contractImage: contractImage,
+        images: [
+          _selectedImageController!,
+          contractImage,
+          ..._apartmentPictures,
+        ],
         location: selectedLocation,
         state: false,
         headDescription: _apartmentHeadDescriptionController.text,
@@ -98,8 +104,9 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         isAvailable: _isAvailable,
         status: _selectedStatusController,
       );
+
       _showPendingApprovalDialog();
-    } catch (e) {
+    } catch (_) {
       _showErrorDialog(
         AppLocalizations.of(context)!.failedToAddApartmentPleaseTryAgain,
       );
@@ -112,19 +119,12 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Center(
-          child: Icon(
-            Icons.check_circle_outline,
-            color: Colors.green,
-            size: 50,
-          ),
-        ),
+        title: const Icon(Icons.check_circle_outline, size: 48),
         content: Text(
           AppLocalizations.of(
             context,
           )!.requestSubmittedYourApartmentIsNowPendingAdminApproval,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16),
         ),
         actionsAlignment: MainAxisAlignment.center,
         actions: [
@@ -132,14 +132,11 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 ctx,
-                MaterialPageRoute(builder: (context) => const HomeScreenTabs()),
-                (Route<dynamic> route) => false,
+                MaterialPageRoute(builder: (_) => const HomeScreenTabs()),
+                (_) => false,
               );
             },
-            child: Text(
-              AppLocalizations.of(context)!.okay,
-              style: TextStyle(fontSize: 16),
-            ),
+            child: Text(AppLocalizations.of(context)!.okay),
           ),
         ],
       ),
@@ -150,10 +147,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(
-          AppLocalizations.of(context)!.error,
-          style: TextStyle(color: Colors.red),
-        ),
+        title: Text(AppLocalizations.of(context)!.error),
         content: Text(message),
         actions: [
           TextButton(
@@ -170,6 +164,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       context,
       MaterialPageRoute(builder: (_) => const PickLocationScreen()),
     );
+
     if (result != null && result is Map) {
       setState(() {
         selectedLocation = Map<String, dynamic>.from(result);
@@ -181,29 +176,24 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF795548);
-    final textStyle = const TextStyle(color: Colors.white);
+    final scheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text(
           AppLocalizations.of(context)!.addApartment,
-          style: textStyle.copyWith(fontWeight: FontWeight.bold, fontSize: 22),
+          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 255, 255, 255),
-            ],
+            colors: [scheme.primary, scheme.background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -211,113 +201,213 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-            ).copyWith(top: 100),
+            padding: const EdgeInsets.fromLTRB(16, 110, 16, 100),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildSectionHeader(
-                  AppLocalizations.of(context)!.mainImage,
-                  textStyle,
-                ),
-                _buildHeadImagePicker(primaryColor),
-                const SizedBox(height: 24),
-                _buildSectionHeader(
-                  AppLocalizations.of(context)!.details,
-                  textStyle,
-                ),
-                _buildTextField(
+                _sectionHeader(AppLocalizations.of(context)!.mainImage),
+                _headImagePicker(),
+                _sectionHeader(AppLocalizations.of(context)!.details),
+                _textField(
                   _apartmentHeadDescriptionController,
                   AppLocalizations.of(context)!.titleegModernVilla,
                   Icons.title,
                 ),
-                _buildTextField(
+                _textField(
                   _apartmentPriceContoller,
                   '${AppLocalizations.of(context)!.price} / ${AppLocalizations.of(context)!.day}',
                   Icons.monetization_on,
                   keyboardType: TextInputType.number,
                 ),
-                const SizedBox(height: 16),
-                _buildStatusDropdown(primaryColor),
-                const SizedBox(height: 10),
-                _buildSectionHeader(
-                  AppLocalizations.of(context)!.features,
-                  textStyle,
-                ),
-                _buildFeaturesGrid(),
-                const SizedBox(height: 10),
-                _buildSectionHeader(
-                  AppLocalizations.of(context)!.location,
-                  textStyle,
-                ),
-                _buildLocationPicker(primaryColor),
-                const SizedBox(height: 16),
-                _buildAvailabilitySwitch(primaryColor),
-                const SizedBox(height: 24),
-                _buildSectionHeader(
-                  AppLocalizations.of(context)!.morePictures,
-                  textStyle,
-                ),
-                _buildImageGallery(primaryColor),
-                const SizedBox(height: 24),
-                _buildSectionHeader(
-                  AppLocalizations.of(context)!.description,
-                  textStyle,
-                ),
-                _buildTextField(
+                const SizedBox(height: 12),
+                _statusDropdown(),
+                _sectionHeader(AppLocalizations.of(context)!.features),
+                _featuresGrid(),
+                _sectionHeader(AppLocalizations.of(context)!.location),
+                _locationPicker(),
+                const SizedBox(height: 12),
+                _availabilitySwitch(),
+                _sectionHeader(AppLocalizations.of(context)!.morePictures),
+                _imageGallery(),
+                _sectionHeader(AppLocalizations.of(context)!.description),
+                _textField(
                   _apartmetnDescriptionController,
-                  "${AppLocalizations.of(context)!.tellUsMoreAboutYourPlace}${AppLocalizations.of(context)!.points}",
+                  AppLocalizations.of(context)!.tellUsMoreAboutYourPlace,
                   Icons.description,
                   maxLines: 4,
                 ),
-                const SizedBox(height: 100),
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar: _buildSaveButton(primaryColor),
-    );
-  }
-
-  Widget _buildSaveButton(Color primaryColor) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ElevatedButton(
-        onPressed: _triggerSaveProcess,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: primaryColor,
-          minimumSize: const Size(double.infinity, 55),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16),
+        child: ElevatedButton(
+          onPressed: _triggerSaveProcess,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: scheme.primary,
+            foregroundColor: scheme.onPrimary,
+            minimumSize: const Size(double.infinity, 55),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
           ),
-          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          child: Text(AppLocalizations.of(context)!.addApartment),
         ),
-        child: Text(AppLocalizations.of(context)!.addApartment),
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title, TextStyle style) {
+  // ================== UI HELPERS ==================
+
+  Widget _sectionHeader(String title) {
+    final scheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4.0, top: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Text(
         title,
-        style: style.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color: scheme.onBackground,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
 
-  Widget _buildHeadImagePicker(Color primaryColor) {
+  Widget _textField(
+    TextEditingController controller,
+    String label,
+    IconData icon, {
+    int maxLines = 1,
+    TextInputType? keyboardType,
+  }) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: TextFormField(
+        controller: controller,
+        maxLines: maxLines,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: Icon(icon, color: scheme.primary),
+          filled: true,
+          fillColor: scheme.surface.withOpacity(0.9),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none,
+          ),
+        ),
+        validator: (v) => v == null || v.isEmpty
+            ? AppLocalizations.of(context)!.thisFieldCannotBeEmpty
+            : null,
+      ),
+    );
+  }
+
+  Widget _statusDropdown() {
+    final scheme = Theme.of(context).colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: scheme.surface.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: _selectedStatusController,
+          isExpanded: true,
+          items: [
+            'partially furnished',
+            'unfurnished',
+            'furnished',
+          ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: (v) => setState(() => _selectedStatusController = v!),
+        ),
+      ),
+    );
+  }
+
+  Widget _featuresGrid() {
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      childAspectRatio: 2.6,
+      children: [
+        _featureField(
+          _apartmentBedroomsController,
+          AppLocalizations.of(context)!.bedrooms,
+          Icons.bed,
+        ),
+        _featureField(
+          _apartmentBathroomsController,
+          AppLocalizations.of(context)!.bathrooms,
+          Icons.shower,
+        ),
+        _featureField(
+          _apartmentFloorController,
+          AppLocalizations.of(context)!.floor,
+          Icons.layers,
+        ),
+        _featureField(
+          _apartmentAreaController,
+          AppLocalizations.of(context)!.areaM2,
+          Icons.square_foot,
+        ),
+      ],
+    );
+  }
+
+  Widget _featureField(
+    TextEditingController controller,
+    String label,
+    IconData icon,
+  ) {
+    return _textField(
+      controller,
+      label,
+      icon,
+      keyboardType: TextInputType.number,
+    );
+  }
+
+  Widget _locationPicker() {
+    return GestureDetector(
+      onTap: _pickLocation,
+      child: _surfaceTile(
+        icon: Icons.location_on_outlined,
+        text: _locationController.text.isEmpty
+            ? AppLocalizations.of(context)!.selectApartmentLocation
+            : _locationController.text,
+      ),
+    );
+  }
+
+  Widget _availabilitySwitch() {
+    final scheme = Theme.of(context).colorScheme;
+
+    return _surfaceTile(
+      child: Switch(
+        value: _isAvailable,
+        onChanged: (v) => setState(() => _isAvailable = v),
+        activeTrackColor: scheme.primary,
+      ),
+      text: AppLocalizations.of(context)!.availableForRent,
+    );
+  }
+
+  Widget _headImagePicker() {
     return GestureDetector(
       onTap: () => _pickImage(ImageSource.gallery, isHeadImage: true),
       child: Container(
         height: 200,
-        width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
           image: _selectedImageController != null
               ? DecorationImage(
@@ -327,237 +417,13 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
               : null,
         ),
         child: _selectedImageController == null
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.add_a_photo_outlined,
-                      color: Colors.white,
-                      size: 50,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      AppLocalizations.of(context)!.tapToAddMainImage,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              )
-            : Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.close_rounded,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () =>
-                      setState(() => _selectedImageController = null),
-                  style: IconButton.styleFrom(
-                    backgroundColor: Colors.black.withOpacity(0.5),
-                  ),
-                ),
-              ),
+            ? const Center(child: Icon(Icons.add_a_photo_outlined, size: 48))
+            : null,
       ),
     );
   }
 
-  Widget _buildTextField(
-    TextEditingController controller,
-    String label,
-    IconData icon, {
-    int? maxLines = 1,
-    TextInputType? keyboardType,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        controller: controller,
-        style: const TextStyle(color: Colors.white),
-        keyboardType: keyboardType,
-        maxLines: maxLines,
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: const TextStyle(color: Colors.white, fontSize: 15),
-          prefixIcon: Icon(icon, color: Colors.white),
-          filled: true,
-          fillColor: Colors.black.withOpacity(0.3),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Colors.white),
-          ),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return AppLocalizations.of(context)!.thisFieldCannotBeEmpty;
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildStatusDropdown(Color primaryColor) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: _selectedStatusController,
-          isExpanded: true,
-          dropdownColor: primaryColor,
-          icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-          items: ['partially furnished', 'unfurnished', 'furnished']
-              .map(
-                (category) => DropdownMenuItem(
-                  value: category,
-                  child: Text(category.toUpperCase()),
-                ),
-              )
-              .toList(),
-          onChanged: (value) {
-            if (value != null) {
-              setState(() => _selectedStatusController = value);
-            }
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFeaturesGrid() {
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: 2.5,
-      mainAxisSpacing: 10,
-      crossAxisSpacing: 10,
-      children: [
-        _buildFeatureField(
-          _apartmentBedroomsController,
-          AppLocalizations.of(context)!.bedrooms,
-          Icons.bed_outlined,
-        ),
-        _buildFeatureField(
-          _apartmentBathroomsController,
-          AppLocalizations.of(context)!.bathrooms,
-          Icons.shower_outlined,
-        ),
-        _buildFeatureField(
-          _apartmentFloorController,
-          AppLocalizations.of(context)!.floor,
-          Icons.layers_outlined,
-        ),
-        _buildFeatureField(
-          _apartmentAreaController,
-          AppLocalizations.of(context)!.areaM2,
-          Icons.square_foot_outlined,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFeatureField(
-    TextEditingController controller,
-    String label,
-    IconData icon,
-  ) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: TextInputType.number,
-      style: const TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.white, fontSize: 12),
-        prefixIcon: Icon(icon, color: Colors.white, size: 20),
-        filled: true,
-        fillColor: Colors.black.withOpacity(0.3),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: Colors.white),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Required';
-        }
-        if (double.tryParse(value) == null) {
-          return 'Invalid';
-        }
-        return null;
-      },
-    );
-  }
-
-  Widget _buildLocationPicker(Color primaryColor) {
-    return GestureDetector(
-      onTap: _pickLocation,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.location_on_outlined, color: Colors.white),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                _locationController.text.isEmpty
-                    ? AppLocalizations.of(context)!.selectApartmentLocation
-                    : _locationController.text,
-                style: const TextStyle(color: Colors.white),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAvailabilitySwitch(Color primaryColor) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.availableForRent,
-            style: TextStyle(color: Colors.white),
-          ),
-          Switch(
-            value: _isAvailable,
-            onChanged: (value) => setState(() => _isAvailable = value),
-            activeTrackColor: primaryColor,
-            activeColor: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildImageGallery(Color primaryColor) {
+  Widget _imageGallery() {
     return SizedBox(
       height: 120,
       child: ListView.builder(
@@ -565,52 +431,36 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         itemCount: _apartmentPictures.length + 1,
         itemBuilder: (context, index) {
           if (index == _apartmentPictures.length) {
-            return _buildAddImageButton();
+            return IconButton(
+              icon: const Icon(Icons.add_photo_alternate_outlined),
+              onPressed: () => _pickImage(ImageSource.gallery),
+            );
           }
-          return _buildImageThumbnail(_apartmentPictures[index], index);
+          return Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Image.file(_apartmentPictures[index]),
+          );
         },
       ),
     );
   }
 
-  Widget _buildAddImageButton() {
-    return GestureDetector(
-      onTap: () => _pickImage(ImageSource.gallery),
-      child: Container(
-        width: 100,
-        margin: const EdgeInsets.only(right: 8),
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: const Icon(
-          Icons.add_photo_alternate_outlined,
-          color: Colors.white,
-          size: 40,
-        ),
-      ),
-    );
-  }
+  Widget _surfaceTile({IconData? icon, required String text, Widget? child}) {
+    final scheme = Theme.of(context).colorScheme;
 
-  Widget _buildImageThumbnail(File image, int index) {
     return Container(
-      width: 100,
-      margin: const EdgeInsets.only(right: 8),
-      child: Stack(
-        fit: StackFit.expand,
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: scheme.surface.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.file(image, fit: BoxFit.cover),
-          ),
-          Positioned(
-            top: 4,
-            right: 4,
-            child: GestureDetector(
-              onTap: () => setState(() => _apartmentPictures.removeAt(index)),
-              child: const Icon(Icons.cancel, color: Colors.white, size: 24),
-            ),
-          ),
+          if (icon != null) Icon(icon, color: scheme.primary),
+          if (icon != null) const SizedBox(width: 12),
+          Expanded(child: Text(text)),
+          if (child != null) child,
         ],
       ),
     );

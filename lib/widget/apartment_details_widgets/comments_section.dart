@@ -30,37 +30,47 @@ class CommentsSection extends StatelessWidget {
       children: [
         Text(
           AppLocalizations.of(context)!.comments,
-          style: theme.textTheme.bodyLarge
-              ?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurface,
+          ),
         ),
         const SizedBox(height: 16),
 
         if (comments.isEmpty)
-          Text(AppLocalizations.of(context)!.noCommentsYet),
+          Text(
+            AppLocalizations.of(context)!.noCommentsYet,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.7),
+            ),
+          ),
 
         Column(
-        children: [
-          for (int i = 0;
+          children: [
+            for (
+              int i = 0;
               i < (showAll ? comments.length : comments.length.clamp(0, 3));
-              i++) ...[
-            _commentRow(comment: comments[i], theme: theme),
-            if (i < comments.length - 1)
-              Divider(color: Colors.grey.shade300),
-          ]
-        ],
-      ),
+              i++
+            ) ...[
+              _commentRow(comment: comments[i], theme: theme),
+              if (i < comments.length - 1)
+                Divider(color: theme.colorScheme.onSurface.withOpacity(0.2)),
+            ],
+          ],
+        ),
 
         if (comments.length > 3)
           Center(
             child: TextButton(
               onPressed: onToggleShow,
               child: Text(
-                showAll ? AppLocalizations.of(context)!.showLess : AppLocalizations.of(context)!.showMore,
+                showAll
+                    ? AppLocalizations.of(context)!.showLess
+                    : AppLocalizations.of(context)!.showMore,
                 style: TextStyle(color: theme.colorScheme.primary),
               ),
             ),
           ),
-
 
         const SizedBox(height: 12),
         Row(
@@ -69,10 +79,11 @@ class CommentsSection extends StatelessWidget {
               child: CustomTextField(
                 controller: controller,
                 label: "",
-                hint: "${AppLocalizations.of(context)!.addAComment}${AppLocalizations.of(context)!.points}",
+                hint:
+                    "${AppLocalizations.of(context)!.addAComment}${AppLocalizations.of(context)!.points}",
                 icon: Icons.comment,
                 readOnly: false,
-                borderColor: Colors.brown,
+                borderColor: theme.colorScheme.primary,
               ),
             ),
             const SizedBox(width: 8),
@@ -90,7 +101,8 @@ class CommentsSection extends StatelessWidget {
   }
 
   ImageProvider _getProfileImage(String? image) {
-    if (image == null || image.isEmpty) return const AssetImage('assets/images/user.png');
+    if (image == null || image.isEmpty)
+      return const AssetImage('assets/images/user.png');
 
     if (image.startsWith('http')) return NetworkImage(image);
 
@@ -102,10 +114,7 @@ class CommentsSection extends StatelessWidget {
     return NetworkImage('$baseUrl$image');
   }
 
-  Widget _commentRow({
-    required Comment comment,
-    required ThemeData theme,
-  }) {
+  Widget _commentRow({required Comment comment, required ThemeData theme}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -121,10 +130,17 @@ class CommentsSection extends StatelessWidget {
               children: [
                 Text(
                   "${comment.user?.firstName ?? ''} ${comment.user?.lastName ?? ''}",
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(fontWeight: FontWeight.bold),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
+                  ),
                 ),
-                Text(comment.content),
+                Text(
+                  comment.content,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.8),
+                  ),
+                ),
               ],
             ),
           ),

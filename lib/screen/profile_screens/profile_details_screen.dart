@@ -7,20 +7,19 @@ class ProfileDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final displayUser = userController.user;
-    const Color primaryColor = Color.fromARGB(255, 219, 107, 66);
-    const Color accentColor = Color.fromARGB(255, 228, 228, 227);
+    final displayUser = userController.user!;
+    final scheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: scheme.onBackground),
         title: Text(
           AppLocalizations.of(context)!.profileDetails,
-          style: const TextStyle(
+          style: textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
-            fontSize: 24,
-            color: Colors.white,
+            color: scheme.onBackground,
           ),
         ),
         centerTitle: true,
@@ -28,12 +27,9 @@ class ProfileDetailsScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 228, 228, 227),
-            ],
+            colors: [scheme.primary, scheme.background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -46,6 +42,7 @@ class ProfileDetailsScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
+                /// Avatar
                 Center(
                   child: Stack(
                     children: [
@@ -54,8 +51,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              spreadRadius: 2,
+                              color: scheme.shadow.withOpacity(0.3),
                               blurRadius: 10,
                               offset: const Offset(0, 5),
                             ),
@@ -63,8 +59,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                         ),
                         child: CircleAvatar(
                           radius: 80,
-                          backgroundImage:
-                              (displayUser!.profileImage.isNotEmpty)
+                          backgroundColor: scheme.surface,
+                          backgroundImage: displayUser.profileImage.isNotEmpty
                               ? NetworkImage(baseUrl + displayUser.profileImage)
                               : const AssetImage('assets/images/user.png')
                                     as ImageProvider,
@@ -75,16 +71,15 @@ class ProfileDetailsScreen extends StatelessWidget {
                         right: 5,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: primaryColor,
+                            color: scheme.primary,
                             shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
+                            border: Border.all(color: scheme.surface, width: 2),
                           ),
                           child: IconButton(
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.camera_alt_outlined,
-                              color: Colors.white,
-                              size: 24,
+                              color: scheme.onPrimary,
                             ),
                           ),
                         ),
@@ -92,115 +87,79 @@ class ProfileDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+
                 const SizedBox(height: 30),
+
+                /// Images
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Column(
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.personImage,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          width: 130,
-                          height: 160,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: primaryColor, width: 1.5),
-                          ),
-                          child: Image.network(
-                            baseUrl + displayUser.profileImage,
-                          ),
-                        ),
-                      ],
+                    _imageColumn(
+                      context,
+                      title: AppLocalizations.of(context)!.personImage,
+                      imageUrl: baseUrl + displayUser.profileImage,
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.iDImage,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          width: 130,
-                          height: 160,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: primaryColor, width: 1.5),
-                          ),
-                          child: Image.network(
-                            baseUrl + displayUser.personIdImage,
-                          ),
-                        ),
-                      ],
+                    _imageColumn(
+                      context,
+                      title: AppLocalizations.of(context)!.iDImage,
+                      imageUrl: baseUrl + displayUser.personIdImage,
                     ),
                   ],
                 ),
 
                 const SizedBox(height: 40),
+
+                /// Details Card
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: scheme.surface,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Column(
                     children: [
-                      buildDetailTile(
+                      _buildDetailTile(
                         context,
                         icon: Icons.person_outline,
                         title: AppLocalizations.of(context)!.fullName,
                         subtitle:
                             '${displayUser.firstName} ${displayUser.lastName}',
-                        onTap: () {},
-                        primaryColor: primaryColor,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Divider(color: accentColor, thickness: 1),
+                      Divider(
+                        color: scheme.onSurface.withOpacity(0.1),
+                        indent: 20,
+                        endIndent: 20,
                       ),
-                      buildDetailTile(
+                      _buildDetailTile(
                         context,
                         icon: Icons.location_city,
                         title: AppLocalizations.of(context)!.city,
                         subtitle: displayUser.location!["city"],
-                        onTap: () {},
-                        primaryColor: primaryColor,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Divider(color: accentColor, thickness: 1),
+                      Divider(
+                        color: scheme.onSurface.withOpacity(0.1),
+                        indent: 20,
+                        endIndent: 20,
                       ),
-                      buildDetailTile(
+                      _buildDetailTile(
                         context,
                         icon: Icons.phone_outlined,
                         title: AppLocalizations.of(context)!.phoneNumber,
                         subtitle: displayUser.phone,
-                        onTap: () {},
                         // ignore: unnecessary_null_comparison
                         isEditable: displayUser.phone != null,
-                        primaryColor: primaryColor,
                       ),
                     ],
                   ),
                 ),
+
                 const SizedBox(height: 30),
+
+                /// Edit Button
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: primaryColor,
+                    backgroundColor: scheme.surface,
+                    foregroundColor: scheme.primary,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 50,
                       vertical: 15,
@@ -223,32 +182,65 @@ class ProfileDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildDetailTile(
+  Widget _imageColumn(
+    BuildContext context, {
+    required String title,
+    required String imageUrl,
+  }) {
+    final scheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      children: [
+        Text(
+          title,
+          style: textTheme.bodyMedium?.copyWith(
+            color: scheme.onBackground,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          width: 130,
+          height: 160,
+          decoration: BoxDecoration(
+            color: scheme.surface,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: scheme.primary, width: 1.5),
+          ),
+          child: Image.network(imageUrl, fit: BoxFit.cover),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDetailTile(
     BuildContext context, {
     required IconData icon,
     required String title,
     required String subtitle,
-    Function()? onTap,
     bool isEditable = true,
-    required Color primaryColor,
   }) {
+    final scheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return ListTile(
-      onTap: onTap,
-      leading: Icon(icon, color: primaryColor, size: 30),
+      leading: Icon(icon, color: scheme.primary, size: 30),
       title: Text(
         title,
-        style: TextStyle(color: Colors.grey[600], fontSize: 14),
+        style: textTheme.bodySmall?.copyWith(
+          color: scheme.onSurface.withOpacity(0.6),
+        ),
       ),
       subtitle: Text(
         subtitle,
-        style: const TextStyle(
+        style: textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.bold,
-          fontSize: 18,
-          color: Colors.black87,
+          color: scheme.onSurface,
         ),
       ),
-      trailing: (isEditable)
-          ? Icon(Icons.arrow_forward_ios, color: primaryColor, size: 18)
+      trailing: isEditable
+          ? Icon(Icons.arrow_forward_ios, color: scheme.primary, size: 18)
           : null,
     );
   }

@@ -142,5 +142,6 @@
   "noNotifications": "Aucune notification",
   "clearAll": "Tout effacer",
   "daysUntilStart": "Jours restants avant le début du contrat",
-  "cancellationFee": "Frais d’annulation"
+  "cancellationFee": "Frais d’annulation",
+  "highlyRated": "Mieux notés"
 }

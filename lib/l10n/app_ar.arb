@@ -142,5 +142,6 @@
   "noNotifications": "لا توجد إشعارات",
   "clearAll": "مسح الكل",
   "daysUntilStart": "الأيام المتبقية لبدء العقد",
-  "cancellationFee": "قيمة الخصم عند الإلغاء"
+  "cancellationFee": "قيمة الخصم عند الإلغاء",
+  "highlyRated": "مرتفع التقييم"
 }

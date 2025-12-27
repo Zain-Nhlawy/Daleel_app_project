@@ -6,100 +6,124 @@ import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_wi
 import 'package:flutter/material.dart';
 
 class CloseToYouApartmentsWidget extends StatefulWidget {
-  CloseToYouApartmentsWidget({super.key, required this.controller});
+  const CloseToYouApartmentsWidget({super.key, required this.controller});
   final ScrollController controller;
 
   @override
   State<CloseToYouApartmentsWidget> createState() =>
-      _CloseToYouApartmentsWidgetState(controller: controller);
+      _CloseToYouApartmentsWidgetState();
 }
 
-class _CloseToYouApartmentsWidgetState extends State<CloseToYouApartmentsWidget> {
-  _CloseToYouApartmentsWidgetState({required this.controller});
+class _CloseToYouApartmentsWidgetState
+    extends State<CloseToYouApartmentsWidget> {
   List<Apartments2> _apartments = [];
-  final ScrollController controller;
   final User? user = userController.user;
-  bool _isLoading = true, _hasMore = true;
+  bool _isInitialLoading = true;
+  bool _isLoadingMore = false;
+  bool _hasMore = true;
   int _page = 1;
   String? _error;
 
   @override
   void initState() {
     super.initState();
-    fetchApartments();
+    _fetchApartments();
 
-    controller.addListener((){
-      if(controller.position.pixels >= controller.position.maxScrollExtent - 1 && !_isLoading && _hasMore) {
-        fetchApartments();
-      }
-    });
+    widget.controller.addListener(_scrollListener);
   }
 
-  Future<void> fetchApartments() async {
+  void _scrollListener() {
+    if (widget.controller.position.pixels >=
+            widget.controller.position.maxScrollExtent - 100 &&
+        !_isLoadingMore &&
+        _hasMore) {
+      _fetchApartments(loadMore: true);
+    }
+  }
+
+  Future<void> _fetchApartments({bool loadMore = false}) async {
     try {
-      final apartments = await apartmentController.loadFilteredApartments(_page, governorate: user!.location!['governorate']);
-      if (mounted) {
+      if (loadMore) {
+        setState(() => _isLoadingMore = true);
+      } else {
         setState(() {
-          _apartments += apartments ?? [];
-          if(apartments == null || apartments.isEmpty) _hasMore = false;
-          else _page++;
-          _isLoading = false;
+          _isInitialLoading = true;
+          _error = null;
         });
       }
+
+      final apartments = await apartmentController.loadFilteredApartments(
+        _page,
+        governorate: user?.location?['governorate'],
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        if (apartments == null || apartments.isEmpty) {
+          _hasMore = false;
+        } else {
+          _apartments += apartments;
+          _page++;
+        }
+        _isInitialLoading = false;
+        _isLoadingMore = false;
+      });
     } catch (e) {
-      if (mounted) {
-        setState(() {
-          _error = e.toString();
-          _isLoading = false;
-        });
-      }
+      if (!mounted) return;
+      setState(() {
+        _error = e.toString();
+        _isInitialLoading = false;
+        _isLoadingMore = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
+    if (_isInitialLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (_error != null) {
       return Center(
-        child: Text('${AppLocalizations.of(context)!.error}: $_error')
+        child: Text('${AppLocalizations.of(context)!.error}: $_error'),
       );
     }
 
     if (_apartments.isEmpty) {
       return Center(
-        child: Text(AppLocalizations.of(context)!.noApartmentsFound)
+        child: Text(AppLocalizations.of(context)!.noApartmentsFound),
       );
     }
 
     return ListView.builder(
+      controller: widget.controller,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: _apartments.length + (_apartments.length >= 10 ? 1 : 0),
+      itemCount: _apartments.length + (_apartments.length>=10 ? 1 : 0),
       itemBuilder: (context, index) {
-        if(index < _apartments.length) {
+        if (index < _apartments.length) {
           return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 4.0,
-            ),
-            child: NearpyApartmentsWidgets(
-              apartment: _apartments[index],
-            )
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            child: NearpyApartmentsWidgets(apartment: _apartments[index]),
           );
         }
-        if(_hasMore) {
+        if (_hasMore) {
           return Padding(
             padding: EdgeInsets.all(10),
             child: Center(child: CircularProgressIndicator()),
           );
-        }
-        else {
+        } else {
           return const SizedBox(height: 10);
         }
       },
     );
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_scrollListener);
+    super.dispose();
   }
 }

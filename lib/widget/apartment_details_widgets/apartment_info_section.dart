@@ -14,6 +14,14 @@ class ApartmentInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color textColor = theme.colorScheme.onSurface;
+    final Color subTextColor = textColor.withOpacity(0.7);
+    final Color locationIconColor = theme.colorScheme.error;
+    final Color ratingIconColor =
+        Colors.amber; // can be kept amber for familiarity
+    final Color priceIconColor =
+        Colors.green; // can keep green, or theme.primary
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,6 +30,7 @@ class ApartmentInfoSection extends StatelessWidget {
           style: theme.textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.bold,
             fontSize: 22,
+            color: textColor,
           ),
         ),
         const SizedBox(height: 8),
@@ -29,15 +38,24 @@ class ApartmentInfoSection extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 12),
           child: Row(
             children: [
-              const Icon(Icons.location_on, color: Colors.red),
+              Icon(Icons.location_on, color: locationIconColor),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
                   '${apartment.location?['governorate']} / ${apartment.location?['city']}',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: subTextColor,
+                  ),
                 ),
               ),
-              const Icon(Icons.star, color: Colors.amber),
-              Text(apartment.averageRating.toString()),
+              Icon(Icons.star, color: ratingIconColor),
+              const SizedBox(width: 4),
+              Text(
+                apartment.averageRating.toString(),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: subTextColor,
+                ),
+              ),
             ],
           ),
         ),
@@ -45,11 +63,11 @@ class ApartmentInfoSection extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 12),
           child: Row(
             children: [
-              const Icon(Icons.attach_money, color: Colors.green),
+              Icon(Icons.attach_money, color: priceIconColor),
               const SizedBox(width: 6),
               Text(
                 "${apartment.rentFee} / ${AppLocalizations.of(context)!.day}",
-                style: theme.textTheme.bodyMedium,
+                style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
               ),
             ],
           ),

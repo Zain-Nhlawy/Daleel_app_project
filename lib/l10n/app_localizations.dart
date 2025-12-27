@@ -963,6 +963,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancellation fee'**
   String get cancellationFee;
+
+  /// No description provided for @highlyRated.
+  ///
+  /// In en, this message translates to:
+  /// **'Highly Rated'**
+  String get highlyRated;
 }
 
 class _AppLocalizationsDelegate

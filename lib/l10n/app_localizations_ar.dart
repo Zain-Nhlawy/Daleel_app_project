@@ -450,4 +450,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cancellationFee => 'قيمة الخصم عند الإلغاء';
+
+  @override
+  String get highlyRated => 'مرتفع التقييم';
 }

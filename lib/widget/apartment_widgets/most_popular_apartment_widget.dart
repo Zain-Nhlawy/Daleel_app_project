@@ -16,14 +16,12 @@ class MostPopularApartmentWidget extends StatefulWidget {
 }
 
 class _MostPopularApartmentWidgetState
-  extends State<MostPopularApartmentWidget> {
+    extends State<MostPopularApartmentWidget> {
   late bool? _isFavorited = widget.apartment.isFavorited;
-  final bool _isLoading = false;
+  bool _isLoading = false;
 
   void _handleFavoriteToggle() async {
-    setState(() {
-      _isFavorited = !_isFavorited!;
-    });
+    setState(() => _isFavorited = !_isFavorited!);
 
     final apartmentService = ApartmentService(
       apiClient: DioClient(storage: AppSecureStorage()),
@@ -33,30 +31,26 @@ class _MostPopularApartmentWidgetState
         widget.apartment.id,
       );
       if (!success && mounted) {
-        setState(() {
-          _isFavorited = !_isFavorited!;
-        });
+        setState(() => _isFavorited = !_isFavorited!);
       }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isFavorited = !_isFavorited!;
-        });
-      }
+    } catch (_) {
+      if (mounted) setState(() => _isFavorited = !_isFavorited!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF795548);
+    final scheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: scheme.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: scheme.shadow.withOpacity(0.15),
             spreadRadius: 1,
             blurRadius: 8,
             offset: const Offset(0, 4),
@@ -69,7 +63,7 @@ class _MostPopularApartmentWidgetState
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
+              builder: (_) =>
                   ApartmentDetailsScreen(apartment: widget.apartment),
             ),
           );
@@ -77,6 +71,7 @@ class _MostPopularApartmentWidgetState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Image + Favorite Button
             Stack(
               children: [
                 ClipRRect(
@@ -90,11 +85,10 @@ class _MostPopularApartmentWidgetState
                         ? Image.network(
                             widget.apartment.images[0],
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Image.asset(
-                                  "assets/images/user.png",
-                                  fit: BoxFit.cover,
-                                ),
+                            errorBuilder: (_, __, ___) => Image.asset(
+                              "assets/images/user.png",
+                              fit: BoxFit.cover,
+                            ),
                           )
                         : Image.asset(
                             "assets/images/user.png",
@@ -107,19 +101,15 @@ class _MostPopularApartmentWidgetState
                   right: 8,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.3),
+                      color: scheme.surface.withOpacity(0.6),
                       shape: BoxShape.circle,
                     ),
                     child: _isLoading
-                        ? Container(
-                            width: 32,
-                            height: 32,
+                        ? Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: const CircularProgressIndicator(
+                            child: CircularProgressIndicator(
                               strokeWidth: 2.0,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.white,
-                              ),
+                              color: scheme.primary,
                             ),
                           )
                         : IconButton(
@@ -129,7 +119,9 @@ class _MostPopularApartmentWidgetState
                               _isFavorited!
                                   ? Icons.favorite
                                   : Icons.favorite_border,
-                              color: _isFavorited! ? Colors.red : Colors.white,
+                              color: _isFavorited!
+                                  ? scheme.error
+                                  : scheme.onSurface,
                               size: 22,
                             ),
                             onPressed: _handleFavoriteToggle,
@@ -138,11 +130,13 @@ class _MostPopularApartmentWidgetState
                 ),
               ],
             ),
+            // Info Section
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Title + Price
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -150,40 +144,41 @@ class _MostPopularApartmentWidgetState
                         child: Text(
                           widget.apartment.headDescription ??
                               AppLocalizations.of(context)!.noDescription,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.grey[800],
-                              ),
+                          style: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: scheme.onSurface,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Text(
                         '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: primaryColor,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: scheme.primary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 6),
+                  // Location
                   Row(
                     children: [
                       Icon(
                         Icons.location_on,
                         size: 14,
-                        color: Colors.grey[600],
+                        color: scheme.onSurface.withOpacity(0.7),
                       ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
                           widget.apartment.location?['city'] ??
                               AppLocalizations.of(context)!.unknownCity,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: Colors.grey[600]),
+                          style: textTheme.bodySmall?.copyWith(
+                            color: scheme.onSurface.withOpacity(0.7),
+                          ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
@@ -191,15 +186,17 @@ class _MostPopularApartmentWidgetState
                     ],
                   ),
                   const SizedBox(height: 6),
+                  // Rating
                   Row(
                     children: [
-                      const Icon(Icons.star, color: Colors.orange, size: 16),
+                      Icon(Icons.star, color: Colors.orange, size: 16),
                       const SizedBox(width: 4),
                       Text(
                         widget.apartment.averageRating?.toStringAsFixed(1) ??
                             'N/A',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        style: textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
+                          color: scheme.onSurface,
                         ),
                       ),
                     ],

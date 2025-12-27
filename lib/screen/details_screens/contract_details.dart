@@ -77,23 +77,23 @@ class _ContractDetailsState extends State<ContractDetails> {
   }
 
   Future<void> _approveContract() async {
-  final approved = await contractController.approveContract(
-    rentId: contract.id,
-  );
+    final approved = await contractController.approveContract(
+      rentId: contract.id,
+    );
 
-  setState(() {
-    contract = approved;
-  });
-}
+    setState(() {
+      contract = approved;
+    });
+  }
 
-Future<Contracts> _rejectContract() async {
-  final rejected = await contractController.rejectContract(
-    rentId: contract.id,
-  );
+  Future<Contracts> _rejectContract() async {
+    final rejected = await contractController.rejectContract(
+      rentId: contract.id,
+    );
 
-  setState(() {
-    contract = rejected;
-  });
+    setState(() {
+      contract = rejected;
+    });
 
   return rejected;
 }
@@ -216,14 +216,11 @@ Future<void> _handleCancelContract() async {
 
   @override
   Widget build(BuildContext context) {
-
     final Contracts contract = this.contract;
-
-    const Color primaryColor = Color(0xFF795548);
-    const Color accentColor = Color(0xFFD7CCC8);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     final User? user = userController.user;
-    // ignore: unused_local_variable
     final bool isTenant = (user != null && contract.user.userId == user.userId);
 
     return Scaffold(
@@ -231,24 +228,20 @@ Future<void> _handleCancelContract() async {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.contractDetails,
-          style: const TextStyle(
-            color: Colors.white,
+          style: theme.textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            fontSize: 22,
+            color: colorScheme.onPrimary,
           ),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: colorScheme.onPrimary),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 255, 255, 255),
-            ],
+            colors: [colorScheme.primary, colorScheme.background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -269,7 +262,7 @@ Future<void> _handleCancelContract() async {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: colorScheme.surface,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   clipBehavior: Clip.antiAlias,
@@ -279,11 +272,7 @@ Future<void> _handleCancelContract() async {
                       _buildImageSection(),
                       Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: _buildDetailsSection(
-                          context,
-                          primaryColor,
-                          accentColor,
-                        ),
+                        child: _buildDetailsSection(context, colorScheme),
                       ),
                     ],
                   ),
@@ -297,7 +286,7 @@ Future<void> _handleCancelContract() async {
           ? _buildBottomActions(
               context,
               contract,
-              isTenant: contract.user.userId == user.userId,
+              isTenant: isTenant,
               onUpdate: _updateContract,
               onApprove: _approveContract,
               onReject: _rejectContract,
@@ -328,11 +317,7 @@ Future<void> _handleCancelContract() async {
     );
   }
 
-  Widget _buildDetailsSection(
-    BuildContext context,
-    Color primaryColor,
-    Color accentColor,
-  ) {
+  Widget _buildDetailsSection(BuildContext context, ColorScheme colorScheme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -342,7 +327,7 @@ Future<void> _handleCancelContract() async {
           children: [
             Expanded(
               child: Text(
-                contract.contractApartment.headDescription!,
+                contract.contractApartment.headDescription ?? 'N/A',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
@@ -352,7 +337,7 @@ Future<void> _handleCancelContract() async {
               ),
             ),
             const SizedBox(width: 10),
-            _buildStatusChip(contract.rentStatus),
+            _buildStatusChip(contract.rentStatus, colorScheme),
           ],
         ),
         const SizedBox(height: 16),
@@ -364,12 +349,15 @@ Future<void> _handleCancelContract() async {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Divider(thickness: 1, color: accentColor),
+          child: Divider(
+            thickness: 1,
+            color: colorScheme.onSurface.withOpacity(0.1),
+          ),
         ),
         _buildSectionHeader(
           context,
           AppLocalizations.of(context)!.contractPeriod,
-          primaryColor,
+          colorScheme.primary,
         ),
         const SizedBox(height: 16),
         _buildDetailRow(
@@ -387,26 +375,29 @@ Future<void> _handleCancelContract() async {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Divider(thickness: 1, color: accentColor),
+          child: Divider(
+            thickness: 1,
+            color: colorScheme.onSurface.withOpacity(0.1),
+          ),
         ),
         _buildSectionHeader(
           context,
           AppLocalizations.of(context)!.partiesInvolved,
-          primaryColor,
+          colorScheme.primary,
         ),
         const SizedBox(height: 16),
         _buildPartyInfo(
           context,
           AppLocalizations.of(context)!.renter,
           contract.contractApartment.user,
-          accentColor,
+          colorScheme.onSurface.withOpacity(0.1),
         ),
         const SizedBox(height: 16),
         _buildPartyInfo(
           context,
           AppLocalizations.of(context)!.tenant,
           contract.user,
-          accentColor,
+          colorScheme.onSurface.withOpacity(0.1),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -425,8 +416,8 @@ Future<void> _handleCancelContract() async {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
-                foregroundColor: Colors.white,
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -442,7 +433,7 @@ Future<void> _handleCancelContract() async {
     );
   }
 
-  Widget _buildStatusChip(RentStatus status) {
+  Widget _buildStatusChip(RentStatus status, ColorScheme colorScheme) {
     Color chipColor;
     String statusText = status.toString().split('.').last;
     switch (status) {
@@ -462,8 +453,8 @@ Future<void> _handleCancelContract() async {
     return Chip(
       label: Text(
         statusText,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: colorScheme.onPrimary,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -549,6 +540,8 @@ Widget _buildBottomActions(
   required Future<Contracts> Function() onReject,
   required VoidCallback onCancelPressed,
 }) {
+  final theme = Theme.of(context);
+  final colorScheme = theme.colorScheme;
   final bool hideActions = contract.rentStatus == RentStatus.cancelled ||
 contract.rentStatus == RentStatus.completed ||
 contract.endRent.isBefore(DateTime.now());
@@ -561,18 +554,17 @@ contract.endRent.isBefore(DateTime.now());
     width: double.infinity,
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     decoration: BoxDecoration(
-      color: Colors.grey.shade50,
-      border: Border(top: BorderSide(color: Colors.grey.shade300)),
+      color: colorScheme.surface,
+      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+      border: Border(
+        top: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)),
+      ),
     ),
     child: Row(
       children: [
         if (isTenant) ...[
           Expanded(
             child: OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.blueAccent,
-                side: const BorderSide(color: Colors.blueAccent),
-              ),
               onPressed: () async {
                 final result = await Navigator.push(
                   context,
@@ -583,7 +575,17 @@ contract.endRent.isBefore(DateTime.now());
                     ),
                   ),
                 );
+
+                if (result != null && result is Map<String, DateTime>) {
+                  final newStart = result['start']!;
+                  final newEnd = result['end']!;
+                  await onUpdate(newStart, newEnd);
+                }
               },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: colorScheme.primary,
+                side: BorderSide(color: colorScheme.primary),
+              ),
               child: Text(AppLocalizations.of(context)!.edit),
             ),
           ),
@@ -593,8 +595,8 @@ contract.endRent.isBefore(DateTime.now());
             child: OutlinedButton(
               onPressed: onCancelPressed,
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.red,
-                side: const BorderSide(color: Colors.red),
+                foregroundColor: colorScheme.error,
+                side: BorderSide(color: colorScheme.error),
               ),
               child: Text(AppLocalizations.of(context)!.cancel),
             ),
@@ -660,7 +662,9 @@ contract.endRent.isBefore(DateTime.now());
                   context: context,
                   builder: (ctx) => AlertDialog(
                     title: Text(AppLocalizations.of(context)!.confirm),
-                    content: Text(AppLocalizations.of(context)!.confirmRejectContract),
+                    content: Text(
+                      AppLocalizations.of(context)!.confirmRejectContract,
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(ctx, false),
@@ -719,8 +723,8 @@ contract.endRent.isBefore(DateTime.now());
                 }
               },
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.red,
-                side: const BorderSide(color: Colors.red),
+                foregroundColor: colorScheme.error,
+                side: BorderSide(color: colorScheme.error),
               ),
               child: Text(AppLocalizations.of(context)!.reject),
             ),

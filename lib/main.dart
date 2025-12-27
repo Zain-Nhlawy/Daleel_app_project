@@ -1,10 +1,14 @@
 import 'package:daleel_app_project/core/storage/storage_keys.dart';
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/providers.dart';
+import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
+import 'package:daleel_app_project/screen/splash/splash_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:daleel_app_project/services/firebase_notification_service.dart';
+
 
 import 'l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:daleel_app_project/screen/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,9 +18,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+RemoteMessage? pendingNotificationMessage;
+
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -33,32 +41,27 @@ final theme = ThemeData(
     error: Colors.red,
     onError: Colors.white,
   ),
-
-  textTheme: GoogleFonts.nunitoTextTheme().copyWith(
-    bodyLarge: GoogleFonts.nunito(
-      fontSize: 20,
-      fontWeight: FontWeight.normal,
-      color: Color(0xFFB34A24),
-    ),
-    bodyMedium: GoogleFonts.nunito(fontSize: 16, color: Colors.brown),
-    titleMedium: GoogleFonts.nunito(
-      fontSize: 16,
-      fontWeight: FontWeight.normal,
-      color: Color(0xFFBE7D66),
-    ),
-
-    bodySmall: GoogleFonts.nunito(fontSize: 10, color: Colors.brown),
-    titleSmall: GoogleFonts.nunito(
-      fontSize: 10,
-      fontWeight: FontWeight.normal,
-      color: Color(0xFFBE7D66),
-    ),
+  textTheme: GoogleFonts.nunitoTextTheme(),
+);
+final darkTheme = ThemeData(
+  useMaterial3: true,
+  brightness: Brightness.dark,
+  colorScheme: const ColorScheme(
+    brightness: Brightness.dark,
+    primary: Color(0xFFBE7D66),
+    onPrimary: Colors.black,
+    secondary: Color(0xFF8B5E3C),
+    onSecondary: Colors.black,
+    background: Color(0xFF121212),
+    onBackground: Colors.white,
+    surface: Color(0xFF1E1E1E),
+    onSurface: Colors.white,
+    error: Colors.red,
+    onError: Colors.black,
   ),
-
-  appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: Color(0xFFBD765C))),
-
-  highlightColor: Colors.transparent,
-  splashColor: Colors.transparent,
+  textTheme: GoogleFonts.nunitoTextTheme(
+    ThemeData(brightness: Brightness.dark).textTheme,
+  ),
 );
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -73,23 +76,102 @@ void main() async {
 
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
+  await FirebaseMessaging.instance.requestPermission();
+
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel',
+    'High Importance Notifications',
+    importance: Importance.high,
+  );
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin
+      >()
+      ?.createNotificationChannel(channel);
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    flutterLocalNotificationsPlugin.show(
+      message.hashCode,
+      message.notification?.title,
+      message.notification?.body,
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'high_importance_channel',
+          'High Importance Notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      ),
+    );
+    final type = message.data['type'];
+    if (type == 'rate_department') {
+      final departmentIdStr = message.data['department_id'];
+      if (departmentIdStr != null) {
+        final departmentId = int.tryParse(departmentIdStr);
+        if (departmentId != null) {
+          final apartments2 = await apartmentController.fetchApartment(
+            departmentId,
+          );
+          if (apartments2 != null && navigatorKey.currentState != null) {
+            navigatorKey.currentState!.push(
+              MaterialPageRoute(
+                builder: (_) => ApartmentDetailsScreen(
+                  apartment: apartments2,
+                  withRate: true,
+                ),
+              ),
+            );
+          }
+        }
+      }
+    }
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    pendingNotificationMessage = message;
+  });
+  await Hive.initFlutter();
+  await Hive.openBox('notifications');
+
+
+  final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  if (initialMessage != null) {
+    pendingNotificationMessage = initialMessage;
+  }
+
   final token = await appStorage.read(StorageKeys.token);
   if (token != null) {
     userController.updateProfile(await userService.getProfile());
   }
-
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-
-  const InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-  );
-
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  await Hive.initFlutter();
-  await Hive.openBox('notifications');
+  language = await appStorage.read(StorageKeys.language) ?? 'en';
+  final theme = await appStorage.read(StorageKeys.theme);
+  if(theme != null) {
+    appTheme = theme;
+  }
   runApp(
-    MaterialApp(
+    ChangeNotifierProvider(
+      create: (context) => SettingsProvider(),
+      child: const MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<SettingsProvider>(context);
+
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      theme: theme,
+      darkTheme: darkTheme,
+      themeMode: provider.currentTheme,
+      home: SplashScreen(),
+      locale: provider.currentLocale,
       supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -97,10 +179,6 @@ void main() async {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      locale: Locale(StorageKeys.language),
-      debugShowCheckedModeBanner: false,
-      theme: theme,
-      home: SplashScreen(),
-    ),
-  );
+    );
+  }
 }

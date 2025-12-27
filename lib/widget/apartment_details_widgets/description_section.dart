@@ -14,6 +14,9 @@ class DescriptionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color iconColor = theme.colorScheme.onSurface.withOpacity(0.6);
+    final Color descriptionColor = theme.colorScheme.onSurface;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,57 +25,57 @@ class DescriptionSection extends StatelessWidget {
             Expanded(
               child: _buildInfoItem(
                 icon: Icons.bed,
-                iconColor: Colors.grey,
+                iconColor: iconColor,
                 value: '${apartment.bedrooms ?? 0}',
                 label: AppLocalizations.of(context)!.bedrooms,
               ),
             ),
-            
             Expanded(
               child: _buildInfoItem(
                 icon: Icons.bathtub,
-                iconColor: Colors.grey,
+                iconColor: iconColor,
                 value: '${apartment.bathrooms ?? 0}',
                 label: AppLocalizations.of(context)!.bathrooms,
               ),
             ),
           ],
         ),
-        
         const SizedBox(height: 12),
-        
         Row(
           children: [
             Expanded(
               child: _buildInfoItem(
                 icon: Icons.layers_outlined,
-                iconColor: Colors.grey,
+                iconColor: iconColor,
                 value: '${apartment.floor ?? 0}',
                 label: AppLocalizations.of(context)!.floor,
               ),
             ),
-            
             Expanded(
               child: _buildInfoItem(
                 icon: Icons.square_foot_outlined,
-                iconColor: Colors.grey,
+                iconColor: iconColor,
                 value: '${apartment.area ?? 0} m²',
                 label: AppLocalizations.of(context)!.area,
               ),
             ),
           ],
         ),
-        
         const SizedBox(height: 24),
-        
         Text(
           AppLocalizations.of(context)!.description,
-          style: theme.textTheme.bodyLarge
-              ?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: descriptionColor,
+          ),
         ),
-        
         const SizedBox(height: 10),
-        Text(apartment.description ?? ''),
+        Text(
+          apartment.description ?? '',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: descriptionColor.withOpacity(0.9),
+          ),
+        ),
       ],
     );
   }
@@ -95,12 +98,13 @@ class DescriptionSection extends StatelessWidget {
               style: theme.textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
+                color: theme.colorScheme.onSurface,
               ),
             ),
             Text(
               label,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
+                color: theme.colorScheme.onSurface.withOpacity(0.7),
                 fontSize: 14,
               ),
             ),

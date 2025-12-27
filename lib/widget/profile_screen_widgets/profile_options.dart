@@ -4,6 +4,7 @@ import 'package:daleel_app_project/screen/profile_screens/contract_history_scree
 import 'package:daleel_app_project/screen/profile_screens/my_houses_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/profile_details_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/favorite_apartments_screen.dart';
+import 'package:daleel_app_project/screen/profile_screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import '../../dependencies.dart';
 
@@ -166,7 +167,12 @@ class ProfileOptions extends StatelessWidget {
                 ),
               ),
               trailing: Icon(Icons.keyboard_arrow_right_outlined),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsScreen()),
+                );
+              },
             ),
           ),
           Card(

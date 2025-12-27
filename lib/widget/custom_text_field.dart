@@ -1,4 +1,3 @@
-import 'package:daleel_app_project/main.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -10,7 +9,7 @@ class CustomTextField extends StatefulWidget {
   final bool obscure;
   final bool readOnly;
   final VoidCallback? onTap;
-  final Color? borderColor; 
+  final Color? borderColor;
 
   const CustomTextField({
     super.key,
@@ -34,16 +33,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final Color finalBorderColor = widget.borderColor ?? Colors.brown.withOpacity(0.5);
+    final theme = Theme.of(context);
+    final Color finalBorderColor =
+        widget.borderColor ?? theme.colorScheme.primary.withOpacity(0.5);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           widget.label,
-          style: const TextStyle(
-            color: Colors.white70,
-            fontSize: 16,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface.withOpacity(0.7),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -58,25 +58,28 @@ class _CustomTextFieldState extends State<CustomTextField> {
           onTap: widget.onTap,
           decoration: InputDecoration(
             hintText: widget.hint,
-            hintStyle: TextStyle(
+            hintStyle: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.primary,
-              fontSize: 18,
+              fontSize: 16,
             ),
             filled: true,
-            fillColor: Colors.white.withOpacity(0.8),
-            contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            fillColor: theme.colorScheme.surface.withOpacity(0.8),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 16,
+            ),
 
             prefixIcon: widget.icon != null
                 ? Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(width: 8),
-                      Icon(widget.icon, color: Colors.brown),
+                      Icon(widget.icon, color: theme.colorScheme.primary),
                       const SizedBox(width: 8),
                       Container(
                         width: 1,
                         height: 24,
-                        color: Colors.brown.withOpacity(0.5),
+                        color: theme.colorScheme.primary.withOpacity(0.5),
                       ),
                       const SizedBox(width: 8),
                     ],
@@ -87,7 +90,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 ? IconButton(
                     icon: Icon(
                       _hide ? Icons.visibility_off : Icons.visibility,
-                      color: Colors.brown,
+                      color: theme.colorScheme.primary,
                     ),
                     onPressed: () {
                       setState(() {
@@ -107,7 +110,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(color: Colors.brown.shade800, width: 1),
+              borderSide: BorderSide(
+                color: theme.colorScheme.primary,
+                width: 1.5,
+              ),
             ),
           ),
         ),
@@ -116,4 +122,3 @@ class _CustomTextFieldState extends State<CustomTextField> {
     );
   }
 }
-

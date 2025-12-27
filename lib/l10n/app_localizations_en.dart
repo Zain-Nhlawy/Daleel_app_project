@@ -456,4 +456,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancellationFee => 'Cancellation fee';
+
+  @override
+  String get highlyRated => 'Highly Rated';
 }
