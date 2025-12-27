@@ -24,7 +24,10 @@ class _ContractScreenState extends State<ContractScreen>
     super.initState();
     _loadContracts();
     _controller.addListener(() {
-      if(_controller.position.pixels >= _controller.position.maxScrollExtent - 1 && !_isLoading && _hasMore) {
+      print("--------------------------------------------------------------------------------------");
+      print(_hasMore);
+      print("--------------------------------------------------------------------------------------");
+      if(_controller.position.pixels >= _controller.position.maxScrollExtent - 20 && !_isLoading && _hasMore) {
         _loadContracts();
       }
     });
@@ -32,12 +35,12 @@ class _ContractScreenState extends State<ContractScreen>
 
   Future<void> _loadContracts() async {
     try {
-      final contracts = (await contractController.loadContractsHistory(_page));
+      final contracts = await contractController.loadContractsHistory(_page);
       if (mounted) {
         setState(() {
           _contracts += contracts;
-          if(contracts.isEmpty) _hasMore = false;
-          else _page++;
+          if(contracts.isEmpty) {_hasMore = false;}
+          else {_page++;}
           _isLoading = false;
         });
       }
@@ -54,6 +57,7 @@ class _ContractScreenState extends State<ContractScreen>
   void _refreshContracts() {
     setState(() {
       _page = 1;
+      _hasMore = true;
       _contracts = [];
       _loadContracts();
     });
@@ -130,6 +134,7 @@ class _ContractScreenState extends State<ContractScreen>
         onRefresh: () async => _refreshContracts(),
         child: ListView.builder(
           padding: const EdgeInsets.all(8.0),
+          controller: _controller,
           itemCount:_contracts.length + (_contracts.length >= 10 ? 1 : 0),
           itemBuilder: (context, index) {
             if(index < _contracts.length) {

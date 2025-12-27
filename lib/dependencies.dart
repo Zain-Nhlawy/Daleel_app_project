@@ -15,7 +15,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final AppSecureStorage appStorage = AppSecureStorage();
 final DioClient dioClient = DioClient(storage: appStorage);
-
+String language = 'en';
 final UserService userService = UserService(
   apiClient: dioClient,
   storage: appStorage,
