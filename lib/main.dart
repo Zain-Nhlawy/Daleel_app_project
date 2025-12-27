@@ -138,7 +138,7 @@ void main() async {
     userController.updateProfile(await userService.getProfile());
   }
   language = await appStorage.read(StorageKeys.language) ?? 'en';
-  
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => LanguageProvider(),
