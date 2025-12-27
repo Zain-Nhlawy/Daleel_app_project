@@ -14,14 +14,16 @@ class UploadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          backgroundColor: Colors.white.withOpacity(0.8),
-          foregroundColor: Colors.brown,
-          side: const BorderSide(color: Colors.white),
+          backgroundColor: theme.colorScheme.surface.withOpacity(0.8),
+          foregroundColor: theme.colorScheme.primary,
+          side: BorderSide(color: theme.colorScheme.onSurface),
           minimumSize: const Size.fromHeight(50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
@@ -33,21 +35,28 @@ class UploadButton extends StatelessWidget {
           children: [
             Text(
               text,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onSurface,
+              ),
             ),
             Container(
               width: 30,
               height: 30,
               decoration: BoxDecoration(
-                color: isUploaded ? Colors.lightGreen : Colors.transparent,
-                border: Border.all(color: Colors.brown),
+                color: isUploaded
+                    ? theme.colorScheme.secondary
+                    : Colors.transparent,
+                border: Border.all(color: theme.colorScheme.primary),
                 shape: BoxShape.circle,
               ),
               child: Center(
                 child: Icon(
                   isUploaded ? Icons.check : Icons.add,
                   size: 20,
-                  color: isUploaded ? Colors.white : Colors.brown,
+                  color: isUploaded
+                      ? theme.colorScheme.onSecondary
+                      : theme.colorScheme.primary,
                 ),
               ),
             ),
