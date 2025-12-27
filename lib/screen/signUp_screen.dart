@@ -71,6 +71,22 @@ class _SignUpScreenState extends State<SignUpScreen>
       initialDate: DateTime(2000),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
+      builder: (context, child) {
+        final theme = Theme.of(context);
+        return Theme(
+          data: theme.copyWith(
+            colorScheme: theme.colorScheme.copyWith(
+              primary: Colors.brown, // header & selection color
+              onPrimary: Colors.white, // selected text color
+              onSurface: theme.textTheme.bodyLarge?.color, // text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: Colors.brown),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (date != null) {
       _dobController.text = "${date.year}-${date.month}-${date.day}";
@@ -174,7 +190,10 @@ class _SignUpScreenState extends State<SignUpScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor, // theme-aware
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
@@ -182,17 +201,24 @@ class _SignUpScreenState extends State<SignUpScreen>
             child: Image.asset(
               "assets/images/Background.jpg",
               fit: BoxFit.cover,
+              color: theme.brightness == Brightness.dark
+                  ? Colors.black.withOpacity(0.3)
+                  : null,
+              colorBlendMode: BlendMode.darken,
             ),
           ),
-          const SafeArea(
+          SafeArea(
             child: Padding(
-              padding: EdgeInsets.only(top: 1, left: 20),
+              padding: const EdgeInsets.only(top: 1, left: 20),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Image(
-                  image: AssetImage("assets/images/daleelLogo.png"),
+                  image: const AssetImage("assets/images/daleelLogo.png"),
                   width: 130,
                   height: 130,
+                  color: theme.brightness == Brightness.dark
+                      ? Colors.white70
+                      : null,
                 ),
               ),
             ),
@@ -235,17 +261,17 @@ class _SignUpScreenState extends State<SignUpScreen>
                       child: Row(
                         children: [
                           IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.arrow_back,
-                              color: Colors.brown,
+                              color: theme.primaryColor,
                             ),
                             onPressed: _backToPage1,
                           ),
                           const SizedBox(width: 8),
-                          const Text(
+                          Text(
                             "Back",
                             style: TextStyle(
-                              color: Colors.brown,
+                              color: theme.primaryColor,
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),

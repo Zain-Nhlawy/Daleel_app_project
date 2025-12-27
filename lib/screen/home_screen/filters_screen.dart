@@ -6,6 +6,10 @@ class FilterBottomSheetContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     RangeValues priceRange = RangeValues(50, 5000);
     RangeValues areaRange = RangeValues(50, 500);
     String? selectedProvince;
@@ -36,24 +40,24 @@ class FilterBottomSheetContent extends StatelessWidget {
     ];
 
     return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      color: colorScheme.surface,
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       child: StatefulBuilder(
         builder: (BuildContext context, StateSetter setModalState) {
           return Container(
             height: MediaQuery.of(context).size.height * 0.7,
-            padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
             child: Column(
               children: [
                 Container(
                   width: 40,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: colorScheme.onSurface.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
@@ -61,18 +65,18 @@ class FilterBottomSheetContent extends StatelessWidget {
                       children: [
                         Text(
                           'Category',
-                          style: TextStyle(
-                            fontSize: 18,
+                          style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Wrap(
                           spacing: 8.0,
                           children: categories.map((category) {
                             return ChoiceChip(
                               label: Text(category),
                               selected: selectedCategory == category,
+                              selectedColor: colorScheme.primary,
                               onSelected: (selected) {
                                 setModalState(() {
                                   selectedCategory = selected ? category : null;
@@ -81,11 +85,10 @@ class FilterBottomSheetContent extends StatelessWidget {
                             );
                           }).toList(),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Text(
                           'Price Range',
-                          style: TextStyle(
-                            fontSize: 18,
+                          style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -94,6 +97,8 @@ class FilterBottomSheetContent extends StatelessWidget {
                           min: 50,
                           max: 5000,
                           divisions: 99,
+                          activeColor: colorScheme.primary,
+                          inactiveColor: colorScheme.onSurface.withOpacity(0.3),
                           labels: RangeLabels(
                             priceRange.start.round().toString(),
                             priceRange.end.round().toString(),
@@ -101,29 +106,34 @@ class FilterBottomSheetContent extends StatelessWidget {
                           onChanged: (values) =>
                               setModalState(() => priceRange = values),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Text(
                           'Province',
-                          style: TextStyle(
-                            fontSize: 18,
+                          style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         DropdownButtonFormField<String>(
                           value: selectedProvince,
-                          hint: Text('Select Province'),
+                          hint: Text(
+                            'Select Province',
+                            style: textTheme.bodyMedium,
+                          ),
                           items: syrianProvinces
                               .map(
                                 (province) => DropdownMenuItem<String>(
                                   value: province,
-                                  child: Text(province),
+                                  child: Text(
+                                    province,
+                                    style: textTheme.bodyMedium,
+                                  ),
                                 ),
                               )
                               .toList(),
                           onChanged: (newValue) =>
                               setModalState(() => selectedProvince = newValue),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           children: [
                             Expanded(
@@ -132,19 +142,24 @@ class FilterBottomSheetContent extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Rooms',
-                                    style: TextStyle(
-                                      fontSize: 16,
+                                    style: textTheme.bodyMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   DropdownButtonFormField<int>(
                                     value: selectedRooms,
-                                    hint: Text('All'),
+                                    hint: Text(
+                                      'All',
+                                      style: textTheme.bodyMedium,
+                                    ),
                                     items: List.generate(10, (i) => i + 1)
                                         .map(
                                           (value) => DropdownMenuItem<int>(
                                             value: value,
-                                            child: Text(value.toString()),
+                                            child: Text(
+                                              value.toString(),
+                                              style: textTheme.bodyMedium,
+                                            ),
                                           ),
                                         )
                                         .toList(),
@@ -155,26 +170,31 @@ class FilterBottomSheetContent extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            SizedBox(width: 20),
+                            const SizedBox(width: 20),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     'Bathrooms',
-                                    style: TextStyle(
-                                      fontSize: 16,
+                                    style: textTheme.bodyMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   DropdownButtonFormField<int>(
                                     value: selectedBathrooms,
-                                    hint: Text('All'),
+                                    hint: Text(
+                                      'All',
+                                      style: textTheme.bodyMedium,
+                                    ),
                                     items: List.generate(5, (i) => i + 1)
                                         .map(
                                           (value) => DropdownMenuItem<int>(
                                             value: value,
-                                            child: Text(value.toString()),
+                                            child: Text(
+                                              value.toString(),
+                                              style: textTheme.bodyMedium,
+                                            ),
                                           ),
                                         )
                                         .toList(),
@@ -187,11 +207,10 @@ class FilterBottomSheetContent extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Text(
                           'Area Range (m²)',
-                          style: TextStyle(
-                            fontSize: 18,
+                          style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -200,6 +219,8 @@ class FilterBottomSheetContent extends StatelessWidget {
                           min: 30,
                           max: 1000,
                           divisions: 50,
+                          activeColor: colorScheme.primary,
+                          inactiveColor: colorScheme.onSurface.withOpacity(0.3),
                           labels: RangeLabels(
                             '${areaRange.start.round()} m²',
                             '${areaRange.end.round()} m²',
@@ -218,13 +239,17 @@ class FilterBottomSheetContent extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50),
-                      textStyle: TextStyle(
-                        fontSize: 18,
+                      minimumSize: const Size(double.infinity, 50),
+                      textStyle: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    child: Text('Apply'),
+                    child: Text(
+                      'Apply',
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: colorScheme.onPrimary,
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                       Navigator.push(

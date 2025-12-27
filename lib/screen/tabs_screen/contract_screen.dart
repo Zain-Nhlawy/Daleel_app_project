@@ -267,7 +267,8 @@ class _ContractScreenState extends State<ContractScreen>
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: ContractModificationRequestCard(
-                  editContract: _edits[index],  
+                  editContract: _edits[index],
+
                 ),
               );
             }

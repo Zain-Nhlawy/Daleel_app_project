@@ -27,26 +27,25 @@ class _StarRatingDialogState extends State<StarRatingDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final starColor =
+        theme.colorScheme.secondary; // Theme-adaptive "star" color
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       backgroundColor: theme.colorScheme.surface,
       surfaceTintColor: Colors.transparent,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
+        padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.1),
+                color: starColor.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.star_rounded,
-                color: Colors.amber,
-                size: 40,
-              ),
+              child: Icon(Icons.star_rounded, color: starColor, size: 40),
             ),
             const SizedBox(height: 16),
             Text(
@@ -80,7 +79,7 @@ class _StarRatingDialogState extends State<StarRatingDialog> {
                         ? Icons.star_rounded
                         : Icons.star_outline_rounded,
                     color: index < _rating
-                        ? Colors.amber
+                        ? starColor
                         : theme.colorScheme.outline.withOpacity(0.4),
                     size: 38,
                   ),

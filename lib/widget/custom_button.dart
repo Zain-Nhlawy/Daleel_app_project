@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final Color color;              
-  final Color? textColor;          
-  final bool bordered;            
+  final Color? color; // optional, can use theme if null
+  final Color? textColor; // optional
+  final bool bordered;
   final IconData? icon;
   final double borderRadius;
   final EdgeInsets padding;
@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onPressed,
-    required this.color,
+    this.color,
     this.textColor,
     this.bordered = false,
     this.icon,
@@ -26,26 +26,31 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final Color buttonColor = color ?? theme.colorScheme.primary;
+    final Color foregroundColor =
+        textColor ?? (bordered ? buttonColor : theme.colorScheme.onPrimary);
+
     return bordered
         ? OutlinedButton(
             style: OutlinedButton.styleFrom(
-              side: BorderSide(color: color, width: borderWidth),
+              side: BorderSide(color: buttonColor, width: borderWidth),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
               ),
               padding: padding,
+              foregroundColor: foregroundColor,
             ),
             onPressed: onPressed,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (icon != null)
-                  Icon(icon, color: textColor ?? color),
+                if (icon != null) Icon(icon, color: foregroundColor),
                 if (icon != null) const SizedBox(width: 6),
                 Text(
                   text,
                   style: TextStyle(
-                    color: textColor ?? color,
+                    color: foregroundColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -54,7 +59,8 @@ class CustomButton extends StatelessWidget {
           )
         : ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: color,
+              backgroundColor: buttonColor,
+              foregroundColor: foregroundColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
               ),
@@ -64,13 +70,12 @@ class CustomButton extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (icon != null)
-                  Icon(icon, color: textColor ?? Colors.white),
+                if (icon != null) Icon(icon, color: foregroundColor),
                 if (icon != null) const SizedBox(width: 6),
                 Text(
                   text,
                   style: TextStyle(
-                    color: textColor ?? Colors.white,
+                    color: foregroundColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

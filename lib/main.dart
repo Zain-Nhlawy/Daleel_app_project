@@ -1,7 +1,9 @@
 import 'package:daleel_app_project/core/storage/storage_keys.dart';
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/providers.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 import 'l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -37,7 +39,26 @@ final theme = ThemeData(
   ),
   textTheme: GoogleFonts.nunitoTextTheme(),
 );
-
+final darkTheme = ThemeData(
+  useMaterial3: true,
+  brightness: Brightness.dark,
+  colorScheme: const ColorScheme(
+    brightness: Brightness.dark,
+    primary: Color(0xFFBE7D66),
+    onPrimary: Colors.black,
+    secondary: Color(0xFF8B5E3C),
+    onSecondary: Colors.black,
+    background: Color(0xFF121212),
+    onBackground: Colors.white,
+    surface: Color(0xFF1E1E1E),
+    onSurface: Colors.white,
+    error: Colors.red,
+    onError: Colors.black,
+  ),
+  textTheme: GoogleFonts.nunitoTextTheme(
+    ThemeData(brightness: Brightness.dark).textTheme,
+  ),
+);
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
@@ -116,20 +137,41 @@ void main() async {
   if (token != null) {
     userController.updateProfile(await userService.getProfile());
   }
-
+  language = await appStorage.read(StorageKeys.language) ?? 'en';
+  final theme = await appStorage.read(StorageKeys.theme);
+  if(theme != null) {
+    appTheme = theme;
+  }
   runApp(
-    MaterialApp(
+    ChangeNotifierProvider(
+      create: (context) => SettingsProvider(),
+      child: const MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<SettingsProvider>(context);
+
+    return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: theme,
-      home: const SplashScreen(),
-      supportedLocales: const [Locale('en')],
+      darkTheme: darkTheme,
+      themeMode: provider.currentTheme,
+      home: SplashScreen(),
+      locale: provider.currentLocale,
+      supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-    ),
-  );
+    );
+  }
 }

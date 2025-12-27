@@ -46,33 +46,33 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _sendMessage() async {
     final messageText = _controller.text.trim();
-    if (messageText.isNotEmpty) {
-      _controller.clear();
-      final timestamp = FieldValue.serverTimestamp();
+    if (messageText.isEmpty) return;
 
-      await FirebaseFirestore.instance.collection('messages').add({
-        'text': messageText,
-        'senderId': currentUserId,
-        'receiverId': widget.receiverId,
-        'chatId': chatId,
-        'createdAt': timestamp,
-      });
+    _controller.clear();
+    final timestamp = FieldValue.serverTimestamp();
 
-      await FirebaseFirestore.instance.collection('chats').doc(chatId).set({
-        'chatId': chatId,
-        'lastMessage': messageText,
-        'lastMessageTime': timestamp,
-        'users': [currentUserId, widget.receiverId],
-        'userNames': {
-          currentUserId: currentName,
-          widget.receiverId: widget.receiverName,
-        },
-        'userImages': {
-          currentUserId: currentImage,
-          widget.receiverId: widget.receiverImage,
-        },
-      }, SetOptions(merge: true));
-    }
+    await FirebaseFirestore.instance.collection('messages').add({
+      'text': messageText,
+      'senderId': currentUserId,
+      'receiverId': widget.receiverId,
+      'chatId': chatId,
+      'createdAt': timestamp,
+    });
+
+    await FirebaseFirestore.instance.collection('chats').doc(chatId).set({
+      'chatId': chatId,
+      'lastMessage': messageText,
+      'lastMessageTime': timestamp,
+      'users': [currentUserId, widget.receiverId],
+      'userNames': {
+        currentUserId: currentName,
+        widget.receiverId: widget.receiverName,
+      },
+      'userImages': {
+        currentUserId: currentImage,
+        widget.receiverId: widget.receiverImage,
+      },
+    }, SetOptions(merge: true));
   }
 
   @override
@@ -80,13 +80,16 @@ class _ChatScreenState extends State<ChatScreen> {
     if (!_isInit)
       return const Scaffold(body: Center(child: Text("Loading...")));
 
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: colorScheme.onPrimary),
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -104,22 +107,18 @@ class _ChatScreenState extends State<ChatScreen> {
             const SizedBox(width: 10),
             Text(
               widget.receiverName,
-              style: const TextStyle(
+              style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.white,
+                color: colorScheme.onPrimary,
               ),
             ),
           ],
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 228, 228, 227),
-            ],
+            colors: [colorScheme.primary, colorScheme.background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -139,10 +138,13 @@ class _ChatScreenState extends State<ChatScreen> {
                       return Center(
                         child: Text(
                           AppLocalizations.of(context)!.sayHi,
-                          style: const TextStyle(color: Colors.white70),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onPrimary.withOpacity(0.7),
+                          ),
                         ),
                       );
                     }
+
                     final docs = snapshot.data!.docs;
                     return ListView.builder(
                       reverse: true,
@@ -169,6 +171,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildMessageBubble(BuildContext context, String message, bool isMe) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
@@ -178,7 +183,7 @@ class _ChatScreenState extends State<ChatScreen> {
           maxWidth: MediaQuery.of(context).size.width * 0.75,
         ),
         decoration: BoxDecoration(
-          color: isMe ? Theme.of(context).colorScheme.primary : Colors.white,
+          color: isMe ? colorScheme.primary : colorScheme.surface,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(20),
             topRight: const Radius.circular(20),
@@ -196,7 +201,7 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Text(
           message,
           style: TextStyle(
-            color: isMe ? Colors.white : Colors.black87,
+            color: isMe ? colorScheme.onPrimary : colorScheme.onSurface,
             fontSize: 15,
           ),
         ),
@@ -205,10 +210,13 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildMessageInput(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
+        color: colorScheme.surface.withOpacity(0.2),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Row(
@@ -216,14 +224,15 @@ class _ChatScreenState extends State<ChatScreen> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: colorScheme.surface,
                 borderRadius: BorderRadius.circular(30),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 controller: _controller,
                 decoration: InputDecoration(
-                  hintText: "${AppLocalizations.of(context)!.typeAMessage}${AppLocalizations.of(context)!.points}",
+                  hintText:
+                      "${AppLocalizations.of(context)!.typeAMessage}${AppLocalizations.of(context)!.points}",
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(vertical: 14),
                 ),
@@ -236,12 +245,12 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
+                color: colorScheme.primary,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.send_rounded,
-                color: Colors.white,
+                color: colorScheme.onPrimary,
                 size: 22,
               ),
             ),

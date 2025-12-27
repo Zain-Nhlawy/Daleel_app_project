@@ -437,4 +437,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get personImage => 'Image personnelle';
+
+  @override
+  String get highlyRated => 'Mieux notés';
 }

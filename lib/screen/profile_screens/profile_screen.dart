@@ -1,4 +1,3 @@
-
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/widget/profile_screen_widgets/profile_options.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +9,17 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = userController.user;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
           AppLocalizations.of(context)!.myProfile,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: Colors.white,
+          style: textTheme.headlineSmall?.copyWith(
+            color: colorScheme.onBackground,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -26,12 +28,9 @@ class ProfileScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 219, 155, 132),
-              Color.fromARGB(255, 255, 255, 255),
-            ],
+            colors: [colorScheme.primary, colorScheme.background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -40,17 +39,18 @@ class ProfileScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 40),
+
+                /// Profile Card
                 Container(
                   padding: const EdgeInsets.all(24.0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: colorScheme.surface,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: colorScheme.shadow.withOpacity(0.15),
                         blurRadius: 10,
                         offset: const Offset(0, 5),
                       ),
@@ -58,12 +58,13 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
+                      /// Avatar
                       Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: colorScheme.shadow.withOpacity(0.25),
                               blurRadius: 8,
                               spreadRadius: 2,
                             ),
@@ -71,6 +72,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         child: CircleAvatar(
                           radius: 45,
+                          backgroundColor: colorScheme.surface,
                           backgroundImage:
                               (user != null && user.profileImage.isNotEmpty)
                               ? NetworkImage(baseUrl + user.profileImage)
@@ -79,6 +81,8 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 20),
+
+                      /// User Info
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,18 +91,21 @@ class ProfileScreen extends StatelessWidget {
                               user != null
                                   ? '${user.firstName} ${user.lastName}'
                                   : 'Zain Zoon',
-                              style: Theme.of(context).textTheme.titleLarge
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: colorScheme.onSurface,
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              user != null 
-                                  ?  user.email 
+                              user != null
+                                  ? user.email
                                   : 'zainzoon59@gmail.com',
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(color: Colors.grey[600]),
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: colorScheme.onSurface.withOpacity(0.6),
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -108,6 +115,7 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+
                 const SizedBox(height: 30),
                 const Expanded(child: ProfileOptions()),
               ],

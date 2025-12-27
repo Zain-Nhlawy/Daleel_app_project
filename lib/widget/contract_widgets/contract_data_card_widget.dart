@@ -8,7 +8,7 @@ class ContractDataCardWidget extends StatefulWidget {
   const ContractDataCardWidget({super.key, required this.contract});
 
   @override
-  _ContractDataCardWidgetState createState() => _ContractDataCardWidgetState();
+  State<ContractDataCardWidget> createState() => _ContractDataCardWidgetState();
 }
 
 class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
@@ -20,33 +20,36 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
     contract = widget.contract;
   }
 
-  Color _statusColor(RentStatus status) {
+  Color _statusColor(BuildContext context, RentStatus status) {
+    final scheme = Theme.of(context).colorScheme;
+
     switch (status) {
       case RentStatus.completed:
-        return Colors.green.shade700;
+        return Colors.green.shade600;
       case RentStatus.pending:
-        return Colors.orange.shade700;
+        return Colors.orange.shade600;
       case RentStatus.cancelled:
-        return Colors.red.shade700;
+        return scheme.error;
       case RentStatus.onRent:
-        return Colors.blue.shade700;
+        return scheme.primary;
     }
   }
 
-  String _statusText(RentStatus status) {
-    return status.toString().split('.').last;
-  }
+  String _statusText(RentStatus status) => status.toString().split('.').last;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: colorScheme.shadow.withOpacity(0.15),
             spreadRadius: 1,
             blurRadius: 8,
             offset: const Offset(0, 4),
@@ -59,13 +62,14 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ContractDetails(contract: contract),
+              builder: (_) => ContractDetails(contract: contract),
             ),
           );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// Image
             ClipRRect(
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(20),
@@ -75,51 +79,42 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
                 width: double.infinity,
                 child: contract.contractApartment.images.isNotEmpty
                     ? Image.network(
-                        contract.contractApartment.images[0],
+                        contract.contractApartment.images.first,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Image.asset(
+                        errorBuilder: (_, __, ___) => Image.asset(
                           "assets/images/user.png",
                           fit: BoxFit.cover,
                         ),
                       )
-                    : Image.asset(
-                        "assets/images/user.png",
-                        fit: BoxFit.cover,
-                      ),
+                    : Image.asset("assets/images/user.png", fit: BoxFit.cover),
               ),
             ),
+
+            /// Content
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  /// Names
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "${AppLocalizations.of(context)!.renter}: ${contract.contractApartment.user.firstName}",
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[800],
-                            ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      _titleText(
+                        context,
+                        "${AppLocalizations.of(context)!.renter}: "
+                        "${contract.contractApartment.user.firstName}",
                       ),
-                      Text(
-                        "${AppLocalizations.of(context)!.tenant}: ${contract.user.firstName}",
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[800],
-                            ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      _titleText(
+                        context,
+                        "${AppLocalizations.of(context)!.tenant}: "
+                        "${contract.user.firstName}",
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 10),
+
+                  /// Dates
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -137,7 +132,10 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 15),
+
+                  /// Status
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
@@ -147,16 +145,16 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
                       ),
                       decoration: BoxDecoration(
                         color: _statusColor(
+                          context,
                           contract.rentStatus,
                         ).withOpacity(0.15),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         _statusText(contract.rentStatus),
-                        style: TextStyle(
-                          color: _statusColor(contract.rentStatus),
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: _statusColor(context, contract.rentStatus),
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -170,22 +168,41 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
     );
   }
 
+  Widget _titleText(BuildContext context, String text) {
+    final scheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Expanded(
+      child: Text(
+        text,
+        style: textTheme.titleSmall?.copyWith(
+          fontWeight: FontWeight.bold,
+          color: scheme.onSurface,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+
   Widget _buildDateInfo(
     BuildContext context,
     String label,
     DateTime date,
     IconData icon,
   ) {
+    final scheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Row(
       children: [
-        Icon(icon, color: Colors.grey[600], size: 18),
+        Icon(icon, color: scheme.onSurface.withOpacity(0.6), size: 18),
         const SizedBox(width: 6),
         Text(
           "$label: ${date.toString().substring(0, 10)}",
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontSize: 14,
-                color: Colors.grey[600],
-              ),
+          style: textTheme.bodySmall?.copyWith(
+            color: scheme.onSurface.withOpacity(0.6),
+          ),
         ),
       ],
     );

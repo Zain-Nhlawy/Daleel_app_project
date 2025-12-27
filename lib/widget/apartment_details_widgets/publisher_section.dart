@@ -18,6 +18,14 @@ class PublisherSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final img = apartment.user.profileImage;
+    final Color textColor = theme.colorScheme.onSurface;
+
+    ImageProvider _getUserImage(String? img) {
+      if (img == null || img.isEmpty)
+        return const AssetImage('assets/images/user.png');
+      if (img.startsWith('http')) return NetworkImage(img);
+      return NetworkImage('$baseUrl$img');
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,20 +34,21 @@ class PublisherSection extends StatelessWidget {
           AppLocalizations.of(context)!.publishedBy,
           style: theme.textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.bold,
+            color: textColor,
           ),
         ),
         const SizedBox(height: 12),
         Row(
           children: [
-            CircleAvatar(
-              radius: 28,
-              backgroundImage: img.startsWith('http')
-                  ? NetworkImage(img)
-                  : NetworkImage('$baseUrl$img'),
-            ),
+            CircleAvatar(radius: 28, backgroundImage: _getUserImage(img)),
             const SizedBox(width: 12),
-            Text('${apartment.user.firstName} ${apartment.user.lastName}'),
-            const Spacer(),
+            Expanded(
+              child: Text(
+                '${apartment.user.firstName} ${apartment.user.lastName}',
+                style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             CustomButton(
               text: AppLocalizations.of(context)!.contactUs,
               bordered: true,

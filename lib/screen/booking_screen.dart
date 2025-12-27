@@ -42,9 +42,9 @@ class _BookingCalendarState extends State<BookingCalendar> {
     _markedDates = EventList<Event>(events: {});
 
     if (widget.contract != null) {
-    _startDate = widget.contract!.startRent;
-    _endDate = widget.contract!.endRent;
-  }
+      _startDate = widget.contract!.startRent;
+      _endDate = widget.contract!.endRent;
+    }
 
     if (widget.apartment.freeTimes != null) {
       availableTimes = widget.apartment.freeTimes!.map((ft) {
@@ -209,107 +209,97 @@ class _BookingCalendarState extends State<BookingCalendar> {
     }
   }
 
-void _showUpdateRequestDialog({required bool isPendingApproval}) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (ctx) => AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      title: Center(
-        child: Icon(
-          Icons.check_circle_outline,
-          color: Colors.green,
-          size: 50,
-        ),
-      ),
-      content: Text(
-        isPendingApproval
-            ? AppLocalizations.of(context)!
-                .updateRequestSentWaitingForApproval
-            : AppLocalizations.of(context)!
-                .contractUpdatedSuccessfully,
-        textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 16),
-      ),
-      actionsAlignment: MainAxisAlignment.center,
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(ctx);
-            Navigator.pop(context, true);
-          },
-          child: Text(
-            AppLocalizations.of(context)!.okay,
-            style: const TextStyle(fontSize: 16),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-
-Future<void> _updateBooking() async {
-  if (_isProcessing) return;
-
-  setState(() => _isProcessing = true);
-
-  try {
-    if (_startDate == null || _endDate == null) {
-      return;
-    }
-
-    final result = await contractController.updateRent(
-      rentId: widget.contract!.id,
-      start: _startDate!,
-      end: _endDate!,
-    );
-
-    if (!mounted) return;
-
-    if (result == null) {
-      Navigator.pop(context, null);
-      _showUpdateRequestDialog(isPendingApproval: true);
-    } else {
-      Navigator.pop(context, {
-        'start': _startDate!,
-        'end': _endDate!,
-      });
-      _showUpdateRequestDialog(isPendingApproval: false);
-    }
-  } catch (e) {
-    if (!mounted) return;
-
+  void _showUpdateRequestDialog({required bool isPendingApproval}) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        title: Text(
-          AppLocalizations.of(context)!.error,
-          style: const TextStyle(color: Colors.red),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Center(
+          child: Icon(
+            Icons.check_circle_outline,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 50,
+          ),
         ),
-        content: Text(e.toString()),
+        content: Text(
+          isPendingApproval
+              ? AppLocalizations.of(
+                  context,
+                )!.updateRequestSentWaitingForApproval
+              : AppLocalizations.of(context)!.contractUpdatedSuccessfully,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 16),
+        ),
+        actionsAlignment: MainAxisAlignment.center,
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(AppLocalizations.of(context)!.okay),
+            onPressed: () {
+              Navigator.pop(ctx);
+              Navigator.pop(context, true);
+            },
+            child: Text(
+              AppLocalizations.of(context)!.okay,
+              style: const TextStyle(fontSize: 16),
+            ),
           ),
         ],
       ),
     );
-  } finally {
-    if (mounted) setState(() => _isProcessing = false);
   }
-}
 
+  Future<void> _updateBooking() async {
+    if (_isProcessing) return;
 
+    setState(() => _isProcessing = true);
 
+    try {
+      if (_startDate == null || _endDate == null) {
+        return;
+      }
+
+      final result = await contractController.updateRent(
+        rentId: widget.contract!.id,
+        start: _startDate!,
+        end: _endDate!,
+      );
+
+      if (!mounted) return;
+
+      if (result == null) {
+        Navigator.pop(context, null);
+        _showUpdateRequestDialog(isPendingApproval: true);
+      } else {
+        Navigator.pop(context, {'start': _startDate!, 'end': _endDate!});
+        _showUpdateRequestDialog(isPendingApproval: false);
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text(
+            AppLocalizations.of(context)!.error,
+            style: const TextStyle(color: Colors.red),
+          ),
+          content: Text(e.toString()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(AppLocalizations.of(context)!.okay),
+            ),
+          ],
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isProcessing = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final brown = Color(0xFF795548);
-    final brownDark = Color(0xFF5D4037);
+    final theme = Theme.of(context);
 
     EventList<Event> tempMarked = EventList(events: {});
     if (_startDate != null) {
@@ -319,9 +309,9 @@ Future<void> _updateBooking() async {
           date: _startDate!,
           title: AppLocalizations.of(context)!.start,
           dot: Container(
-            margin: EdgeInsets.symmetric(horizontal: 1.0),
+            margin: const EdgeInsets.symmetric(horizontal: 1.0),
             decoration: BoxDecoration(
-              color: Colors.green,
+              color: theme.colorScheme.primary,
               shape: BoxShape.circle,
             ),
             width: 8,
@@ -337,9 +327,9 @@ Future<void> _updateBooking() async {
           date: _endDate!,
           title: AppLocalizations.of(context)!.end,
           dot: Container(
-            margin: EdgeInsets.symmetric(horizontal: 1.0),
+            margin: const EdgeInsets.symmetric(horizontal: 1.0),
             decoration: BoxDecoration(
-              color: Colors.red,
+              color: theme.colorScheme.secondary,
               shape: BoxShape.circle,
             ),
             width: 8,
@@ -354,16 +344,18 @@ Future<void> _updateBooking() async {
       child: ScaffoldMessenger(
         key: _scaffoldMessengerKey,
         child: Scaffold(
-          backgroundColor: Colors.grey[100],
+          backgroundColor: theme.colorScheme.background,
           appBar: AppBar(
             title: Text(
               AppLocalizations.of(context)!.bookingDetails,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             elevation: 0,
-            backgroundColor: Colors.white70,
+            backgroundColor: theme.colorScheme.surface,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.brown[700]),
+              icon: Icon(Icons.arrow_back, color: theme.colorScheme.onSurface),
               onPressed: _isProcessing ? null : () => Navigator.pop(context),
             ),
           ),
@@ -378,19 +370,17 @@ Future<void> _updateBooking() async {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.selectDate,
-                          style: TextStyle(
-                            fontSize: 20,
+                          style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: brownDark,
                           ),
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
                         Container(
-                          padding: EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.white70,
+                            color: theme.colorScheme.surface,
                             borderRadius: BorderRadius.circular(18),
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 color: Colors.black12,
                                 blurRadius: 8,
@@ -402,30 +392,27 @@ Future<void> _updateBooking() async {
                           child: CalendarCarousel<Event>(
                             maxSelectedDate: DateTime(2100, 12, 31),
                             onDayPressed: (date, events) => _onDayPressed(date),
-                            weekendTextStyle: TextStyle(color: brownDark),
-                            weekdayTextStyle: TextStyle(
-                              color: Colors.blue[900],
-                              fontWeight: FontWeight.w600,
-                            ),
+                            weekendTextStyle: theme.textTheme.bodyMedium
+                                ?.copyWith(color: theme.colorScheme.secondary),
+                            weekdayTextStyle: theme.textTheme.bodyMedium,
                             todayButtonColor: Colors.transparent,
-                            todayTextStyle: TextStyle(color: Colors.grey),
+                            todayTextStyle: TextStyle(
+                              color: theme.colorScheme.primary,
+                            ),
                             markedDatesMap: tempMarked,
                             markedDateShowIcon: true,
                             markedDateIconMaxShown: 1,
                             selectedDateTime: null,
                             showOnlyCurrentMonthDate: true,
-                            headerTextStyle: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[900],
-                            ),
+                            headerTextStyle: theme.textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                             leftButtonIcon: Icon(
                               Icons.chevron_left,
-                              color: brownDark,
+                              color: theme.colorScheme.onSurface,
                             ),
                             rightButtonIcon: Icon(
                               Icons.chevron_right,
-                              color: brownDark,
+                              color: theme.colorScheme.onSurface,
                             ),
                             customDayBuilder:
                                 (
@@ -448,22 +435,24 @@ Future<void> _updateBooking() async {
                                       day.isAtSameMomentAs(_endDate!);
 
                                   BoxDecoration? box;
-                                  Color? textColor = brownDark;
+                                  Color? textColor =
+                                      theme.colorScheme.onSurface;
 
                                   if (inRange) {
                                     box = BoxDecoration(
-                                      color: Colors.orange.withOpacity(0.3),
+                                      color: theme.colorScheme.primary
+                                          .withOpacity(0.3),
                                       borderRadius: BorderRadius.circular(8),
                                     );
                                   }
                                   if (isStart || isEnd) {
                                     box = BoxDecoration(
                                       color: isStart
-                                          ? Colors.green
-                                          : Colors.red,
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.secondary,
                                       borderRadius: BorderRadius.circular(12),
                                     );
-                                    textColor = Colors.white;
+                                    textColor = theme.colorScheme.onPrimary;
                                   }
 
                                   return Container(
@@ -480,7 +469,7 @@ Future<void> _updateBooking() async {
                                 },
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           children: [
                             Expanded(
@@ -488,35 +477,33 @@ Future<void> _updateBooking() async {
                                 label: AppLocalizations.of(context)!.start,
                                 date: _startDate,
                                 icon: Icons.play_arrow,
-                                color: brown,
+                                color: theme.colorScheme.primary,
                               ),
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             Expanded(
                               child: _dateBox(
                                 label: AppLocalizations.of(context)!.end,
                                 date: _endDate,
                                 icon: Icons.flag,
-                                color: brown,
+                                color: theme.colorScheme.secondary,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Text(
                           AppLocalizations.of(context)!.availableTimes,
-                          style: TextStyle(
-                            fontSize: 18,
+                          style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: brownDark,
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: theme.colorScheme.surface,
                             borderRadius: BorderRadius.circular(14),
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 color: Colors.black12,
                                 blurRadius: 6,
@@ -524,33 +511,37 @@ Future<void> _updateBooking() async {
                               ),
                             ],
                           ),
-                          padding: EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(12),
                           child: Table(
                             border: TableBorder.all(
-                              color: Colors.grey.shade300,
+                              color: theme.colorScheme.outline,
                             ),
                             children: [
                               TableRow(
                                 decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
+                                  color: theme.colorScheme.primary.withOpacity(
+                                    0.1,
+                                  ),
                                 ),
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.all(8),
+                                    padding: const EdgeInsets.all(8),
                                     child: Text(
                                       AppLocalizations.of(context)!.from,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.all(8),
+                                    padding: const EdgeInsets.all(8),
                                     child: Text(
                                       AppLocalizations.of(context)!.to,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -559,11 +550,11 @@ Future<void> _updateBooking() async {
                                 return TableRow(
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(8),
                                       child: Text(time['from']!),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(8),
                                       child: Text(time['to']!),
                                     ),
                                   ],
@@ -572,7 +563,7 @@ Future<void> _updateBooking() async {
                             ],
                           ),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                       ],
                     ),
                   ),
@@ -580,10 +571,10 @@ Future<void> _updateBooking() async {
               ),
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
+                  color: theme.colorScheme.surface,
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black12,
                       blurRadius: 8,
@@ -595,9 +586,9 @@ Future<void> _updateBooking() async {
                   text: _isProcessing
                       ? AppLocalizations.of(context)!.processing
                       : widget.isEdit
-                          ? AppLocalizations.of(context)!.updateBooking
-                          : AppLocalizations.of(context)!.confirmBooking,
-                  color: brown,
+                      ? AppLocalizations.of(context)!.updateBooking
+                      : AppLocalizations.of(context)!.confirmBooking,
+                  color: theme.colorScheme.primary,
                   onPressed: () {
                     if (!_isProcessing) {
                       widget.isEdit ? _updateBooking() : _confirmBooking();
@@ -619,11 +610,11 @@ Future<void> _updateBooking() async {
     required Color color,
   }) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 14),
+      padding: const EdgeInsets.symmetric(vertical: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3)),
         ],
       ),
@@ -631,7 +622,7 @@ Future<void> _updateBooking() async {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, size: 18, color: color),
-          SizedBox(width: 6),
+          const SizedBox(width: 6),
           Text(
             date != null ? '$label: ${formatDate(date)}' : '$label: --',
             style: TextStyle(fontWeight: FontWeight.bold, color: color),

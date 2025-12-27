@@ -32,6 +32,8 @@ class _MainScreenState extends State<HomeScreenTabs> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       body: PageView(
         controller: _pageController,
@@ -42,14 +44,13 @@ class _MainScreenState extends State<HomeScreenTabs> {
           });
         },
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         iconSize: 25,
         currentIndex: _currentIndex,
-        selectedItemColor: const Color.fromARGB(255, 83, 55, 45),
-        unselectedItemColor: const Color.fromARGB(255, 136, 125, 125),
-
+        selectedItemColor: theme.colorScheme.primary,
+        unselectedItemColor: theme.colorScheme.onSurface.withOpacity(0.6),
+        backgroundColor: theme.colorScheme.surface,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
@@ -60,14 +61,22 @@ class _MainScreenState extends State<HomeScreenTabs> {
             );
           });
         },
-
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.explore_outlined), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.handshake_outlined), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.add_box_outlined), label: ''),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore_outlined),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.handshake_outlined),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_box_outlined),
+            label: '',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.chat_outlined), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: '')
-        ]
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
+        ],
       ),
     );
   }
