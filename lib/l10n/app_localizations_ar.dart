@@ -429,4 +429,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get personImage => 'الصورة الشخصية';
+
+  @override
+  String get highlyRated => 'مرتفع التقييم';
 }

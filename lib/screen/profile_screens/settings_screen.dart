@@ -1,6 +1,10 @@
+import 'package:daleel_app_project/core/storage/storage_keys.dart';
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/language_provider.dart';
+import 'package:daleel_app_project/main.dart';
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsScreen extends StatefulWidget{
   @override
@@ -69,9 +73,11 @@ class _SettingsScreenState extends State<SettingsScreen>{
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
-                      setState((){
-                        _selectedLang = newValue!;
-                      });
+                      if(newValue != null) {
+                        setState((){
+                          _selectedLang = newValue;
+                        });
+                      }
                     },
                   ),
                 ),
@@ -90,6 +96,8 @@ class _SettingsScreenState extends State<SettingsScreen>{
     return GestureDetector(
       onTap: () {
         language = _selectedLang;
+        appStorage.write(StorageKeys.language, language);
+        context.read<LanguageProvider>().changeLanguage(language);
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreenTabs()),

@@ -1,8 +1,10 @@
 import 'package:daleel_app_project/core/storage/storage_keys.dart';
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/language_provider.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/settings_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 import 'l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -136,18 +138,31 @@ void main() async {
   if (token != null) {
     userController.updateProfile(await userService.getProfile());
   }
-  final lang = await appStorage.read(StorageKeys.language) ?? 'en';
-  language = lang;
-
+  language = await appStorage.read(StorageKeys.language) ?? 'en';
+  
   runApp(
-    MaterialApp(
+    ChangeNotifierProvider(
+      create: (context) => LanguageProvider(),
+      child: const MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<LanguageProvider>(context);
+
+    return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: theme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
       home: SplashScreen(),
-      locale: Locale(language),
+      locale: provider.currentLocale,
       supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -155,6 +170,6 @@ void main() async {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-    ),
-  );
+    );
+  }
 }
