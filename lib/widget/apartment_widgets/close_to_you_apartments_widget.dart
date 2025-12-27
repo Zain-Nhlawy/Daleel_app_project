@@ -16,7 +16,7 @@ class CloseToYouApartmentsWidget extends StatefulWidget {
 
 class _CloseToYouApartmentsWidgetState
     extends State<CloseToYouApartmentsWidget> {
-  final List<Apartments2> _apartments = [];
+  List<Apartments2> _apartments = [];
   final User? user = userController.user;
   bool _isInitialLoading = true;
   bool _isLoadingMore = false;
@@ -63,7 +63,7 @@ class _CloseToYouApartmentsWidgetState
         if (apartments == null || apartments.isEmpty) {
           _hasMore = false;
         } else {
-          _apartments.addAll(apartments);
+          _apartments += apartments;
           _page++;
         }
         _isInitialLoading = false;
@@ -101,19 +101,21 @@ class _CloseToYouApartmentsWidgetState
       controller: widget.controller,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: _apartments.length + (_hasMore ? 1 : 0),
+      itemCount: _apartments.length + (_apartments.length>=10 ? 1 : 0),
       itemBuilder: (context, index) {
         if (index < _apartments.length) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             child: NearpyApartmentsWidgets(apartment: _apartments[index]),
           );
-        } else {
-          // Loader for more items
-          return const Padding(
-            padding: EdgeInsets.all(16),
+        }
+        if (_hasMore) {
+          return Padding(
+            padding: EdgeInsets.all(10),
             child: Center(child: CircularProgressIndicator()),
           );
+        } else {
+          return const SizedBox(height: 10);
         }
       },
     );

@@ -24,15 +24,8 @@ class _ContractScreenState extends State<ContractScreen>
     super.initState();
     _loadContracts();
     _controller.addListener(() {
-      print(
-        "--------------------------------------------------------------------------------------",
-      );
-      print(_hasMore);
-      print(
-        "--------------------------------------------------------------------------------------",
-      );
       if (_controller.position.pixels >=
-              _controller.position.maxScrollExtent - 20 &&
+              _controller.position.maxScrollExtent - 1 &&
           !_isLoading &&
           _hasMore) {
         _loadContracts();
