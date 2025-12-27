@@ -1,11 +1,10 @@
 import 'package:daleel_app_project/core/storage/storage_keys.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/providers.dart';
-import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
+import 'package:daleel_app_project/screen/home_screen/notifications_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:daleel_app_project/services/firebase_notification_service.dart';
-
 
 import 'l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -19,7 +18,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 RemoteMessage? pendingNotificationMessage;
-
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -43,6 +41,7 @@ final theme = ThemeData(
   ),
   textTheme: GoogleFonts.nunitoTextTheme(),
 );
+
 final darkTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
@@ -63,6 +62,7 @@ final darkTheme = ThemeData(
     ThemeData(brightness: Brightness.dark).textTheme,
   ),
 );
+
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
@@ -86,11 +86,15 @@ void main() async {
 
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin
-      >()
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+  await Hive.initFlutter();
+  await Hive.openBox('notifications');
+
+  final firebaseService = FirebaseNotificationService();
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     flutterLocalNotificationsPlugin.show(
       message.hashCode,
       message.notification?.title,
@@ -104,36 +108,15 @@ void main() async {
         ),
       ),
     );
-    final type = message.data['type'];
-    if (type == 'rate_department') {
-      final departmentIdStr = message.data['department_id'];
-      if (departmentIdStr != null) {
-        final departmentId = int.tryParse(departmentIdStr);
-        if (departmentId != null) {
-          final apartments2 = await apartmentController.fetchApartment(
-            departmentId,
-          );
-          if (apartments2 != null && navigatorKey.currentState != null) {
-            navigatorKey.currentState!.push(
-              MaterialPageRoute(
-                builder: (_) => ApartmentDetailsScreen(
-                  apartment: apartments2,
-                  withRate: true,
-                ),
-              ),
-            );
-          }
-        }
-      }
-    }
+    firebaseService.saveNotification(message);
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((message) {
     pendingNotificationMessage = message;
+    navigatorKey.currentState?.push(
+      MaterialPageRoute(builder: (_) => const NotificationsScreen()),
+    );
   });
-  await Hive.initFlutter();
-  await Hive.openBox('notifications');
-
 
   final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
@@ -144,11 +127,13 @@ void main() async {
   if (token != null) {
     userController.updateProfile(await userService.getProfile());
   }
+
   language = await appStorage.read(StorageKeys.language) ?? 'en';
-  final theme = await appStorage.read(StorageKeys.theme);
-  if(theme != null) {
-    appTheme = theme;
+  final themeValue = await appStorage.read(StorageKeys.theme);
+  if (themeValue != null) {
+    appTheme = themeValue;
   }
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => SettingsProvider(),
@@ -182,3 +167,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
