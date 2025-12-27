@@ -37,40 +37,9 @@ class Contracts {
   final DateTime endRent;
   final double rentFee;
   final User user;
-
   final List<Contracts> departmentRents;
 
   factory Contracts.fromJson(Map<String, dynamic> json) {
-    Apartments2? apartment;
-    if (json['department'] != null) {
-      apartment = Apartments2.fromJson(json['department']);
-    }
-
-    List<Contracts> deptRents = [];
-    if (json['department'] != null && json['department']['rents'] != null) {
-      final rentsList = json['department']['rents'] as List;
-      deptRents = rentsList.map((e) {
-        return Contracts(
-          id: e['id'] ?? 0,
-          startRent: e['startRent'] != null
-              ? DateTime.parse(e['startRent'])
-              : DateTime.now(),
-          endRent: e['endRent'] != null
-              ? DateTime.parse(e['endRent'])
-              : DateTime.now(),
-          rentFee: e['rentFee'] != null
-              ? double.tryParse(e['rentFee'].toString()) ?? 0.0
-              : 0.0,
-          rentStatus: e['status'] != null
-              ? rentStatusFromString(e['status'])
-              : RentStatus.pending,
-          user: e['user'] != null ? User.fromJson(e['user']) : User.empty(),
-          contractApartment: apartment ?? Apartments2.empty(),
-          departmentRents: [], 
-        );
-      }).toList();
-    }
-
     return Contracts(
       id: json['id'] ?? 0,
       startRent: json['startRent'] != null
@@ -85,9 +54,14 @@ class Contracts {
       rentStatus: json['status'] != null
           ? rentStatusFromString(json['status'])
           : RentStatus.pending,
-      user: User.fromJson(json['user']),
-      contractApartment: apartment ?? Apartments2.empty(),
-      departmentRents: deptRents,
+
+      user: json['user'] != null ? User.fromJson(json['user']) : User.empty(),
+
+      contractApartment: json['department'] != null
+          ? Apartments2.fromJson(json['department'])
+          : Apartments2.empty(),
+
+      departmentRents: [],
     );
   }
 }
