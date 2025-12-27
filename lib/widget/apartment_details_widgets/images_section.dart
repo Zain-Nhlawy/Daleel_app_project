@@ -15,32 +15,34 @@ class ImagesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
-ImageProvider _getImage(String? img) {
-  if (img == null || img.isEmpty) {
-    return const AssetImage('assets/images/user.png');
-  }
+    ImageProvider _getImage(String? img) {
+      if (img == null || img.isEmpty) {
+        return const AssetImage('assets/images/user.png');
+      }
 
-  if (img.startsWith('http')) {
-    return NetworkImage(img);
-  }
+      if (img.startsWith('http')) {
+        return NetworkImage(img);
+      }
 
-  if (img.startsWith('/')) {
-    return NetworkImage('$baseUrl$img');
-  }
+      if (img.startsWith('/')) {
+        return NetworkImage('$baseUrl$img');
+      }
 
-  return const AssetImage('assets/images/user.png');
-}
-
-
+      return const AssetImage('assets/images/user.png');
+    }
 
     return Column(
       children: [
-        Image(
-          image: _getImage(selectedImage),
-          width: double.infinity,
-          height: 260,
-          fit: BoxFit.cover,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image(
+            image: _getImage(selectedImage),
+            width: double.infinity,
+            height: 260,
+            fit: BoxFit.cover,
+          ),
         ),
         const SizedBox(height: 10),
         SizedBox(
@@ -51,6 +53,7 @@ ImageProvider _getImage(String? img) {
             itemCount: images.length,
             itemBuilder: (context, index) {
               final img = images[index];
+              final isSelected = img == selectedImage;
               return GestureDetector(
                 onTap: () => onImageSelected(img),
                 child: Container(
@@ -58,6 +61,9 @@ ImageProvider _getImage(String? img) {
                   width: 90,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
+                    border: isSelected
+                        ? Border.all(color: theme.colorScheme.primary, width: 2)
+                        : null,
                     image: DecorationImage(
                       image: _getImage(img),
                       fit: BoxFit.cover,
