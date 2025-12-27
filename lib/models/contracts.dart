@@ -18,6 +18,8 @@ RentStatus rentStatusFromString(String status) {
   }
 }
 
+
+
 class Contracts {
   const Contracts({
     required this.id,
@@ -37,8 +39,31 @@ class Contracts {
   final DateTime endRent;
   final double rentFee;
   final User user;
-
   final List<Contracts> departmentRents;
+
+
+  Contracts copyWith({
+    RentStatus? rentStatus,
+    DateTime? startRent,
+    DateTime? endRent,
+    double? rentFee,
+    User? user,
+    Apartments2? contractApartment,
+    List<Contracts>? departmentRents,
+  }) {
+    return Contracts(
+      id: id, 
+      rentStatus: rentStatus ?? this.rentStatus,
+      startRent: startRent ?? this.startRent,
+      endRent: endRent ?? this.endRent,
+      rentFee: rentFee ?? this.rentFee,
+      user: user ?? this.user,
+      contractApartment:
+          contractApartment ?? this.contractApartment,
+      departmentRents:
+          departmentRents ?? this.departmentRents,
+    );
+  }
 
   factory Contracts.fromJson(Map<String, dynamic> json) {
     Apartments2? apartment;

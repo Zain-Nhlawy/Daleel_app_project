@@ -93,7 +93,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        // centerTitle: true,
         title: Text(
           AppLocalizations.of(context)!.details,
           style: theme.textTheme.titleMedium,

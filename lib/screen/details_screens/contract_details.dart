@@ -5,7 +5,9 @@ import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/screen/booking_screen.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
 import 'package:daleel_app_project/widget/contract_widgets/timer_for_contract_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class ContractDetails extends StatefulWidget {
   final Contracts contract;
@@ -23,6 +25,42 @@ class _ContractDetailsState extends State<ContractDetails> {
     super.initState();
     contract = widget.contract;
   }
+
+
+  String extractCleanErrorMessage(dynamic error) {
+  String message = 'Something went wrong';
+
+  if (error is DioException) {
+    final response = error.response;
+
+    if (response?.data != null) {
+      final data = response!.data;
+
+      if (data is Map<String, dynamic> && data['message'] != null) {
+        message = data['message'].toString();
+      } else if (data is String) {
+        message = data;
+      }
+    } else if (error.message != null) {
+      message = error.message!;
+    }
+  } else if (error is Exception) {
+    message = error.toString();
+  }
+
+  message = message
+      .replaceAll('Exception:', '')
+      .replaceAll('Exception', '')
+      .replaceAll('Error:', '')
+      .replaceAll('Error', '')
+      .trim();
+
+  if (message.isEmpty || message.length < 3) {
+    message = 'Operation failed';
+  }
+
+  return message;
+}
 
   Future<void> _updateContract(DateTime start, DateTime end) async {
     final updated = await contractController.updateRent(
@@ -59,6 +97,121 @@ Future<Contracts> _rejectContract() async {
 
   return rejected;
 }
+
+double calculateCancellationFee({
+  required double rentFee,
+  required int untilStartDays,
+}) {
+  final factor = 2 / exp((1 / 3) * (untilStartDays - 1));
+  final percentage = min(1, factor);
+  return rentFee * percentage;
+}
+
+Future<void> _handleCancelContract() async {
+  int untilStartDays =
+      contract.startRent.difference(DateTime.now()).inDays;
+
+  if (untilStartDays < 0) {
+    untilStartDays = 0;
+  }
+
+  final cancelFee = calculateCancellationFee(
+    rentFee: contract.rentFee,
+    untilStartDays: untilStartDays,
+  );
+
+  if (contract.rentStatus == RentStatus.cancelled) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.info),
+        content: Text(
+          AppLocalizations.of(context)!.contractAlreadyCancelled,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(AppLocalizations.of(context)!.okay),
+          ),
+        ],
+      ),
+    );
+    return;
+  }
+
+  final confirm = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: Text(AppLocalizations.of(context)!.confirm),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.confirmCancelContract,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '${AppLocalizations.of(context)!.daysUntilStart}: $untilStartDays',
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '${AppLocalizations.of(context)!.cancellationFee}: '
+            '${cancelFee.toStringAsFixed(2)}',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, false),
+          child: Text(AppLocalizations.of(context)!.no),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, true),
+          child: Text(AppLocalizations.of(context)!.yes),
+        ),
+      ],
+    ),
+  );
+
+  if (confirm != true) return;
+
+  try {
+    await contractController.cancelRent(rentId: contract.id);
+
+    if (!mounted) return;
+
+    setState(() {
+      contract = contract.copyWith(
+        rentStatus: RentStatus.cancelled,
+      );
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          AppLocalizations.of(context)!.contractCancelled,
+        ),
+      ),
+    );
+
+    Navigator.pop(context);
+  } catch (e) {
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(extractCleanErrorMessage(e)),
+      ),
+    );
+  }
+}
+
+
 
 
   @override
@@ -148,6 +301,7 @@ Future<Contracts> _rejectContract() async {
               onUpdate: _updateContract,
               onApprove: _approveContract,
               onReject: _rejectContract,
+              onCancelPressed: _handleCancelContract,
             )
           : null,
     );
@@ -393,13 +547,21 @@ Widget _buildBottomActions(
   required Future<void> Function(DateTime, DateTime) onUpdate,
   required Future<void> Function() onApprove,
   required Future<Contracts> Function() onReject,
+  required VoidCallback onCancelPressed,
 }) {
+  final bool hideActions = contract.rentStatus == RentStatus.cancelled ||
+contract.rentStatus == RentStatus.completed ||
+contract.endRent.isBefore(DateTime.now());
+
+  if (hideActions) {
+    return const SizedBox.shrink(); 
+  }
+
   return Container(
     width: double.infinity,
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     decoration: BoxDecoration(
       color: Colors.grey.shade50,
-      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
       border: Border(top: BorderSide(color: Colors.grey.shade300)),
     ),
     child: Row(
@@ -407,73 +569,29 @@ Widget _buildBottomActions(
         if (isTenant) ...[
           Expanded(
             child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.blueAccent,
+                side: const BorderSide(color: Colors.blueAccent),
+              ),
               onPressed: () async {
                 final result = await Navigator.push(
                   context,
-                  PageRouteBuilder(
-                    transitionDuration: const Duration(milliseconds: 500),
-                    pageBuilder: (_, __, ___) => BookingCalendar(
+                  MaterialPageRoute(
+                    builder: (_) => BookingCalendar(
                       apartment: contract.contractApartment,
                       contract: contract,
                     ),
                   ),
                 );
-
-                if (result != null && result is Map<String, DateTime>) {
-                  final newStart = result['start']!;
-                  final newEnd = result['end']!;
-                  await onUpdate(newStart, newEnd);
-                }
               },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.blue,
-                side: const BorderSide(color: Colors.blue),
-              ),
               child: Text(AppLocalizations.of(context)!.edit),
             ),
           ),
+
           const SizedBox(width: 12),
           Expanded(
             child: OutlinedButton(
-              onPressed: () async {
-                final confirm = await showDialog<bool>(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: Text(AppLocalizations.of(context)!.confirm),
-                    content: Text(
-                      AppLocalizations.of(context)!.confirmCancelContract,
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(ctx, false),
-                        child: Text(AppLocalizations.of(context)!.no),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(ctx, true),
-                        child: Text(AppLocalizations.of(context)!.yes),
-                      ),
-                    ],
-                  ),
-                );
-
-                if (confirm == true) {
-                  try {
-                    await contractController.cancelRent(rentId: contract.id);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          AppLocalizations.of(context)!.contractCancelled,
-                        ),
-                      ),
-                    );
-                    Navigator.pop(context);
-                  } catch (e) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(e.toString())));
-                  }
-                }
-              },
+              onPressed: onCancelPressed,
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.red,
                 side: const BorderSide(color: Colors.red),
@@ -481,33 +599,24 @@ Widget _buildBottomActions(
               child: Text(AppLocalizations.of(context)!.cancel),
             ),
           ),
-
         ] else ...[
           Expanded(
             child: OutlinedButton(
               onPressed: () async {
                 try {
                   await onApprove();
-
                   if (!context.mounted) return;
-
                   showDialog(
                     context: context,
                     builder: (ctx) => AlertDialog(
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: 60,
-                          ),
+                          const Icon(Icons.check_circle, color: Colors.green, size: 60),
                           const SizedBox(height: 16),
                           Text(
-                            AppLocalizations.of(context)!
-                                .contractApprovedSuccessfully,
+                            AppLocalizations.of(context)!.contractApprovedSuccessfully,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 16),
                           ),
                         ],
                       ),
@@ -519,10 +628,8 @@ Widget _buildBottomActions(
                       ],
                     ),
                   );
-
                 } catch (e) {
                   if (!context.mounted) return;
-
                   showDialog(
                     context: context,
                     builder: (ctx) => AlertDialog(
@@ -538,8 +645,6 @@ Widget _buildBottomActions(
                   );
                 }
               },
-
-
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.green,
                 side: const BorderSide(color: Colors.green),
@@ -570,11 +675,10 @@ Widget _buildBottomActions(
                 );
 
                 if (confirm != true) return;
+
                 try {
                   await onReject();
-
                   if (!context.mounted) return;
-
                   showDialog(
                     context: context,
                     builder: (ctx) => AlertDialog(
@@ -586,7 +690,6 @@ Widget _buildBottomActions(
                           Text(
                             AppLocalizations.of(context)!.contractRejectedSuccessfully,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 16),
                           ),
                         ],
                       ),
@@ -600,7 +703,6 @@ Widget _buildBottomActions(
                   );
                 } catch (e) {
                   if (!context.mounted) return;
-
                   showDialog(
                     context: context,
                     builder: (ctx) => AlertDialog(
@@ -628,3 +730,4 @@ Widget _buildBottomActions(
     ),
   );
 }
+

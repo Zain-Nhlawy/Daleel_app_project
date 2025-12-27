@@ -921,6 +921,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Personal Image'**
   String get personImage;
+
+  /// No description provided for @info.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get info;
+
+  /// No description provided for @contractAlreadyCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'This contract has already been cancelled'**
+  String get contractAlreadyCancelled;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get noNotifications;
+
+  /// No description provided for @clearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get clearAll;
+
+  /// No description provided for @daysUntilStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Days until contract starts'**
+  String get daysUntilStart;
+
+  /// No description provided for @cancellationFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation fee'**
+  String get cancellationFee;
 }
 
 class _AppLocalizationsDelegate

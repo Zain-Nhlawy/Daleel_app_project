@@ -90,124 +90,215 @@ class _BookingCalendarState extends State<BookingCalendar> {
     return false;
   }
 
-  Future<void> _confirmBooking() async {
-    if (_isProcessing) return;
+  String extractCleanErrorMessage(dynamic error) {
+  String message = 'Something went wrong';
 
-    setState(() => _isProcessing = true);
+  if (error is DioException) {
+    final response = error.response;
 
-    try {
-      await userController.getProfile();
-      final user = userController.user;
+    if (response?.data != null) {
+      final data = response!.data;
 
-      if (user == null) {
-        _scaffoldMessengerKey.currentState?.showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.userDataNotAvailable),
-          ),
-        );
-        return;
+      if (data is Map<String, dynamic> && data['message'] != null) {
+        message = data['message'].toString();
+      } else if (data is String) {
+        message = data;
       }
-
-      if (user.verificationState != 'verified') {
-        _scaffoldMessengerKey.currentState?.showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(
-                context,
-              )!.yourAccountIsNotAllowedToMakeBookings,
-            ),
-          ),
-        );
-        return;
-      }
-
-      if (_startDate == null || _endDate == null) {
-        _scaffoldMessengerKey.currentState?.showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.pleaseSelectStartAndEndDates,
-            ),
-          ),
-        );
-        return;
-      }
-
-      await contractController.bookApartment(
-        apartmentId: widget.apartment.id,
-        start: _startDate!,
-        end: _endDate!,
-        rentFee: widget.apartment.rentFee ?? 0.0,
-      );
-
-      if (!mounted) return;
-      Navigator.pop(context);
-    } on DioException catch (e) {
-      if (!mounted) return;
-
-      String? message;
-
-      if (e.response?.data != null) {
-        final data = e.response!.data;
-        if (data is Map<String, dynamic>) {
-          message = data['message'] as String?;
-        } else if (data is String) {
-          message = data;
-        }
-      }
-
-      final statusCode = e.response?.statusCode;
-
-      if (statusCode == 401) {
-        _scaffoldMessengerKey.currentState?.showSnackBar(
-          const SnackBar(content: Text('Unauthorized, please login again')),
-        );
-        return;
-      }
-
-      if (statusCode == 500) {
-        _scaffoldMessengerKey.currentState?.showSnackBar(
-          const SnackBar(content: Text('Server error, try again later')),
-        );
-        return;
-      }
-
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.bookingPeriodUnavailable),
-        ),
-      );
-    } on Exception catch (e) {
-      if (!mounted) return;
-
-      String errorMessage = e.toString();
-
-      int lastColonIndex = errorMessage.lastIndexOf(':');
-      String cleanMessage;
-
-      if (lastColonIndex != -1 && lastColonIndex < errorMessage.length - 1) {
-        cleanMessage = errorMessage.substring(lastColonIndex + 1).trim();
-      } else {
-        cleanMessage = errorMessage;
-      }
-
-      cleanMessage = cleanMessage
-          .replaceAll('Exception', '')
-          .replaceAll('Error', '')
-          .trim();
-
-      if (cleanMessage.length < 3) {
-        cleanMessage = 'Booking failed';
-      }
-
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(content: Text(cleanMessage)),
-      );
-    } finally {
-      if (mounted) {
-        setState(() => _isProcessing = false);
-      }
+    } else if (error.message != null) {
+      message = error.message!;
     }
+  } else if (error is Exception) {
+    message = error.toString();
   }
+
+  message = message
+      .replaceAll('Exception:', '')
+      .replaceAll('Exception', '')
+      .replaceAll('Error:', '')
+      .replaceAll('Error', '')
+      .trim();
+
+  if (message.isEmpty || message.length < 3) {
+    message = 'Operation failed';
+  }
+
+  return message;
+}
+
+
+Future<void> _confirmBooking() async {
+  if (_isProcessing) return;
+
+  setState(() => _isProcessing = true);
+
+  try {
+    await userController.getProfile();
+    final user = userController.user;
+
+    if (user == null) {
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.userDataNotAvailable)),
+      );
+      return;
+    }
+
+    if (user.verificationState != 'verified') {
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.yourAccountIsNotAllowedToMakeBookings)),
+      );
+      return;
+    }
+
+    if (_startDate == null || _endDate == null) {
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectStartAndEndDates)),
+      );
+      return;
+    }
+
+    await contractController.bookApartment(
+      apartmentId: widget.apartment.id,
+      start: _startDate!,
+      end: _endDate!,
+      rentFee: widget.apartment.rentFee ?? 0.0,
+    );
+
+    if (!mounted) return;
+    Navigator.pop(context);
+
+  } catch (e) {
+    if (!mounted) return;
+
+    final cleanMessage = extractCleanErrorMessage(e);
+    _scaffoldMessengerKey.currentState?.showSnackBar(
+      SnackBar(content: Text(cleanMessage)),
+    );
+
+  } finally {
+    if (mounted) setState(() => _isProcessing = false);
+  }
+}
+
+
+
+  // Future<void> _confirmBooking() async {
+  //   if (_isProcessing) return;
+
+  //   setState(() => _isProcessing = true);
+
+  //   try {
+  //     await userController.getProfile();
+  //     final user = userController.user;
+
+  //     if (user == null) {
+  //       _scaffoldMessengerKey.currentState?.showSnackBar(
+  //         SnackBar(
+  //           content: Text(AppLocalizations.of(context)!.userDataNotAvailable),
+  //         ),
+  //       );
+  //       return;
+  //     }
+
+  //     if (user.verificationState != 'verified') {
+  //       _scaffoldMessengerKey.currentState?.showSnackBar(
+  //         SnackBar(
+  //           content: Text(
+  //             AppLocalizations.of(
+  //               context,
+  //             )!.yourAccountIsNotAllowedToMakeBookings,
+  //           ),
+  //         ),
+  //       );
+  //       return;
+  //     }
+
+  //     if (_startDate == null || _endDate == null) {
+  //       _scaffoldMessengerKey.currentState?.showSnackBar(
+  //         SnackBar(
+  //           content: Text(
+  //             AppLocalizations.of(context)!.pleaseSelectStartAndEndDates,
+  //           ),
+  //         ),
+  //       );
+  //       return;
+  //     }
+
+  //     await contractController.bookApartment(
+  //       apartmentId: widget.apartment.id,
+  //       start: _startDate!,
+  //       end: _endDate!,
+  //       rentFee: widget.apartment.rentFee ?? 0.0,
+  //     );
+
+  //     if (!mounted) return;
+  //     Navigator.pop(context);
+  //   } on DioException catch (e) {
+  //     if (!mounted) return;
+
+  //     String? message;
+
+  //     if (e.response?.data != null) {
+  //       final data = e.response!.data;
+  //       if (data is Map<String, dynamic>) {
+  //         message = data['message'] as String?;
+  //       } else if (data is String) {
+  //         message = data;
+  //       }
+  //     }
+
+  //     final statusCode = e.response?.statusCode;
+
+  //     if (statusCode == 401) {
+  //       _scaffoldMessengerKey.currentState?.showSnackBar(
+  //         const SnackBar(content: Text('Unauthorized, please login again')),
+  //       );
+  //       return;
+  //     }
+
+  //     if (statusCode == 500) {
+  //       _scaffoldMessengerKey.currentState?.showSnackBar(
+  //         const SnackBar(content: Text('Server error, try again later')),
+  //       );
+  //       return;
+  //     }
+
+  //     _scaffoldMessengerKey.currentState?.showSnackBar(
+  //       SnackBar(
+  //         content: Text(AppLocalizations.of(context)!.bookingPeriodUnavailable),
+  //       ),
+  //     );
+  //   } on Exception catch (e) {
+  //     if (!mounted) return;
+
+  //     String errorMessage = e.toString();
+
+  //     int lastColonIndex = errorMessage.lastIndexOf(':');
+  //     String cleanMessage;
+
+  //     if (lastColonIndex != -1 && lastColonIndex < errorMessage.length - 1) {
+  //       cleanMessage = errorMessage.substring(lastColonIndex + 1).trim();
+  //     } else {
+  //       cleanMessage = errorMessage;
+  //     }
+
+  //     cleanMessage = cleanMessage
+  //         .replaceAll('Exception', '')
+  //         .replaceAll('Error', '')
+  //         .trim();
+
+  //     if (cleanMessage.length < 3) {
+  //       cleanMessage = 'Booking failed';
+  //     }
+
+  //     _scaffoldMessengerKey.currentState?.showSnackBar(
+  //       SnackBar(content: Text(cleanMessage)),
+  //     );
+  //   } finally {
+  //     if (mounted) {
+  //       setState(() => _isProcessing = false);
+  //     }
+  //   }
+  // }
 
 void _showUpdateRequestDialog({required bool isPendingApproval}) {
   showDialog(
@@ -251,6 +342,58 @@ void _showUpdateRequestDialog({required bool isPendingApproval}) {
 }
 
 
+// Future<void> _updateBooking() async {
+//   if (_isProcessing) return;
+
+//   setState(() => _isProcessing = true);
+
+//   try {
+//     if (_startDate == null || _endDate == null) {
+//       return;
+//     }
+
+//     final result = await contractController.updateRent(
+//       rentId: widget.contract!.id,
+//       start: _startDate!,
+//       end: _endDate!,
+//     );
+
+//     if (!mounted) return;
+
+//     if (result == null) {
+//       Navigator.pop(context, null);
+//       _showUpdateRequestDialog(isPendingApproval: true);
+//     } else {
+//       Navigator.pop(context, {
+//         'start': _startDate!,
+//         'end': _endDate!,
+//       });
+//       _showUpdateRequestDialog(isPendingApproval: false);
+//     }
+//   } catch (e) {
+//     if (!mounted) return;
+
+//     showDialog(
+//       context: context,
+//       builder: (ctx) => AlertDialog(
+//         title: Text(
+//           AppLocalizations.of(context)!.error,
+//           style: const TextStyle(color: Colors.red),
+//         ),
+//         content: Text(e.toString()),
+//         actions: [
+//           TextButton(
+//             onPressed: () => Navigator.pop(ctx),
+//             child: Text(AppLocalizations.of(context)!.okay),
+//           ),
+//         ],
+//       ),
+//     );
+//   } finally {
+//     if (mounted) setState(() => _isProcessing = false);
+//   }
+// }
+
 Future<void> _updateBooking() async {
   if (_isProcessing) return;
 
@@ -282,6 +425,8 @@ Future<void> _updateBooking() async {
   } catch (e) {
     if (!mounted) return;
 
+    final cleanMessage = extractCleanErrorMessage(e);
+
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -289,7 +434,7 @@ Future<void> _updateBooking() async {
           AppLocalizations.of(context)!.error,
           style: const TextStyle(color: Colors.red),
         ),
-        content: Text(e.toString()),
+        content: Text(cleanMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -299,7 +444,9 @@ Future<void> _updateBooking() async {
       ),
     );
   } finally {
-    if (mounted) setState(() => _isProcessing = false);
+    if (mounted) {
+      setState(() => _isProcessing = false);
+    }
   }
 }
 

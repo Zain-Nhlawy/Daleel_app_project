@@ -2,6 +2,7 @@ import 'package:daleel_app_project/screen/chats_sceens/my_chats_screen.dart';
 import 'package:daleel_app_project/screen/profile_screens/profile_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/adding_apartment_screen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/contract_screen.dart';
+import 'package:daleel_app_project/services/firebase_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:daleel_app_project/screen/home_screen/home_screen.dart';
 
@@ -28,6 +29,8 @@ class _MainScreenState extends State<HomeScreenTabs> {
       const Center(child: MyChatsScreen()),
       ProfileScreen(),
     ];
+    FirebaseNotificationService().initFCM(context);
+
   }
 
   @override

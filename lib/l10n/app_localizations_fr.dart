@@ -437,4 +437,25 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get personImage => 'Image personnelle';
+
+  @override
+  String get info => 'Information';
+
+  @override
+  String get contractAlreadyCancelled => 'Ce contrat a déjà été annulé';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get noNotifications => 'Aucune notification';
+
+  @override
+  String get clearAll => 'Tout effacer';
+
+  @override
+  String get daysUntilStart => 'Jours restants avant le début du contrat';
+
+  @override
+  String get cancellationFee => 'Frais d’annulation';
 }

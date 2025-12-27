@@ -135,5 +135,12 @@
   "filteredResults": "Résultats filtrés",
   "contractHistory": "Historique des contrats",
   "city": "Ville",
-  "personImage": "Image personnelle"
+  "personImage": "Image personnelle",
+  "info": "Information",
+  "contractAlreadyCancelled": "Ce contrat a déjà été annulé",
+  "notifications": "Notifications",
+  "noNotifications": "Aucune notification",
+  "clearAll": "Tout effacer",
+  "daysUntilStart": "Jours restants avant le début du contrat",
+  "cancellationFee": "Frais d’annulation"
 }

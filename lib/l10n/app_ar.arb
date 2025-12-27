@@ -135,5 +135,12 @@
    "filteredResults": "النتائج المُفلترة",
   "contractHistory": "سجل العقود",
   "city": "المدينة",
-  "personImage": "الصورة الشخصية"
+  "personImage": "الصورة الشخصية",
+  "info": "معلومة",
+  "contractAlreadyCancelled": "تم إلغاء هذا العقد مسبقاً",
+  "notifications": "الإشعارات",
+  "noNotifications": "لا توجد إشعارات",
+  "clearAll": "مسح الكل",
+  "daysUntilStart": "الأيام المتبقية لبدء العقد",
+  "cancellationFee": "قيمة الخصم عند الإلغاء"
 }

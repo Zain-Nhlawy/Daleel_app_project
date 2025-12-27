@@ -429,4 +429,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get personImage => 'الصورة الشخصية';
+
+  @override
+  String get info => 'معلومة';
+
+  @override
+  String get contractAlreadyCancelled => 'تم إلغاء هذا العقد مسبقاً';
+
+  @override
+  String get notifications => 'الإشعارات';
+
+  @override
+  String get noNotifications => 'لا توجد إشعارات';
+
+  @override
+  String get clearAll => 'مسح الكل';
+
+  @override
+  String get daysUntilStart => 'الأيام المتبقية لبدء العقد';
+
+  @override
+  String get cancellationFee => 'قيمة الخصم عند الإلغاء';
 }

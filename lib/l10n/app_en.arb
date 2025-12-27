@@ -135,5 +135,12 @@
   "filteredResults": "Filtered Results",
   "contractHistory": "Contract History",
   "city": "City",
-  "personImage": "Personal Image"
+  "personImage": "Personal Image",
+  "info": "Information",
+  "contractAlreadyCancelled": "This contract has already been cancelled",
+  "notifications": "Notifications",
+  "noNotifications": "No notifications",
+  "clearAll": "Clear all",
+  "daysUntilStart": "Days until contract starts",
+  "cancellationFee": "Cancellation fee"
 }

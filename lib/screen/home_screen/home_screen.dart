@@ -1,5 +1,6 @@
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/home_screen/filters_screen.dart';
+import 'package:daleel_app_project/screen/home_screen/notifications_screen.dart';
 import 'package:daleel_app_project/screen/home_screen/search_screen.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/close_to_you_apartments_widget.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,12 @@ class HomeScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const NotificationsScreen()),
+              );
+            },
             icon: const Icon(
               Icons.notifications_outlined,
               color: Colors.white,
