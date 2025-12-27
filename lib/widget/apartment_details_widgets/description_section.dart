@@ -15,7 +15,6 @@ class DescriptionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color iconColor = theme.colorScheme.onSurface.withOpacity(0.6);
-    final Color labelColor = theme.colorScheme.onSurface.withOpacity(0.7);
     final Color descriptionColor = theme.colorScheme.onSurface;
 
     return Column(
