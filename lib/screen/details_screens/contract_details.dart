@@ -291,6 +291,7 @@ Future<void> _handleCancelContract() async {
               onApprove: _approveContract,
               onReject: _rejectContract,
               onCancelPressed: _handleCancelContract,
+              extractErrorMessage: extractCleanErrorMessage,
             )
           : null,
     );
@@ -539,12 +540,14 @@ Widget _buildBottomActions(
   required Future<void> Function() onApprove,
   required Future<Contracts> Function() onReject,
   required VoidCallback onCancelPressed,
+  required String Function(dynamic error) extractErrorMessage, 
 }) {
   final theme = Theme.of(context);
   final colorScheme = theme.colorScheme;
   final bool hideActions = contract.rentStatus == RentStatus.cancelled ||
 contract.rentStatus == RentStatus.completed ||
-contract.endRent.isBefore(DateTime.now());
+contract.endRent.isBefore(DateTime.now()) ||
+    (!isTenant && contract.rentStatus == RentStatus.onRent);
 
   if (hideActions) {
     return const SizedBox.shrink(); 
@@ -636,7 +639,7 @@ contract.endRent.isBefore(DateTime.now());
                     context: context,
                     builder: (ctx) => AlertDialog(
                       title: Text(AppLocalizations.of(context)!.error),
-                      content: Text(e.toString()),
+                      content: Text(extractErrorMessage(e)),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(ctx),
@@ -646,6 +649,7 @@ contract.endRent.isBefore(DateTime.now());
                     ),
                   );
                 }
+
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.green,
@@ -711,7 +715,7 @@ contract.endRent.isBefore(DateTime.now());
                     context: context,
                     builder: (ctx) => AlertDialog(
                       title: Text(AppLocalizations.of(context)!.error),
-                      content: Text(e.toString()),
+                      content: Text(extractErrorMessage(e)),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(ctx),
