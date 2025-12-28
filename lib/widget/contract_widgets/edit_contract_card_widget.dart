@@ -26,7 +26,7 @@ class ContractModificationRequestCard extends StatelessWidget {
 
   String _formatPrice(double? price) {
     if (price == null) return 'N/A';
-    return '\$${price.toStringAsFixed(2)} / month';
+    return '\$${price.toStringAsFixed(2)} / day';
   }
 
   @override
