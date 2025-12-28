@@ -69,7 +69,6 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Image
             ClipRRect(
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(20),
@@ -90,12 +89,10 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
               ),
             ),
 
-            /// Content
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  /// Names
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -114,7 +111,6 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
 
                   const SizedBox(height: 10),
 
-                  /// Dates
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -135,7 +131,6 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
 
                   const SizedBox(height: 15),
 
-                  /// Status
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
