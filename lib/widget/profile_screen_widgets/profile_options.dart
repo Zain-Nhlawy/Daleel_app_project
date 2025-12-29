@@ -106,10 +106,7 @@ class ProfileOptions extends StatelessWidget {
                   fontSize: 19,
                 ),
               ),
-              trailing: Icon(
-                Icons.keyboard_arrow_right_outlined,
-                color: Colors.black,
-              ),
+              trailing: Icon(Icons.keyboard_arrow_right_outlined),
               onTap: () {
                 Navigator.push(
                   context,

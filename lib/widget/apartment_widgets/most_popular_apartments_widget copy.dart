@@ -16,7 +16,7 @@ class MostPopularApartmentsWidget extends StatefulWidget {
 class _MostPopularApartmentsWidgetState
     extends State<MostPopularApartmentsWidget> {
   late PageController _pageController;
-  final int _initialPage = 0;
+  final int _currentPage = 10000;
   late Future<List<Apartments2>?> _apartmentsFuture;
   Timer? _autoScrollTimer;
 
@@ -29,11 +29,9 @@ class _MostPopularApartmentsWidgetState
     );
 
     _pageController = PageController(
-      initialPage: _initialPage,
+      initialPage: _currentPage,
       viewportFraction: 0.7,
     );
-
-    // Auto-scroll every 5 seconds
     _autoScrollTimer = Timer.periodic(const Duration(seconds: 5), (_) {
       if (_pageController.hasClients && _pageController.positions.isNotEmpty) {
         final nextPage = _pageController.page!.toInt() + 1;
@@ -85,22 +83,22 @@ class _MostPopularApartmentsWidgetState
             );
           }
 
-          // Sort by reviewCount descending
           apartments.sort(
             (a, b) => (b.reviewCount ?? 0).compareTo(a.reviewCount ?? 0),
           );
 
-          // Take top 10
           final popularApartments = apartments.length > 10
               ? apartments.sublist(0, 10)
               : apartments;
 
           return PageView.builder(
-            controller: _pageController,
-            itemCount: popularApartments.length,
             physics: const ClampingScrollPhysics(),
+            controller: _pageController,
             itemBuilder: (context, index) {
-              return _carouselView(index, popularApartments);
+              return _carouselView(
+                index,
+                popularApartments[index % popularApartments.length],
+              );
             },
           );
         },
@@ -108,24 +106,27 @@ class _MostPopularApartmentsWidgetState
     );
   }
 
-  Widget _carouselView(int index, List<Apartments2> apartments) {
+  Widget _carouselView(int index, Apartments2 apartments) {
     return AnimatedBuilder(
       animation: _pageController,
       builder: (context, child) {
-        double value = 0.0;
-        if (_pageController.position.haveDimensions) {
-          value =
-              ((_pageController.page ??
-                  _pageController.initialPage.toDouble()) -
-              index.toDouble());
-          value = (value.abs() * 0.2).clamp(0.0, 1.0);
+        num value = 0.0;
+
+        if (_pageController.hasClients &&
+            _pageController.position.haveDimensions) {
+          value = (_pageController.page ?? _pageController.initialPage) - index;
+          value = value.abs();
         }
+
+        double scale = (1 - (value * 0.2)).clamp(0.6, 1.0);
+        double opacity = (1 - (value * 0.5)).clamp(0.6, 1.0);
+
         return Transform.scale(
-          scale: 1.0 - value,
-          child: Opacity(opacity: (1.0 - value).clamp(0.6, 1.0), child: child),
+          scale: scale,
+          child: Opacity(opacity: opacity, child: child),
         );
       },
-      child: MostPopularApartmentWidget(apartment: apartments[index]),
+      child: MostPopularApartmentWidget(apartment: apartments),
     );
   }
 }

@@ -50,12 +50,7 @@ class ContractModificationRequestCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Contract Modification Request',
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
+            ElevatedButton(onPressed: (){}, child:Text("") ),
             const SizedBox(height: 24),
             _buildSection(
               context,
