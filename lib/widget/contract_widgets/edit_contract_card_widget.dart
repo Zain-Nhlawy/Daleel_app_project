@@ -1,14 +1,19 @@
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/models/contracts.dart';
+import 'package:daleel_app_project/screen/details_screens/contract_details.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:daleel_app_project/models/edit_contract.dart';
 
 class ContractModificationRequestCard extends StatelessWidget {
   final EditContract editContract;
-
+  final Function(EditContract edit) acceptEdit;
+  final Function(EditContract edit) rejectEdit;
   const ContractModificationRequestCard({
     super.key,
     required this.editContract,
+    required this.acceptEdit,
+    required this.rejectEdit,
   });
 
   void approvingEdit() {
@@ -32,10 +37,20 @@ class ContractModificationRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final originalContract = editContract.originalRent;
+    Contracts contract = Contracts(
+      id: editContract.id!,
+      startRent: originalContract!.startRent,
+      endRent: originalContract.endRent,
+      rentFee: originalContract.rentFee,
+      rentStatus: originalContract.rentStatus,
+      contractApartment: editContract.department!,
+      user: editContract.user!,
+      departmentRents: originalContract.departmentRents,
+    );
 
-    final oldStartDate = originalContract?.startRent;
-    final oldEndDate = originalContract?.endRent;
-    final oldRentPrice = originalContract?.rentFee;
+    final oldStartDate = originalContract.startRent;
+    final oldEndDate = originalContract.endRent;
+    final oldRentPrice = originalContract.rentFee;
 
     final newStartDate = editContract.startRent;
     final newEndDate = editContract.endRent;
@@ -50,7 +65,18 @@ class ContractModificationRequestCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(onPressed: (){}, child:Text("") ),
+            ElevatedButton(
+              onPressed: () {
+                print(editContract.user!.firstName);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ContractDetails(contract: contract),
+                  ),
+                );
+              },
+              child: Text("View Contract Details"),
+            ),
             const SizedBox(height: 24),
             _buildSection(
               context,
@@ -73,7 +99,9 @@ class ContractModificationRequestCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 OutlinedButton(
-                  onPressed: cancelEdit,
+                  onPressed: () {
+                    rejectEdit(editContract);
+                  },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.red.shade700,
                     side: BorderSide(color: Colors.red.shade700),
@@ -89,7 +117,9 @@ class ContractModificationRequestCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 OutlinedButton(
-                  onPressed: approvingEdit,
+                  onPressed: () {
+                    acceptEdit(editContract);
+                  },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: const Color.fromARGB(255, 104, 190, 34),
                     side: BorderSide(

@@ -68,87 +68,87 @@ class _ContractScreenState extends State<ContractScreen>
     super.dispose();
   }
 
+
   Future<void> _loadContracts({bool isRefresh = false}) async {
     if (isRefresh) {
       _contractsPage = 1;
-      _contracts = [];
+      _contracts.clear();
       _hasMoreContracts = true;
       _contractsError = null;
     }
 
-    setState(() {
-      _isLoadingContracts = true;
-    });
+    setState(() => _isLoadingContracts = true);
 
     try {
-      final newContracts = (await contractController.loadContractsHistory(
+      final newContracts = await contractController.loadContractsHistory(
         _contractsPage,
-      ));
-      if (mounted) {
-        setState(() {
-          _contracts.addAll(newContracts);
-          if (newContracts.isEmpty) {
-            _hasMoreContracts = false;
-          } else {
-            _contractsPage++;
-          }
-        });
-      }
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        _contracts.addAll(newContracts);
+        if (newContracts.isEmpty) {
+          _hasMoreContracts = false;
+        } else {
+          _contractsPage++;
+        }
+      });
     } catch (e) {
-      if (mounted) {
-        setState(() {
-          _contractsError = e.toString();
-        });
-      }
+      if (!mounted) return;
+      setState(() => _contractsError = e.toString());
     } finally {
-      if (mounted) {
-        setState(() {
-          _isLoadingContracts = false;
-        });
-      }
+      if (!mounted) return;
+      setState(() => _isLoadingContracts = false);
     }
   }
+
 
   Future<void> _loadEdits({bool isRefresh = false}) async {
     if (isRefresh) {
       _editsPage = 1;
-      _edits = [];
+      _edits.clear();
       _hasMoreEdits = true;
       _editsError = null;
     }
 
-    setState(() {
-      _isLoadingEdits = true;
-    });
+    setState(() => _isLoadingEdits = true);
 
     try {
-      final newEdits = (await editContractController.loadContractsEdit(
+      final newEdits = await editContractController.loadContractsEdit(
         _editsPage,
-      ));
-      if (mounted) {
-        setState(() {
-          _edits.addAll(newEdits);
-          if (newEdits.isEmpty) {
-            _hasMoreEdits = false;
-          } else {
-            _editsPage++;
-          }
-        });
-      }
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        _edits.addAll(newEdits);
+        if (newEdits.isEmpty) {
+          _hasMoreEdits = false;
+        } else {
+          _editsPage++;
+        }
+      });
     } catch (e) {
-      if (mounted) {
-        setState(() {
-          _editsError = e.toString();
-        });
-      }
+      if (!mounted) return;
+      setState(() => _editsError = e.toString());
     } finally {
-      if (mounted) {
-        setState(() {
-          _isLoadingEdits = false;
-        });
-      }
+      if (!mounted) return;
+      setState(() => _isLoadingEdits = false);
     }
   }
+
+
+  Future<void> approvingEdit(EditContract editContract) async {
+    await editContractController.approvingEdit(editContract.id!);
+    await _loadEdits(isRefresh: true);
+  }
+
+  Future<void> cancelEdit(EditContract editContract) async {
+    await editContractController.rejectingEdit(editContract.id!);
+    await _loadEdits(isRefresh: true);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -168,13 +168,10 @@ class _ContractScreenState extends State<ContractScreen>
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          bottom: TabBar(
-            labelStyle: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          bottom: const TabBar(
             indicatorColor: Colors.white,
             indicatorWeight: 3,
-            tabs: const [
+            tabs: [
               Tab(text: "Contracts"),
               Tab(text: "Edits Request"),
             ],
@@ -221,12 +218,12 @@ class _ContractScreenState extends State<ContractScreen>
         onRefresh: () => _loadContracts(isRefresh: true),
         child: ListView.builder(
           controller: _contractsController,
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           itemCount: _contracts.length + (_hasMoreContracts ? 1 : 0),
           itemBuilder: (context, index) {
             if (index < _contracts.length) {
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                padding: const EdgeInsets.symmetric(vertical: 6),
                 child: ContractDataCardWidget(contract: _contracts[index]),
               );
             }
@@ -260,15 +257,16 @@ class _ContractScreenState extends State<ContractScreen>
         onRefresh: () => _loadEdits(isRefresh: true),
         child: ListView.builder(
           controller: _editsController,
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           itemCount: _edits.length + (_hasMoreEdits ? 1 : 0),
           itemBuilder: (context, index) {
             if (index < _edits.length) {
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                padding: const EdgeInsets.symmetric(vertical: 6),
                 child: ContractModificationRequestCard(
                   editContract: _edits[index],
-
+                  acceptEdit: approvingEdit,
+                  rejectEdit: cancelEdit,
                 ),
               );
             }

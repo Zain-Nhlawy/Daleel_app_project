@@ -10,7 +10,7 @@ class EditContractService {
     try {
       final response = await dioClient.dio.get(
         "/auth/edited_rent?page=$page",
-        queryParameters: {"with": "original_rent"},
+        queryParameters: {"with": "original_rent,department.user"},
       );
 
       if (response.statusCode == 200) {
