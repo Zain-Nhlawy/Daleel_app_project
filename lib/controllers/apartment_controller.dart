@@ -46,6 +46,7 @@ class ApartmentController {
     }
   }
 
+
   void clearApartment() {
     _apartment = null;
   }
@@ -95,15 +96,25 @@ Future<List<Apartments2>?> loadFilteredApartments(int page, {
   }
 }
 
-List<Apartments2>? _searchedApartment;
+  List<Apartments2>? _searchedApartment;
   List<Apartments2>? get searchedApartment => _searchedApartment;
 
-Future<List<Apartments2>?> loadSearchedApartments(String search) async {
+  Future<List<Apartments2>?> loadSearchedApartments(String search) async {
     try {
       final searchedApartment = await apartmentService.getSearchedApartments(search);
       _searchedApartment = searchedApartment;
       return _searchedApartment;
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> updateFavoriteApartments(int id) async {
+    try {
+      bool sucess = await apartmentService.toggleFavorite(id);
+      return sucess;
+    }
+    catch (e) {
       rethrow;
     }
   }

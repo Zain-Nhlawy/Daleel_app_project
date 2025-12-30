@@ -1,49 +1,13 @@
-import 'package:daleel_app_project/core/network/dio_client.dart';
-import 'package:daleel_app_project/core/storage/secure_storage.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
-import 'package:daleel_app_project/services/apartment_service.dart';
+import 'package:daleel_app_project/widget/apartment_widgets/favorite_widget.dart';
 import 'package:flutter/material.dart';
 
-class NearpyApartmentsWidgets extends StatefulWidget {
+class NearpyApartmentsWidgets extends StatelessWidget {
   const NearpyApartmentsWidgets({super.key, required this.apartment});
 
   final Apartments2 apartment;
-
-  @override
-  State<NearpyApartmentsWidgets> createState() =>
-      _NearpyApartmentsWidgetsState();
-}
-
-class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
-  late bool? _isFavorited;
-  bool _isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _isFavorited = widget.apartment.isFavorited;
-  }
-
-  Future<void> _handleFavoriteToggle() async {
-    setState(() => _isLoading = true);
-
-    final apartmentService = ApartmentService(
-      apiClient: DioClient(storage: AppSecureStorage()),
-    );
-
-    try {
-      final success = await apartmentService.toggleFavorite(
-        widget.apartment.id,
-      );
-      if (success && mounted) {
-        setState(() => _isFavorited = !_isFavorited!);
-      }
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +34,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
             context,
             MaterialPageRoute(
               builder: (_) =>
-                  ApartmentDetailsScreen(apartment: widget.apartment),
+                  ApartmentDetailsScreen(apartment: apartment),
             ),
           );
         },
@@ -86,9 +50,9 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                     child: SizedBox(
                       width: 120,
                       height: 100,
-                      child: widget.apartment.images.isNotEmpty
+                      child: apartment.images.isNotEmpty
                           ? Image.network(
-                              widget.apartment.images.first,
+                              apartment.images.first,
                               fit: BoxFit.cover,
                               errorBuilder: (_, __, ___) => Image.asset(
                                 "assets/images/placeholder.png",
@@ -111,27 +75,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                         color: scheme.surface.withOpacity(0.7),
                         shape: BoxShape.circle,
                       ),
-                      child: _isLoading
-                          ? Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: scheme.primary,
-                              ),
-                            )
-                          : IconButton(
-                              padding: EdgeInsets.zero,
-                              iconSize: 20,
-                              icon: Icon(
-                                _isFavorited!
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: _isFavorited!
-                                    ? scheme.error
-                                    : scheme.onSurface,
-                              ),
-                              onPressed: _handleFavoriteToggle,
-                            ),
+                      child: FavoriteWidget(apartment: apartment)
                     ),
                   ),
                 ],
@@ -144,7 +88,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                   children: [
                     // Description
                     Text(
-                      widget.apartment.headDescription ??
+                      apartment.headDescription ??
                           AppLocalizations.of(context)!.noDescription,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -165,7 +109,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            widget.apartment.location?['city'] ??
+                            apartment.location?['city'] ??
                                 AppLocalizations.of(context)!.unknownCity,
                             overflow: TextOverflow.ellipsis,
                             style: textTheme.bodyMedium?.copyWith(
@@ -190,7 +134,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              widget.apartment.averageRating?.toStringAsFixed(
+                              apartment.averageRating?.toStringAsFixed(
                                     1,
                                   ) ??
                                   'N/A',
@@ -202,7 +146,7 @@ class _NearpyApartmentsWidgetsState extends State<NearpyApartmentsWidgets> {
                           ],
                         ),
                         Text(
-                          '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
+                          '${apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
                           style: textTheme.bodyMedium?.copyWith(
                             color: scheme.primary,
                             fontWeight: FontWeight.bold,

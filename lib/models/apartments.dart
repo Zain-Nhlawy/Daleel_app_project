@@ -23,7 +23,11 @@ class Apartments2 {
   List<Map<String, dynamic>>? freeTimes;
   List? comments;
   final bool? state;
-  final bool? isFavorited;
+  bool? isFavorited;
+
+  void toggle() {
+    isFavorited = (isFavorited == false ? true : false);
+  }
 
   Apartments2({
     required this.id,

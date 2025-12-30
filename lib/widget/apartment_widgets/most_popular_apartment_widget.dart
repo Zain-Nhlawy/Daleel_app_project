@@ -1,9 +1,7 @@
 import 'package:daleel_app_project/l10n/app_localizations.dart';
-import 'package:daleel_app_project/core/network/dio_client.dart';
-import 'package:daleel_app_project/core/storage/secure_storage.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
-import 'package:daleel_app_project/services/apartment_service.dart';
+import 'package:daleel_app_project/widget/apartment_widgets/favorite_widget.dart';
 import 'package:flutter/material.dart';
 
 class MostPopularApartmentWidget extends StatefulWidget {
@@ -17,26 +15,6 @@ class MostPopularApartmentWidget extends StatefulWidget {
 
 class _MostPopularApartmentWidgetState
     extends State<MostPopularApartmentWidget> {
-  late bool? _isFavorited = widget.apartment.isFavorited;
-  bool _isLoading = false;
-
-  void _handleFavoriteToggle() async {
-    setState(() => _isFavorited = !_isFavorited!);
-
-    final apartmentService = ApartmentService(
-      apiClient: DioClient(storage: AppSecureStorage()),
-    );
-    try {
-      final bool success = await apartmentService.toggleFavorite(
-        widget.apartment.id,
-      );
-      if (!success && mounted) {
-        setState(() => _isFavorited = !_isFavorited!);
-      }
-    } catch (_) {
-      if (mounted) setState(() => _isFavorited = !_isFavorited!);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,28 +82,7 @@ class _MostPopularApartmentWidgetState
                       color: scheme.surface.withOpacity(0.6),
                       shape: BoxShape.circle,
                     ),
-                    child: _isLoading
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2.0,
-                              color: scheme.primary,
-                            ),
-                          )
-                        : IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            icon: Icon(
-                              _isFavorited!
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: _isFavorited!
-                                  ? scheme.error
-                                  : scheme.onSurface,
-                              size: 22,
-                            ),
-                            onPressed: _handleFavoriteToggle,
-                          ),
+                    child: FavoriteWidget(apartment: widget.apartment)
                   ),
                 ),
               ],

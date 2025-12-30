@@ -1,49 +1,13 @@
 import 'package:daleel_app_project/l10n/app_localizations.dart';
-import 'package:daleel_app_project/core/network/dio_client.dart';
-import 'package:daleel_app_project/core/storage/secure_storage.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
-import 'package:daleel_app_project/services/apartment_service.dart';
+import 'package:daleel_app_project/widget/apartment_widgets/favorite_widget.dart';
 import 'package:flutter/material.dart';
 
-class HighlyRatedApartmentCard extends StatefulWidget {
+class HighlyRatedApartmentCard extends StatelessWidget {
   const HighlyRatedApartmentCard({super.key, required this.apartment});
 
   final Apartments2 apartment;
-
-  @override
-  State<HighlyRatedApartmentCard> createState() =>
-      _HighlyRatedApartmentWidgetState();
-}
-
-class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
-  late bool? _isFavorited = widget.apartment.isFavorited;
-  final bool _isLoading = false;
-
-  void _handleFavoriteToggle() async {
-    setState(() {
-      _isFavorited = !_isFavorited!;
-    });
-    final apartmentService = ApartmentService(
-      apiClient: DioClient(storage: AppSecureStorage()),
-    );
-    try {
-      final bool success = await apartmentService.toggleFavorite(
-        widget.apartment.id,
-      );
-      if (!success && mounted) {
-        setState(() {
-          _isFavorited = !_isFavorited!;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isFavorited = !_isFavorited!;
-        });
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +38,7 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    ApartmentDetailsScreen(apartment: widget.apartment),
+                    ApartmentDetailsScreen(apartment: apartment),
               ),
             );
           },
@@ -90,9 +54,9 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                     child: SizedBox(
                       height: 100,
                       width: double.infinity,
-                      child: widget.apartment.images.isNotEmpty
+                      child: apartment.images.isNotEmpty
                           ? Image.network(
-                              widget.apartment.images[0],
+                              apartment.images[0],
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) =>
                                   Image.asset(
@@ -115,32 +79,7 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                         color: colorScheme.onSurface.withOpacity(0.3),
                         shape: BoxShape.circle,
                       ),
-                      child: _isLoading
-                          ? Container(
-                              width: 32,
-                              height: 32,
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.0,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  colorScheme.primary,
-                                ),
-                              ),
-                            )
-                          : IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              icon: Icon(
-                                _isFavorited!
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: _isFavorited!
-                                    ? colorScheme.error
-                                    : colorScheme.onSurface,
-                                size: 22,
-                              ),
-                              onPressed: _handleFavoriteToggle,
-                            ),
+                      child: FavoriteWidget(apartment: apartment)
                     ),
                   ),
                   Positioned(
@@ -164,7 +103,7 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            widget.apartment.averageRating?.toStringAsFixed(
+                            apartment.averageRating?.toStringAsFixed(
                                   1,
                                 ) ??
                                 'N/A',
@@ -190,7 +129,7 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                       children: [
                         Expanded(
                           child: Text(
-                            widget.apartment.headDescription ??
+                            apartment.headDescription ??
                                 AppLocalizations.of(context)!.noDescription,
                             style: textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
@@ -202,7 +141,7 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                           ),
                         ),
                         Text(
-                          '${widget.apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
+                          '${apartment.rentFee ?? 'N/A'}\$ / ${AppLocalizations.of(context)!.day}',
                           style: textTheme.bodySmall?.copyWith(
                             color: colorScheme.primary,
                             fontWeight: FontWeight.bold,
@@ -221,7 +160,7 @@ class _HighlyRatedApartmentWidgetState extends State<HighlyRatedApartmentCard> {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            widget.apartment.location?['city'] ??
+                            apartment.location?['city'] ??
                                 AppLocalizations.of(context)!.unknownCity,
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.onSurface.withOpacity(0.7),

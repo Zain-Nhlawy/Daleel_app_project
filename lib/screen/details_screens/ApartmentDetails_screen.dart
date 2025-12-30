@@ -2,12 +2,12 @@ import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/screen/booking_screen.dart';
-import 'package:daleel_app_project/services/apartment_service.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/apartment_info_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/comments_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/description_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/images_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/publisher_section.dart';
+import 'package:daleel_app_project/widget/apartment_widgets/favorite_widget.dart';
 import 'package:daleel_app_project/widget/rate_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -31,8 +31,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
   late String selectedImage;
   bool showAllComments = false;
   late TextEditingController _newCommentController;
-  late bool? _isFavorited = widget.apartment.isFavorited;
-  final bool _isFavoriteLoading = false;
 
   @override
   void initState() {
@@ -76,28 +74,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
     });
   }
 
-  void _handleFavoriteToggle() async {
-    setState(() {
-      _isFavorited = !_isFavorited!;
-    });
-
-    final apartmentService = ApartmentService(apiClient: dioClient);
-    try {
-      final bool success = await apartmentService.toggleFavorite(apartment.id);
-      if (!success && mounted) {
-        setState(() {
-          _isFavorited = !_isFavorited!;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isFavorited = !_isFavorited!;
-        });
-      }
-    }
-  }
-
   @override
   void dispose() {
     _newCommentController.dispose();
@@ -121,28 +97,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          _isFavoriteLoading
-              ? Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      color: colorScheme.onSurface.withOpacity(0.6),
-                    ),
-                  ),
-                )
-              : IconButton(
-                  icon: Icon(
-                    _isFavorited! ? Icons.favorite : Icons.favorite_border,
-                    color: _isFavorited!
-                        ? colorScheme.error
-                        : colorScheme.onSurface,
-                    size: 28,
-                  ),
-                  onPressed: _handleFavoriteToggle,
-                ),
+          FavoriteWidget(apartment: apartment)
         ],
       ),
       body: Stack(
@@ -173,7 +128,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                       CommentsSection(
                         comments: commentController.comments,
                         showAll: showAllComments,
-                        theme: theme,
                         controller: _newCommentController,
                         onToggleShow: () =>
                             setState(() => showAllComments = !showAllComments),

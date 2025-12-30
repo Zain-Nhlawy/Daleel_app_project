@@ -8,7 +8,6 @@ import '../custom_text_field.dart';
 class CommentsSection extends StatelessWidget {
   final List<Comment> comments;
   final bool showAll;
-  final ThemeData theme;
   final TextEditingController controller;
   final VoidCallback onToggleShow;
   final VoidCallback onSend;
@@ -17,7 +16,6 @@ class CommentsSection extends StatelessWidget {
     super.key,
     required this.comments,
     required this.showAll,
-    required this.theme,
     required this.controller,
     required this.onToggleShow,
     required this.onSend,
@@ -25,6 +23,7 @@ class CommentsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
