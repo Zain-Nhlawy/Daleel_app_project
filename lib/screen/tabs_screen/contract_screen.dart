@@ -209,7 +209,7 @@ class _ContractScreenState extends State<ContractScreen>
         child: ListView.builder(
           controller: _contractsController,
           padding: const EdgeInsets.all(8),
-          itemCount: _contracts.length + (_hasMoreContracts ? 1 : 0),
+          itemCount: _contracts.length + (_contracts.length >= 10 ? 1 : 0),
           itemBuilder: (context, index) {
             if (index < _contracts.length) {
               return Padding(
@@ -251,7 +251,7 @@ class _ContractScreenState extends State<ContractScreen>
         child: ListView.builder(
           controller: _editsController,
           padding: const EdgeInsets.all(8),
-          itemCount: _edits.length + (_hasMoreEdits ? 1 : 0),
+          itemCount: _edits.length + (_edits.length >= 10 ? 1 : 0),
           itemBuilder: (context, index) {
             if (index < _edits.length) {
               return Padding(

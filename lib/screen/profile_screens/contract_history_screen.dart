@@ -128,7 +128,7 @@ class _ContractScreenState extends State<ContractHistoryScreen> {
       child: ListView.builder(
         padding: const EdgeInsets.all(8.0),
         controller: _controller,
-        itemCount: _contracts.length + (_hasMore ? 1 : 0),
+        itemCount: _contracts.length + (_contracts.length >= 10 ? 1 : 0),
         itemBuilder: (context, index) {
           if (index < _contracts.length) {
             return Padding(
