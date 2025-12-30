@@ -1,3 +1,4 @@
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/screen/home_screen/apartment_display_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -64,7 +65,7 @@ class FilterBottomSheetContent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Category',
+                          AppLocalizations.of(context)!.category,
                           style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -87,7 +88,7 @@ class FilterBottomSheetContent extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          'Price Range',
+                          AppLocalizations.of(context)!.priceRange,
                           style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -108,7 +109,7 @@ class FilterBottomSheetContent extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          'Province',
+                          AppLocalizations.of(context)!.province,
                           style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -116,7 +117,7 @@ class FilterBottomSheetContent extends StatelessWidget {
                         DropdownButtonFormField<String>(
                           value: selectedProvince,
                           hint: Text(
-                            'Select Province',
+                            AppLocalizations.of(context)!.selectProvince,
                             style: textTheme.bodyMedium,
                           ),
                           items: syrianProvinces
@@ -141,7 +142,7 @@ class FilterBottomSheetContent extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Rooms',
+                                    AppLocalizations.of(context)!.rooms,
                                     style: textTheme.bodyMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -149,7 +150,7 @@ class FilterBottomSheetContent extends StatelessWidget {
                                   DropdownButtonFormField<int>(
                                     value: selectedRooms,
                                     hint: Text(
-                                      'All',
+                                      AppLocalizations.of(context)!.all,
                                       style: textTheme.bodyMedium,
                                     ),
                                     items: List.generate(10, (i) => i + 1)
@@ -176,7 +177,7 @@ class FilterBottomSheetContent extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Bathrooms',
+                                    AppLocalizations.of(context)!.bathrooms,
                                     style: textTheme.bodyMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -184,7 +185,7 @@ class FilterBottomSheetContent extends StatelessWidget {
                                   DropdownButtonFormField<int>(
                                     value: selectedBathrooms,
                                     hint: Text(
-                                      'All',
+                                      AppLocalizations.of(context)!.all,
                                       style: textTheme.bodyMedium,
                                     ),
                                     items: List.generate(5, (i) => i + 1)
@@ -209,7 +210,7 @@ class FilterBottomSheetContent extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          'Area Range (m²)',
+                          "${AppLocalizations.of(context)!.areaRange} (${AppLocalizations.of(context)!.m2})",
                           style: textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -222,8 +223,8 @@ class FilterBottomSheetContent extends StatelessWidget {
                           activeColor: colorScheme.primary,
                           inactiveColor: colorScheme.onSurface.withOpacity(0.3),
                           labels: RangeLabels(
-                            '${areaRange.start.round()} m²',
-                            '${areaRange.end.round()} m²',
+                            '${areaRange.start.round()} ${AppLocalizations.of(context)!.m2}',
+                            '${areaRange.end.round()} ${AppLocalizations.of(context)!.m2}',
                           ),
                           onChanged: (values) =>
                               setModalState(() => areaRange = values),
@@ -245,7 +246,7 @@ class FilterBottomSheetContent extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Apply',
+                      AppLocalizations.of(context)!.apply,
                       style: textTheme.bodyLarge?.copyWith(
                         color: colorScheme.onPrimary,
                       ),

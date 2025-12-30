@@ -143,5 +143,17 @@
   "clearAll": "مسح الكل",
   "daysUntilStart": "الأيام المتبقية لبدء العقد",
   "cancellationFee": "قيمة الخصم عند الإلغاء",
-  "highlyRated": "مرتفع التقييم"
+  "highlyRated": "مرتفع التقييم",
+  "noEditRequestsFound": "لم يتم العثور على طلبات تعديل",
+  "searchResult": "نتيجة البحث",
+  "anErrorOccurred": "حدث خطأ",
+  "category": "الفئة",
+  "priceRange": "نطاق السعر",
+  "province": "المحافظة",
+  "selectProvince": "اختر المحافظة",
+  "rooms": "الغرف",
+  "all": "الكل",
+  "areaRange": "نطاق المساحة",
+  "m2": "م²",
+  "apply": "تطبيق"
 }

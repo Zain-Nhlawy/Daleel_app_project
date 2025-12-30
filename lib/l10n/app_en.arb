@@ -143,5 +143,17 @@
   "clearAll": "Clear all",
   "daysUntilStart": "Days until contract starts",
   "cancellationFee": "Cancellation fee",
-  "highlyRated": "Highly Rated"
+  "highlyRated": "Highly Rated",
+  "noEditRequestsFound": "No Edit Requests Found",
+  "searchResult": "Search result",
+  "anErrorOccurred": "An error occurred",
+  "category": "Category",
+  "priceRange": "Price Range",
+  "province": "Province",
+  "selectProvince": "Select Province",
+  "rooms": "Rooms",
+  "all": "All",
+  "areaRange": "Area Range",
+  "m2": "m²",
+  "apply": "Apply"
 }

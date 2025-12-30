@@ -453,4 +453,40 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get highlyRated => 'مرتفع التقييم';
+
+  @override
+  String get noEditRequestsFound => 'لم يتم العثور على طلبات تعديل';
+
+  @override
+  String get searchResult => 'نتيجة البحث';
+
+  @override
+  String get anErrorOccurred => 'حدث خطأ';
+
+  @override
+  String get category => 'الفئة';
+
+  @override
+  String get priceRange => 'نطاق السعر';
+
+  @override
+  String get province => 'المحافظة';
+
+  @override
+  String get selectProvince => 'اختر المحافظة';
+
+  @override
+  String get rooms => 'الغرف';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get areaRange => 'نطاق المساحة';
+
+  @override
+  String get m2 => 'م²';
+
+  @override
+  String get apply => 'تطبيق';
 }

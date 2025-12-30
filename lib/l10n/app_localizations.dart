@@ -969,6 +969,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Highly Rated'**
   String get highlyRated;
+
+  /// No description provided for @noEditRequestsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Edit Requests Found'**
+  String get noEditRequestsFound;
+
+  /// No description provided for @searchResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Search result'**
+  String get searchResult;
+
+  /// No description provided for @anErrorOccurred.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred'**
+  String get anErrorOccurred;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @priceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Range'**
+  String get priceRange;
+
+  /// No description provided for @province.
+  ///
+  /// In en, this message translates to:
+  /// **'Province'**
+  String get province;
+
+  /// No description provided for @selectProvince.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Province'**
+  String get selectProvince;
+
+  /// No description provided for @rooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms'**
+  String get rooms;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @areaRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Area Range'**
+  String get areaRange;
+
+  /// No description provided for @m2.
+  ///
+  /// In en, this message translates to:
+  /// **'m²'**
+  String get m2;
+
+  /// No description provided for @apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
 }
 
 class _AppLocalizationsDelegate

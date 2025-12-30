@@ -459,4 +459,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get highlyRated => 'Highly Rated';
+
+  @override
+  String get noEditRequestsFound => 'No Edit Requests Found';
+
+  @override
+  String get searchResult => 'Search result';
+
+  @override
+  String get anErrorOccurred => 'An error occurred';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get priceRange => 'Price Range';
+
+  @override
+  String get province => 'Province';
+
+  @override
+  String get selectProvince => 'Select Province';
+
+  @override
+  String get rooms => 'Rooms';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get areaRange => 'Area Range';
+
+  @override
+  String get m2 => 'm²';
+
+  @override
+  String get apply => 'Apply';
 }

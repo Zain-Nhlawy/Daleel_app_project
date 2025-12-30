@@ -32,7 +32,7 @@ class _ApartmentsDisplayScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Search result')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.searchResult)),
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -94,10 +94,10 @@ class _ApartmentsDisplayScreenState extends State<SearchScreen> {
                   }
                   if (snapshot.hasError) {
                     print(snapshot.error);
-                    return const Center(child: Text('An error occurred!'));
+                    return Center(child: Text('${AppLocalizations.of(context)!.anErrorOccurred}!'));
                   }
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No apartments found '));
+                    return Center(child: Text(AppLocalizations.of(context)!.noApartmentsFound));
                   }
                   final apartments = snapshot.data!;
 

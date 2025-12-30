@@ -39,7 +39,7 @@ class _ContractScreenState extends State<ContractScreen>
 
     _contractsController.addListener(() {
       if (_contractsController.position.pixels >=
-              _contractsController.position.maxScrollExtent - 200 &&
+              _contractsController.position.maxScrollExtent - 1 &&
           !_isLoadingContracts &&
           _hasMoreContracts) {
         _loadContracts();
@@ -48,7 +48,7 @@ class _ContractScreenState extends State<ContractScreen>
 
     _editsController.addListener(() {
       if (_editsController.position.pixels >=
-              _editsController.position.maxScrollExtent - 200 &&
+              _editsController.position.maxScrollExtent - 1 &&
           !_isLoadingEdits &&
           _hasMoreEdits) {
         _loadEdits();
@@ -74,9 +74,8 @@ class _ContractScreenState extends State<ContractScreen>
       _contracts.clear();
       _hasMoreContracts = true;
       _contractsError = null;
+      setState(() => _isLoadingContracts = true);
     }
-
-    setState(() => _isLoadingContracts = true);
 
     try {
       final newContracts = await contractController.loadContractsHistory(
@@ -92,13 +91,11 @@ class _ContractScreenState extends State<ContractScreen>
         } else {
           _contractsPage++;
         }
+        _isLoadingContracts = false;
       });
     } catch (e) {
       if (!mounted) return;
       setState(() => _contractsError = e.toString());
-    } finally {
-      if (!mounted) return;
-      setState(() => _isLoadingContracts = false);
     }
   }
 
@@ -108,9 +105,8 @@ class _ContractScreenState extends State<ContractScreen>
       _edits.clear();
       _hasMoreEdits = true;
       _editsError = null;
+      setState(() => _isLoadingEdits = true);
     }
-
-    setState(() => _isLoadingEdits = true);
 
     try {
       final newEdits = await editContractController.loadContractsEdit(
@@ -126,13 +122,11 @@ class _ContractScreenState extends State<ContractScreen>
         } else {
           _editsPage++;
         }
+        _isLoadingEdits = false;
       });
     } catch (e) {
       if (!mounted) return;
       setState(() => _editsError = e.toString());
-    } finally {
-      if (!mounted) return;
-      setState(() => _isLoadingEdits = false);
     }
   }
 
@@ -223,10 +217,13 @@ class _ContractScreenState extends State<ContractScreen>
                 child: ContractDataCardWidget(contract: _contracts[index]),
               );
             }
-            return const Padding(
-              padding: EdgeInsets.all(10),
-              child: Center(child: CircularProgressIndicator()),
-            );
+            if(_hasMoreContracts) {
+              return const Padding(
+                padding: EdgeInsets.all(10),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+            return const SizedBox(height: 20);
           },
         ),
       ),
@@ -245,7 +242,7 @@ class _ContractScreenState extends State<ContractScreen>
     }
 
     if (_edits.isEmpty) {
-      return const Center(child: Text("No Edit Requests Found"));
+      return Center(child: Text(AppLocalizations.of(context)!.noEditRequestsFound));
     }
 
     return SafeArea(
@@ -266,10 +263,13 @@ class _ContractScreenState extends State<ContractScreen>
                 ),
               );
             }
-            return const Padding(
-              padding: EdgeInsets.all(10),
-              child: Center(child: CircularProgressIndicator()),
-            );
+            if(_hasMoreEdits) {
+              return const Padding(
+                padding: EdgeInsets.all(10),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+            return const SizedBox(height: 20);
           },
         ),
       ),

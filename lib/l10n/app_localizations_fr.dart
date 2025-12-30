@@ -461,4 +461,40 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get highlyRated => 'Mieux notés';
+
+  @override
+  String get noEditRequestsFound => 'Aucune demande de modification trouvée';
+
+  @override
+  String get searchResult => 'Résultat de recherche';
+
+  @override
+  String get anErrorOccurred => 'Une erreur s\'est produite';
+
+  @override
+  String get category => 'Catégorie';
+
+  @override
+  String get priceRange => 'Fourchette de prix';
+
+  @override
+  String get province => 'Province';
+
+  @override
+  String get selectProvince => 'Sélectionner une province';
+
+  @override
+  String get rooms => 'Pièces';
+
+  @override
+  String get all => 'Tous';
+
+  @override
+  String get areaRange => 'Plage de surface';
+
+  @override
+  String get m2 => 'm²';
+
+  @override
+  String get apply => 'Appliquer';
 }

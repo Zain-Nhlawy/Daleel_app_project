@@ -143,5 +143,17 @@
   "clearAll": "Tout effacer",
   "daysUntilStart": "Jours restants avant le début du contrat",
   "cancellationFee": "Frais d’annulation",
-  "highlyRated": "Mieux notés"
+  "highlyRated": "Mieux notés",
+  "noEditRequestsFound": "Aucune demande de modification trouvée",
+  "searchResult": "Résultat de recherche",
+  "anErrorOccurred": "Une erreur s'est produite",
+  "category": "Catégorie",
+  "priceRange": "Fourchette de prix",
+  "province": "Province",
+  "selectProvince": "Sélectionner une province",
+  "rooms": "Pièces",
+  "all": "Tous",
+  "areaRange": "Plage de surface",
+  "m2": "m²",
+  "apply": "Appliquer"
 }
