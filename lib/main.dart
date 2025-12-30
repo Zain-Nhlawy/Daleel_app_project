@@ -47,9 +47,9 @@ final darkTheme = ThemeData(
   brightness: Brightness.dark,
   colorScheme: const ColorScheme(
     brightness: Brightness.dark,
-    primary: Color(0xFFBE7D66),
+    primary: Color.fromARGB(255, 223, 167, 147),
     onPrimary: Colors.black,
-    secondary: Color(0xFF8B5E3C),
+    secondary: Color.fromARGB(255, 168, 118, 80),
     onSecondary: Colors.black,
     background: Color(0xFF121212),
     onBackground: Colors.white,
@@ -86,7 +86,8 @@ void main() async {
 
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin
+      >()
       ?.createNotificationChannel(channel);
 
   await Hive.initFlutter();
@@ -167,4 +168,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

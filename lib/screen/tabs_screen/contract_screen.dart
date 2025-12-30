@@ -68,7 +68,6 @@ class _ContractScreenState extends State<ContractScreen>
     super.dispose();
   }
 
-
   Future<void> _loadContracts({bool isRefresh = false}) async {
     if (isRefresh) {
       _contractsPage = 1;
@@ -102,7 +101,6 @@ class _ContractScreenState extends State<ContractScreen>
       setState(() => _isLoadingContracts = false);
     }
   }
-
 
   Future<void> _loadEdits({bool isRefresh = false}) async {
     if (isRefresh) {
@@ -138,7 +136,6 @@ class _ContractScreenState extends State<ContractScreen>
     }
   }
 
-
   Future<void> approvingEdit(EditContract editContract) async {
     await editContractController.approvingEdit(editContract.id!);
     await _loadEdits(isRefresh: true);
@@ -148,7 +145,6 @@ class _ContractScreenState extends State<ContractScreen>
     await editContractController.rejectingEdit(editContract.id!);
     await _loadEdits(isRefresh: true);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -173,16 +169,16 @@ class _ContractScreenState extends State<ContractScreen>
             indicatorWeight: 3,
             tabs: [
               Tab(text: "Contracts"),
-              Tab(text: "Edits Request"),
+              Tab(text: "Edits Request" ),
             ],
           ),
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 219, 155, 132),
-                Color.fromARGB(255, 243, 243, 243),
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.background,
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,

@@ -40,7 +40,7 @@ class ProfileOptions extends StatelessWidget {
                 child: Icon(
                   Icons.person_outline,
                   size: 25,
-                  color: Colors.brown,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               title: Text(
@@ -69,7 +69,11 @@ class ProfileOptions extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.home_outlined, size: 25, color: Colors.brown),
+                child: Icon(
+                  Icons.home_outlined,
+                  size: 25,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
               title: Text(
                 AppLocalizations.of(context)!.myHouses,
@@ -96,7 +100,7 @@ class ProfileOptions extends StatelessWidget {
                 child: Icon(
                   Icons.history_outlined,
                   size: 25,
-                  color: Colors.brown,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               title: Text(
@@ -127,7 +131,7 @@ class ProfileOptions extends StatelessWidget {
                 child: Icon(
                   Icons.favorite_outline,
                   size: 25,
-                  color: Colors.brown,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               title: Text(
@@ -153,7 +157,7 @@ class ProfileOptions extends StatelessWidget {
                 child: Icon(
                   Icons.settings_outlined,
                   size: 25,
-                  color: Colors.brown,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               title: Text(
