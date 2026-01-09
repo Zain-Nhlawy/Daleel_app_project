@@ -2,6 +2,7 @@ import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/screen/booking_screen.dart';
+import 'package:daleel_app_project/screen/editing_apartment.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/apartment_info_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/comments_section.dart';
 import 'package:daleel_app_project/widget/apartment_details_widgets/description_section.dart';
@@ -87,7 +88,6 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        // centerTitle: true,
         title: Text(
           AppLocalizations.of(context)!.details,
           style: theme.textTheme.titleMedium,
@@ -96,9 +96,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
           icon: Icon(Icons.arrow_back, color: colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          FavoriteWidget(apartment: apartment)
-        ],
+        actions: [FavoriteWidget(apartment: apartment)],
       ),
       body: Stack(
         children: [
@@ -160,39 +158,78 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
               ],
             ),
           ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              color: colorScheme.surface,
-              padding: const EdgeInsets.all(12),
-              child: SizedBox(
-                height: 55,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.primary,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            BookingCalendar(apartment: apartment),
+          if (apartment.user.userId == userController.user!.userId)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                color: colorScheme.surface,
+                padding: const EdgeInsets.all(12),
+                child: SizedBox(
+                  height: 55,
+                  child: SafeArea(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colorScheme.primary,
                       ),
-                    );
-                  },
-                  child: Text(
-                    AppLocalizations.of(context)!.bookNow,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onPrimary,
-                      fontSize: 18,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                EditingApartmentScreen(apartment: apartment),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "ُEdit Apartment",
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onPrimary,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          else
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                color: colorScheme.surface,
+                padding: const EdgeInsets.all(12),
+                child: SizedBox(
+                  height: 55,
+                  child: SafeArea(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colorScheme.primary,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                BookingCalendar(apartment: apartment),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.bookNow,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onPrimary,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

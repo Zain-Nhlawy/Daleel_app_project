@@ -61,4 +61,60 @@ class AddApartmentsRepo {
       rethrow;
     }
   }
+Future<Apartments2> editApartment({
+  required int id,
+    required int userId,
+    required List<File> images,
+    bool? state,
+    String? description,
+    String? headDescription,
+    double? area,
+    Map<String, dynamic>? location,
+    double? rentFee,
+    bool? isAvailable,
+    String? status,
+    int? bedrooms,
+    int? bathrooms,
+    int? floor,
+  }) async {
+    try {
+      FormData formData = FormData.fromMap({
+        "user_id": userId,
+        "description": description,
+        "headDescription": headDescription,
+        "rentFee": rentFee,
+        "area": area,
+        "bedrooms": bedrooms,
+        "bathrooms": bathrooms,
+        "floor": floor,
+        "status": status,
+        "isAvailable": isAvailable! ? 1 : 0,
+        "verification_state": state! ? 1 : 0,
+        "location[city]": location!["city"],
+        "location[governorate]": location["governorate"],
+        "location[district]": location["district"] ?? "",
+        "location[street]": location["street"] ?? "",
+
+        "images[]": [
+          for (var img in images)
+            await MultipartFile.fromFile(
+              img.path,
+              filename: img.path.split("/").last,
+            ),
+        ],
+      });
+
+      final response = await dioClient.dio.put(
+        "/auth/departments/$id",
+        data: formData,
+        options: Options(contentType: "multipart/form-data"),
+      );
+
+      return Apartments2.fromJson(response.data['data']);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
 }

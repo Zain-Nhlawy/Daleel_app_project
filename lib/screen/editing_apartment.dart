@@ -1,43 +1,63 @@
 // ignore_for_file: unused_element, use_build_context_synchronously, deprecated_member_use
 
 import 'dart:io';
-import 'package:daleel_app_project/screen/confirm_add_screen.dart';
+
 import 'package:daleel_app_project/dependencies.dart';
+
 import 'package:daleel_app_project/l10n/app_localizations.dart';
+import 'package:daleel_app_project/models/apartments.dart';
+
 import 'package:daleel_app_project/models/user.dart';
+
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
+
 import 'package:daleel_app_project/screen/pick_location_screen.dart';
+
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
+
 import 'package:flutter/material.dart';
+
 import 'package:image_picker/image_picker.dart';
 
-class AddingApartmentScreen extends StatefulWidget {
-  const AddingApartmentScreen({super.key});
-
+class EditingApartmentScreen extends StatefulWidget {
+  const EditingApartmentScreen({required this.apartment, super.key});
+  final Apartments2 apartment;
   @override
-  State<AddingApartmentScreen> createState() => _AddingApartmentScreenState();
+  State<EditingApartmentScreen> createState() => _EditingApartmentScreenState();
 }
 
-class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
+class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
   final User? user = userController.user;
   final _formKey = GlobalKey<FormState>();
-
-  bool _isAvailable = true;
-  String _selectedStatusController = 'unfurnished';
-
-  final TextEditingController _locationController = TextEditingController();
-  Map<String, dynamic>? selectedLocation;
-
+  late bool _isAvailable = widget.apartment.isAvailable!;
+  late String _selectedStatusController = widget.apartment.status!;
+  late final TextEditingController _locationController = TextEditingController(
+    text: widget.apartment.location.toString(),
+  );
+  late Map<String, dynamic>? selectedLocation = widget.apartment.location;
   File? _selectedImageController;
   final List<File> _apartmentPictures = [];
-
-  final _apartmentHeadDescriptionController = TextEditingController();
-  final _apartmentPriceContoller = TextEditingController();
-  final _apartmentFloorController = TextEditingController();
-  final _apartmentBedroomsController = TextEditingController();
-  final _apartmentBathroomsController = TextEditingController();
-  final _apartmentAreaController = TextEditingController();
-  final _apartmetnDescriptionController = TextEditingController();
+  late final _apartmentHeadDescriptionController = TextEditingController(
+    text: widget.apartment.headDescription,
+  );
+  late final _apartmentPriceContoller = TextEditingController(
+    text: widget.apartment.rentFee.toString(),
+  );
+  late final _apartmentFloorController = TextEditingController(
+    text: widget.apartment.floor.toString(),
+  );
+  late final _apartmentBedroomsController = TextEditingController(
+    text: widget.apartment.bedrooms.toString(),
+  );
+  late final _apartmentBathroomsController = TextEditingController(
+    text: widget.apartment.bathrooms.toString(),
+  );
+  late final _apartmentAreaController = TextEditingController(
+    text: widget.apartment.area.toString(),
+  );
+  late final _apartmetnDescriptionController = TextEditingController(
+    text: widget.apartment.description,
+  );
 
   Future<void> _pickImage(
     ImageSource source, {
@@ -48,7 +68,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       imageQuality: 80,
     );
     if (image == null) return;
-
     setState(() {
       final file = File(image.path);
       isHeadImage
@@ -72,26 +91,16 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       );
       return;
     }
-
-    showConfirmationSheet(
-      context: context,
-      onConfirm: (File contractImage) {
-        _saveApartment(contractImage);
-      },
-    );
+    _saveApartment();
   }
 
-  Future<void> _saveApartment(File contractImage) async {
+  Future<void> _saveApartment() async {
     final addRepo = AddApartmentsRepo(dioClient: dioClient);
-
     try {
-      await addRepo.addApartment(
+      await addRepo.editApartment(
+        id : widget.apartment.id,
         userId: user!.userId,
-        images: [
-          _selectedImageController!,
-          contractImage,
-          ..._apartmentPictures,
-        ],
+        images: [_selectedImageController!, ..._apartmentPictures],
         location: selectedLocation,
         state: false,
         headDescription: _apartmentHeadDescriptionController.text,
@@ -104,7 +113,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         isAvailable: _isAvailable,
         status: _selectedStatusController,
       );
-
       _showPendingApprovalDialog();
     } catch (_) {
       _showErrorDialog(
@@ -164,7 +172,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       context,
       MaterialPageRoute(builder: (_) => const PickLocationScreen()),
     );
-
     if (result != null && result is Map) {
       setState(() {
         selectedLocation = Map<String, dynamic>.from(result);
@@ -178,12 +185,11 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context)!.addApartment,
+          "Edit Aparmten",
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -193,10 +199,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.background,
-            ],
+            colors: [scheme.primary, scheme.background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -256,13 +259,11 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: Text(AppLocalizations.of(context)!.addApartment),
+          child: Text("editApartment"),
         ),
       ),
     );
   }
-
-  // ================== UI HELPERS ==================
 
   Widget _sectionHeader(String title) {
     final scheme = Theme.of(context).colorScheme;
@@ -287,7 +288,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     TextInputType? keyboardType,
   }) {
     final scheme = Theme.of(context).colorScheme;
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: TextFormField(
@@ -313,7 +313,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
   Widget _statusDropdown() {
     final scheme = Theme.of(context).colorScheme;
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
@@ -393,7 +392,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
   Widget _availabilitySwitch() {
     final scheme = Theme.of(context).colorScheme;
-
     return _surfaceTile(
       child: Switch(
         value: _isAvailable,
@@ -450,7 +448,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
 
   Widget _surfaceTile({IconData? icon, required String text, Widget? child}) {
     final scheme = Theme.of(context).colorScheme;
-
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
       padding: const EdgeInsets.all(14),

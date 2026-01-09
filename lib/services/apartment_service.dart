@@ -1,3 +1,4 @@
+
 import '../core/network/dio_client.dart';
 import '../models/apartments.dart';
 
@@ -38,6 +39,7 @@ class ApartmentService {
         final data = response.data['data'];
         return Apartments2.fromJson(data);
       } else {}
+    // ignore: empty_catches
     } catch (e) {}
     return null;
   }
@@ -140,7 +142,6 @@ Future<List<Apartments2>> getFilteredApartments(int page, {
     final data = response.data['data'] as List;
     return data.map((json) => Apartments2.fromJson(json)).toList();
   } catch (e) {
-    print("Error in service: $e");
     rethrow;
   }
 }
@@ -157,5 +158,8 @@ Future<List<Apartments2>> getFilteredApartments(int page, {
       rethrow;
     }
   }
+
+
+
 
 }

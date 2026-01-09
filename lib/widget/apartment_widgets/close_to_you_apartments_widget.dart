@@ -87,7 +87,9 @@ class _CloseToYouApartmentsWidgetState
 
     if (_error != null) {
       return Center(
-        child: Text('${AppLocalizations.of(context)!.error}: $_error'),
+        child: Text(
+          '${AppLocalizations.of(context)!.error}: error fetching apartment',
+        ),
       );
     }
 
@@ -101,7 +103,7 @@ class _CloseToYouApartmentsWidgetState
       controller: widget.controller,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: _apartments.length + (_apartments.length>=10 ? 1 : 0),
+      itemCount: _apartments.length + (_apartments.length >= 10 ? 1 : 0),
       itemBuilder: (context, index) {
         if (index < _apartments.length) {
           return Padding(

@@ -3,7 +3,7 @@ import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_scree
 import 'package:daleel_app_project/screen/splash/welcomeCardScreen.dart';
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:video_player/video_player.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 import '../../main.dart';
@@ -15,19 +15,28 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with TickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> {
   final player = AudioPlayer();
-  late final AnimationController _controller;
+  late final VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(vsync: this);
+    _controller = VideoPlayerController.asset(
+      "assets/lottie/logo.mp4", 
+    );
 
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
+    _controller.initialize().then((_) {
+      player.play(AssetSource("sounds/splashSounds.mp3"));
+      _controller.play();
+      setState(() {});
+    });
+
+    _controller.addListener(() {
+      if (_controller.value.isInitialized &&
+          _controller.value.position >=
+              _controller.value.duration) {
         _handleNavigation();
       }
     });
@@ -88,24 +97,25 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    player.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Center(
-        child: Lottie.asset(
-          "assets/lottie/logo.json",
-          width: double.infinity,
-          height: double.infinity,
-          controller: _controller,
-          onLoaded: (composition) {
-            player.play(AssetSource("sounds/splashSounds.mp3"));
-            _controller
-              ..duration = composition.duration
-              ..forward();
-          },
-        ),
+        child: _controller.value.isInitialized
+            ? AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              )
+            : const SizedBox.shrink(),
       ),
     );
   }

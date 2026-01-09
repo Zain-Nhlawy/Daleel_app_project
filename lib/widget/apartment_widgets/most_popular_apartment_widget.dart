@@ -49,7 +49,7 @@ class _MostPopularApartmentWidgetState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image + Favorite Button
+
             Stack(
               children: [
                 ClipRRect(
@@ -87,13 +87,13 @@ class _MostPopularApartmentWidgetState
                 ),
               ],
             ),
-            // Info Section
+
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title + Price
+               
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -120,7 +120,7 @@ class _MostPopularApartmentWidgetState
                     ],
                   ),
                   const SizedBox(height: 6),
-                  // Location
+  
                   Row(
                     children: [
                       Icon(
@@ -143,7 +143,7 @@ class _MostPopularApartmentWidgetState
                     ],
                   ),
                   const SizedBox(height: 6),
-                  // Rating
+
                   Row(
                     children: [
                       Icon(Icons.star, color: Colors.orange, size: 16),

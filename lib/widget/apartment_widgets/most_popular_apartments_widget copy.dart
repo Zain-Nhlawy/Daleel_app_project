@@ -67,8 +67,8 @@ class _MostPopularApartmentsWidgetState
           if (snapshot.hasError) {
             return Center(
               child: Text(
-                '${AppLocalizations.of(context)!.error}: ${snapshot.error}',
-                style: const TextStyle(color: Colors.white),
+                '${AppLocalizations.of(context)!.error}: ${"error fetching apartment"}',
+                style: TextStyle(color: Colors.red),
               ),
             );
           }

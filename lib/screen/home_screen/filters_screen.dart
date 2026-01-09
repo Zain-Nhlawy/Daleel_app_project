@@ -238,35 +238,37 @@ class FilterBottomSheetContent extends StatelessWidget {
                     top: 16,
                     bottom: 16 + MediaQuery.of(context).padding.bottom,
                   ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      textStyle: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.apply,
-                      style: textTheme.bodyLarge?.copyWith(
-                        color: colorScheme.onPrimary,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ApartmentsDisplayScreen(
-                            selectedCategory: selectedCategory,
-                            priceRange: priceRange,
-                            selectedProvince: selectedProvince,
-                            selectedRooms: selectedRooms,
-                            selectedBathrooms: selectedBathrooms,
-                            areaRange: areaRange,
-                          ),
+                  child: SafeArea(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50),
+                        textStyle: textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                    },
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.apply,
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: colorScheme.onPrimary,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ApartmentsDisplayScreen(
+                              selectedCategory: selectedCategory,
+                              priceRange: priceRange,
+                              selectedProvince: selectedProvince,
+                              selectedRooms: selectedRooms,
+                              selectedBathrooms: selectedBathrooms,
+                              areaRange: areaRange,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
