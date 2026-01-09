@@ -77,8 +77,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isInit)
+    if (!_isInit) {
       return const Scaffold(body: Center(child: Text("Loading...")));
+    }
 
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;

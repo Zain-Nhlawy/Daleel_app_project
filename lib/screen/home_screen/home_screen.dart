@@ -65,6 +65,8 @@ class HomeScreen extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.background,
             ],
             begin: Alignment.topCenter,
@@ -172,7 +174,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-              MostPopularApartmentsWidget(),
+                MostPopularApartmentsWidget(),
                 const SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),

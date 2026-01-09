@@ -161,9 +161,11 @@ class _ContractScreenState extends State<ContractScreen>
           bottom: const TabBar(
             indicatorColor: Colors.white,
             indicatorWeight: 3,
-            tabs: [
+            labelColor: Colors.white,
+            unselectedLabelColor: Color.fromARGB(120, 255, 255, 255),
+            tabs: const [
               Tab(text: "Contracts"),
-              Tab(text: "Edits Request" ),
+              Tab(text: "Edits Request"),
             ],
           ),
         ),
@@ -171,6 +173,8 @@ class _ContractScreenState extends State<ContractScreen>
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.primary,
                 Theme.of(context).colorScheme.primary,
                 Theme.of(context).colorScheme.background,
               ],
@@ -217,7 +221,7 @@ class _ContractScreenState extends State<ContractScreen>
                 child: ContractDataCardWidget(contract: _contracts[index]),
               );
             }
-            if(_hasMoreContracts) {
+            if (_hasMoreContracts) {
               return const Padding(
                 padding: EdgeInsets.all(10),
                 child: Center(child: CircularProgressIndicator()),
@@ -242,7 +246,9 @@ class _ContractScreenState extends State<ContractScreen>
     }
 
     if (_edits.isEmpty) {
-      return Center(child: Text(AppLocalizations.of(context)!.noEditRequestsFound));
+      return Center(
+        child: Text(AppLocalizations.of(context)!.noEditRequestsFound),
+      );
     }
 
     return SafeArea(
@@ -263,7 +269,7 @@ class _ContractScreenState extends State<ContractScreen>
                 ),
               );
             }
-            if(_hasMoreEdits) {
+            if (_hasMoreEdits) {
               return const Padding(
                 padding: EdgeInsets.all(10),
                 child: Center(child: CircularProgressIndicator()),

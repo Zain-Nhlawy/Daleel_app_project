@@ -1,9 +1,15 @@
 import 'package:daleel_app_project/dependencies.dart';
+
 import 'package:daleel_app_project/screen/details_screens/ApartmentDetails_screen.dart';
+
 import 'package:daleel_app_project/screen/splash/welcomeCardScreen.dart';
+
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
+
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+
+import 'package:lottie/lottie.dart';
+
 import 'package:audioplayers/audioplayers.dart';
 
 import '../../main.dart';
@@ -12,31 +18,22 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State with TickerProviderStateMixin {
   final player = AudioPlayer();
-  late final VideoPlayerController _controller;
+
+  late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.asset(
-      "assets/lottie/logo.mp4", 
-    );
+    _controller = AnimationController(vsync: this);
 
-    _controller.initialize().then((_) {
-      player.play(AssetSource("sounds/splashSounds.mp3"));
-      _controller.play();
-      setState(() {});
-    });
-
-    _controller.addListener(() {
-      if (_controller.value.isInitialized &&
-          _controller.value.position >=
-              _controller.value.duration) {
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
         _handleNavigation();
       }
     });
@@ -47,23 +44,31 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (pendingNotificationMessage != null) {
       final message = pendingNotificationMessage!;
+
       pendingNotificationMessage = null;
 
       final type = message.data['type'];
+
       if (type == 'rate_department') {
         final departmentIdStr = message.data['department_id'];
+
         if (departmentIdStr == null) return;
+
         final departmentId = int.tryParse(departmentIdStr);
+
         if (departmentId == null) return;
 
         final apartments2 = await apartmentController.fetchApartment(
           departmentId,
         );
+
         if (apartments2 == null) return;
 
         Navigator.pushAndRemoveUntil(
           context,
+
           MaterialPageRoute(builder: (_) => HomeScreenTabs()),
+
           (route) => false,
         );
 
@@ -73,12 +78,14 @@ class _SplashScreenState extends State<SplashScreen> {
               MaterialPageRoute(
                 builder: (_) => ApartmentDetailsScreen(
                   apartment: apartments2,
+
                   withRate: true,
                 ),
               ),
             );
           }
         });
+
         return;
       }
     }
@@ -86,21 +93,16 @@ class _SplashScreenState extends State<SplashScreen> {
     if (userController.isLoggedIn) {
       Navigator.pushReplacement(
         context,
+
         MaterialPageRoute(builder: (_) => HomeScreenTabs()),
       );
     } else {
       Navigator.pushReplacement(
         context,
+
         MaterialPageRoute(builder: (_) => WelcomeCardScreen()),
       );
     }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    player.dispose();
-    super.dispose();
   }
 
   @override
@@ -109,13 +111,25 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
+
       body: Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
-            : const SizedBox.shrink(),
+        child: Lottie.asset(
+          "assets/lottie/logo.json",
+
+          width: double.infinity,
+
+          height: double.infinity,
+
+          controller: _controller,
+
+          onLoaded: (composition) {
+            player.play(AssetSource("sounds/splashSounds.mp3"));
+
+            _controller
+              ..duration = composition.duration
+              ..forward();
+          },
+        ),
       ),
     );
   }

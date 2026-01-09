@@ -3,6 +3,7 @@ import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/providers.dart';
 import 'package:daleel_app_project/screen/home_screen/notifications_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
+import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:provider/provider.dart';
 import 'package:daleel_app_project/services/firebase_notification_service.dart';
 
@@ -28,7 +29,7 @@ final theme = ThemeData(
   useMaterial3: true,
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
-    primary: Color(0xFF8B5E3C),
+    primary: Color.fromARGB(255, 224, 170, 129),
     onPrimary: Colors.white,
     secondary: Color(0xFFBE7D66),
     onSecondary: Colors.white,
@@ -47,7 +48,7 @@ final darkTheme = ThemeData(
   brightness: Brightness.dark,
   colorScheme: const ColorScheme(
     brightness: Brightness.dark,
-    primary: Color.fromARGB(255, 223, 167, 147),
+    primary: Color.fromARGB(255, 170, 115, 95),
     onPrimary: Colors.black,
     secondary: Color.fromARGB(255, 168, 118, 80),
     onSecondary: Colors.black,
@@ -156,7 +157,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       darkTheme: darkTheme,
       themeMode: provider.currentTheme,
-      home: SplashScreen(),
+      home: HomeScreenTabs(),
       locale: provider.currentLocale,
       supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],
       localizationsDelegates: const [

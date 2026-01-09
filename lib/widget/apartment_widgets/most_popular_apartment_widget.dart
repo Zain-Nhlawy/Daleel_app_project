@@ -15,7 +15,6 @@ class MostPopularApartmentWidget extends StatefulWidget {
 
 class _MostPopularApartmentWidgetState
     extends State<MostPopularApartmentWidget> {
-
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
@@ -49,7 +48,6 @@ class _MostPopularApartmentWidgetState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Stack(
               children: [
                 ClipRRect(
@@ -79,10 +77,10 @@ class _MostPopularApartmentWidgetState
                   right: 8,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: scheme.surface.withOpacity(0.6),
+                      color: scheme.surface.withOpacity(0.4),
                       shape: BoxShape.circle,
                     ),
-                    child: FavoriteWidget(apartment: widget.apartment)
+                    child: FavoriteWidget(apartment: widget.apartment),
                   ),
                 ),
               ],
@@ -93,7 +91,6 @@ class _MostPopularApartmentWidgetState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-               
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -120,7 +117,7 @@ class _MostPopularApartmentWidgetState
                     ],
                   ),
                   const SizedBox(height: 6),
-  
+
                   Row(
                     children: [
                       Icon(

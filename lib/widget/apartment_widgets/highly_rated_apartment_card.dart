@@ -76,10 +76,10 @@ class HighlyRatedApartmentCard extends StatelessWidget {
                     child: Container(
                       height: 35,
                       decoration: BoxDecoration(
-                        color: colorScheme.onSurface.withOpacity(0.3),
+                        color: colorScheme.surface.withOpacity(0.4),
                         shape: BoxShape.circle,
                       ),
-                      child: FavoriteWidget(apartment: apartment)
+                      child: FavoriteWidget(apartment: apartment),
                     ),
                   ),
                   Positioned(
@@ -103,9 +103,7 @@ class HighlyRatedApartmentCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            apartment.averageRating?.toStringAsFixed(
-                                  1,
-                                ) ??
+                            apartment.averageRating?.toStringAsFixed(1) ??
                                 'N/A',
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.onSurface,

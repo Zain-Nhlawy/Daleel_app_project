@@ -195,6 +195,8 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           gradient: LinearGradient(
             colors: [
               Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.background,
             ],
             begin: Alignment.topCenter,
@@ -262,8 +264,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     );
   }
 
-  // ================== UI HELPERS ==================
-
   Widget _sectionHeader(String title) {
     final scheme = Theme.of(context).colorScheme;
     return Padding(
@@ -289,7 +289,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     final scheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
       child: TextFormField(
         controller: controller,
         maxLines: maxLines,
@@ -339,8 +339,9 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
     return GridView.count(
       crossAxisCount: 2,
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: 2.6,
+      childAspectRatio: 2.8,
       children: [
         _featureField(
           _apartmentBedroomsController,

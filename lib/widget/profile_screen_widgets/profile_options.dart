@@ -40,7 +40,7 @@ class ProfileOptions extends StatelessWidget {
                 child: Icon(
                   Icons.person_outline,
                   size: 25,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               title: Text(
@@ -72,7 +72,7 @@ class ProfileOptions extends StatelessWidget {
                 child: Icon(
                   Icons.home_outlined,
                   size: 25,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               title: Text(
@@ -100,7 +100,7 @@ class ProfileOptions extends StatelessWidget {
                 child: Icon(
                   Icons.history_outlined,
                   size: 25,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               title: Text(
@@ -131,7 +131,7 @@ class ProfileOptions extends StatelessWidget {
                 child: Icon(
                   Icons.favorite_outline,
                   size: 25,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               title: Text(
@@ -157,7 +157,7 @@ class ProfileOptions extends StatelessWidget {
                 child: Icon(
                   Icons.settings_outlined,
                   size: 25,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               title: Text(

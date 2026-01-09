@@ -7,6 +7,8 @@ class FilterBottomSheetContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
@@ -238,37 +240,32 @@ class FilterBottomSheetContent extends StatelessWidget {
                     top: 16,
                     bottom: 16 + MediaQuery.of(context).padding.bottom,
                   ),
-                  child: SafeArea(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
-                        textStyle: textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: scheme.primary,
+                      foregroundColor: scheme.onPrimary,
+                      minimumSize: const Size(double.infinity, 55),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Text(
-                        AppLocalizations.of(context)!.apply,
-                        style: textTheme.bodyLarge?.copyWith(
-                          color: colorScheme.onPrimary,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ApartmentsDisplayScreen(
-                              selectedCategory: selectedCategory,
-                              priceRange: priceRange,
-                              selectedProvince: selectedProvince,
-                              selectedRooms: selectedRooms,
-                              selectedBathrooms: selectedBathrooms,
-                              areaRange: areaRange,
-                            ),
-                          ),
-                        );
-                      },
                     ),
+                    child: Text(AppLocalizations.of(context)!.apply),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ApartmentsDisplayScreen(
+                            selectedCategory: selectedCategory,
+                            priceRange: priceRange,
+                            selectedProvince: selectedProvince,
+                            selectedRooms: selectedRooms,
+                            selectedBathrooms: selectedBathrooms,
+                            areaRange: areaRange,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

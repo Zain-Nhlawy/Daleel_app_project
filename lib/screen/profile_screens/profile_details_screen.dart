@@ -42,7 +42,6 @@ class ProfileDetailsScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
-                /// Avatar
                 Center(
                   child: Stack(
                     children: [
@@ -90,7 +89,6 @@ class ProfileDetailsScreen extends StatelessWidget {
 
                 const SizedBox(height: 30),
 
-                /// Images
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -108,8 +106,6 @@ class ProfileDetailsScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 40),
-
-                /// Details Card
                 Container(
                   decoration: BoxDecoration(
                     color: scheme.surface,
@@ -154,26 +150,25 @@ class ProfileDetailsScreen extends StatelessWidget {
 
                 const SizedBox(height: 30),
 
-                /// Edit Button
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: scheme.surface,
-                    foregroundColor: scheme.primary,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 50,
-                      vertical: 15,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  child: Text(AppLocalizations.of(context)!.editProfile),
-                ),
+                // ElevatedButton(
+                //   onPressed: () {},
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: scheme.surface,
+                //     foregroundColor: scheme.primary,
+                //     padding: const EdgeInsets.symmetric(
+                //       horizontal: 50,
+                //       vertical: 15,
+                //     ),
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(30),
+                //     ),
+                //     textStyle: const TextStyle(
+                //       fontSize: 18,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                //   child: Text(AppLocalizations.of(context)!.editProfile),
+                // ),
               ],
             ),
           ),

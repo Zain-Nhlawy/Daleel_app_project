@@ -155,6 +155,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                     ],
                   ),
                 ),
+                SizedBox(height: 50),
               ],
             ),
           ),
@@ -163,12 +164,12 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
               left: 0,
               right: 0,
               bottom: 0,
-              child: Container(
-                color: colorScheme.surface,
-                padding: const EdgeInsets.all(12),
-                child: SizedBox(
-                  height: 55,
-                  child: SafeArea(
+              child: SafeArea(
+                child: Container(
+                  color: colorScheme.surface,
+                  padding: const EdgeInsets.all(12),
+                  child: SizedBox(
+                    height: 55,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: colorScheme.primary,
@@ -199,12 +200,12 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
               left: 0,
               right: 0,
               bottom: 0,
-              child: Container(
-                color: colorScheme.surface,
-                padding: const EdgeInsets.all(12),
-                child: SizedBox(
-                  height: 55,
-                  child: SafeArea(
+              child: SafeArea(
+                child: Container(
+                  color: colorScheme.surface,
+                  padding: const EdgeInsets.all(12),
+                  child: SizedBox(
+                    height: 55,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: colorScheme.primary,
