@@ -166,6 +166,7 @@
   "confirmAndSubmit": "Confirmer et envoyer",
   "confirmSubmission": "Confirmer l'envoi",
   "yoursubmissionwillbesenttotheadminforapprovalPleaseattachaclearimageofthehousecontracttoexpeditetheprocess": "Votre demande sera envoyée à l'administrateur pour approbation. Veuillez joindre une image claire du contrat de la maison afin d'accélérer le processus.",
+  "editApartment": "Modifier l'appartement",
   "back": "Retour",
   "errorFetchingApartment": "Erreur lors du chargement de l'appartement",
   "viewContractDetails": "Voir les détails du contrat",
@@ -179,5 +180,9 @@
   "unfurnished": "non meublé",
   "furnished": "meublé",
   "popular": "Populaire",
-  "mostFavorited": "Le plus favori"
+  "mostFavorited": "Le plus favori",
+  "cancelled": "Annulée",
+  "pending": "En attente",
+  "onRent": "En location",
+  "completed": "Terminée"
 }

@@ -436,7 +436,7 @@ Future<void> _handleCancelContract() async {
 
   Widget _buildStatusChip(RentStatus status, ColorScheme colorScheme) {
     Color chipColor;
-    String statusText = status.toString().split('.').last;
+    String statusText = '';
     switch (status) {
       case RentStatus.completed:
         chipColor = Colors.green;
@@ -449,6 +449,20 @@ Future<void> _handleCancelContract() async {
         break;
       case RentStatus.cancelled:
         chipColor = Colors.red;
+        break;
+    }
+    switch (status) {
+      case RentStatus.completed:
+        statusText = AppLocalizations.of(context)!.completed;
+        break;
+      case RentStatus.onRent:
+        statusText = AppLocalizations.of(context)!.onRent;
+        break;
+      case RentStatus.pending:
+        statusText = AppLocalizations.of(context)!.pending;
+        break;
+      case RentStatus.cancelled:
+        statusText = AppLocalizations.of(context)!.cancelled;
         break;
     }
     return Chip(

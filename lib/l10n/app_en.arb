@@ -180,5 +180,13 @@
   "unfurnished": "unfurnished",
   "furnished": "furnished",
   "popular": "Popular",
-  "mostFavorited": "Most Favorited"
+  "mostFavorited": "Most Favorited",
+  "cancelled": "cancelled",
+  "pending": "pending",
+  "onRent": "onRent",
+  "completed": "completed",
+  "cancelled": "ملغاة",
+  "pending": "قيد الانتظار",
+  "onRent": "مستأجرة",
+  "completed": "مكتملة"
 }

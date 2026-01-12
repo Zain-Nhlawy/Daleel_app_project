@@ -166,6 +166,7 @@
   "confirmAndSubmit": "تأكيد وإرسال",
   "confirmSubmission": "تأكيد الإرسال",
   "yoursubmissionwillbesenttotheadminforapprovalPleaseattachaclearimageofthehousecontracttoexpeditetheprocess": "سيتم إرسال طلبك إلى المشرف للموافقة عليه. يرجى إرفاق صورة واضحة لعقد المنزل لتسريع العملية.",
+  "editApartment": "تعديل الشقة",
   "back": "رجوع",
   "errorFetchingApartment": "خطأ في جلب بيانات الشقة",
   "viewContractDetails": "عرض تفاصيل العقد",

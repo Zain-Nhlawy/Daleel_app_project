@@ -372,6 +372,7 @@ void _showUpdateRequestDialog({required bool isPendingApproval}) {
                           ),
                           height: 420,
                           child: CalendarCarousel<Event>(
+                            locale: language,
                             maxSelectedDate: DateTime(2100, 12, 31),
                             onDayPressed: (date, events) => _onDayPressed(date),
                             weekendTextStyle: theme.textTheme.bodyMedium

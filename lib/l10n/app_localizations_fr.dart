@@ -573,4 +573,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get mostFavorited => 'Le plus favori';
+
+  @override
+  String get cancelled => 'Annulée';
+
+  @override
+  String get pending => 'En attente';
+
+  @override
+  String get onRent => 'En location';
+
+  @override
+  String get completed => 'Terminée';
 }

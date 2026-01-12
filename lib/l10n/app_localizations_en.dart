@@ -568,4 +568,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mostFavorited => 'Most Favorited';
+
+  @override
+  String get cancelled => 'ملغاة';
+
+  @override
+  String get pending => 'قيد الانتظار';
+
+  @override
+  String get onRent => 'مستأجرة';
+
+  @override
+  String get completed => 'مكتملة';
 }

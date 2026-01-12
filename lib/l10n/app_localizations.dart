@@ -1180,6 +1180,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Most Favorited'**
   String get mostFavorited;
+
+  /// No description provided for @cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'ملغاة'**
+  String get cancelled;
+
+  /// No description provided for @pending.
+  ///
+  /// In en, this message translates to:
+  /// **'قيد الانتظار'**
+  String get pending;
+
+  /// No description provided for @onRent.
+  ///
+  /// In en, this message translates to:
+  /// **'مستأجرة'**
+  String get onRent;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'مكتملة'**
+  String get completed;
 }
 
 class _AppLocalizationsDelegate
