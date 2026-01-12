@@ -1041,6 +1041,115 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apply'**
   String get apply;
+
+  /// No description provided for @editApartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Apartment'**
+  String get editApartment;
+
+  /// No description provided for @noApartmentsFoundForTheseFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'No apartments found for these filters'**
+  String get noApartmentsFoundForTheseFilters;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @lightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Mode'**
+  String get lightMode;
+
+  /// No description provided for @tapToAddContractImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to add contract image'**
+  String get tapToAddContractImage;
+
+  /// No description provided for @houseContractImageIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'House contract image is required'**
+  String get houseContractImageIsRequired;
+
+  /// No description provided for @confirmAndSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm & Submit'**
+  String get confirmAndSubmit;
+
+  /// No description provided for @confirmSubmission.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Submission'**
+  String get confirmSubmission;
+
+  /// No description provided for @yoursubmissionwillbesenttotheadminforapprovalPleaseattachaclearimageofthehousecontracttoexpeditetheprocess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your submission will be sent to the admin for approval. Please attach a clear image of the house contract to expedite the process.'**
+  String
+  get yoursubmissionwillbesenttotheadminforapprovalPleaseattachaclearimageofthehousecontracttoexpeditetheprocess;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @errorFetchingApartment.
+  ///
+  /// In en, this message translates to:
+  /// **'error fetching apartment'**
+  String get errorFetchingApartment;
+
+  /// No description provided for @viewContractDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Contract Details'**
+  String get viewContractDetails;
+
+  /// No description provided for @currentContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Contract'**
+  String get currentContract;
+
+  /// No description provided for @proposedChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Proposed Changes'**
+  String get proposedChanges;
+
+  /// No description provided for @decline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get decline;
+
+  /// No description provided for @ratetheDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate the Department'**
+  String get ratetheDepartment;
+
+  /// No description provided for @pleaseselectthenumberofstars.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select the number of stars'**
+  String get pleaseselectthenumberofstars;
+
+  /// No description provided for @submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
 }
 
 class _AppLocalizationsDelegate

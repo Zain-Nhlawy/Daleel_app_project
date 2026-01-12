@@ -259,7 +259,7 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: Text("editApartment"),
+          child: Text(AppLocalizations.of(context)!.editApartment),
         ),
       ),
     );

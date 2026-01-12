@@ -1,4 +1,5 @@
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 Future<bool?> showRatingDialog(BuildContext context, int dep_id) {
@@ -49,7 +50,7 @@ class _StarRatingDialogState extends State<StarRatingDialog> {
             ),
             const SizedBox(height: 16),
             Text(
-              "Rate the Department",
+              AppLocalizations.of(context)!.ratetheDepartment,
               textAlign: TextAlign.center,
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
@@ -58,7 +59,7 @@ class _StarRatingDialogState extends State<StarRatingDialog> {
             ),
             const SizedBox(height: 8),
             Text(
-              "Please select the number of stars",
+              AppLocalizations.of(context)!.pleaseselectthenumberofstars,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
@@ -101,7 +102,7 @@ class _StarRatingDialogState extends State<StarRatingDialog> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text("Cancel"),
+                    child: Text(AppLocalizations.of(context)!.cancel),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -127,8 +128,8 @@ class _StarRatingDialogState extends State<StarRatingDialog> {
                       ),
                       elevation: 0,
                     ),
-                    child: const Text(
-                      "Submit",
+                    child: Text(
+                      AppLocalizations.of(context)!.submit,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),

@@ -103,11 +103,11 @@ class _ApartmentsDisplayScreenState extends State<ApartmentsDisplayScreen> {
                   }
                   if (snapshot.hasError) {
                     print(snapshot.error);
-                    return const Center(child: Text('An error occurred!'));
+                    return Center(child: Text('${AppLocalizations.of(context)!.anErrorOccurred}!'));
                   }
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(
-                      child: Text('No apartments found for these filters.'),
+                    return Center(
+                      child: Text(AppLocalizations.of(context)!.noApartmentsFoundForTheseFilters),
                     );
                   }
                   final apartments = snapshot.data!;

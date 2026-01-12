@@ -123,8 +123,8 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                 backgroundColor: Colors.brown,
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
-              child: const Text(
-                "OK",
+              child: Text(
+                AppLocalizations.of(context)!.okay,
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),

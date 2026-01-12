@@ -184,7 +184,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                         );
                       },
                       child: Text(
-                        "ُEdit Apartment",
+                        AppLocalizations.of(context)!.editApartment,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onPrimary,
                           fontSize: 18,

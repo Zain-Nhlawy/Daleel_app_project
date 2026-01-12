@@ -497,4 +497,65 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get apply => 'Appliquer';
+
+  @override
+  String get editApartment => 'Modifier l\'appartement';
+
+  @override
+  String get noApartmentsFoundForTheseFilters =>
+      'Aucun appartement trouvé pour ces filtres';
+
+  @override
+  String get darkMode => 'Mode sombre';
+
+  @override
+  String get lightMode => 'Mode clair';
+
+  @override
+  String get tapToAddContractImage =>
+      'Appuyez pour ajouter l\'image du contrat';
+
+  @override
+  String get houseContractImageIsRequired =>
+      'L\'image du contrat de la maison est requise';
+
+  @override
+  String get confirmAndSubmit => 'Confirmer et envoyer';
+
+  @override
+  String get confirmSubmission => 'Confirmer l\'envoi';
+
+  @override
+  String
+  get yoursubmissionwillbesenttotheadminforapprovalPleaseattachaclearimageofthehousecontracttoexpeditetheprocess =>
+      'Votre demande sera envoyée à l\'administrateur pour approbation. Veuillez joindre une image claire du contrat de la maison afin d\'accélérer le processus.';
+
+  @override
+  String get back => 'Retour';
+
+  @override
+  String get errorFetchingApartment =>
+      'Erreur lors du chargement de l\'appartement';
+
+  @override
+  String get viewContractDetails => 'Voir les détails du contrat';
+
+  @override
+  String get currentContract => 'Contrat actuel';
+
+  @override
+  String get proposedChanges => 'Modifications proposées';
+
+  @override
+  String get decline => 'Refuser';
+
+  @override
+  String get ratetheDepartment => 'Évaluer le service';
+
+  @override
+  String get pleaseselectthenumberofstars =>
+      'Veuillez sélectionner le nombre d\'étoiles';
+
+  @override
+  String get submit => 'Envoyer';
 }
