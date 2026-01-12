@@ -175,5 +175,10 @@
   "decline": "Decline",
   "ratetheDepartment": "Rate the Department",
   "pleaseselectthenumberofstars": "Please select the number of stars",
-  "submit": "Submit"
+  "submit": "Submit",
+  "partiallyFurnished": "partially furnished",
+  "unfurnished": "unfurnished",
+  "furnished": "furnished",
+  "popular": "Popular",
+  "mostFavorited": "Most Favorited"
 }

@@ -174,5 +174,10 @@
   "decline": "رفض",
   "ratetheDepartment": "قيّم القسم",
   "pleaseselectthenumberofstars": "يرجى اختيار عدد النجوم",
-  "submit": "إرسال"
+  "submit": "إرسال",
+  "partiallyFurnished": "مفروش جزئياً",
+  "unfurnished": "غير مفروش",
+  "furnished": "مفروش",
+  "popular": "شائع",
+  "mostFavorited": "الأكثر تفضيلاً"
 }

@@ -44,7 +44,7 @@ class _HighlyRatedApartmentsListState extends State<HighlyRatedApartmentsList> {
           if (snapshot.hasError) {
             return Center(
               child: Text(
-                '${AppLocalizations.of(context)!.error}: ${"error fetching apartment"}',
+                '${AppLocalizations.of(context)!.error}: ${AppLocalizations.of(context)!.errorFetchingApartment}',
                 style: textTheme.bodyMedium?.copyWith(color: colorScheme.error),
               ),
             );

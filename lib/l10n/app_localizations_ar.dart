@@ -546,4 +546,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get submit => 'إرسال';
+
+  @override
+  String get partiallyFurnished => 'مفروش جزئياً';
+
+  @override
+  String get unfurnished => 'غير مفروش';
+
+  @override
+  String get furnished => 'مفروش';
+
+  @override
+  String get popular => 'شائع';
+
+  @override
+  String get mostFavorited => 'الأكثر تفضيلاً';
 }

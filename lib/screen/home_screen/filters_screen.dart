@@ -21,9 +21,9 @@ class FilterBottomSheetContent extends StatelessWidget {
     String? selectedCategory;
 
     final List<String> categories = [
-      'Popular',
-      'Highly Rated',
-      'Most Favorited',
+      AppLocalizations.of(context)!.popular,
+      AppLocalizations.of(context)!.highlyRated,
+      AppLocalizations.of(context)!.mostFavorited,
     ];
     final List<String> syrianProvinces = [
       'Damascus',

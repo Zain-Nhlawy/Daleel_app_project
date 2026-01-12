@@ -1150,6 +1150,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Submit'**
   String get submit;
+
+  /// No description provided for @partiallyFurnished.
+  ///
+  /// In en, this message translates to:
+  /// **'partially furnished'**
+  String get partiallyFurnished;
+
+  /// No description provided for @unfurnished.
+  ///
+  /// In en, this message translates to:
+  /// **'unfurnished'**
+  String get unfurnished;
+
+  /// No description provided for @furnished.
+  ///
+  /// In en, this message translates to:
+  /// **'furnished'**
+  String get furnished;
+
+  /// No description provided for @popular.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular'**
+  String get popular;
+
+  /// No description provided for @mostFavorited.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Favorited'**
+  String get mostFavorited;
 }
 
 class _AppLocalizationsDelegate

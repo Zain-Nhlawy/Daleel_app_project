@@ -558,4 +558,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get submit => 'Envoyer';
+
+  @override
+  String get partiallyFurnished => 'partiellement meublé';
+
+  @override
+  String get unfurnished => 'non meublé';
+
+  @override
+  String get furnished => 'meublé';
+
+  @override
+  String get popular => 'Populaire';
+
+  @override
+  String get mostFavorited => 'Le plus favori';
 }

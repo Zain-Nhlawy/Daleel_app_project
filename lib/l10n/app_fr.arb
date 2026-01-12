@@ -174,5 +174,10 @@
   "decline": "Refuser",
   "ratetheDepartment": "Évaluer le service",
   "pleaseselectthenumberofstars": "Veuillez sélectionner le nombre d'étoiles",
-  "submit": "Envoyer"
+  "submit": "Envoyer",
+  "partiallyFurnished": "partiellement meublé",
+  "unfurnished": "non meublé",
+  "furnished": "meublé",
+  "popular": "Populaire",
+  "mostFavorited": "Le plus favori"
 }

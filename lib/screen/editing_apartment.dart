@@ -324,9 +324,9 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
           value: _selectedStatusController,
           isExpanded: true,
           items: [
-            'partially furnished',
-            'unfurnished',
-            'furnished',
+            AppLocalizations.of(context)!.partiallyFurnished,
+            AppLocalizations.of(context)!.unfurnished,
+            AppLocalizations.of(context)!.furnished
           ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: (v) => setState(() => _selectedStatusController = v!),
         ),
