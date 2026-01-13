@@ -282,7 +282,18 @@ void _showUpdateRequestDialog({required bool isPendingApproval}) {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    String calendarLocale;
+final localeName = AppLocalizations.of(context)!.localeName;
 
+if (localeName == 'en') {
+  calendarLocale = 'en';
+} else if (localeName == 'ar') {
+  calendarLocale = 'ar';
+} else if (localeName == 'fr') {
+  calendarLocale = 'fr';
+} else {
+  calendarLocale = 'en';
+}
     EventList<Event> tempMarked = EventList(events: {});
     if (_startDate != null) {
       tempMarked.add(
@@ -372,7 +383,7 @@ void _showUpdateRequestDialog({required bool isPendingApproval}) {
                           ),
                           height: 420,
                           child: CalendarCarousel<Event>(
-                            locale: language,
+                            locale: calendarLocale,
                             maxSelectedDate: DateTime(2100, 12, 31),
                             onDayPressed: (date, events) => _onDayPressed(date),
                             weekendTextStyle: theme.textTheme.bodyMedium
