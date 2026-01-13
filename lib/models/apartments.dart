@@ -21,7 +21,7 @@ class Apartments2 {
   final int? reviewCount;
   final List<String> images;
   List<Map<String, dynamic>>? freeTimes;
-  List? comments;
+  List<Comment> comments;
   final bool? state;
   bool? isFavorited;
 
@@ -47,7 +47,7 @@ class Apartments2 {
     this.averageRating,
     this.reviewCount,
     required this.images,
-    this.comments,
+    required this.comments,
     this.isFavorited,
   });
 
@@ -112,9 +112,11 @@ class Apartments2 {
       averageRating: _safeParseDouble(json['average_rating']),
       reviewCount: _safeParseInt(json['review_count']),
       images: parsedImages,
-      comments: json['comments'] != null
-          ? List.from(json['comments'].map((c) => Comment.fromJson(c)))
-          : [],
+      comments: json['comments'] is List
+    ? (json['comments'] as List)
+        .map<Comment>((c) => Comment.fromJson(c)) 
+        .toList()
+    : <Comment>[],
       isFavorited: json['is_favorited'] == true,
     );
   }
@@ -125,6 +127,7 @@ class Apartments2 {
       user: User.empty(),
       images: [],
       freeTimes: [],
+      comments: [],
     );
   }
 }

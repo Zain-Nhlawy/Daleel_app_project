@@ -47,7 +47,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
 
   void _loadData() async {
     await _loadApartmentDetails();
-    await commentController.fetchComments(apartment.id);
+    if (!mounted) return;
     if (withRate && mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final rated = await showRatingDialog(context, apartment.id);
@@ -62,8 +62,10 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
     final updatedApartment = await apartmentController.fetchApartment(
       apartment.id,
     );
+    if (updatedApartment != null) {
+      await commentController.fetchComments(updatedApartment.id, updatedApartment);
+    }
     if (!mounted) return;
-
     setState(() {
       if (updatedApartment != null) {
         apartment = updatedApartment;
@@ -124,7 +126,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                       DescriptionSection(apartment: apartment, theme: theme),
                       const SizedBox(height: 30),
                       CommentsSection(
-                        comments: commentController.comments,
+                        comments: List.from(apartment.comments),
                         showAll: showAllComments,
                         controller: _newCommentController,
                         onToggleShow: () =>
@@ -132,21 +134,16 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                         onSend: () async {
                           final content = _newCommentController.text.trim();
                           if (content.isEmpty) return;
+
+                          try {
+                            await commentController.addComment(apartment.id, apartment, content);
                           setState(() {
                             _newCommentController.clear();
                             showAllComments = true;
                           });
-                          try {
-                            await commentController.addComment(
-                              apartment.id,
-                              content,
-                            );
-                          } catch (e) {}
-                          await commentController.fetchComments(apartment.id);
-                          if (!mounted) return;
-                          setState(() {
-                            apartment.comments = commentController.comments;
-                          });
+                          } catch (e) {
+                            print("Add comment error: $e");
+                          }
                         },
                       ),
                       const SizedBox(height: 26),

@@ -15,7 +15,10 @@ class CommentService {
 
       if (response.statusCode == 200) {
         final data = response.data['data'] as List;
-        return data.map((c) => Comment.fromJson(c)).toList();
+//         return List<Comment>.from(
+//   data.map((c) => Comment.fromJson(c)),
+// );
+      return data.map<Comment>((c) => Comment.fromJson(c)).toList();
       }
     } catch (e) {}
     return null;

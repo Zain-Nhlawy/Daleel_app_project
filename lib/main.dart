@@ -29,9 +29,9 @@ final theme = ThemeData(
   useMaterial3: true,
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
-    primary: Color.fromARGB(255, 224, 170, 129),
+    primary: Color.fromARGB(255, 163, 115, 97), //Color.fromARGB(255, 224, 170, 129),
     onPrimary: Colors.white,
-    secondary: Color(0xFFBE7D66),
+    secondary: Color.fromARGB(255, 209, 124, 44),//Color.fromARGB(255, 228, 138, 54),
     onSecondary: Colors.white,
     background: Color(0xFFFDFCF9),
     onBackground: Color(0xFF4B2E2E),
@@ -157,7 +157,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       darkTheme: darkTheme,
       themeMode: provider.currentTheme,
-      home: HomeScreenTabs(),
+      home: SplashScreen(),
       locale: provider.currentLocale,
       supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],
       localizationsDelegates: const [
