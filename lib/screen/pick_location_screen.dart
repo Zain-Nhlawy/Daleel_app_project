@@ -37,13 +37,27 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
       _getAddressFromLatLng(_center);
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.selectYourLocation),
-        backgroundColor: Colors.brown,
+        title: Text(
+          AppLocalizations.of(context)!.selectYourLocation,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: colorScheme.onPrimary,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: colorScheme.primary, 
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: colorScheme.onPrimary,
+        ),
       ),
       body: Stack(
         children: [
@@ -93,9 +107,10 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "$governorate - $city - $district - $street",
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    color: colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -120,7 +135,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                 Navigator.pop(context, location);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.brown,
+                backgroundColor: colorScheme.primary,
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
               child: Text(

@@ -44,7 +44,7 @@ class User {
           ? Map<String, dynamic>.from(json['location'])
           : null,
       password: json['password'] ?? '',
-      verificationState: json['verification_state'] ?? null,
+      verificationState: json['verification_state'],
       token: token,
     );
   }

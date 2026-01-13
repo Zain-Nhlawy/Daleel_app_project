@@ -184,7 +184,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.addApartment,
-          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold,color:scheme.onPrimary),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,

@@ -142,6 +142,7 @@ class _ContractScreenState extends State<ContractScreen>
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -151,7 +152,7 @@ class _ContractScreenState extends State<ContractScreen>
           title: Text(
             AppLocalizations.of(context)!.myContracts,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.white,
+              color:scheme.onPrimary,
               fontWeight: FontWeight.bold,
             ),
           ),
