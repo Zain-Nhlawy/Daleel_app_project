@@ -195,6 +195,34 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                 ),
               ),
             )
+          else if (!apartment.isAvailable!)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: SafeArea(
+                child: Container(
+                  color: colorScheme.surface,
+                  padding: const EdgeInsets.all(12),
+                  child: SizedBox(
+                    height: 55,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colorScheme.primary,
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Not Available Right Now",
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onPrimary,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
           else
             Positioned(
               left: 0,
