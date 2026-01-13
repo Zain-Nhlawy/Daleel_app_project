@@ -158,14 +158,14 @@ class _ContractScreenState extends State<ContractScreen>
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          bottom: const TabBar(
+          bottom: TabBar(
             indicatorColor: Colors.white,
             indicatorWeight: 3,
             labelColor: Colors.white,
             unselectedLabelColor: Color.fromARGB(120, 255, 255, 255),
-            tabs: const [
-              Tab(text: "Contracts"),
-              Tab(text: "Edits Request"),
+            tabs: [
+              Tab(text: AppLocalizations.of(context)!.contracts),
+              Tab(text: AppLocalizations.of(context)!.editsRequest)
             ],
           ),
         ),

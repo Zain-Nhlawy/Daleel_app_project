@@ -185,8 +185,6 @@
   "pending": "pending",
   "onRent": "onRent",
   "completed": "completed",
-  "cancelled": "ملغاة",
-  "pending": "قيد الانتظار",
-  "onRent": "مستأجرة",
-  "completed": "مكتملة"
+  "editsRequest": "Edits Request",
+  "contracts": "Contracts"
 }

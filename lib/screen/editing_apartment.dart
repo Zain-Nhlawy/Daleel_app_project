@@ -189,7 +189,7 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
-          "Edit Aparmten",
+          AppLocalizations.of(context)!.editApartment,
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,

@@ -1184,26 +1184,38 @@ abstract class AppLocalizations {
   /// No description provided for @cancelled.
   ///
   /// In en, this message translates to:
-  /// **'ملغاة'**
+  /// **'cancelled'**
   String get cancelled;
 
   /// No description provided for @pending.
   ///
   /// In en, this message translates to:
-  /// **'قيد الانتظار'**
+  /// **'pending'**
   String get pending;
 
   /// No description provided for @onRent.
   ///
   /// In en, this message translates to:
-  /// **'مستأجرة'**
+  /// **'onRent'**
   String get onRent;
 
   /// No description provided for @completed.
   ///
   /// In en, this message translates to:
-  /// **'مكتملة'**
+  /// **'completed'**
   String get completed;
+
+  /// No description provided for @editsRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Edits Request'**
+  String get editsRequest;
+
+  /// No description provided for @contracts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts'**
+  String get contracts;
 }
 
 class _AppLocalizationsDelegate

@@ -573,4 +573,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get completed => 'مكتملة';
+
+  @override
+  String get editsRequest => 'طلبات التعديل';
+
+  @override
+  String get contracts => 'العقود';
 }

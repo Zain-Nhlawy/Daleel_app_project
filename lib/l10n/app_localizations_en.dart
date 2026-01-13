@@ -570,14 +570,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mostFavorited => 'Most Favorited';
 
   @override
-  String get cancelled => 'ملغاة';
+  String get cancelled => 'cancelled';
 
   @override
-  String get pending => 'قيد الانتظار';
+  String get pending => 'pending';
 
   @override
-  String get onRent => 'مستأجرة';
+  String get onRent => 'onRent';
 
   @override
-  String get completed => 'مكتملة';
+  String get completed => 'completed';
+
+  @override
+  String get editsRequest => 'Edits Request';
+
+  @override
+  String get contracts => 'Contracts';
 }

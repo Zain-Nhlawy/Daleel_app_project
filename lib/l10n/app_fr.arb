@@ -184,5 +184,7 @@
   "cancelled": "Annulée",
   "pending": "En attente",
   "onRent": "En location",
-  "completed": "Terminée"
+  "completed": "Terminée",
+  "editsRequest": "Demandes de modification",
+  "contracts": "Contrats"
 }
