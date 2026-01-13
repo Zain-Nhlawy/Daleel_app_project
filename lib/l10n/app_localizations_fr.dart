@@ -585,4 +585,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get completed => 'Terminée';
+
+  @override
+  String get editsRequest => 'Demandes de modification';
+
+  @override
+  String get contracts => 'Contrats';
 }

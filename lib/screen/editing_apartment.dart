@@ -3,25 +3,20 @@
 import 'dart:io';
 
 import 'package:daleel_app_project/dependencies.dart';
-
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
-
 import 'package:daleel_app_project/models/user.dart';
-
 import 'package:daleel_app_project/repository/add_apartments_repo.dart';
-
 import 'package:daleel_app_project/screen/pick_location_screen.dart';
-
 import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
 
 class EditingApartmentScreen extends StatefulWidget {
   const EditingApartmentScreen({required this.apartment, super.key});
+
   final Apartments2 apartment;
+
   @override
   State<EditingApartmentScreen> createState() => _EditingApartmentScreenState();
 }
@@ -29,14 +24,18 @@ class EditingApartmentScreen extends StatefulWidget {
 class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
   final User? user = userController.user;
   final _formKey = GlobalKey<FormState>();
+
   late bool _isAvailable = widget.apartment.isAvailable!;
   late String _selectedStatusController = widget.apartment.status!;
   late final TextEditingController _locationController = TextEditingController(
     text: widget.apartment.location.toString(),
   );
   late Map<String, dynamic>? selectedLocation = widget.apartment.location;
-  File? _selectedImageController;
-  final List<File> _apartmentPictures = [];
+
+  dynamic _headImage;
+
+  final List<dynamic> _additionalImages = [];
+
   late final _apartmentHeadDescriptionController = TextEditingController(
     text: widget.apartment.headDescription,
   );
@@ -59,6 +58,18 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
     text: widget.apartment.description,
   );
 
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.apartment.images.isNotEmpty) {
+      _headImage = widget.apartment.images[0];
+      if (widget.apartment.images.length > 1) {
+        _additionalImages.addAll(widget.apartment.images.sublist(1));
+      }
+    }
+  }
+
   Future<void> _pickImage(
     ImageSource source, {
     bool isHeadImage = false,
@@ -68,17 +79,20 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
       imageQuality: 80,
     );
     if (image == null) return;
+
     setState(() {
       final file = File(image.path);
-      isHeadImage
-          ? _selectedImageController = file
-          : _apartmentPictures.add(file);
+      if (isHeadImage) {
+        _headImage = file;
+      } else {
+        _additionalImages.add(file);
+      }
     });
   }
 
   void _triggerSaveProcess() {
     if (!_formKey.currentState!.validate() ||
-        _selectedImageController == null ||
+        _headImage == null ||
         selectedLocation == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -96,11 +110,29 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
 
   Future<void> _saveApartment() async {
     final addRepo = AddApartmentsRepo(dioClient: dioClient);
+
+    List<File> imagesToSend = [];
+    List<String> imageUrlsToKeep = [];
+
+    if (_headImage is File) {
+      imagesToSend.add(_headImage as File);
+    } else if (_headImage is String) {
+      imageUrlsToKeep.add(_headImage as String);
+    }
+
+    for (var img in _additionalImages) {
+      if (img is File) {
+        imagesToSend.add(img);
+      } else if (img is String) {
+        imageUrlsToKeep.add(img);
+      }
+    }
+
     try {
       await addRepo.editApartment(
-        id : widget.apartment.id,
+        id: widget.apartment.id,
         userId: user!.userId,
-        images: [_selectedImageController!, ..._apartmentPictures],
+        images: imagesToSend,
         location: selectedLocation,
         state: false,
         headDescription: _apartmentHeadDescriptionController.text,
@@ -189,7 +221,7 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
-          "Edit Aparmten",
+          AppLocalizations.of(context)!.editApartment,
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -199,7 +231,12 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [scheme.primary, scheme.background],
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.background,
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -268,7 +305,7 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
   Widget _sectionHeader(String title) {
     final scheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.fromLTRB(0, 20, 0, 8),
       child: Text(
         title,
         style: TextStyle(
@@ -289,7 +326,7 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
   }) {
     final scheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
       child: TextFormField(
         controller: controller,
         maxLines: maxLines,
@@ -326,7 +363,7 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
           items: [
             AppLocalizations.of(context)!.partiallyFurnished,
             AppLocalizations.of(context)!.unfurnished,
-            AppLocalizations.of(context)!.furnished
+            AppLocalizations.of(context)!.furnished,
           ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: (v) => setState(() => _selectedStatusController = v!),
         ),
@@ -338,8 +375,9 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
     return GridView.count(
       crossAxisCount: 2,
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: 2.6,
+      childAspectRatio: 2.8,
       children: [
         _featureField(
           _apartmentBedroomsController,
@@ -391,55 +429,115 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
   }
 
   Widget _availabilitySwitch() {
-    final scheme = Theme.of(context).colorScheme;
     return _surfaceTile(
       child: Switch(
         value: _isAvailable,
         onChanged: (v) => setState(() => _isAvailable = v),
-        activeTrackColor: scheme.primary,
+        activeTrackColor: Theme.of(context).colorScheme.primary,
       ),
       text: AppLocalizations.of(context)!.availableForRent,
     );
   }
 
   Widget _headImagePicker() {
+    final scheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: () => _pickImage(ImageSource.gallery, isHeadImage: true),
       child: Container(
         height: 200,
+        margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: scheme.surface.withOpacity(0.9),
           borderRadius: BorderRadius.circular(20),
-          image: _selectedImageController != null
+          image: _headImage != null
               ? DecorationImage(
-                  image: FileImage(_selectedImageController!),
+                  image: _headImage is File
+                      ? FileImage(_headImage as File)
+                      : NetworkImage(_headImage as String) as ImageProvider,
                   fit: BoxFit.cover,
                 )
               : null,
         ),
-        child: _selectedImageController == null
-            ? const Center(child: Icon(Icons.add_a_photo_outlined, size: 48))
+        child: _headImage == null
+            ? Center(
+                child: Icon(
+                  Icons.add_a_photo_outlined,
+                  size: 48,
+                  color: scheme.primary.withOpacity(0.6),
+                ),
+              )
             : null,
       ),
     );
   }
 
   Widget _imageGallery() {
+    final scheme = Theme.of(context).colorScheme;
     return SizedBox(
       height: 120,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: _apartmentPictures.length + 1,
+        itemCount: _additionalImages.length + 1,
         itemBuilder: (context, index) {
-          if (index == _apartmentPictures.length) {
-            return IconButton(
-              icon: const Icon(Icons.add_photo_alternate_outlined),
-              onPressed: () => _pickImage(ImageSource.gallery),
+          if (index == _additionalImages.length) {
+            return GestureDetector(
+              onTap: () => _pickImage(ImageSource.gallery),
+              child: Container(
+                margin: const EdgeInsets.only(right: 8),
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: scheme.surface.withOpacity(0.5),
+                  border: Border.all(color: scheme.primary.withOpacity(0.3)),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.add_photo_alternate_outlined,
+                    size: 40,
+                    color: scheme.primary,
+                  ),
+                ),
+              ),
             );
           }
-          return Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Image.file(_apartmentPictures[index]),
+
+          final imageItem = _additionalImages[index];
+          return Stack(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(right: 8),
+                width: 100,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: imageItem is File
+                      ? Image.file(imageItem, fit: BoxFit.cover)
+                      : Image.network(imageItem as String, fit: BoxFit.cover),
+                ),
+              ),
+              Positioned(
+                top: 5,
+                right: 12,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _additionalImages.removeAt(index);
+                    });
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red.withOpacity(0.8),
+                      shape: BoxShape.circle,
+                    ),
+                    padding: const EdgeInsets.all(2),
+                    child: const Icon(
+                      Icons.close,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
@@ -459,7 +557,19 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
         children: [
           if (icon != null) Icon(icon, color: scheme.primary),
           if (icon != null) const SizedBox(width: 12),
-          Expanded(child: Text(text)),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                color:
+                    text ==
+                        AppLocalizations.of(context)!.selectApartmentLocation
+                    ? Colors.grey.shade600
+                    : scheme.onBackground,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           if (child != null) child,
         ],
       ),

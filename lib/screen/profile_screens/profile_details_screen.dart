@@ -65,46 +65,45 @@ class ProfileDetailsScreen extends StatelessWidget {
                                     as ImageProvider,
                         ),
                       ),
-                      Positioned(
-                        bottom: 5,
-                        right: 5,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: scheme.primary,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: scheme.surface, width: 2),
-                          ),
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.camera_alt_outlined,
-                              color: scheme.onPrimary,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   bottom: 5,
+                      //   right: 5,
+                      //   child: Container(
+                      //     decoration: BoxDecoration(
+                      //       color: scheme.primary,
+                      //       shape: BoxShape.circle,
+                      //       border: Border.all(color: scheme.surface, width: 2),
+                      //     ),
+                      // child: IconButton(
+                      //   onPressed: () {},
+                      //   icon: Icon(
+                      //     Icons.camera_alt_outlined,
+                      //     color: scheme.onPrimary,
+                      //   ),
+                      // ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
 
                 const SizedBox(height: 30),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _imageColumn(
-                      context,
-                      title: AppLocalizations.of(context)!.personImage,
-                      imageUrl: baseUrl + displayUser.profileImage,
-                    ),
-                    _imageColumn(
-                      context,
-                      title: AppLocalizations.of(context)!.iDImage,
-                      imageUrl: baseUrl + displayUser.personIdImage,
-                    ),
-                  ],
-                ),
-
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //   children: [
+                //     _imageColumn(
+                //       context,
+                //       title: AppLocalizations.of(context)!.personImage,
+                //       imageUrl: baseUrl + displayUser.profileImage,
+                //     ),
+                //     _imageColumn(
+                //       context,
+                //       title: AppLocalizations.of(context)!.iDImage,
+                //       imageUrl: baseUrl + displayUser.personIdImage,
+                //     ),
+                //   ],
+                // ),
                 const SizedBox(height: 40),
                 Container(
                   decoration: BoxDecoration(

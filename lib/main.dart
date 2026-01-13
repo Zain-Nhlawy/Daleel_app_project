@@ -1,5 +1,6 @@
 import 'package:daleel_app_project/core/storage/storage_keys.dart';
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/providers.dart';
 import 'package:daleel_app_project/screen/home_screen/notifications_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
@@ -127,7 +128,10 @@ void main() async {
 
   final token = await appStorage.read(StorageKeys.token);
   if (token != null) {
-    userController.updateProfile(await userService.getProfile());
+    User? user = await userService.getProfile();
+    if(user != null) {
+      userController.updateProfile(user);
+    }
   }
 
   language = await appStorage.read(StorageKeys.language) ?? 'en';
