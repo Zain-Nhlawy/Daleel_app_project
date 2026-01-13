@@ -4,7 +4,6 @@ import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/providers.dart';
 import 'package:daleel_app_project/screen/home_screen/notifications_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
-import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:provider/provider.dart';
 import 'package:daleel_app_project/services/firebase_notification_service.dart';
 
