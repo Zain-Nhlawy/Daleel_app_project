@@ -23,7 +23,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isAvailable = true;
-  String _selectedStatusController = 'unfurnished';
+  late String _selectedStatusController = '';
 
   final TextEditingController _locationController = TextEditingController();
   Map<String, dynamic>? selectedLocation;
@@ -178,7 +178,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-
+    _selectedStatusController = AppLocalizations.of(context)!.unfurnished;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -325,9 +325,9 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           value: _selectedStatusController,
           isExpanded: true,
           items: [
-            'partially furnished',
-            'unfurnished',
-            'furnished',
+            AppLocalizations.of(context)!.partiallyFurnished,
+            AppLocalizations.of(context)!.unfurnished,
+            AppLocalizations.of(context)!.furnished
           ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: (v) => setState(() => _selectedStatusController = v!),
         ),

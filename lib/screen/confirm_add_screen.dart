@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -41,7 +42,7 @@ void showConfirmationSheet({
               children: [
 
                 Text(
-                  'Confirm Submission',
+                  AppLocalizations.of(context)!.confirmSubmission,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 22,
@@ -51,7 +52,7 @@ void showConfirmationSheet({
                 const SizedBox(height: 12),
               
                 Text(
-                  'Your submission will be sent to the admin for approval. Please attach a clear image of the house contract to expedite the process.',
+                  '${AppLocalizations.of(context)!.yoursubmissionwillbesenttotheadminforapprovalPleaseattachaclearimageofthehousecontracttoexpeditetheprocess}.',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey[600], fontSize: 15, height: 1.4),
                 ),
@@ -80,7 +81,7 @@ void showConfirmationSheet({
                               children: [
                                 Icon(Icons.document_scanner_outlined, color: Colors.grey[700], size: 45),
                                 const SizedBox(height: 10),
-                                Text('Tap to add contract image', style: TextStyle(color: Colors.grey[800])),
+                                Text(AppLocalizations.of(context)!.tapToAddContractImage, style: TextStyle(color: Colors.grey[800])),
                               ],
                             ),
                           )
@@ -107,7 +108,7 @@ void showConfirmationSheet({
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                         ),
-                        child: const Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: Text(AppLocalizations.of(context)!.cancel, style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -116,8 +117,8 @@ void showConfirmationSheet({
                         onPressed: () {
                           if (contractImage == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('House contract image is required.'),
+                              SnackBar(
+                                content: Text('${AppLocalizations.of(context)!.houseContractImageIsRequired}.'),
                                 backgroundColor: Colors.red,
                               ),
                             );
@@ -133,7 +134,7 @@ void showConfirmationSheet({
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                         ),
-                        child: const Text('Confirm & Submit', style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: Text(AppLocalizations.of(context)!.confirmAndSubmit, style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],

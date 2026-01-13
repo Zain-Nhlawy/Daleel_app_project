@@ -269,7 +269,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            "Back",
+                            AppLocalizations.of(context)!.back,
                             style: TextStyle(
                               color: theme.primaryColor,
                               fontSize: 16,

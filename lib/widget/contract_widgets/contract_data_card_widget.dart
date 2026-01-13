@@ -35,7 +35,24 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
     }
   }
 
-  String _statusText(RentStatus status) => status.toString().split('.').last;
+  String _statusText(RentStatus status) {
+    String statusText = '';
+    switch (status) {
+      case RentStatus.completed:
+        statusText = AppLocalizations.of(context)!.completed;
+        break;
+      case RentStatus.onRent:
+        statusText = AppLocalizations.of(context)!.onRent;
+        break;
+      case RentStatus.pending:
+        statusText = AppLocalizations.of(context)!.pending;
+        break;
+      case RentStatus.cancelled:
+        statusText = AppLocalizations.of(context)!.cancelled;
+        break;
+    }
+    return statusText;
+  }
 
   @override
   Widget build(BuildContext context) {

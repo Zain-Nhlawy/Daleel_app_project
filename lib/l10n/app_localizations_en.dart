@@ -495,4 +495,89 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get apply => 'Apply';
+
+  @override
+  String get editApartment => 'Edit Apartment';
+
+  @override
+  String get noApartmentsFoundForTheseFilters =>
+      'No apartments found for these filters';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get lightMode => 'Light Mode';
+
+  @override
+  String get tapToAddContractImage => 'Tap to add contract image';
+
+  @override
+  String get houseContractImageIsRequired => 'House contract image is required';
+
+  @override
+  String get confirmAndSubmit => 'Confirm & Submit';
+
+  @override
+  String get confirmSubmission => 'Confirm Submission';
+
+  @override
+  String
+  get yoursubmissionwillbesenttotheadminforapprovalPleaseattachaclearimageofthehousecontracttoexpeditetheprocess =>
+      'Your submission will be sent to the admin for approval. Please attach a clear image of the house contract to expedite the process.';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get errorFetchingApartment => 'error fetching apartment';
+
+  @override
+  String get viewContractDetails => 'View Contract Details';
+
+  @override
+  String get currentContract => 'Current Contract';
+
+  @override
+  String get proposedChanges => 'Proposed Changes';
+
+  @override
+  String get decline => 'Decline';
+
+  @override
+  String get ratetheDepartment => 'Rate the Department';
+
+  @override
+  String get pleaseselectthenumberofstars =>
+      'Please select the number of stars';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String get partiallyFurnished => 'partially furnished';
+
+  @override
+  String get unfurnished => 'unfurnished';
+
+  @override
+  String get furnished => 'furnished';
+
+  @override
+  String get popular => 'Popular';
+
+  @override
+  String get mostFavorited => 'Most Favorited';
+
+  @override
+  String get cancelled => 'ملغاة';
+
+  @override
+  String get pending => 'قيد الانتظار';
+
+  @override
+  String get onRent => 'مستأجرة';
+
+  @override
+  String get completed => 'مكتملة';
 }

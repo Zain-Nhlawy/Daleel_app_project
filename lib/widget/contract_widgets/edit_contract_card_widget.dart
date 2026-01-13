@@ -1,4 +1,5 @@
 import 'package:daleel_app_project/dependencies.dart';
+import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/contracts.dart';
 import 'package:daleel_app_project/screen/details_screens/contract_details.dart';
 import 'package:flutter/material.dart';
@@ -75,12 +76,12 @@ class ContractModificationRequestCard extends StatelessWidget {
                   ),
                 );
               },
-              child: Text("View Contract Details"),
+              child: Text(AppLocalizations.of(context)!.viewContractDetails),
             ),
             const SizedBox(height: 24),
             _buildSection(
               context,
-              title: 'Current Contract',
+              title: AppLocalizations.of(context)!.currentContract,
               startDate: oldStartDate,
               endDate: oldEndDate,
               rentPrice: oldRentPrice,
@@ -88,7 +89,7 @@ class ContractModificationRequestCard extends StatelessWidget {
             const Divider(height: 32),
             _buildSection(
               context,
-              title: 'Proposed Changes',
+              title: AppLocalizations.of(context)!.proposedChanges,
               startDate: newStartDate,
               endDate: newEndDate,
               rentPrice: newRentPrice,
@@ -113,7 +114,7 @@ class ContractModificationRequestCard extends StatelessWidget {
                       vertical: 12,
                     ),
                   ),
-                  child: const Text('Decline'),
+                  child: Text(AppLocalizations.of(context)!.decline),
                 ),
                 const SizedBox(width: 12),
                 OutlinedButton(
@@ -134,7 +135,7 @@ class ContractModificationRequestCard extends StatelessWidget {
                       vertical: 12,
                     ),
                   ),
-                  child: const Text('Accept'),
+                  child: Text(AppLocalizations.of(context)!.accept),
                 ),
               ],
             ),

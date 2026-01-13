@@ -489,4 +489,88 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get apply => 'تطبيق';
+
+  @override
+  String get editApartment => 'تعديل الشقة';
+
+  @override
+  String get noApartmentsFoundForTheseFilters =>
+      'لم يتم العثور على شقق بهذه الفلاتر';
+
+  @override
+  String get darkMode => 'الوضع الداكن';
+
+  @override
+  String get lightMode => 'الوضع الفاتح';
+
+  @override
+  String get tapToAddContractImage => 'اضغط لإضافة صورة العقد';
+
+  @override
+  String get houseContractImageIsRequired => 'صورة عقد المنزل مطلوبة';
+
+  @override
+  String get confirmAndSubmit => 'تأكيد وإرسال';
+
+  @override
+  String get confirmSubmission => 'تأكيد الإرسال';
+
+  @override
+  String
+  get yoursubmissionwillbesenttotheadminforapprovalPleaseattachaclearimageofthehousecontracttoexpeditetheprocess =>
+      'سيتم إرسال طلبك إلى المشرف للموافقة عليه. يرجى إرفاق صورة واضحة لعقد المنزل لتسريع العملية.';
+
+  @override
+  String get back => 'رجوع';
+
+  @override
+  String get errorFetchingApartment => 'خطأ في جلب بيانات الشقة';
+
+  @override
+  String get viewContractDetails => 'عرض تفاصيل العقد';
+
+  @override
+  String get currentContract => 'العقد الحالي';
+
+  @override
+  String get proposedChanges => 'التغييرات المقترحة';
+
+  @override
+  String get decline => 'رفض';
+
+  @override
+  String get ratetheDepartment => 'قيّم القسم';
+
+  @override
+  String get pleaseselectthenumberofstars => 'يرجى اختيار عدد النجوم';
+
+  @override
+  String get submit => 'إرسال';
+
+  @override
+  String get partiallyFurnished => 'مفروش جزئياً';
+
+  @override
+  String get unfurnished => 'غير مفروش';
+
+  @override
+  String get furnished => 'مفروش';
+
+  @override
+  String get popular => 'شائع';
+
+  @override
+  String get mostFavorited => 'الأكثر تفضيلاً';
+
+  @override
+  String get cancelled => 'ملغاة';
+
+  @override
+  String get pending => 'قيد الانتظار';
+
+  @override
+  String get onRent => 'مستأجرة';
+
+  @override
+  String get completed => 'مكتملة';
 }

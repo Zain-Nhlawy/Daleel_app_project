@@ -88,7 +88,7 @@ class _CloseToYouApartmentsWidgetState
     if (_error != null) {
       return Center(
         child: Text(
-          '${AppLocalizations.of(context)!.error}: error fetching apartment',
+          '${AppLocalizations.of(context)!.error}: ${AppLocalizations.of(context)!.errorFetchingApartment}',
         ),
       );
     }
