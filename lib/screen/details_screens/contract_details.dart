@@ -157,7 +157,7 @@ Future<void> _handleCancelContract() async {
           const SizedBox(height: 8),
           Text(
             '${AppLocalizations.of(context)!.cancellationFee}: '
-            '${cancelFee.toStringAsFixed(2)}',
+            '${contract.rentStatus == RentStatus.pending ? 0.0 : cancelFee.toStringAsFixed(2)}',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.red,
