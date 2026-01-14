@@ -34,7 +34,8 @@ class _ApartmentsDisplayScreenState extends State<ApartmentsDisplayScreen> {
   void initState() {
     super.initState();
 
-    _myApartmentsFuture = apartmentController.loadFilteredApartments(page,
+    _myApartmentsFuture = apartmentController.loadFilteredApartments(
+      page,
       governorate: widget.selectedProvince,
       bedrooms: widget.selectedRooms,
       bathrooms: widget.selectedBathrooms,
@@ -45,107 +46,100 @@ class _ApartmentsDisplayScreenState extends State<ApartmentsDisplayScreen> {
     );
   }
 
-  // Widget _buildFilterRow(String label, String value) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(vertical: 4.0),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Text(label, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
-  //         Text(
-  //           value,
-  //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.filteredResults)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Text(
-            //   'Applied Filters:',
-            //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            // ),
-            // Divider(height: 20, thickness: 1),
-            // _buildFilterRow('Category:', widget.selectedCategory ?? 'Any'),
-            // _buildFilterRow(
-            //   'Price Range:',
-            //   '${widget.priceRange?.start.round() ?? '...'} - ${widget.priceRange?.end.round() ?? '...'}',
-            // ),
-            // _buildFilterRow('Province:', widget.selectedProvince ?? 'Any'),
-            // _buildFilterRow(
-            //   'Rooms:',
-            //   widget.selectedRooms?.toString() ?? 'Any',
-            // ),
-            // _buildFilterRow(
-            //   'Bathrooms:',
-            //   widget.selectedBathrooms?.toString() ?? 'Any',
-            // ),
-            // _buildFilterRow(
-            //   'Area (m²):',
-            //   '${widget.areaRange?.start.round() ?? '...'} - ${widget.areaRange?.end.round() ?? '...'}',
-            // ),
-            SizedBox(height: 20),
-            Expanded(
-              child: FutureBuilder<List<Apartments2>?>(
-                future: _myApartmentsFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    print(snapshot.error);
-                    return Center(child: Text('${AppLocalizations.of(context)!.anErrorOccurred}!'));
-                  }
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(
-                      child: Text(AppLocalizations.of(context)!.noApartmentsFoundForTheseFilters),
-                    );
-                  }
-                  final apartments = snapshot.data!;
-                  if (widget.selectedCategory == "Popular") {
-                    apartments.sort(
-                      (a, b) => a.reviewCount!.compareTo(b.reviewCount as num),
-                    );
-                  } else if (widget.selectedCategory == "Most Favorited") {
-                    if (widget.selectedCategory == "Popular") {
-                      apartments.sort(
-                        (a, b) =>
-                            a.reviewCount!.compareTo(b.averageRating as num),
-                      );
-                    } else if (widget.selectedCategory == "Highly Rated") {
-                      apartments.sort(
-                        (a, b) =>
-                            a.reviewCount!.compareTo(b.reviewCount as num),
-                      );
-                    }
-                  }
-                  return ListView.builder(
-                    itemCount: apartments.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 4.0,
-                        ),
-                        child: NearpyApartmentsWidgets(
-                          apartment: apartments[index],
-                        ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.filteredResults),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.background,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10),
+
+                Expanded(
+                  child: FutureBuilder<List<Apartments2>?>(
+                    future: _myApartmentsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            AppLocalizations.of(context)!.anErrorOccurred,
+                          ),
+                        );
+                      }
+
+                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(
+                          child: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!.noApartmentsFoundForTheseFilters,
+                          ),
+                        );
+                      }
+
+                      final apartments = snapshot.data!;
+
+                      if (widget.selectedCategory == "Popular") {
+                        apartments.sort(
+                          (a, b) => b.reviewCount!.compareTo(a.reviewCount!),
+                        );
+                      } else if (widget.selectedCategory == "Most Favorited") {
+                        apartments.sort(
+                          (a, b) => b.reviewCount!.compareTo(a.reviewCount!),
+                        );
+                      } else if (widget.selectedCategory == "Highly Rated") {
+                        apartments.sort(
+                          (a, b) =>
+                              b.averageRating!.compareTo(a.averageRating!),
+                        );
+                      }
+
+                      return ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        itemCount: apartments.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            child: NearpyApartmentsWidgets(
+                              apartment: apartments[index],
+                            ),
+                          );
+                        },
                       );
                     },
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

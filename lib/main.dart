@@ -29,9 +29,9 @@ final theme = ThemeData(
   useMaterial3: true,
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
-    primary: Color.fromARGB(255, 193, 142, 113), //Color.fromARGB(255, 224, 170, 129),x //Color.fromARGB(255, 163, 115, 97),+ //Color.fromARGB(255, 168, 123, 107),+ //Color.fromARGB(255, 193, 142, 113),+
+    primary: Color.fromARGB(255, 208, 158, 120), 
     onPrimary: Colors.white,
-    secondary: Color.fromARGB(255, 209, 124, 44),//Color.fromARGB(255, 228, 138, 54),
+    secondary: Color(0xFFBE7D66),
     onSecondary: Colors.white,
     background: Color(0xFFFDFCF9),
     onBackground: Color(0xFF4B2E2E),

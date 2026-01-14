@@ -1216,6 +1216,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contracts'**
   String get contracts;
+
+  /// No description provided for @notAvailableRightNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Available Right Now'**
+  String get notAvailableRightNow;
 }
 
 class _AppLocalizationsDelegate

@@ -28,63 +28,86 @@ class _FavoriteApartmentsScreenState extends State<MyHousesScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
           AppLocalizations.of(context)!.myHouses,
           style: textTheme.titleLarge?.copyWith(
-            color: colorScheme.onSurface,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: colorScheme.surface,
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: FutureBuilder<List<Apartments2>?>(
-        future: _myApartmentsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(color: colorScheme.primary),
-            );
-          }
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.background,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: FutureBuilder<List<Apartments2>?>(
+            future: _myApartmentsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: colorScheme.onPrimary,
+                  ),
+                );
+              }
 
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                '${AppLocalizations.of(context)!.error}: ${snapshot.error}',
-                style: textTheme.bodyMedium?.copyWith(color: colorScheme.error),
-                textAlign: TextAlign.center,
-              ),
-            );
-          }
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.anErrorOccurred,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.error,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              }
 
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
-              child: Text(
-                AppLocalizations.of(context)!.noApartmentsFound,
-                style: textTheme.bodyLarge?.copyWith(
-                  color: colorScheme.onBackground,
-                ),
-              ),
-            );
-          }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.noApartmentsFound,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: colorScheme.onPrimary,
+                    ),
+                  ),
+                );
+              }
 
-          final apartments = snapshot.data!;
-          return ListView.builder(
-            padding: const EdgeInsets.only(top: 8),
-            itemCount: apartments.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 4.0,
-                ),
-                child: NearpyApartmentsWidgets(apartment: apartments[index]),
+              final apartments = snapshot.data!;
+              return ListView.builder(
+                padding: const EdgeInsets.only(bottom: 12),
+                itemCount: apartments.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    child: NearpyApartmentsWidgets(
+                      apartment: apartments[index],
+                    ),
+                  );
+                },
               );
             },
-          );
-        },
+          ),
+        ),
       ),
     );
   }

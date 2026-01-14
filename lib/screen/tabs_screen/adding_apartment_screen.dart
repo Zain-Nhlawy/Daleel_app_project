@@ -184,7 +184,10 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.addApartment,
-          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold,color:scheme.onPrimary),
+          style: textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: scheme.onPrimary,
+          ),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -194,6 +197,8 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.primary,
@@ -327,7 +332,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           items: [
             AppLocalizations.of(context)!.partiallyFurnished,
             AppLocalizations.of(context)!.unfurnished,
-            AppLocalizations.of(context)!.furnished
+            AppLocalizations.of(context)!.furnished,
           ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: (v) => setState(() => _selectedStatusController = v!),
         ),
