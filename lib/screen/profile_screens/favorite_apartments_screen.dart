@@ -71,7 +71,6 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
   }
 
   void _dismissApartment(Apartments2 apartment, int index) {
- 
     final removedApartment = _favoriteApartments[index];
     setState(() {
       _favoriteApartments.removeAt(index);
@@ -99,22 +98,47 @@ class _FavoriteApartmentsScreenState extends State<FavoriteApartmentsScreen> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.favorites,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: textTheme.titleLarge?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      body: _buildBody(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.background,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(child: _buildBody()),
+      ),
     );
   }
 
   Widget _buildBody() {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: CircularProgressIndicator(color: Colors.white),
+      );
     }
     if (_error != null) {
       return Center(

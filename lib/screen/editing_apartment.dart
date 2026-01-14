@@ -286,17 +286,19 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
-        child: ElevatedButton(
-          onPressed: _triggerSaveProcess,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: scheme.primary,
-            foregroundColor: scheme.onPrimary,
-            minimumSize: const Size(double.infinity, 55),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+        child: SafeArea(
+          child: ElevatedButton(
+            onPressed: _triggerSaveProcess,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: scheme.primary,
+              foregroundColor: scheme.onPrimary,
+              minimumSize: const Size(double.infinity, 55),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
+            child: Text(AppLocalizations.of(context)!.editApartment),
           ),
-          child: Text(AppLocalizations.of(context)!.editApartment),
         ),
       ),
     );
@@ -350,6 +352,17 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
 
   Widget _statusDropdown() {
     final scheme = Theme.of(context).colorScheme;
+
+    final options = [
+      AppLocalizations.of(context)!.partiallyFurnished,
+      AppLocalizations.of(context)!.unfurnished,
+      AppLocalizations.of(context)!.furnished,
+    ];
+
+    final validValue = options.contains(_selectedStatusController)
+        ? _selectedStatusController
+        : null;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
@@ -358,14 +371,16 @@ class _EditingApartmentScreenState extends State<EditingApartmentScreen> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: _selectedStatusController,
-          isExpanded: true,
-          items: [
-            AppLocalizations.of(context)!.partiallyFurnished,
-            AppLocalizations.of(context)!.unfurnished,
-            AppLocalizations.of(context)!.furnished,
-          ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-          onChanged: (v) => setState(() => _selectedStatusController = v!),
+          value: validValue,
+          hint: const Text('Select Status'),
+          items: options
+              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+              .toList(),
+          onChanged: (v) {
+            if (v != null) {
+              setState(() => _selectedStatusController = v);
+            }
+          },
         ),
       ),
     );

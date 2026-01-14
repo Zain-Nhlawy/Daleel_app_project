@@ -90,135 +90,141 @@ class _BookingCalendarState extends State<BookingCalendar> {
   }
 
   String extractCleanErrorMessage(dynamic error) {
-  String message = 'Something went wrong';
+    String message = 'Something went wrong';
 
-  if (error is DioException) {
-    final response = error.response;
+    if (error is DioException) {
+      final response = error.response;
 
-    if (response?.data != null) {
-      final data = response!.data;
+      if (response?.data != null) {
+        final data = response!.data;
 
-      if (data is Map<String, dynamic> && data['message'] != null) {
-        message = data['message'].toString();
-      } else if (data is String) {
-        message = data;
+        if (data is Map<String, dynamic> && data['message'] != null) {
+          message = data['message'].toString();
+        } else if (data is String) {
+          message = data;
+        }
+      } else if (error.message != null) {
+        message = error.message!;
       }
-    } else if (error.message != null) {
-      message = error.message!;
+    } else if (error is Exception) {
+      message = error.toString();
     }
-  } else if (error is Exception) {
-    message = error.toString();
+
+    message = message
+        .replaceAll('Exception:', '')
+        .replaceAll('Exception', '')
+        .replaceAll('Error:', '')
+        .replaceAll('Error', '')
+        .trim();
+
+    if (message.isEmpty || message.length < 3) {
+      message = 'Operation failed';
+    }
+
+    return message;
   }
 
-  message = message
-      .replaceAll('Exception:', '')
-      .replaceAll('Exception', '')
-      .replaceAll('Error:', '')
-      .replaceAll('Error', '')
-      .trim();
+  Future<void> _confirmBooking() async {
+    if (_isProcessing) return;
 
-  if (message.isEmpty || message.length < 3) {
-    message = 'Operation failed';
+    setState(() => _isProcessing = true);
+
+    try {
+      await userController.getProfile();
+      final user = userController.user;
+
+      if (user == null) {
+        _scaffoldMessengerKey.currentState?.showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.userDataNotAvailable),
+          ),
+        );
+        return;
+      }
+
+      if (user.verificationState != 'verified') {
+        _scaffoldMessengerKey.currentState?.showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(
+                context,
+              )!.yourAccountIsNotAllowedToMakeBookings,
+            ),
+          ),
+        );
+        return;
+      }
+
+      if (_startDate == null || _endDate == null) {
+        _scaffoldMessengerKey.currentState?.showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.pleaseSelectStartAndEndDates,
+            ),
+          ),
+        );
+        return;
+      }
+
+      await contractController.bookApartment(
+        apartmentId: widget.apartment.id,
+        start: _startDate!,
+        end: _endDate!,
+        rentFee: widget.apartment.rentFee ?? 0.0,
+      );
+
+      if (!mounted) return;
+      Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
+
+      final cleanMessage = extractCleanErrorMessage(e);
+      _scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(content: Text(cleanMessage)),
+      );
+    } finally {
+      if (mounted) setState(() => _isProcessing = false);
+    }
   }
 
-  return message;
-}
-
-
-Future<void> _confirmBooking() async {
-  if (_isProcessing) return;
-
-  setState(() => _isProcessing = true);
-
-  try {
-    await userController.getProfile();
-    final user = userController.user;
-
-    if (user == null) {
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.userDataNotAvailable)),
-      );
-      return;
-    }
-
-    if (user.verificationState != 'verified') {
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.yourAccountIsNotAllowedToMakeBookings)),
-      );
-      return;
-    }
-
-    if (_startDate == null || _endDate == null) {
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectStartAndEndDates)),
-      );
-      return;
-    }
-
-    await contractController.bookApartment(
-      apartmentId: widget.apartment.id,
-      start: _startDate!,
-      end: _endDate!,
-      rentFee: widget.apartment.rentFee ?? 0.0,
-    );
-
-    if (!mounted) return;
-    Navigator.pop(context);
-
-  } catch (e) {
-    if (!mounted) return;
-
-    final cleanMessage = extractCleanErrorMessage(e);
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      SnackBar(content: Text(cleanMessage)),
-    );
-
-  } finally {
-    if (mounted) setState(() => _isProcessing = false);
-  }
-}
-
-void _showUpdateRequestDialog({required bool isPendingApproval}) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (ctx) => AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      title: Center(
-        child: Icon(
-          Icons.check_circle_outline,
-          color: Colors.green,
-          size: 50,
-        ),
-      ),
-      content: Text(
-        isPendingApproval
-            ? AppLocalizations.of(context)!
-                .updateRequestSentWaitingForApproval
-            : AppLocalizations.of(context)!
-                .contractUpdatedSuccessfully,
-        textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 16),
-      ),
-      actionsAlignment: MainAxisAlignment.center,
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(ctx);
-            Navigator.pop(context, true);
-          },
-          child: Text(
-            AppLocalizations.of(context)!.okay,
-            style: const TextStyle(fontSize: 16),
+  void _showUpdateRequestDialog({required bool isPendingApproval}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Center(
+          child: Icon(
+            Icons.check_circle_outline,
+            color: Colors.green,
+            size: 50,
           ),
         ),
-      ],
-    ),
-  );
-}
-
+        content: Text(
+          isPendingApproval
+              ? AppLocalizations.of(
+                  context,
+                )!.updateRequestSentWaitingForApproval
+              : AppLocalizations.of(context)!.contractUpdatedSuccessfully,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 16),
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              Navigator.pop(context, true);
+            },
+            child: Text(
+              AppLocalizations.of(context)!.okay,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Future<void> _updateBooking() async {
     if (_isProcessing) return;
@@ -238,62 +244,56 @@ void _showUpdateRequestDialog({required bool isPendingApproval}) {
 
       if (!mounted) return;
 
-    if (result == null) {
-      Navigator.pop(context, null);
-      _showUpdateRequestDialog(isPendingApproval: true);
-    } else {
-      Navigator.pop(context, {
-        'start': _startDate!,
-        'end': _endDate!,
-      });
-      _showUpdateRequestDialog(isPendingApproval: false);
-    }
-  } catch (e) {
-    if (!mounted) return;
+      if (result == null) {
+        Navigator.pop(context, null);
+        _showUpdateRequestDialog(isPendingApproval: true);
+      } else {
+        Navigator.pop(context, {'start': _startDate!, 'end': _endDate!});
+        _showUpdateRequestDialog(isPendingApproval: false);
+      }
+    } catch (e) {
+      if (!mounted) return;
 
-    final cleanMessage = extractCleanErrorMessage(e);
+      final cleanMessage = extractCleanErrorMessage(e);
 
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(
-          AppLocalizations.of(context)!.error,
-          style: const TextStyle(color: Colors.red),
-        ),
-        content: Text(cleanMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(AppLocalizations.of(context)!.okay),
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text(
+            AppLocalizations.of(context)!.error,
+            style: const TextStyle(color: Colors.red),
           ),
-        ],
-      ),
-    );
-  } finally {
-    if (mounted) {
-      setState(() => _isProcessing = false);
+          content: Text(cleanMessage),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(AppLocalizations.of(context)!.okay),
+            ),
+          ],
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
+      }
     }
   }
-}
-
-
-
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     String calendarLocale;
-final localeName = AppLocalizations.of(context)!.localeName;
+    final localeName = AppLocalizations.of(context)!.localeName;
 
-if (localeName == 'en') {
-  calendarLocale = 'en';
-} else if (localeName == 'ar') {
-  calendarLocale = 'ar';
-} else if (localeName == 'fr') {
-  calendarLocale = 'fr';
-} else {
-  calendarLocale = 'en';
-}
+    if (localeName == 'en') {
+      calendarLocale = 'en';
+    } else if (localeName == 'ar') {
+      calendarLocale = 'ar';
+    } else if (localeName == 'fr') {
+      calendarLocale = 'fr';
+    } else {
+      calendarLocale = 'en';
+    }
     EventList<Event> tempMarked = EventList(events: {});
     if (_startDate != null) {
       tempMarked.add(
@@ -576,18 +576,20 @@ if (localeName == 'en') {
                     ),
                   ],
                 ),
-                child: CustomButton(
-                  text: _isProcessing
-                      ? AppLocalizations.of(context)!.processing
-                      : widget.isEdit
-                      ? AppLocalizations.of(context)!.updateBooking
-                      : AppLocalizations.of(context)!.confirmBooking,
-                  color: theme.colorScheme.primary,
-                  onPressed: () {
-                    if (!_isProcessing) {
-                      widget.isEdit ? _updateBooking() : _confirmBooking();
-                    }
-                  },
+                child: SafeArea(
+                  child: CustomButton(
+                    text: _isProcessing
+                        ? AppLocalizations.of(context)!.processing
+                        : widget.isEdit
+                        ? AppLocalizations.of(context)!.updateBooking
+                        : AppLocalizations.of(context)!.confirmBooking,
+                    color: theme.colorScheme.primary,
+                    onPressed: () {
+                      if (!_isProcessing) {
+                        widget.isEdit ? _updateBooking() : _confirmBooking();
+                      }
+                    },
+                  ),
                 ),
               ),
             ],

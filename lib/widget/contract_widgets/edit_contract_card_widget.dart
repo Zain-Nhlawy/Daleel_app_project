@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, use_build_context_synchronously, deprecated_member_use
+
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/contracts.dart';
@@ -10,6 +12,7 @@ class ContractModificationRequestCard extends StatelessWidget {
   final EditContract editContract;
   final Function(EditContract edit) acceptEdit;
   final Function(EditContract edit) rejectEdit;
+
   const ContractModificationRequestCard({
     super.key,
     required this.editContract,
@@ -48,14 +51,16 @@ class ContractModificationRequestCard extends StatelessWidget {
       user: editContract.user!,
       departmentRents: originalContract.departmentRents,
     );
-
     final oldStartDate = originalContract.startRent;
     final oldEndDate = originalContract.endRent;
     final oldRentPrice = originalContract.rentFee;
-
     final newStartDate = editContract.startRent;
     final newEndDate = editContract.endRent;
     final newRentPrice = double.tryParse(editContract.rentFee ?? '');
+
+    // جلب الـ bottom padding تبع الجهاز
+    final double bottomSafeArea = MediaQuery.of(context).padding.bottom;
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -96,48 +101,54 @@ class ContractModificationRequestCard extends StatelessWidget {
               highlight: true,
             ),
             const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                OutlinedButton(
-                  onPressed: () {
-                    rejectEdit(editContract);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.red.shade700,
-                    side: BorderSide(color: Colors.red.shade700),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+            // Padding الجديد لرفع الأزرار عن منطقة أزرار النظام
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: bottomSafeArea,
+              ), // <--- هنا التعديل
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  OutlinedButton(
+                    onPressed: () {
+                      rejectEdit(editContract);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red.shade700,
+                      side: BorderSide(color: Colors.red.shade700),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
-                    ),
+                    child: Text(AppLocalizations.of(context)!.decline),
                   ),
-                  child: Text(AppLocalizations.of(context)!.decline),
-                ),
-                const SizedBox(width: 12),
-                OutlinedButton(
-                  onPressed: () {
-                    acceptEdit(editContract);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: const Color.fromARGB(255, 104, 190, 34),
-                    side: BorderSide(
-                      color: const Color.fromARGB(255, 48, 211, 42),
+                  const SizedBox(width: 12),
+                  OutlinedButton(
+                    onPressed: () {
+                      acceptEdit(editContract);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: const Color.fromARGB(255, 104, 190, 34),
+                      side: BorderSide(
+                        color: const Color.fromARGB(255, 48, 211, 42),
+                      ),
+                      backgroundColor: const Color.fromARGB(0, 56, 142, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
                     ),
-                    backgroundColor: const Color.fromARGB(0, 56, 142, 60),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
-                    ),
+                    child: Text(AppLocalizations.of(context)!.accept),
                   ),
-                  child: Text(AppLocalizations.of(context)!.accept),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

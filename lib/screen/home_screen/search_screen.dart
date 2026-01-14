@@ -32,93 +32,119 @@ class _ApartmentsDisplayScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.searchResult)),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 5),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.black.withOpacity(0.20),
-                ),
-                height: 50,
-                child: Row(
-                  children: [
-                    const SizedBox(width: 20),
-                    const Icon(
-                      Icons.search,
-                      size: 28,
-                      color: Color.fromARGB(223, 255, 255, 255),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: TextField(
-                        controller: _controller,
-                        style: const TextStyle(color: Colors.white),
-                        textInputAction: TextInputAction.search,
-                        onSubmitted: (value) {
-                          if (value.trim().isEmpty) return;
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.searchResult),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.background,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          // ⭐ الحل الأساسي
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
 
-                          setState(() {
-                            _myApartmentsFuture = apartmentController
-                                .loadSearchedApartments(value);
-                          });
-                        },
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText:
-                              '${AppLocalizations.of(context)!.searchHere}...',
-                          hintStyle: const TextStyle(
-                            color: Color.fromARGB(223, 255, 255, 255),
-                            fontSize: 16,
+              /// 🔍 Search Bar
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.black.withOpacity(0.20),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 20),
+                      const Icon(Icons.search, size: 28, color: Colors.white),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: TextField(
+                          controller: _controller,
+                          style: const TextStyle(color: Colors.white),
+                          textInputAction: TextInputAction.search,
+                          onSubmitted: (value) {
+                            if (value.trim().isEmpty) return;
+                            setState(() {
+                              _myApartmentsFuture = apartmentController
+                                  .loadSearchedApartments(value);
+                            });
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText:
+                                '${AppLocalizations.of(context)!.searchHere}...',
+                            hintStyle: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: FutureBuilder<List<Apartments2>?>(
-                future: _myApartmentsFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    print(snapshot.error);
-                    return Center(child: Text('${AppLocalizations.of(context)!.anErrorOccurred}!'));
-                  }
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text(AppLocalizations.of(context)!.noApartmentsFound));
-                  }
-                  final apartments = snapshot.data!;
 
-                  return ListView.builder(
-                    itemCount: apartments.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 4.0,
-                        ),
-                        child: NearpyApartmentsWidgets(
-                          apartment: apartments[index],
+              const SizedBox(height: 12), // ✅ مسافة نظيفة
+              /// 📃 List
+              Expanded(
+                child: FutureBuilder<List<Apartments2>?>(
+                  future: _myApartmentsFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.anErrorOccurred,
                         ),
                       );
-                    },
-                  );
-                },
+                    }
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.noApartmentsFound,
+                        ),
+                      );
+                    }
+
+                    final apartments = snapshot.data!;
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      itemCount: apartments.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          child: NearpyApartmentsWidgets(
+                            apartment: apartments[index],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
