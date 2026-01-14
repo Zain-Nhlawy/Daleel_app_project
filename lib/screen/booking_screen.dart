@@ -283,17 +283,16 @@ void _showUpdateRequestDialog({required bool isPendingApproval}) {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     String calendarLocale;
-final localeName = AppLocalizations.of(context)!.localeName;
-
-if (localeName == 'en') {
-  calendarLocale = 'en';
-} else if (localeName == 'ar') {
-  calendarLocale = 'ar';
-} else if (localeName == 'fr') {
-  calendarLocale = 'fr';
-} else {
-  calendarLocale = 'en';
-}
+    final localeName = AppLocalizations.of(context)!.localeName;
+    if (localeName == 'en') {
+      calendarLocale = 'en';
+    } else if (localeName == 'ar') {
+      calendarLocale = 'ar';
+    } else if (localeName == 'fr') {
+      calendarLocale = 'fr';
+    } else {
+      calendarLocale = 'en';
+    }
     EventList<Event> tempMarked = EventList(events: {});
     if (_startDate != null) {
       tempMarked.add(
