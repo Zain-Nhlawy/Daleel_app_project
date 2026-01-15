@@ -160,7 +160,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       darkTheme: darkTheme,
       themeMode: provider.currentTheme,
-      home: HomeScreenTabs(),
+      home: SplashScreen(),
       locale: provider.currentLocale,
       supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],
       localizationsDelegates: const [

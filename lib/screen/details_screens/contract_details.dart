@@ -8,6 +8,7 @@ import 'package:daleel_app_project/widget/contract_widgets/timer_for_contract_wi
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'dart:async';
 
 class ContractDetails extends StatefulWidget {
   final Contracts contract;
@@ -19,12 +20,27 @@ class ContractDetails extends StatefulWidget {
 
 class _ContractDetailsState extends State<ContractDetails> {
   late Contracts contract;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     contract = widget.contract;
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+
   }
+
+@override
+  void dispose() {
+    _timer?.cancel(); 
+    super.dispose();
+  }
+
 
   String extractCleanErrorMessage(dynamic error) {
     String message = 'Something went wrong';
@@ -238,7 +254,7 @@ class _ContractDetailsState extends State<ContractDetails> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: CountdownTimerBox(
-                  endDate: contract.endRent,
+                  endDate: contract.startRent,
                   status: contract.rentStatus,
                 ),
               ),
@@ -543,7 +559,8 @@ Widget _buildBottomActions(
 }) {
   final theme = Theme.of(context);
   final colorScheme = theme.colorScheme;
-  final bool hideActions =
+  final bool isExpired = contract.startRent.isBefore(DateTime.now());
+  final bool hideActions = 
       contract.rentStatus == RentStatus.cancelled ||
       contract.rentStatus == RentStatus.completed ||
       contract.endRent.isBefore(DateTime.now()) ||
