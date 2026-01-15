@@ -76,7 +76,7 @@ class _ContractScreenState extends State<ContractHistoryScreen> {
         title: Text(
           AppLocalizations.of(context)!.contractHistory,
           style: textTheme.titleLarge?.copyWith(
-            color: colorScheme.onBackground,
+            color: colorScheme.onPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),

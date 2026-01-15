@@ -186,5 +186,6 @@
   "onRent": "En location",
   "completed": "Terminée",
   "editsRequest": "Demandes de modification",
-  "contracts": "Contrats"
+  "contracts": "Contrats",
+  "notAvailableRightNow": "Indisponible pour le moment"
 }

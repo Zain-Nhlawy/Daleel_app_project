@@ -1,6 +1,4 @@
-
 import 'dart:io';
-
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,7 +7,7 @@ void showConfirmationSheet({
   required BuildContext context,
   required Function(File contractImage) onConfirm,
 }) {
-  File? contractImage; 
+  File? contractImage;
 
   showModalBottomSheet(
     context: context,
@@ -22,7 +20,9 @@ void showConfirmationSheet({
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setModalState) {
           Future<void> pickContractImage() async {
-            final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+            final image = await ImagePicker().pickImage(
+              source: ImageSource.gallery,
+            );
             if (image == null) return;
             setModalState(() {
               contractImage = File(image.path);
@@ -40,7 +40,6 @@ void showConfirmationSheet({
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-
                 Text(
                   AppLocalizations.of(context)!.confirmSubmission,
                   style: TextStyle(
@@ -50,14 +49,18 @@ void showConfirmationSheet({
                   ),
                 ),
                 const SizedBox(height: 12),
-              
+
                 Text(
                   '${AppLocalizations.of(context)!.yoursubmissionwillbesenttotheadminforapprovalPleaseattachaclearimageofthehousecontracttoexpeditetheprocess}.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey[600], fontSize: 15, height: 1.4),
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 15,
+                    height: 1.4,
+                  ),
                 ),
                 const SizedBox(height: 24),
-              
+
                 GestureDetector(
                   onTap: pickContractImage,
                   child: Container(
@@ -79,24 +82,40 @@ void showConfirmationSheet({
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.document_scanner_outlined, color: Colors.grey[700], size: 45),
+                                Icon(
+                                  Icons.document_scanner_outlined,
+                                  color: Colors.grey[700],
+                                  size: 45,
+                                ),
                                 const SizedBox(height: 10),
-                                Text(AppLocalizations.of(context)!.tapToAddContractImage, style: TextStyle(color: Colors.grey[800])),
+                                Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.tapToAddContractImage,
+                                  style: TextStyle(color: Colors.grey[800]),
+                                ),
                               ],
                             ),
                           )
                         : Align(
                             alignment: Alignment.topRight,
                             child: IconButton(
-                              icon: const Icon(Icons.cancel, color: Colors.white, size: 28),
-                              onPressed: () => setModalState(() => contractImage = null),
-                              style: IconButton.styleFrom(backgroundColor: Colors.black.withOpacity(0.5)),
+                              icon: const Icon(
+                                Icons.cancel,
+                                color: Colors.white,
+                                size: 28,
+                              ),
+                              onPressed: () =>
+                                  setModalState(() => contractImage = null),
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.black.withOpacity(0.5),
+                              ),
                             ),
                           ),
                   ),
                 ),
                 const SizedBox(height: 30),
-                
+
                 Row(
                   children: [
                     Expanded(
@@ -106,9 +125,14 @@ void showConfirmationSheet({
                           foregroundColor: Colors.grey[800],
                           side: BorderSide(color: Colors.grey[400]!),
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
-                        child: Text(AppLocalizations.of(context)!.cancel, style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: Text(
+                          AppLocalizations.of(context)!.cancel,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -118,13 +142,15 @@ void showConfirmationSheet({
                           if (contractImage == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('${AppLocalizations.of(context)!.houseContractImageIsRequired}.'),
+                                content: Text(
+                                  '${AppLocalizations.of(context)!.houseContractImageIsRequired}.',
+                                ),
                                 backgroundColor: Colors.red,
                               ),
                             );
                             return;
                           }
-    
+
                           Navigator.pop(ctx);
                           onConfirm(contractImage!);
                         },
@@ -132,14 +158,19 @@ void showConfirmationSheet({
                           backgroundColor: const Color(0xFF795548),
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
-                        child: Text(AppLocalizations.of(context)!.confirmAndSubmit, style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: Text(
+                          AppLocalizations.of(context)!.confirmAndSubmit,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 50),
               ],
             ),
           );

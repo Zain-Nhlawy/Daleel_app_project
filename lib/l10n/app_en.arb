@@ -186,5 +186,7 @@
   "onRent": "onRent",
   "completed": "completed",
   "editsRequest": "Edits Request",
-  "contracts": "Contracts"
+  "contracts": "Contracts",
+  "notAvailableRightNow": "Not Available Right Now"
+
 }

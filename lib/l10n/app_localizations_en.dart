@@ -586,4 +586,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contracts => 'Contracts';
+
+  @override
+  String get notAvailableRightNow => 'Not Available Right Now';
 }

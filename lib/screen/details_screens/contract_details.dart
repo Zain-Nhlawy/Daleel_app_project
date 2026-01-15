@@ -26,41 +26,40 @@ class _ContractDetailsState extends State<ContractDetails> {
     contract = widget.contract;
   }
 
-
   String extractCleanErrorMessage(dynamic error) {
-  String message = 'Something went wrong';
+    String message = 'Something went wrong';
 
-  if (error is DioException) {
-    final response = error.response;
+    if (error is DioException) {
+      final response = error.response;
 
-    if (response?.data != null) {
-      final data = response!.data;
+      if (response?.data != null) {
+        final data = response!.data;
 
-      if (data is Map<String, dynamic> && data['message'] != null) {
-        message = data['message'].toString();
-      } else if (data is String) {
-        message = data;
+        if (data is Map<String, dynamic> && data['message'] != null) {
+          message = data['message'].toString();
+        } else if (data is String) {
+          message = data;
+        }
+      } else if (error.message != null) {
+        message = error.message!;
       }
-    } else if (error.message != null) {
-      message = error.message!;
+    } else if (error is Exception) {
+      message = error.toString();
     }
-  } else if (error is Exception) {
-    message = error.toString();
+
+    message = message
+        .replaceAll('Exception:', '')
+        .replaceAll('Exception', '')
+        .replaceAll('Error:', '')
+        .replaceAll('Error', '')
+        .trim();
+
+    if (message.isEmpty || message.length < 3) {
+      message = 'Operation failed';
+    }
+
+    return message;
   }
-
-  message = message
-      .replaceAll('Exception:', '')
-      .replaceAll('Exception', '')
-      .replaceAll('Error:', '')
-      .replaceAll('Error', '')
-      .trim();
-
-  if (message.isEmpty || message.length < 3) {
-    message = 'Operation failed';
-  }
-
-  return message;
-}
 
   Future<void> _updateContract(DateTime start, DateTime end) async {
     final updated = await contractController.updateRent(
@@ -95,124 +94,110 @@ class _ContractDetailsState extends State<ContractDetails> {
       contract = rejected;
     });
 
-  return rejected;
-}
-
-double calculateCancellationFee({
-  required double rentFee,
-  required int untilStartDays,
-}) {
-  final factor = 2 / exp((1 / 3) * (untilStartDays - 1));
-  final percentage = min(1, factor);
-  return rentFee * percentage;
-}
-
-Future<void> _handleCancelContract() async {
-  int untilStartDays =
-      contract.startRent.difference(DateTime.now()).inDays;
-
-  if (untilStartDays < 0) {
-    untilStartDays = 0;
+    return rejected;
   }
 
-  final cancelFee = calculateCancellationFee(
-    rentFee: contract.rentFee,
-    untilStartDays: untilStartDays,
-  );
+  double calculateCancellationFee({
+    required double rentFee,
+    required int untilStartDays,
+  }) {
+    final factor = 2 / exp((1 / 3) * (untilStartDays - 1));
+    final percentage = min(1, factor);
+    return rentFee * percentage;
+  }
 
-  if (contract.rentStatus == RentStatus.cancelled) {
-    showDialog(
+  Future<void> _handleCancelContract() async {
+    int untilStartDays = contract.startRent.difference(DateTime.now()).inDays;
+
+    if (untilStartDays < 0) {
+      untilStartDays = 0;
+    }
+
+    final cancelFee = calculateCancellationFee(
+      rentFee: contract.rentFee,
+      untilStartDays: untilStartDays,
+    );
+
+    if (contract.rentStatus == RentStatus.cancelled) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text(AppLocalizations.of(context)!.info),
+          content: Text(AppLocalizations.of(context)!.contractAlreadyCancelled),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(AppLocalizations.of(context)!.okay),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.info),
-        content: Text(
-          AppLocalizations.of(context)!.contractAlreadyCancelled,
+        title: Text(AppLocalizations.of(context)!.confirm),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(AppLocalizations.of(context)!.confirmCancelContract),
+            const SizedBox(height: 12),
+            Text(
+              '${AppLocalizations.of(context)!.daysUntilStart}: $untilStartDays',
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '${AppLocalizations.of(context)!.cancellationFee}: '
+              '${contract.rentStatus == RentStatus.pending ? 0.0 : cancelFee.toStringAsFixed(2)}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+              ),
+            ),
+          ],
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(AppLocalizations.of(context)!.okay),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(AppLocalizations.of(context)!.no),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(AppLocalizations.of(context)!.yes),
           ),
         ],
       ),
     );
-    return;
-  }
 
-  final confirm = await showDialog<bool>(
-    context: context,
-    builder: (ctx) => AlertDialog(
-      title: Text(AppLocalizations.of(context)!.confirm),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.confirmCancelContract,
-          ),
-          const SizedBox(height: 12),
-          Text(
-            '${AppLocalizations.of(context)!.daysUntilStart}: $untilStartDays',
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '${AppLocalizations.of(context)!.cancellationFee}: '
-            '${contract.rentStatus == RentStatus.pending ? 0.0 : cancelFee.toStringAsFixed(2)}',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.red,
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(ctx, false),
-          child: Text(AppLocalizations.of(context)!.no),
+    if (confirm != true) return;
+
+    try {
+      await contractController.cancelRent(rentId: contract.id);
+
+      if (!mounted) return;
+
+      setState(() {
+        contract = contract.copyWith(rentStatus: RentStatus.cancelled);
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.contractCancelled),
         ),
-        TextButton(
-          onPressed: () => Navigator.pop(ctx, true),
-          child: Text(AppLocalizations.of(context)!.yes),
-        ),
-      ],
-    ),
-  );
-
-  if (confirm != true) return;
-
-  try {
-    await contractController.cancelRent(rentId: contract.id);
-
-    if (!mounted) return;
-
-    setState(() {
-      contract = contract.copyWith(
-        rentStatus: RentStatus.cancelled,
       );
-    });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          AppLocalizations.of(context)!.contractCancelled,
-        ),
-      ),
-    );
+      Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
 
-    Navigator.pop(context);
-  } catch (e) {
-    if (!mounted) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(extractCleanErrorMessage(e)),
-      ),
-    );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(extractCleanErrorMessage(e))));
+    }
   }
-}
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -554,17 +539,18 @@ Widget _buildBottomActions(
   required Future<void> Function() onApprove,
   required Future<Contracts> Function() onReject,
   required VoidCallback onCancelPressed,
-  required String Function(dynamic error) extractErrorMessage, 
+  required String Function(dynamic error) extractErrorMessage,
 }) {
   final theme = Theme.of(context);
   final colorScheme = theme.colorScheme;
-  final bool hideActions = contract.rentStatus == RentStatus.cancelled ||
-contract.rentStatus == RentStatus.completed ||
-contract.endRent.isBefore(DateTime.now()) ||
-    (!isTenant && contract.rentStatus == RentStatus.onRent);
+  final bool hideActions =
+      contract.rentStatus == RentStatus.cancelled ||
+      contract.rentStatus == RentStatus.completed ||
+      contract.endRent.isBefore(DateTime.now()) ||
+      (!isTenant && contract.rentStatus == RentStatus.onRent);
 
   if (hideActions) {
-    return const SizedBox.shrink(); 
+    return const SizedBox.shrink();
   }
 
   return Container(
@@ -581,170 +567,189 @@ contract.endRent.isBefore(DateTime.now()) ||
       children: [
         if (isTenant) ...[
           Expanded(
-            child: OutlinedButton(
-              onPressed: () async {
-                final result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => BookingCalendar(
-                      apartment: contract.contractApartment,
-                      contract: contract,
+            child: SafeArea(
+              child: OutlinedButton(
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BookingCalendar(
+                        apartment: contract.contractApartment,
+                        contract: contract,
+                      ),
                     ),
-                  ),
-                );
+                  );
 
-                if (result != null && result is Map<String, DateTime>) {
-                  final newStart = result['start']!;
-                  final newEnd = result['end']!;
-                  await onUpdate(newStart, newEnd);
-                }
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: colorScheme.primary,
-                side: BorderSide(color: colorScheme.primary),
+                  if (result != null && result is Map<String, DateTime>) {
+                    final newStart = result['start']!;
+                    final newEnd = result['end']!;
+                    await onUpdate(newStart, newEnd);
+                  }
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: colorScheme.primary,
+                  side: BorderSide(color: colorScheme.primary),
+                ),
+                child: Text(AppLocalizations.of(context)!.edit),
               ),
-              child: Text(AppLocalizations.of(context)!.edit),
             ),
           ),
 
           const SizedBox(width: 12),
           Expanded(
-            child: OutlinedButton(
-              onPressed: onCancelPressed,
-              style: OutlinedButton.styleFrom(
-                foregroundColor: colorScheme.error,
-                side: BorderSide(color: colorScheme.error),
+            child: SafeArea(
+              child: OutlinedButton(
+                onPressed: onCancelPressed,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: colorScheme.error,
+                  side: BorderSide(color: colorScheme.error),
+                ),
+                child: Text(AppLocalizations.of(context)!.cancel),
               ),
-              child: Text(AppLocalizations.of(context)!.cancel),
             ),
           ),
         ] else ...[
           Expanded(
-            child: OutlinedButton(
-              onPressed: () async {
-                try {
-                  await onApprove();
-                  if (!context.mounted) return;
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.check_circle, color: Colors.green, size: 60),
-                          const SizedBox(height: 16),
-                          Text(
-                            AppLocalizations.of(context)!.contractApprovedSuccessfully,
-                            textAlign: TextAlign.center,
+            child: SafeArea(
+              child: OutlinedButton(
+                onPressed: () async {
+                  try {
+                    await onApprove();
+                    if (!context.mounted) return;
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                              size: 60,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              AppLocalizations.of(
+                                context,
+                              )!.contractApprovedSuccessfully,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: Text(AppLocalizations.of(context)!.okay),
                           ),
                         ],
                       ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: Text(AppLocalizations.of(context)!.okay),
-                        ),
-                      ],
-                    ),
-                  );
-                } catch (e) {
-                  if (!context.mounted) return;
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text(AppLocalizations.of(context)!.error),
-                      content: Text(extractErrorMessage(e)),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: Text(AppLocalizations.of(context)!.okay),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.green,
-                side: const BorderSide(color: Colors.green),
+                    );
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: Text(AppLocalizations.of(context)!.error),
+                        content: Text(extractErrorMessage(e)),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: Text(AppLocalizations.of(context)!.okay),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.green,
+                  side: const BorderSide(color: Colors.green),
+                ),
+                child: Text(AppLocalizations.of(context)!.accept),
               ),
-              child: Text(AppLocalizations.of(context)!.accept),
             ),
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: OutlinedButton(
-              onPressed: () async {
-                final confirm = await showDialog<bool>(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: Text(AppLocalizations.of(context)!.confirm),
-                    content: Text(
-                      AppLocalizations.of(context)!.confirmRejectContract,
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(ctx, false),
-                        child: Text(AppLocalizations.of(context)!.no),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(ctx, true),
-                        child: Text(AppLocalizations.of(context)!.yes),
-                      ),
-                    ],
-                  ),
-                );
-
-                if (confirm != true) return;
-
-                try {
-                  await onReject();
-                  if (!context.mounted) return;
-                  showDialog(
+            child: SafeArea(
+              child: OutlinedButton(
+                onPressed: () async {
+                  final confirm = await showDialog<bool>(
                     context: context,
                     builder: (ctx) => AlertDialog(
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.cancel, color: Colors.red, size: 60),
-                          const SizedBox(height: 16),
-                          Text(
-                            AppLocalizations.of(context)!.contractRejectedSuccessfully,
-                            textAlign: TextAlign.center,
+                      title: Text(AppLocalizations.of(context)!.confirm),
+                      content: Text(
+                        AppLocalizations.of(context)!.confirmRejectContract,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx, false),
+                          child: Text(AppLocalizations.of(context)!.no),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx, true),
+                          child: Text(AppLocalizations.of(context)!.yes),
+                        ),
+                      ],
+                    ),
+                  );
+
+                  if (confirm != true) return;
+
+                  try {
+                    await onReject();
+                    if (!context.mounted) return;
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.cancel,
+                              color: Colors.red,
+                              size: 60,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              AppLocalizations.of(
+                                context,
+                              )!.contractRejectedSuccessfully,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: Text(AppLocalizations.of(context)!.okay),
                           ),
                         ],
                       ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: Text(AppLocalizations.of(context)!.okay),
-                        ),
-                      ],
-                    ),
-                  );
-                } catch (e) {
-                  if (!context.mounted) return;
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text(AppLocalizations.of(context)!.error),
-                      content: Text(extractErrorMessage(e)),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: Text(AppLocalizations.of(context)!.okay),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: colorScheme.error,
-                side: BorderSide(color: colorScheme.error),
+                    );
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: Text(AppLocalizations.of(context)!.error),
+                        content: Text(extractErrorMessage(e)),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: Text(AppLocalizations.of(context)!.okay),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: colorScheme.error,
+                  side: BorderSide(color: colorScheme.error),
+                ),
+                child: Text(AppLocalizations.of(context)!.reject),
               ),
-              child: Text(AppLocalizations.of(context)!.reject),
             ),
           ),
         ],
@@ -752,4 +757,3 @@ contract.endRent.isBefore(DateTime.now()) ||
     ),
   );
 }
-
