@@ -11,7 +11,6 @@ class ProfileScreen extends StatelessWidget {
     final user = userController.user;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
