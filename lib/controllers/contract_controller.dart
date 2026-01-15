@@ -87,13 +87,30 @@ class ContractController {
     return rejectedContract;
   }
 
+  // Future<bool> cancelRent({required int rentId}) async {
+  //   final success = await contractService.deleteContract(rentId: rentId);
+
+  //   if (success) {
+  //     _contracts.removeWhere((c) => c.id == rentId);
+  //   }
+
+  //   return success;
+  // }
+
   Future<bool> cancelRent({required int rentId}) async {
-    final success = await contractService.deleteContract(rentId: rentId);
+  final success = await contractService.cancelContract(rentId: rentId);
 
-    if (success) {
-      _contracts.removeWhere((c) => c.id == rentId);
+  if (success) {
+    final index = _contracts.indexWhere((c) => c.id == rentId);
+
+    if (index != -1) {
+      _contracts[index] = _contracts[index].copyWith(
+      rentStatus: RentStatus.cancelled,
+      );
     }
-
-    return success;
   }
+
+  return success;
+}
+
 }
