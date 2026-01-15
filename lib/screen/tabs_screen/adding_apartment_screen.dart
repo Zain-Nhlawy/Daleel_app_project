@@ -178,7 +178,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    _selectedStatusController = AppLocalizations.of(context)!.unfurnished;
+    if(_selectedStatusController == '') _selectedStatusController = AppLocalizations.of(context)!.unfurnished;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
