@@ -33,6 +33,13 @@ class ImagesSection extends StatelessWidget {
       return const AssetImage('assets/images/user.png');
     }
 
+    final filteredImages = images
+        .asMap()
+        .entries
+        .where((e) => e.key != 1)
+        .map((e) => e.value)
+        .toList();
+
     return Column(
       children: [
         ClipRRect(
@@ -50,10 +57,11 @@ class ImagesSection extends StatelessWidget {
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            itemCount: images.length,
+            itemCount: filteredImages.length,
             itemBuilder: (context, index) {
-              final img = images[index];
+              final img = filteredImages[index];
               final isSelected = img == selectedImage;
+
               return GestureDetector(
                 onTap: () => onImageSelected(img),
                 child: Container(
@@ -62,7 +70,10 @@ class ImagesSection extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     border: isSelected
-                        ? Border.all(color: theme.colorScheme.primary, width: 2)
+                        ? Border.all(
+                            color: theme.colorScheme.primary,
+                            width: 2,
+                          )
                         : null,
                     image: DecorationImage(
                       image: _getImage(img),

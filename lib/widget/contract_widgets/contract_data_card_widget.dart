@@ -95,12 +95,9 @@ class _ContractDataCardWidgetState extends State<ContractDataCardWidget> {
                 width: double.infinity,
                 child: contract.contractApartment.images.isNotEmpty
                     ? Image.network(
-                        contract.contractApartment.images.first,
+                        contract.contractApartment.images[0],
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Image.asset(
-                          "assets/images/user.png",
-                          fit: BoxFit.cover,
-                        ),
+                   
                       )
                     : Image.asset("assets/images/user.png", fit: BoxFit.cover),
               ),

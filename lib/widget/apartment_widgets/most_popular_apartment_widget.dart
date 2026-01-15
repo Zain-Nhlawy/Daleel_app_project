@@ -128,7 +128,7 @@ class _MostPopularApartmentWidgetState
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
-                          widget.apartment.location?['city'] ??
+                          widget.apartment.location?['governorate'] ??
                               AppLocalizations.of(context)!.unknownCity,
                           style: textTheme.bodySmall?.copyWith(
                             color: scheme.onSurface.withOpacity(0.7),

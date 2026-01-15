@@ -251,7 +251,8 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
+      
+      bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(16),
         child: ElevatedButton(
           onPressed: _triggerSaveProcess,
