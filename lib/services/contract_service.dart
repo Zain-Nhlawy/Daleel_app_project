@@ -15,7 +15,7 @@ class ContractService {
         "/auth/rents?page=${page}",
         queryParameters: {
           "with":
-              "user,department,department.rents,department.user,department.images",
+              "images,user,department,department.rents,department.user,department.images",
         },
       );
 

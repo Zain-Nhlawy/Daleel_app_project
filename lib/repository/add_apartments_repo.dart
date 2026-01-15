@@ -94,7 +94,7 @@ Future<Apartments2> editApartment({
         "location[governorate]": location["governorate"],
         "location[district]": location["district"] ?? "",
         "location[street]": location["street"] ?? "",
-
+"_method": "put",
         "images[]": [
           for (var img in images)
             await MultipartFile.fromFile(
@@ -104,7 +104,7 @@ Future<Apartments2> editApartment({
         ],
       });
 
-      final response = await dioClient.dio.put(
+      final response = await dioClient.dio.post(
         "/auth/departments/$id",
         data: formData,
         options: Options(contentType: "multipart/form-data"),
