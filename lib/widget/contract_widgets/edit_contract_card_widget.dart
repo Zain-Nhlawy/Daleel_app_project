@@ -58,7 +58,6 @@ class ContractModificationRequestCard extends StatelessWidget {
     final newEndDate = editContract.endRent;
     final newRentPrice = double.tryParse(editContract.rentFee ?? '');
 
-    // جلب الـ bottom padding تبع الجهاز
     final double bottomSafeArea = MediaQuery.of(context).padding.bottom;
 
     return Card(
@@ -101,11 +100,10 @@ class ContractModificationRequestCard extends StatelessWidget {
               highlight: true,
             ),
             const SizedBox(height: 24),
-            // Padding الجديد لرفع الأزرار عن منطقة أزرار النظام
             Padding(
               padding: EdgeInsets.only(
                 bottom: bottomSafeArea,
-              ), // <--- هنا التعديل
+              ), 
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
