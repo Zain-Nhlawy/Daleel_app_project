@@ -29,7 +29,7 @@ final theme = ThemeData(
   useMaterial3: true,
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
-    primary: Color.fromARGB(255, 208, 158, 120), 
+    primary: Color.fromARGB(255, 208, 158, 120),
     onPrimary: Colors.white,
     secondary: Color(0xFFBE7D66),
     onSecondary: Colors.white,
@@ -128,7 +128,7 @@ void main() async {
   final token = await appStorage.read(StorageKeys.token);
   if (token != null) {
     User? user = await userService.getProfile();
-    if(user != null) {
+    if (user != null) {
       userController.updateProfile(user);
     }
   }

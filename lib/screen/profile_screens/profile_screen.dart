@@ -29,7 +29,7 @@ class ProfileScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-          colors: [
+            colors: [
               Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.primary,
@@ -46,7 +46,6 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 40),
 
-                /// Profile Card
                 Container(
                   padding: const EdgeInsets.all(24.0),
                   decoration: BoxDecoration(
@@ -62,7 +61,6 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      /// Avatar
                       Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -86,7 +84,6 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 20),
 
-                      /// User Info
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,11 +101,10 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              user != null
-                                  ? user.email
-                                  : 'zainzoon59@gmail.com',
+                              user != null ? "${user.balance}\$" : 'balance',
                               style: textTheme.bodyMedium?.copyWith(
                                 color: colorScheme.onSurface.withOpacity(0.6),
+                                fontSize: 18,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,

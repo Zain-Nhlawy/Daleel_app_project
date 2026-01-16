@@ -178,7 +178,8 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    if(_selectedStatusController == '') _selectedStatusController = AppLocalizations.of(context)!.unfurnished;
+    if (_selectedStatusController == '')
+      _selectedStatusController = AppLocalizations.of(context)!.unfurnished;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -200,8 +201,6 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
               Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.background,
             ],
             begin: Alignment.topCenter,
@@ -211,7 +210,7 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(16, 110, 16, 100),
+            padding: const EdgeInsets.fromLTRB(16, 110, 16, 140),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -246,25 +245,42 @@ class _AddingApartmentScreenState extends State<AddingApartmentScreen> {
                   Icons.description,
                   maxLines: 4,
                 ),
+                const SizedBox(height: 20),
+                if (user!.verificationState != "verified")
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: scheme.onPrimary,
+                        foregroundColor: scheme.primary,
+                        minimumSize: const Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: Text("you are not verified yet"),
+                    ),
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: ElevatedButton(
+                      onPressed: _triggerSaveProcess,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: scheme.onPrimary,
+                        foregroundColor: scheme.primary,
+                        minimumSize: const Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: Text(AppLocalizations.of(context)!.addApartment),
+                    ),
+                  ),
               ],
             ),
           ),
-        ),
-      ),
-      
-      bottomNavigationBar:Padding(
-        padding: const EdgeInsets.all(16),
-        child: ElevatedButton(
-          onPressed: _triggerSaveProcess,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: scheme.primary,
-            foregroundColor: scheme.onPrimary,
-            minimumSize: const Size(double.infinity, 55),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
-          child: Text(AppLocalizations.of(context)!.addApartment),
         ),
       ),
     );
