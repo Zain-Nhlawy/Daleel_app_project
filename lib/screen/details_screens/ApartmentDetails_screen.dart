@@ -135,7 +135,9 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                       ApartmentInfoSection(apartment: apartment, theme: theme),
                       const SizedBox(height: 16),
 
-                      if (userController.user!.userId != apartment.user.userId)
+                      if (userController.user!.userId !=
+                              apartment.user.userId &&
+                          userController.user!.verificationState == "verified")
                         Center(
                           child: Container(
                             decoration: BoxDecoration(
@@ -263,6 +265,34 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                       onPressed: () {},
                       child: Text(
                         AppLocalizations.of(context)!.notAvailableRightNow,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: colorScheme.onPrimary,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          else if (userController.user!.verificationState != "verified")
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: SafeArea(
+                child: Container(
+                  color: colorScheme.surface,
+                  padding: const EdgeInsets.all(12),
+                  child: SizedBox(
+                    height: 55,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colorScheme.primary,
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "you are not verified yet",
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onPrimary,
                           fontSize: 18,

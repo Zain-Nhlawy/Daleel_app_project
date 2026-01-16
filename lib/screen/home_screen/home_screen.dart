@@ -67,7 +67,7 @@ class HomeScreen extends StatelessWidget {
               Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.background,
+              Theme.of(context).colorScheme.surface,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -158,22 +158,23 @@ class HomeScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                          overlayColor: WidgetStateProperty.all(
-                            Colors.transparent,
-                          ),
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)!.seeAll,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(color: Colors.white70),
-                        ),
-                      ),
+                      // TextButton(
+                      //   onPressed: () {},
+                      //   style: ButtonStyle(
+                      //     overlayColor: WidgetStateProperty.all(
+                      //       Colors.transparent,
+                      //     ),
+                      //   ),
+                      //   child: Text(
+                      //     AppLocalizations.of(context)!.seeAll,
+                      //     style: Theme.of(context).textTheme.bodyMedium
+                      //         ?.copyWith(color: Colors.white70),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
+                const SizedBox(height: 15),
                 MostPopularApartmentsWidget(),
                 const SizedBox(height: 25),
                 Padding(

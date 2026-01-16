@@ -11,6 +11,7 @@ class User {
   final String password;
   final String? verificationState;
   final String? token;
+  final int? balance;
 
   const User({
     required this.userId,
@@ -25,14 +26,15 @@ class User {
     required this.password,
     this.verificationState,
     this.token,
+    this.balance,
   });
 
   factory User.fromJson(Map<String, dynamic> json, {String? token}) {
     return User(
       // userId: json['id'] ?? 0,
       userId: json['id'] is int
-    ? json['id']
-    : int.tryParse(json['id']?.toString() ?? '0') ?? 0,
+          ? json['id']
+          : int.tryParse(json['id']?.toString() ?? '0') ?? 0,
       firstName: json['first_name'] ?? '',
       lastName: json['last_name'] ?? '',
       profileImage: json['profileImage'] ?? '',
@@ -46,6 +48,7 @@ class User {
       password: json['password'] ?? '',
       verificationState: json['verification_state'],
       token: token,
+      balance: json['wallet_balance'] ?? '',
     );
   }
 
@@ -63,6 +66,7 @@ class User {
       'password': password,
       'verificationState': verificationState,
       'token': token,
+      'wallet_balance': balance,
     };
   }
 
