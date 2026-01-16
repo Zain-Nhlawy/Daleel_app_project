@@ -63,7 +63,10 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
       apartment.id,
     );
     if (updatedApartment != null) {
-      await commentController.fetchComments(updatedApartment.id, updatedApartment);
+      await commentController.fetchComments(
+        updatedApartment.id,
+        updatedApartment,
+      );
     }
     if (!mounted) return;
     setState(() {
@@ -75,6 +78,14 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
       }
       isLoading = false;
     });
+  }
+
+  Future<void> _onRateButtonPressed() async {
+    final rated = await showRatingDialog(context, apartment.id);
+
+    if (rated == true && mounted) {
+      await _loadApartmentDetails();
+    }
   }
 
   @override
@@ -122,6 +133,44 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ApartmentInfoSection(apartment: apartment, theme: theme),
+                      const SizedBox(height: 16),
+
+                      if (userController.user!.userId != apartment.user.userId)
+                        Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: colorScheme.primaryContainer.withOpacity(
+                                0.1,
+                              ),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: OutlinedButton.icon(
+                              onPressed: _onRateButtonPressed,
+                              icon: Icon(
+                                Icons.star_border,
+                                color: Colors.amber[700],
+                              ),
+                              label: Text(
+                                AppLocalizations.of(context)!.ratetheDepartment,
+                                style: theme.textTheme.titleSmall?.copyWith(
+                                  color: colorScheme.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: colorScheme.primary,
+                                side: BorderSide(
+                                  color: colorScheme.primary.withOpacity(0.3),
+                                ),
+                                shape: const StadiumBorder(),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 10,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       const SizedBox(height: 24),
                       DescriptionSection(apartment: apartment, theme: theme),
                       const SizedBox(height: 30),
@@ -136,11 +185,15 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                           if (content.isEmpty) return;
 
                           try {
-                            await commentController.addComment(apartment.id, apartment, content);
-                          setState(() {
-                            _newCommentController.clear();
-                            showAllComments = true;
-                          });
+                            await commentController.addComment(
+                              apartment.id,
+                              apartment,
+                              content,
+                            );
+                            setState(() {
+                              _newCommentController.clear();
+                              showAllComments = true;
+                            });
                           } catch (e) {
                             print("Add comment error: $e");
                           }
