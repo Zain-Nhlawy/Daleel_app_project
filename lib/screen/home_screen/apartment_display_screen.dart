@@ -46,22 +46,6 @@ class _ApartmentsDisplayScreenState extends State<ApartmentsDisplayScreen> {
     );
   }
 
-  // Widget _buildFilterRow(String label, String value) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(vertical: 4.0),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Text(label, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
-  //         Text(
-  //           value,
-  //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,7 +104,6 @@ class _ApartmentsDisplayScreenState extends State<ApartmentsDisplayScreen> {
 
                       final apartments = snapshot.data!;
 
-                      /// 🔥 Sorting logic
                       if (widget.selectedCategory == "Popular") {
                         apartments.sort(
                           (a, b) => b.reviewCount!.compareTo(a.reviewCount!),

@@ -579,4 +579,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get contracts => 'العقود';
+
+  @override
+  String get notAvailableRightNow => 'غير متاح حالياً';
 }

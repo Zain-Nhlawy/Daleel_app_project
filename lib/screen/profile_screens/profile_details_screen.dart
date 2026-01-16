@@ -19,7 +19,7 @@ class ProfileDetailsScreen extends StatelessWidget {
           AppLocalizations.of(context)!.profileDetails,
           style: textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
-            color: scheme.onBackground,
+            color: scheme.onPrimary,
           ),
         ),
         centerTitle: true,

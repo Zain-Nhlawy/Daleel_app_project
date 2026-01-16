@@ -186,5 +186,6 @@
   "onRent": "مستأجرة",
   "completed": "مكتملة",
   "editsRequest": "طلبات التعديل",
-  "contracts": "العقود"
+  "contracts": "العقود",
+  "notAvailableRightNow": "غير متاح حالياً"
 }

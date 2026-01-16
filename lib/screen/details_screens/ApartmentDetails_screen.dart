@@ -209,7 +209,7 @@ class _ApartmentDetailsScreenState extends State<ApartmentDetailsScreen> {
                       ),
                       onPressed: () {},
                       child: Text(
-                        "Not Available Right Now",
+                        AppLocalizations.of(context)!.notAvailableRightNow,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onPrimary,
                           fontSize: 18,

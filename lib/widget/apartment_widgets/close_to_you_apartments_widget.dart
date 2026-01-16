@@ -100,7 +100,6 @@ class _CloseToYouApartmentsWidgetState
     }
 
     return ListView.builder(
-      controller: widget.controller,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: _apartments.length + (_apartments.length >= 10 ? 1 : 0),

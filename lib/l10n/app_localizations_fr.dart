@@ -591,4 +591,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get contracts => 'Contrats';
+
+  @override
+  String get notAvailableRightNow => 'Indisponible pour le moment';
 }

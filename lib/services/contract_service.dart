@@ -15,7 +15,7 @@ class ContractService {
         "/auth/rents?page=${page}",
         queryParameters: {
           "with":
-              "user,department,department.rents,department.user,department.images",
+              "images,user,department,department.rents,department.user,department.images",
         },
       );
 
@@ -196,26 +196,54 @@ class ContractService {
     }
   }
 
-  Future<bool> deleteContract({required int rentId}) async {
-    try {
-      final response = await apiClient.dio.delete("/auth/rents/$rentId");
+  // Future<bool> deleteContract({required int rentId}) async {
+  //   try {
+  //     final response = await apiClient.dio.delete("/auth/rents/$rentId");
 
-      final data = response.data;
-      if (data == null) {
-        throw Exception('Empty response from server');
-      }
+  //     final data = response.data;
+  //     if (data == null) {
+  //       throw Exception('Empty response from server');
+  //     }
 
-      if (data['status'] != 'success') {
-        throw Exception(data['message'] ?? 'Delete failed');
-      }
+  //     if (data['status'] != 'success') {
+  //       throw Exception(data['message'] ?? 'Delete failed');
+  //     }
 
-      return true;
-    } on DioException catch (e) {
-      throw Exception(
-        e.response?.data?['message'] ?? e.message ?? 'Network error',
-      );
-    } catch (e) {
-      throw Exception(e.toString());
+  //     return true;
+  //   } on DioException catch (e) {
+  //     throw Exception(
+  //       e.response?.data?['message'] ?? e.message ?? 'Network error',
+  //     );
+  //   } catch (e) {
+  //     throw Exception(e.toString());
+  //   }
+  // }
+
+  Future<bool> cancelContract({required int rentId}) async {
+  try {
+    final response = await apiClient.dio.post(
+      "/auth/rents/$rentId/cancel",
+    );
+
+    final data = response.data;
+    if (data == null) {
+      throw Exception('Empty response from server');
     }
+
+    if (data['success'] != true) {
+      throw Exception(data['message'] ?? 'Cancel failed');
+    }
+
+    return true;
+  } on DioException catch (e) {
+    throw Exception(
+      e.response?.data?['message'] ??
+      e.message ??
+      'Network error',
+    );
+  } catch (e) {
+    throw Exception(e.toString());
   }
+}
+
 }

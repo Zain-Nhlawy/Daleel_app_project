@@ -284,7 +284,6 @@ class _BookingCalendarState extends State<BookingCalendar> {
     final theme = Theme.of(context);
     String calendarLocale;
     final localeName = AppLocalizations.of(context)!.localeName;
-
     if (localeName == 'en') {
       calendarLocale = 'en';
     } else if (localeName == 'ar') {

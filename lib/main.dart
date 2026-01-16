@@ -4,9 +4,9 @@ import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/providers.dart';
 import 'package:daleel_app_project/screen/home_screen/notifications_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
+import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
 import 'package:provider/provider.dart';
 import 'package:daleel_app_project/services/firebase_notification_service.dart';
-
 import 'l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ final theme = ThemeData(
   useMaterial3: true,
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
-    primary: Color.fromARGB(255, 224, 170, 129),
+    primary: Color.fromARGB(255, 208, 158, 120), 
     onPrimary: Colors.white,
     secondary: Color(0xFFBE7D66),
     onSecondary: Colors.white,
