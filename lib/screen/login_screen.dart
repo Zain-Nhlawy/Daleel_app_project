@@ -63,11 +63,14 @@ class _LoginScreenState extends State<LoginScreen>
     }
 
     final loggedUser = await userController.login(phone, password);
+    print('Login result: $loggedUser');
+    print('Type: ${loggedUser.runtimeType}');
 
     if (loggedUser == null) {
       _showError(AppLocalizations.of(context)!.loginFailedCheckYourCredentials);
       return;
     }
+    
     final fcmToken = await FirebaseMessaging.instance.getToken();
     if (fcmToken != null) {
       await notificationService.saveToken(fcmToken);

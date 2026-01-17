@@ -12,10 +12,10 @@ class ReviewService {
         data: {'rating': rate},
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         final data = response.data['data'];
         return Comment.fromJson(data);
-      } else {}
+      } else {throw Exception(response.data['message'] ?? 'Rating failed');}
     } catch (e) {}
 
     return null;

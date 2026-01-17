@@ -21,7 +21,7 @@ class StarRatingDialog extends StatefulWidget {
 }
 
 class _StarRatingDialogState extends State<StarRatingDialog> {
-  late int dedepartment_id = widget.department_id;
+  late int department_id = widget.department_id;
   int _rating = 0;
 
   @override
@@ -109,16 +109,32 @@ class _StarRatingDialogState extends State<StarRatingDialog> {
                 Expanded(
                   child: FilledButton(
                     onPressed: _rating == 0
-                        ? null
-                        : () async {
-                            await reviewController.addReview(
-                              dedepartment_id,
-                              _rating,
-                            );
-                            if (context.mounted) {
-                              Navigator.pop(context, true);
-                            }
-                          },
+                    ? null
+                    : () async {
+                        try {
+                          await reviewController.addReview(
+                            department_id,
+                            _rating,
+                          );
+
+                          if (!context.mounted) return;
+
+                          Navigator.pop(context, true);
+                        } catch (e) {
+                          if (!context.mounted) return;
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                e.toString().replaceAll('Exception:', '').trim(),
+                              ),
+                              backgroundColor: Theme.of(context).colorScheme.error,
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        }
+                      },
+
                     style: FilledButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
                       foregroundColor: theme.colorScheme.onPrimary,

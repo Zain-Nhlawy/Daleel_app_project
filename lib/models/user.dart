@@ -48,7 +48,9 @@ class User {
       password: json['password'] ?? '',
       verificationState: json['verification_state'],
       token: token,
-      balance: json['wallet_balance'] ?? '',
+      balance: json['wallet_balance'] is int 
+          ? json['wallet_balance'] 
+          : int.tryParse(json['wallet_balance']?.toString() ?? '0'),
     );
   }
 
