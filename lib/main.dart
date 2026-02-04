@@ -1,10 +1,12 @@
 import 'package:daleel_app_project/core/storage/storage_keys.dart';
+import 'package:daleel_app_project/cubit/apartment%20cubit/apartments_cubit.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/providers.dart';
 import 'package:daleel_app_project/screen/home_screen/notifications_screen.dart';
 import 'package:daleel_app_project/screen/splash/splash_screen.dart';
-import 'package:daleel_app_project/screen/tabs_screen/home_screen_tabs.dart';
+import 'package:daleel_app_project/services/apartment_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:daleel_app_project/services/firebase_notification_service.dart';
 import 'l10n/app_localizations.dart';
@@ -70,6 +72,8 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  setupDependencies();
 
   await dotenv.load(fileName: ".env");
 
@@ -154,21 +158,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<SettingsProvider>(context);
 
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      theme: theme,
-      darkTheme: darkTheme,
-      themeMode: provider.currentTheme,
-      home: SplashScreen(),
-      locale: provider.currentLocale,
-      supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              ApartmentsCubit(getIt<ApartmentService>())..loadApartments(),
+        ),
       ],
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        theme: theme,
+        darkTheme: darkTheme,
+        themeMode: provider.currentTheme,
+        home: const SplashScreen(),
+        locale: provider.currentLocale,
+        supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+      ),
     );
   }
 }

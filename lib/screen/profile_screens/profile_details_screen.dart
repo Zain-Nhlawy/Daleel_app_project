@@ -176,37 +176,6 @@ class ProfileDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _imageColumn(
-    BuildContext context, {
-    required String title,
-    required String imageUrl,
-  }) {
-    final scheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
-    return Column(
-      children: [
-        Text(
-          title,
-          style: textTheme.bodyMedium?.copyWith(
-            color: scheme.onBackground,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: 130,
-          height: 160,
-          decoration: BoxDecoration(
-            color: scheme.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: scheme.primary, width: 1.5),
-          ),
-          child: Image.network(imageUrl, fit: BoxFit.cover),
-        ),
-      ],
-    );
-  }
 
   Widget _buildDetailTile(
     BuildContext context, {

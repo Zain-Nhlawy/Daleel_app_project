@@ -14,6 +14,7 @@ import 'core/network/dio_client.dart';
 import 'services/user_service.dart';
 import 'controllers/user_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_it/get_it.dart';
 
 final AppSecureStorage appStorage = AppSecureStorage();
 final DioClient dioClient = DioClient(storage: appStorage);
@@ -61,3 +62,13 @@ final NotificationService notificationService = NotificationService(
 );
 
 final String baseUrl = dotenv.env['BASE_URL'] ?? '';
+
+final getIt = GetIt.instance;
+
+void setupDependencies() {
+  getIt.registerLazySingleton<DioClient>(() => DioClient(storage: appStorage));
+
+  getIt.registerLazySingleton<ApartmentService>(
+    () => ApartmentService(apiClient: getIt<DioClient>()),
+  );
+}

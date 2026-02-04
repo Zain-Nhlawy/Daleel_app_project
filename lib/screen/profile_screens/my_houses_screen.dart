@@ -1,9 +1,11 @@
+import 'package:daleel_app_project/cubit/apartment%20cubit/apartments_cubit.dart';
+import 'package:daleel_app_project/cubit/apartment%20cubit/apartments_state.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
-import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/models/user.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/nearpy_apartments_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyHousesScreen extends StatefulWidget {
   const MyHousesScreen({super.key});
@@ -13,13 +15,12 @@ class MyHousesScreen extends StatefulWidget {
 }
 
 class _FavoriteApartmentsScreenState extends State<MyHousesScreen> {
-  late Future<List<Apartments2>?> _myApartmentsFuture;
   final User? user = userController.user;
 
   @override
   void initState() {
     super.initState();
-    _myApartmentsFuture = apartmentController.loadMyApartments(user!.userId);
+    context.read<ApartmentsCubit>().loadMyApartments(user!.userId);
   }
 
   @override
@@ -55,18 +56,15 @@ class _FavoriteApartmentsScreenState extends State<MyHousesScreen> {
           ),
         ),
         child: SafeArea(
-          child: FutureBuilder<List<Apartments2>?>(
-            future: _myApartmentsFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+          child: BlocBuilder<ApartmentsCubit, ApartmentState>(
+            builder: (context, state) {
+              if (state is ApartmentLoading) {
                 return Center(
                   child: CircularProgressIndicator(
                     color: colorScheme.onPrimary,
                   ),
                 );
-              }
-
-              if (snapshot.hasError) {
+              } else if (state is ApartmentError) {
                 return Center(
                   child: Text(
                     AppLocalizations.of(context)!.anErrorOccurred,
@@ -76,35 +74,25 @@ class _FavoriteApartmentsScreenState extends State<MyHousesScreen> {
                     textAlign: TextAlign.center,
                   ),
                 );
-              }
-
-              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(
-                  child: Text(
-                    AppLocalizations.of(context)!.noApartmentsFound,
-                    style: textTheme.bodyLarge?.copyWith(
-                      color: colorScheme.onPrimary,
-                    ),
-                  ),
+              } else if (state is ApartmentLoaded) {
+                final apartments = state.apartments;
+                return ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  itemCount: apartments.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      child: NearpyApartmentsWidgets(
+                        apartment: apartments[index],
+                      ),
+                    );
+                  },
                 );
               }
-
-              final apartments = snapshot.data!;
-              return ListView.builder(
-                padding: const EdgeInsets.only(bottom: 12),
-                itemCount: apartments.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    child: NearpyApartmentsWidgets(
-                      apartment: apartments[index],
-                    ),
-                  );
-                },
-              );
+              return Container();
             },
           ),
         ),

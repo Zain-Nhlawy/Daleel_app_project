@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'package:daleel_app_project/cubit/apartment%20cubit/apartments_cubit.dart';
+import 'package:daleel_app_project/cubit/apartment%20cubit/apartments_state.dart';
 import 'package:daleel_app_project/dependencies.dart';
 import 'package:daleel_app_project/l10n/app_localizations.dart';
 import 'package:daleel_app_project/models/apartments.dart';
 import 'package:daleel_app_project/widget/apartment_widgets/most_popular_apartment_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MostPopularApartmentsWidget extends StatefulWidget {
   const MostPopularApartmentsWidget({super.key});
@@ -55,52 +58,51 @@ class _MostPopularApartmentsWidgetState
   Widget build(BuildContext context) {
     return SizedBox(
       height: 215,
-      child: FutureBuilder<List<Apartments2>?>(
-        future: _apartmentsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+      child: BlocBuilder<ApartmentsCubit, ApartmentState>(
+        builder: (context, state) {
+          if (state is ApartmentLoading) {
             return const Center(
               child: CircularProgressIndicator(color: Colors.white),
             );
-          }
-
-          if (snapshot.hasError) {
+          } else if (state is ApartmentError) {
             return Center(
               child: Text(
                 '${AppLocalizations.of(context)!.error}: ${AppLocalizations.of(context)!.errorFetchingApartment}',
                 style: TextStyle(color: Colors.red),
               ),
             );
-          }
+          } else if (state is ApartmentLoaded) {
+            final apartments = state.apartments;
 
-          final apartments = snapshot.data;
-          if (apartments == null || apartments.isEmpty) {
-            return Center(
-              child: Text(
-                AppLocalizations.of(context)!.noApartmentsFound,
-                style: const TextStyle(color: Colors.white),
-              ),
+            if (apartments.isEmpty) {
+              return Center(
+                child: Text(
+                  AppLocalizations.of(context)!.noApartmentsFound,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              );
+            }
+
+            apartments.sort(
+              (a, b) => (b.reviewCount ?? 0).compareTo(a.reviewCount ?? 0),
+            );
+
+            final popularApartments = apartments.length > 10
+                ? apartments.sublist(0, 10)
+                : apartments;
+
+            return PageView.builder(
+              physics: const ClampingScrollPhysics(),
+              controller: _pageController,
+              itemBuilder: (context, index) {
+                return _carouselView(
+                  index,
+                  popularApartments[index % popularApartments.length],
+                );
+              },
             );
           }
-
-          apartments.sort(
-            (a, b) => (b.reviewCount ?? 0).compareTo(a.reviewCount ?? 0),
-          );
-
-          final popularApartments = apartments.length > 10
-              ? apartments.sublist(0, 10)
-              : apartments;
-
-          return PageView.builder(
-            physics: const ClampingScrollPhysics(),
-            controller: _pageController,
-            itemBuilder: (context, index) {
-              return _carouselView(
-                index,
-                popularApartments[index % popularApartments.length],
-              );
-            },
-          );
+          return Container();
         },
       ),
     );

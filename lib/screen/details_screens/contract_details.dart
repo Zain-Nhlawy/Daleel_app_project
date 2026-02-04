@@ -559,7 +559,7 @@ Widget _buildBottomActions(
 }) {
   final theme = Theme.of(context);
   final colorScheme = theme.colorScheme;
-  final bool isExpired = contract.startRent.isBefore(DateTime.now());
+  contract.startRent.isBefore(DateTime.now());
   final bool hideActions = 
       contract.rentStatus == RentStatus.cancelled ||
       contract.rentStatus == RentStatus.completed ||
