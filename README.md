@@ -129,17 +129,6 @@ The application uses authenticated API requests with secure local token storage.
 
 Sensitive authentication data is stored using `flutter_secure_storage`, while the networking layer handles API communication through a centralized Dio client.
 
----
-
-##  Getting Started
-
-### Prerequisites
-
-* Flutter SDK
-* Dart SDK
-* Android Studio / VS Code
-* Android or iOS development environment
-
 
 ---
 
