@@ -140,21 +140,6 @@ Sensitive authentication data is stored using `flutter_secure_storage`, while th
 * Android Studio / VS Code
 * Android or iOS development environment
 
-### Installation
-
-```bash
-git clone https://github.com/Zain-Nhlawy/Daleel_app_project.git
-cd Daleel_app_project
-flutter pub get
-```
-
-Create a `.env` file and configure the required API environment variables.
-
-Then run:
-
-```bash
-flutter run
-```
 
 ---
 
